@@ -1,0 +1,413 @@
+[gd_scene load_steps=13 format=3 uid="uid://dt7shdwe36mvx"]
+
+[ext_resource type="Script" path="res://script/SampleScript.cs" id="1_77eix"]
+[ext_resource type="Texture2D" uid="uid://cci8vucipt8jf" path="res://icon/play.png" id="2_130v6"]
+[ext_resource type="Script" path="res://script/WaveView.cs" id="2_qwrw7"]
+[ext_resource type="Texture2D" uid="uid://dv4et41005q8a" path="res://icon/play_p.png" id="3_k5yx4"]
+[ext_resource type="Texture2D" uid="uid://b3hxnlnbiltny" path="res://icon/stop.png" id="4_c3hx5"]
+[ext_resource type="Texture2D" uid="uid://ds0n7pwiyptji" path="res://icon/stop_p.png" id="5_ijmm8"]
+[ext_resource type="Texture2D" uid="uid://c7jcendoqsvra" path="res://icon/pause.png" id="6_whaif"]
+[ext_resource type="Texture2D" uid="uid://by5hxuyw67bub" path="res://icon/pause_p.png" id="7_mtgd5"]
+[ext_resource type="Script" path="res://script/CriWareConsole.cs" id="8_wci37"]
+[ext_resource type="ButtonGroup" path="res://radiobutton.tres" id="9_23abx"]
+[ext_resource type="Script" path="res://script/PlayCue.cs" id="10_4vfmq"]
+[ext_resource type="Script" path="res://script/SetNextBlock.cs" id="11_8eaus"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 6
+script = ExtResource("1_77eix")
+cueListPath = NodePath("CanvasLayer/TabContainer/Basic Controls/Panel/CUE_List")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+
+[node name="Basic Controls" type="MarginContainer" parent="CanvasLayer/TabContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/TabContainer/Basic Controls"]
+layout_mode = 2
+
+[node name="WaveWindow" type="Control" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+
+[node name="Line2D" type="Line2D" parent="CanvasLayer/TabContainer/Basic Controls/Panel/WaveWindow"]
+script = ExtResource("2_qwrw7")
+
+[node name="CUE" type="Label" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.275
+anchor_top = 0.312
+anchor_right = 0.275
+anchor_bottom = 0.312
+offset_left = -46.8
+offset_top = -17.504
+offset_right = 16.2
+offset_bottom = 5.496
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+text = "CUE"
+horizontal_alignment = 1
+
+[node name="CUE_List" type="ItemList" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.527
+anchor_top = 0.445
+anchor_right = 0.527
+anchor_bottom = 0.445
+offset_left = -207.104
+offset_top = -99.565
+offset_right = 207.896
+offset_bottom = 99.435
+
+[node name="Play_Button" type="TextureButton" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.441
+anchor_top = 0.684
+anchor_right = 0.441
+anchor_bottom = 0.684
+offset_left = -32.032
+offset_top = -32.028
+offset_right = 32.968
+offset_bottom = 31.972
+texture_normal = ExtResource("2_130v6")
+texture_pressed = ExtResource("3_k5yx4")
+
+[node name="Stop_Button" type="TextureButton" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.528
+anchor_top = 0.684
+anchor_right = 0.528
+anchor_bottom = 0.684
+offset_left = -32.256
+offset_top = -32.028
+offset_right = 32.744
+offset_bottom = 31.972
+texture_normal = ExtResource("4_c3hx5")
+texture_pressed = ExtResource("5_ijmm8")
+
+[node name="Pause_Button" type="TextureButton" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.615
+anchor_top = 0.684
+anchor_right = 0.615
+anchor_bottom = 0.684
+offset_left = -32.48
+offset_top = -32.028
+offset_right = 32.52
+offset_bottom = 31.972
+toggle_mode = true
+texture_normal = ExtResource("6_whaif")
+texture_pressed = ExtResource("7_mtgd5")
+
+[node name="Console_Output_Back" type="Panel" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+modulate = Color(0.976471, 0.945098, 0.972549, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.853
+anchor_right = 0.5
+anchor_bottom = 0.853
+offset_left = -525.0
+offset_top = -55.301
+offset_right = 525.0
+offset_bottom = 54.699
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Console_Output_Text" type="RichTextLabel" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.853
+anchor_right = 0.5
+anchor_bottom = 0.853
+offset_left = -525.0
+offset_top = -55.301
+offset_right = 525.0
+offset_bottom = 54.699
+scroll_following = true
+script = ExtResource("8_wci37")
+
+[node name="Console_Output" type="Label" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.123
+anchor_top = 0.709
+anchor_right = 0.123
+anchor_bottom = 0.709
+offset_left = -90.696
+offset_top = -17.453
+offset_right = 30.304
+offset_bottom = 5.547
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+text = "Console Output 
+"
+
+[node name="Console_Clear" type="Button" parent="CanvasLayer/TabContainer/Basic Controls/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.931
+anchor_top = 0.722
+anchor_right = 0.931
+anchor_bottom = 0.722
+offset_left = -28.5121
+offset_top = -15.474
+offset_right = 28.4879
+offset_bottom = 15.526
+text = "CLEAR"
+alignment = 2
+
+[node name="ADX Functions" type="MarginContainer" parent="CanvasLayer/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/TabContainer/ADX Functions"]
+layout_mode = 2
+
+[node name="AISAC" type="Label" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.246
+anchor_top = 0.184
+anchor_right = 0.246
+anchor_bottom = 0.184
+offset_left = -63.392
+offset_top = -13.528
+offset_right = 20.608
+offset_bottom = 9.472
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+text = "AISAC"
+horizontal_alignment = 1
+
+[node name="AISAC_Control" type="HSlider" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 104.0
+offset_right = 893.0
+offset_bottom = 134.0
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="Play_AISAC" type="TextureButton" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.358
+anchor_top = 0.191
+anchor_right = 0.358
+anchor_bottom = 0.191
+offset_left = -32.416
+offset_top = -32.847
+offset_right = 32.584
+offset_bottom = 31.153
+toggle_mode = true
+button_group = ExtResource("9_23abx")
+texture_normal = ExtResource("2_130v6")
+texture_pressed = ExtResource("4_c3hx5")
+script = ExtResource("10_4vfmq")
+cueId = 40
+
+[node name="Block" type="Label" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.246
+anchor_top = 0.354
+anchor_right = 0.246
+anchor_bottom = 0.354
+offset_left = -63.392
+offset_top = -17.418
+offset_right = 20.608
+offset_bottom = 5.582
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+text = "Block"
+horizontal_alignment = 1
+
+[node name="Block1" type="Button" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.467
+anchor_top = 0.353
+anchor_right = 0.467
+anchor_bottom = 0.353
+offset_left = -27.984
+offset_top = -15.801
+offset_right = 29.016
+offset_bottom = 15.199
+text = "1"
+script = ExtResource("11_8eaus")
+
+[node name="Block2" type="Button" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.554
+anchor_top = 0.354
+anchor_right = 0.554
+anchor_bottom = 0.354
+offset_left = -28.208
+offset_top = -15.418
+offset_right = 28.792
+offset_bottom = 15.582
+text = "2"
+script = ExtResource("11_8eaus")
+block = 1
+
+[node name="Block3" type="Button" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.641
+anchor_top = 0.353
+anchor_right = 0.641
+anchor_bottom = 0.354
+offset_left = -28.432
+offset_top = -14.801
+offset_right = 28.568
+offset_bottom = 15.582
+text = "3"
+script = ExtResource("11_8eaus")
+block = 2
+
+[node name="Block4" type="Button" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.728
+anchor_top = 0.348
+anchor_right = 0.728
+anchor_bottom = 0.354
+offset_left = -28.6561
+offset_top = -11.716
+offset_right = 28.3439
+offset_bottom = 15.582
+text = "4"
+script = ExtResource("11_8eaus")
+block = 3
+
+[node name="Play_Block" type="TextureButton" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.358
+anchor_top = 0.353
+anchor_right = 0.358
+anchor_bottom = 0.353
+offset_left = -32.416
+offset_top = -31.801
+offset_right = 32.584
+offset_bottom = 32.199
+toggle_mode = true
+button_group = ExtResource("9_23abx")
+texture_normal = ExtResource("2_130v6")
+texture_pressed = ExtResource("4_c3hx5")
+script = ExtResource("10_4vfmq")
+cueId = 32
+
+[node name="REACT" type="Label" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.246
+anchor_top = 0.514
+anchor_right = 0.246
+anchor_bottom = 0.514
+offset_left = -63.392
+offset_top = -17.138
+offset_right = 20.608
+offset_bottom = 5.86203
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+text = "REACT"
+horizontal_alignment = 1
+
+[node name="Play_REACT_bgm" type="TextureButton" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.358
+anchor_top = 0.519
+anchor_right = 0.358
+anchor_bottom = 0.519
+offset_left = -32.416
+offset_top = -32.223
+offset_right = 32.584
+offset_bottom = 31.777
+toggle_mode = true
+button_group = ExtResource("9_23abx")
+texture_normal = ExtResource("2_130v6")
+texture_pressed = ExtResource("4_c3hx5")
+script = ExtResource("10_4vfmq")
+cueId = 18
+
+[node name="Play_REACT_voice" type="TextureButton" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.462
+anchor_top = 0.519
+anchor_right = 0.462
+anchor_bottom = 0.519
+offset_left = -32.224
+offset_top = -32.223
+offset_right = 32.776
+offset_bottom = 31.777
+texture_normal = ExtResource("2_130v6")
+texture_pressed = ExtResource("3_k5yx4")
+script = ExtResource("10_4vfmq")
+cueId = 17
+
+[node name="WaveWindow" type="Control" parent="CanvasLayer/TabContainer/ADX Functions/Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Line2D" type="Line2D" parent="CanvasLayer/TabContainer/ADX Functions/Panel/WaveWindow"]
+script = ExtResource("2_qwrw7")
+
+[connection signal="pressed" from="CanvasLayer/TabContainer/Basic Controls/Panel/Play_Button" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/Basic Controls/Panel/Stop_Button" to="." method="_on_stop_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/Basic Controls/Panel/Pause_Button" to="." method="_on_pause_button_pressed"]
+[connection signal="toggled" from="CanvasLayer/TabContainer/Basic Controls/Panel/Pause_Button" to="." method="_on_pause_button_toggled"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/Basic Controls/Panel/Console_Clear" to="CanvasLayer/TabContainer/Basic Controls/Panel/Console_Output_Text" method="clear"]
+[connection signal="value_changed" from="CanvasLayer/TabContainer/ADX Functions/Panel/AISAC_Control" to="." method="_on_aisac_control_value_changed"]
+[connection signal="toggled" from="CanvasLayer/TabContainer/ADX Functions/Panel/Play_AISAC" to="CanvasLayer/TabContainer/ADX Functions/Panel/Play_AISAC" method="PlayToggled"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/ADX Functions/Panel/Block1" to="CanvasLayer/TabContainer/ADX Functions/Panel/Block1" method="SetNext"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/ADX Functions/Panel/Block2" to="CanvasLayer/TabContainer/ADX Functions/Panel/Block2" method="SetNext"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/ADX Functions/Panel/Block3" to="CanvasLayer/TabContainer/ADX Functions/Panel/Block3" method="SetNext"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/ADX Functions/Panel/Block4" to="CanvasLayer/TabContainer/ADX Functions/Panel/Block4" method="SetNext"]
+[connection signal="toggled" from="CanvasLayer/TabContainer/ADX Functions/Panel/Play_Block" to="CanvasLayer/TabContainer/ADX Functions/Panel/Play_Block" method="PlayToggled"]
+[connection signal="toggled" from="CanvasLayer/TabContainer/ADX Functions/Panel/Play_REACT_bgm" to="CanvasLayer/TabContainer/ADX Functions/Panel/Play_REACT_bgm" method="PlayToggled"]
+[connection signal="pressed" from="CanvasLayer/TabContainer/ADX Functions/Panel/Play_REACT_voice" to="CanvasLayer/TabContainer/ADX Functions/Panel/Play_REACT_voice" method="Play"]

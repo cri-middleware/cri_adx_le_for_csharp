@@ -1,0 +1,43 @@
+/****************************************************************************
+ *
+ * CRI Middleware SDK
+ *
+ * Copyright (c) CRI Middleware Co., Ltd.
+ *
+ * Title   : CRI ADX LE End User License Agreement
+ * File    : CRI_ADX_LE_End_User_License_Agreement.txt
+ *
+ ****************************************************************************/
+
+--------
+This application includes CRI ADX LE runtime libraries.
+You may not reverse engineer, decompile nor disassemble these runtime
+libraries.
+You may not reuse these runtime libraries and/or any part there of for
+your software development.
+
+CRI Middleware has intellectual property rights of CRI ADX LE,
+You may not resell, rent, license or distribute them.
+
+In no event will CRI Middleware be liable to you on any legal theory for
+any special, incidential, consequential, punitive, exemplary damages
+arising out of the use of this application.
+
+--------
+「CRI ADX LE使用許諾契約書」
+
+このアプリケーションには、ＣＲＩ・ミドルウェアが知的財産権を有している
+「CRI ADX LE」のランタイムライブラリが含まれています。
+
+あなたは、このライブラリを逆コンパイルしたり解析することはできません。
+このライブラリの全体または一部を、あなたのソフトウェア開発に再使用することは
+できません。
+再販売したり、貸与、ライセンス、販売を行うことはできません。
+
+いかなる場合においても、ＣＲＩ・ミドルウェアは、このアプリケーションの
+使用に起因する、偶発的、間接的、懲罰的、模範的な損害についていかなる責任も
+負いません。
+
+以上
+
+/*--< end of file>---------------------------------------------------------*/

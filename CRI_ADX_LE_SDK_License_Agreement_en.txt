@@ -1,0 +1,232 @@
+/****************************************************************************
+ *
+ * CRI Middleware SDK
+ *
+ * Copyright (c) CRI Middleware Co., Ltd.
+ *
+ * Title   : LICENSE AGREEMENT FOR CRI ADX LE
+ * File    : CRI_ADX_LE_SDK_License_Agreement_en.txt
+ *
+ ****************************************************************************/
+
+--------
+LICENSE AGREEMENT FOR CRI ADX LE
+
+  The purpose of this "LICENSE AGREEMENT FOR CRI ADX LE" is to set out the 
+terms and conditions under which you (hereinafter "Licensee") may use "CRI
+ ADX LE" provided by CRI Middleware Co., Ltd. (hereinafter "CRI").
+  By and at the time downloading or installing the ADX LE, you are deemed to 
+have understood and agreed all provisions of this Agreement. 
+If you cannot all or a part of this Agreement, you do not download, install, 
+and use the ADX LE.
+  
+1. Definitions
+  For the purposes of this Agreement, the following terms have the meanings as 
+defined below:
+
+(1) "Platform" means a computer hardware platform as well as personal 
+  computer running Windows or Mac OS, and a smartphone or a tablet running 
+  an Android or iOS.
+
+(2) "ADX LE" means a set of middleware developed and owned by CRI and 
+  named "CRI ADX LE". It includes  software development kit (SDK) 
+  (including tools, runtime library running on Platform, plug-in, 
+  and sample data, which contained in) and related documents and 
+  materials provided by CRI hereunder.
+
+(3) "Contents" means  application software, video works, audio works, and 
+  other contents that is developed using the ADX LE.
+
+(4) "End user" means a third party who uses the Content developed by Licensee.
+  
+
+(5) "Distribute (or distribution) the Content" means, directly or indirectly, 
+  paid or free, to deliver, e-deliver via application stores etc., publish, 
+  sale and/or otherwise provide a Content regardless in Japan or abroad.
+
+(6) "Affiliate" means an entity controlled by, controlling, or under common 
+control with a party to this Agreement, where control means the power, 
+directly or indirectly, to direct or cause the direction of an entity's 
+management and policies, whether by voting power, contract, or otherwise.
+
+2. License Grants
+  Subject that Licensee agrees and complies with the terms and conditions of 
+this Agreement, CRI grants to Licensee a non-exclusive, non-transferable, 
+limited, free of charge license to:
+
+(1) install, use, and reproduce the ADX LE SDK for the purposes of developing 
+  the Contents;
+
+(2) distribute the Content (including to reproduce and distribute runtime 
+  library of the ADX LE solely in  object code form and solely as an integrated
+  part of the Content); and
+
+(3) install, use, and reproduce the ADX LE SDK for the purposes of trial and 
+  evaluation for which Licensee examines whether it obtains CRI ADX license 
+  (i.e. a paid middleware license).
+
+3. Paid License Agreement
+  Notwithstanding Section 2 above, Licensee needs to enter into Paid License 
+Agreement for CRI ADX (i.e. paid software) separate to this Agreement if:
+  
+(1) an entity, of which the last annual sales exceed 10 million yens (JPY), 
+  distributes the Content;
+
+(2) an affiliate of an entity falling under Section 3 (i) above distributes the
+  Content;
+
+(3) Licensee distributes the Content via a publishers or agents; or
+
+(4) cumulative sales amount of the Contents (including but not limited to 
+  advertising revenue, in-app purchase, subscription sales in the Contents) has
+  exceeded 10 million yen (JPY).
+
+When any of previous cases applies, Licensee shall contact to CRI in written 
+form or e-mail. Execution of License Agreement for CRI ADX may cause 
+Licensee's obligation to pay license fee.
+
+4. Distribution of the Contents
+  When distributing the Content, Licensee shall include the following 
+indicates and notices in the Contents in a manner and contents which CRI instructs on the website :
+
+(1) copyright notice of the ADX LE by displaying Logo or text; and
+
+(2) notice of End users for restrictions, disclaimers, Copyright, and rights 
+  matters regarding the ADX LE.
+
+5. Restrictions
+1. Licensee shall not decompile, disassemble, reverse engineer, or do and 
+  attempt any other analyzing act the ADX LE, in whole or in part. Except as 
+  expressly permitted in Section 2 herein, Licensee shall not copy, modify, 
+  reproduce, translate, or otherwise use the ADX LE, in whole or in part.
+
+2. Licensee shall not use the ADX LE for the purpose of analyzing any data 
+  included in software developed by third parties.
+
+3. Except for the runtime library integrated in the Content, Licensee shall not 
+  distribute, transfer, lent, lease, sell, electronic transfer, public 
+  transmission (including but not limited to making it available for 
+  transmission via P2P software, FTP, websites, bulletin boards, etc., or 
+  storing it on a network accessible by an unspecified number of people) or 
+  otherwise provide the ADX LE in whole or in part. 
+
+4. Unless CRI permit in advance, Licensee shall not provide or make third 
+  parties to use all or a part of the ADX LE as a part of a service operated by 
+  Licensee or a third party.
+
+5. Licensee shall not make a third party to convert any the runtime library of 
+  ADX LE integrated in the Contents for development or any other purpose.
+
+6. Licensee shall not use all or a part of the ADX LE for any illegal purpose.
+
+6. Intellectual Property Rights
+1. ADX LE is protected by Japanese copyright laws and international copyright 
+  conventions and treaties, as well as other intellectual property laws and 
+  treaties. ADX LE is licensed, not sold, under this Agreement. As between CRI 
+  and Licensee, CRI owns all right, title, and interest, including all 
+  intellectual property rights, in and to the ADX LE, any derivative works there
+  of (by whomever produced), the CRI Marks, and all other materials provided by 
+  CRI hereunder.
+
+2. In the case that CRI corrects, modifies, improves, or otherwise changes ADX 
+  LE upon Licensee's opinion in interchange website like BBS, CRI owns all 
+  right, title, and interest, including all intellectual property rights, in and
+  to such part of ADX LE.
+
+7. Publication of Case Studies
+  Licensee shall understand and agree that CRI may disclose information 
+regarding the Contents as a case study of ADX LE after release of the Content 
+under the following conditions:
+
+(1) CRI may publish the following information regarding the Content on the 
+  website operated by CRI without Licensee's consent: title name, Platform, 
+  Distribution areas, release date, icons, and otherwise relative information.
+
+(2) When publishing the detailed information or other information such as 
+  interview regarding the Contents, CRI shall obtain Licensee's prior consent.
+
+8. DISCLAIMERS; LIMITED LIABILITY ETC.
+1.LICENSEE EXPRESSLY AGREES THAT ITS USE OF THE ADX LE SDK AND 
+  ALL MATERIALS AND INFORMATION PROVIDED HEREUNDER IS AT LICENSEE'S 
+  SOLE RISK. THE ADX LE SDK AND ALL MATERIALS AND INFORMATION PROVIDED 
+  HEREUNDER BY CRI ARE PROVIDED "AS IS" WITHOUT WARRANTY OF 
+  ANY KIND (INCLUDING BUT NOT LIMITED TO THE MATTER MENTIONED 8.2 HEREIN, 
+  MERCHANTABILITY, FITNESS FOR PARTICULAR PURPOSE). TO THE MAXIMUM EXTENT 
+  PERMITTED BY LAW, CRI DISCLAIM ALL WARRANTIES AND CONDITIONS, EITHER 
+  EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT WITH 
+  REGARD TO THE CRIWARE SDK AND ALL MATERIALS OR INFORMATION PROVIDED 
+  HEREUNDER BY CRI.
+
+2. CRI DOES NOT WARRANT: 
+(1) THAT ADX LE AND ALL RELATED MATERIALS OR INFORMATION PROVIDED HEREUNDER 
+  BY CRI DOES NOT INFRINGE ANY THIRD PARTY'S PATENTS, UTILITY MODEL RIGHTS, 
+  COPYRIGHTS AND OTHERWISE INTELLECTUAL PROPERTY RIGHTS; AND
+(2) THAT USE OF ADX LE OUTSIDE OF JAPAN IS LEGAL UNDER LOCAL LAWS AND 
+  REGULATIONS. 
+
+3. If Licensee violate any of provisions herein, Licensee shall indemnify CRI 
+  from any and all damage that CRI suffered from such violation. In that 
+  case, Licensee shall promptly suspend its use of ADX LE and distribution
+  its Contents and discard ADX LE and all copies and components of it 
+  according to CRI's demand. After that, this Agreement is automatically 
+  terminated.
+
+4. When having distributed the Content, Licensee shall be sole responsible for 
+  receipt and handling with any and all inquiries, claims from End users, 
+  distribution stores or other third parties.
+
+5. CRI is not responsible to defend, indemnify, or hold harmless the Licensee 
+  from any claim, lawsuits and damages caused by use of the ADX LE. Licensee 
+  shall be sole responsible for handling to that claim etc. described in 
+  Section 8.4 above and shall release and hold harmless CRI from such claim.
+
+6. Licensee will comply with all applicable laws and regulations (including but
+  not limited to the export and import control laws and regulations) in its use 
+  of ADX LE SDK. Licensee will defend, indemnify, and hold harmless CRI from and
+  against all fines, penalties, liabilities, damages, costs, and expenses 
+  incurred by CRI as a result of any violation of such laws or regulations by 
+  Licensee or any of its agents or employees.
+
+7. TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL CRI BE LIABLE TO 
+  THE OTHER OR ANY THIRD PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY 
+  OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED TO, PROCUREMENT OF 
+  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS 
+  INTERRUPTION) ARISING FROM OR RELATED TO THIS AGREEMENT, HOWEVER CAUSED AND 
+  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE). THE FACT THAT CRI HAS BEEN 
+  ADVISED, OR SHOULD REASONABLY HAVE BEEN AWARE OF, THE POSSIBILITY OF SUCH 
+  DAMAGES SHALL NOT DEEMED TO NEGATE AFOREMENTIONED LIMITATION OF LIABILITY.
+  
+9. Spreading 
+  The provision of Section 5, 6, and 8 shall extend to an End user. Licensee 
+shall inform that to the End user according to Section 4.
+
+10. Consultation, Governing Law, and Jurisdiction
+1. In the event of a matter not stipulated or difference or controversy 
+  regarding interpretation herein, Licensee and Licensor shall effort 
+  to resolve such matters by discussing between both parties in good faith. 
+  In the unlikely event of legal dispute, any dispute arising from or 
+  relating to this Agreement shall be brought in the Tokyo district court in Japan. 
+  
+2. This Agreement is governed by and construed in accordance with the laws 
+  of Japan. The application of United Nations Convention on Contracts for the 
+  International Sales of Goods (1980) to this Agreement is excluded.
+3. This Agreement shall be made and entered in Japanese language. In the event 
+  of any inconsistency in the interpretation of a provision between the Japanese 
+  version and the other language version, the Japanese version shall supersede 
+  any other language version. Without inconsistency with the above, 
+  the provision that it exists only in the English version shall validly has 
+  force and effect for the English version of this Agreement.
+  
+11. Survivals
+  Section 1, 5, 6, 8, 9, 10 and 11 shall survive even after the termination 
+of this Agreement.
+
+12. Amendment of Provisions
+  Licensee understands and agrees that CRI may, solely and on its discretion, amend 
+a provision herein as needed at any time. When amendment, CRI shall announce 
+such changes on website etc. and Licensee receipt it.
+
+Enactment Date  July 1, 2024
+
+/*--< end of file>---------------------------------------------------------*/
