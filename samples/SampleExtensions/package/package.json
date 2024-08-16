@@ -1,0 +1,11 @@
+{
+	"name": "com.criware.sampleextensions.common",
+	"version": "0.1.0",
+	"displayName": "CRI Sample Extensions",
+	"description": "",
+	"unity": "2021.3",
+	"author": {
+	  "name": "CRI Middleware co.ltd"
+	}
+  }
+  

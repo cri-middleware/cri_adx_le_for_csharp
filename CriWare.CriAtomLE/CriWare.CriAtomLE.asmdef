@@ -1,0 +1,20 @@
+{
+    "name": "CriWare.CriAtomLE",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Unity",
+            "expression": "0",
+            "define": "CRI_BUILD_LE"
+        }
+    ],
+    "noEngineReferences": false
+}

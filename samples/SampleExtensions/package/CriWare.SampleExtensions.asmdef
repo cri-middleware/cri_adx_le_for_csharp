@@ -1,0 +1,16 @@
+{
+    "name": "CriWare.SampleExtensions",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0f98a993522c15c418f15bbb88099008"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

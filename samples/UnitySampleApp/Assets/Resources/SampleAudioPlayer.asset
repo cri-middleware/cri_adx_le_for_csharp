@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 219c4f893698e48aa90ee80fbefece3d, type: 3}
+  m_Name: SampleAudioPlayer
+  m_EditorClassIdentifier: 
+  exConfig:
+    threadModel: 4
+    serverFrequency: 60
+    parameterUpdateInterval: 1
+    enableAtomSoundDisabledMode:
+      value: 0
+    maxVirtualVoices: 16
+    maxParameterBlocks: 1024
+    maxVoiceLimitGroups: 16
+    maxCategories: 16
+    maxAisacs: 8
+    maxBusSends: 8
+    categoriesPerPlayback: 4
+    maxSequences: 16
+    maxTracks: 32
+    maxTrackItems: 32
+    maxAisacAutoModulations: 0
+    maxPitch: 2400
+    maxFaders: 4
+    coordinateSystem: 0
+    enableAutoMatchingInPanTypeAuto:
+      value: 0
+    enableCategoryOverrideByExPlayer:
+      value: 0
+    sequencePrepareRatio: 1.5
+    version: 4294967295
+    versionEx: 4294967295
+  asrConfig:
+    serverFrequency: 60
+    numBuses: 8
+    outputChannels: 8
+    speakerMapping: 0
+    outputSamplingRate: 48000
+    soundRendererType: 1
+    maxRacks: 8
+    ambisonicsOrderType: 0
+  hcaMxConfig:
+    serverFrequency: 60
+    numMixers: 1
+    maxVoices: 16
+    maxInputChannels: 2
+    maxSamplingRate: 48000
+    outputChannels: 6
+    outputSamplingRate: 48000
+    soundRendererType: 2
+  acfData: {fileID: 4900000, guid: 3e2b242ecee6840478062e1dd7c00c99, type: 3}
+  acbPath: DemoProj.acb
+  awbPath: DemoProj.awb

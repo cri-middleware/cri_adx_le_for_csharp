@@ -1,0 +1,12 @@
+{
+  "name": "com.criware.criatom.common",
+  "version": "2.27.378",
+  "displayName": "CRI Atom(LE)",
+  "description": "CRI ADX LE plugin for Unity",
+  "unity": "2021.3",
+  "dependencies": {},
+  "author": {
+    "name": "CRI Middleware co.ltd"
+  },
+  "license": "SEE LICENSE IN CRI_ADX_LE_SDK_License_Agreement_en.txt"
+}
