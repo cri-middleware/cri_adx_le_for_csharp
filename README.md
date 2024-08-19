@@ -19,7 +19,7 @@ The copyright notice must not be modified under any circumstances. Please follow
 ## How to use
 
 This section will walkthrough how to import CRI ADX LE. 
-For further instructions and informations, please refer to ["Manual/API Reference for CRI ADX for C#"](https://www.criware.jp/documents/c_sharp/pc/en/man/index.html).
+For further instructions and informations, please refer to ["Manual/API Reference for CRI ADX for C#"](https://game.criware.jp/manual/csharp_plugin/latest/index.html).
 
 ### Prepare resource files for ADX
 
