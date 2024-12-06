@@ -18,6 +18,12 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_STANDALONE_WIN && !UNITY_EDITOR) || UNITY_EDITOR_WIN || win)
 		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern Int32 criAtom_CalculateWorkSize_WASAPI(CriAtom.ConfigWASAPI* config);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_Initialize_WASAPI(CriAtom.ConfigWASAPI* config, IntPtr work, Int32 workSize);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_Finalize_WASAPI();
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern NativeBool criAtom_GetAudioClientMixFormat_WASAPI(IntPtr format);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern NativeBool criAtom_GetAudioClientIsFormatSupported_WASAPI(IntPtr format);
@@ -34,7 +40,7 @@ internal static extern IntPtr criAtom_GetAudioClient_WASAPI();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern NativeBool criAtom_IsDeviceInvalidated_WASAPI();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_SetDeviceId_WASAPI(CriAtom.SoundRendererType type, Int16* deviceId);
+internal static extern void criAtom_SetDeviceId_WASAPI(CriAtom.SoundRendererType type, IntPtr deviceId);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern Int32 criAtom_EnumAudioEndpoints_WASAPI(IntPtr callback, IntPtr @object);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -43,7 +49,24 @@ internal static extern void criAtom_SetDeviceUpdateCallback_WASAPI(IntPtr callba
 internal static extern void criAtom_SetSpatialAudioEnabled_WASAPI(CriAtom.SoundRendererType type, NativeBool sw);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern NativeBool criAtom_IsSpatialAudioEnabled_WASAPI(CriAtom.SoundRendererType type);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern Int32 criAtom_CalculateWorkSize_PC(CriAtom.ConfigPC* config);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_Initialize_PC(CriAtom.ConfigPC* config, IntPtr work, Int32 workSize);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_Finalize_PC();
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_SetThreadPriority_PC(Int32 prio);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern Int32 criAtom_GetThreadPriority_PC();
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_SetThreadAffinityMask_PC(IntPtr mask);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern IntPtr criAtom_GetThreadAffinityMask_PC();
 #else
+			internal static Int32 criAtom_CalculateWorkSize_WASAPI(CriAtom.ConfigWASAPI* config) { return default(Int32); }
+			internal static void criAtom_Initialize_WASAPI(CriAtom.ConfigWASAPI* config, IntPtr work, Int32 workSize) { }
+			internal static void criAtom_Finalize_WASAPI() { }
 			internal static NativeBool criAtom_GetAudioClientMixFormat_WASAPI(IntPtr format) { return default(NativeBool); }
 			internal static NativeBool criAtom_GetAudioClientIsFormatSupported_WASAPI(IntPtr format) { return default(NativeBool); }
 			internal static void criAtom_SetAudioClientShareMode_WASAPI(Int32 mode) { }
@@ -52,11 +75,18 @@ internal static extern NativeBool criAtom_IsSpatialAudioEnabled_WASAPI(CriAtom.S
 			internal static void criAtom_SetAudioClientBufferDuration_WASAPI(Int64 refTime) { }
 			internal static IntPtr criAtom_GetAudioClient_WASAPI() { return default(IntPtr); }
 			internal static NativeBool criAtom_IsDeviceInvalidated_WASAPI() { return default(NativeBool); }
-			internal static void criAtom_SetDeviceId_WASAPI(CriAtom.SoundRendererType type, Int16* deviceId) { }
+			internal static void criAtom_SetDeviceId_WASAPI(CriAtom.SoundRendererType type, IntPtr deviceId) { }
 			internal static Int32 criAtom_EnumAudioEndpoints_WASAPI(IntPtr callback, IntPtr @object) { return default(Int32); }
 			internal static void criAtom_SetDeviceUpdateCallback_WASAPI(IntPtr callback, IntPtr @object) { }
 			internal static void criAtom_SetSpatialAudioEnabled_WASAPI(CriAtom.SoundRendererType type, NativeBool sw) { }
 			internal static NativeBool criAtom_IsSpatialAudioEnabled_WASAPI(CriAtom.SoundRendererType type) { return default(NativeBool); }
+			internal static Int32 criAtom_CalculateWorkSize_PC(CriAtom.ConfigPC* config) { return default(Int32); }
+			internal static void criAtom_Initialize_PC(CriAtom.ConfigPC* config, IntPtr work, Int32 workSize) { }
+			internal static void criAtom_Finalize_PC() { }
+			internal static void criAtom_SetThreadPriority_PC(Int32 prio) { }
+			internal static Int32 criAtom_GetThreadPriority_PC() { return default(Int32); }
+			internal static void criAtom_SetThreadAffinityMask_PC(IntPtr mask) { }
+			internal static IntPtr criAtom_GetThreadAffinityMask_PC() { return default(IntPtr); }
 #endif
 		}
 	}
@@ -71,10 +101,19 @@ internal static extern Int32 criAtomEx_CalculateWorkSize_WASAPI(CriAtomEx.Config
 internal static extern void criAtomEx_Initialize_WASAPI(CriAtomEx.ConfigWASAPI* config, IntPtr work, Int32 workSize);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern void criAtomEx_Finalize_WASAPI();
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern Int32 criAtomEx_CalculateWorkSize_PC(CriAtomEx.ConfigPC* config);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtomEx_Initialize_PC(CriAtomEx.ConfigPC* config, IntPtr work, Int32 workSize);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtomEx_Finalize_PC();
 #else
 			internal static Int32 criAtomEx_CalculateWorkSize_WASAPI(CriAtomEx.ConfigWASAPI* config) { return default(Int32); }
 			internal static void criAtomEx_Initialize_WASAPI(CriAtomEx.ConfigWASAPI* config, IntPtr work, Int32 workSize) { }
 			internal static void criAtomEx_Finalize_WASAPI() { }
+			internal static Int32 criAtomEx_CalculateWorkSize_PC(CriAtomEx.ConfigPC* config) { return default(Int32); }
+			internal static void criAtomEx_Initialize_PC(CriAtomEx.ConfigPC* config, IntPtr work, Int32 workSize) { }
+			internal static void criAtomEx_Finalize_PC() { }
 #endif
 		}
 	}

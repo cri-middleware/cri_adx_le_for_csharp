@@ -38,6 +38,7 @@ namespace CriWare
 		/// 初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる
 		/// メモリアロケータを使用したメモリ確保処理が必要になります。
 		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_ANDROID(const CriAtomExConfig_ANDROID *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigANDROID"/>
 		/// <seealso cref="CriAtomEx.InitializeANDROID"/>
@@ -49,6 +50,7 @@ namespace CriWare
 
 		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
 		/// <seealso cref="CriAtomEx.InitializeANDROID"/>
+		[Serializable]
 		public unsafe partial struct ConfigANDROID
 		{
 			/// <summary>HCA-MXを初期化するかどうか</summary>
@@ -102,6 +104,7 @@ namespace CriWare
 		/// 本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizeANDROID"/> 関数を実行してください。
 		/// また、 <see cref="CriAtomEx.FinalizeANDROID"/> 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_ANDROID(const CriAtomExConfig_ANDROID *, void *, CriSint32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigANDROID"/>
 		/// <seealso cref="CriAtomEx.FinalizeANDROID"/>
@@ -128,6 +131,7 @@ namespace CriWare
 		/// 本関数を実行する場合、上記関数を実行しないでください。
 		/// <see cref="CriAtomEx.InitializeANDROID"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeANDROID"/>
 		public static void FinalizeANDROID()
@@ -144,6 +148,7 @@ namespace CriWare
 		/// 本関数の動作保証のため、呼び出しの前には必ずcriAtom_StopSound_ANDROID関数が
 		/// 呼ばれることを確認してください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_StartSound_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StartSoundANDROID"/>
 		public static void StartSoundANDROID()
@@ -160,6 +165,7 @@ namespace CriWare
 		/// 本関数の動作保証のため、呼び出しの後には必ずcriAtom_StartSound_ANDROID関数が
 		/// 呼ばれることを確認してください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_StopSound_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StopSoundANDROID"/>
 		public static void StopSoundANDROID()

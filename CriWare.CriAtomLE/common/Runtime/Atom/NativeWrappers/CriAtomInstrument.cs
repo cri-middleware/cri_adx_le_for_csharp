@@ -79,6 +79,7 @@ namespace CriWare
 		/// （構造体のメンバに不定値が入らないようご注意ください。）
 		/// </para>
 		/// </remarks>
+		[Serializable]
 		public unsafe partial struct PlayerConfig
 		{
 			/// <summary>インターフェース名</summary>

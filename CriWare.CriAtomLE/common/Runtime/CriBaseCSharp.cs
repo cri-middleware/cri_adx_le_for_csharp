@@ -49,13 +49,13 @@ namespace CriWare {
 				callbacks?.Invoke(CriErr.ConvertIdToMessage(arg.errid, arg.p1, arg.p2));
 		}
 
-		internal const string LibraryName = 
-#if (UNITY_IOS && !UNITY_EDITOR) || ios
+		internal const string LibraryName =
+#if ENABLE_IL2CPP || ios
 			"__Internal";
 #elif CRI_BUILD_LE
 			"cri_atom";
 #else
-			"cri_base";
+            "cri_base";
 #endif
 
 		internal const CallingConvention callingConvention = CallingConvention.Cdecl;
@@ -81,7 +81,7 @@ namespace CriWare {
 				if((nint)current == 0)
 					return 0;
 				if((nint)current <= handle && handle < (nint)current + current->size){
-					if(current -> handle != (nint)0)
+					if(current -> handle == (nint)0)
 						current -> handle = handle;
 					return (nint)current;
 				}
@@ -110,6 +110,13 @@ namespace CriWare {
 		internal static int GetSize(nint memory) => ((MemoryInfo*)memory)->size;
 		internal static int GetId(nint memory) => ((MemoryInfo*)memory)->id;
 		internal static nint GetHandle(nint memory) => ((MemoryInfo*)memory)->handle;
+
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public static void SetAsOwnerless() => NativeMethods.criNativeAllocator_GetRoot()->next->handle = (IntPtr)1;
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public static bool IsOwnerless(nint memory) => GetHandle(memory) == (IntPtr)1;
 
 		/// <exclude/>
 		public unsafe static delegate*unmanaged[Cdecl]<nint, UInt32, nint> GetAllocateFunc() => (delegate*unmanaged[Cdecl]<nint, UInt32, nint>)NativeMethods.criNativeAllocator_GetAllocateFunc();

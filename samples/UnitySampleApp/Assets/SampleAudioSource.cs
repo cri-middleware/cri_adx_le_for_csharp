@@ -7,11 +7,14 @@ public class SampleAudioSource : MonoBehaviour
 	[SerializeField]
 	int cueId;
 
-    CriAtomEx3dSource source;
-	CriAtomExPlayback playback;
+	CriAtomExPlayer player;
+	CriAtomEx3dSource source;
 
-	private void Awake() =>
+	private void Awake(){
+		player = new CriAtomExPlayer();
 		source = new CriAtomEx3dSource();
+		player.Set3dSourceHn(source);
+	}
 
 	private void LateUpdate()
 	{
@@ -19,12 +22,14 @@ public class SampleAudioSource : MonoBehaviour
 		source.Update();
 	}
 
-	private void OnEnable() =>
-		playback = SampleAudioPlayer.Instance.Play(cueId, source);
+	private void OnEnable(){
+		player.SetCueId(null, cueId);
+		player.Start();
+	}
 
 	private void OnDestroy()
 	{
-		playback.Stop();
+		player?.Dispose();
 		source?.Dispose();
 	}
 }

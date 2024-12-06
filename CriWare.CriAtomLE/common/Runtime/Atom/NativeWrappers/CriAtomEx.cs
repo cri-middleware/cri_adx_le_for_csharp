@@ -401,8 +401,8 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Initialize"/>
 		/// <seealso cref="CriAtomEx.SetDefaultConfig"/>
-		[System.Serializable]
-		[XmlType(Namespace = "CriAtomEx")]
+		[System.Xml.Serialization.XmlType(Namespace = "CriAtomEx")]
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>スレッドモデル</summary>
@@ -1159,7 +1159,7 @@ namespace CriWare
 			/// 疑似乱数生成器を作成するために必要な、ワーク領域のサイズを取得します。
 			/// </para>
 			/// </remarks>
-			public IntPtr calculateWorkSize;
+			public delegate* unmanaged[Cdecl]<Int32> CalculateWorkSize;
 
 			/// <summary>疑似乱数生成器の作成</summary>
 			/// <returns>疑似乱数生成器オブジェクト</returns>
@@ -1170,7 +1170,7 @@ namespace CriWare
 			/// 疑似乱数生成器の作成に失敗した場合はnullを返します。
 			/// </para>
 			/// </remarks>
-			public IntPtr create;
+			public delegate* unmanaged[Cdecl]<IntPtr, Int32, IntPtr> Create;
 
 			/// <summary>疑似乱数生成器の破棄</summary>
 			/// <remarks>
@@ -1179,7 +1179,7 @@ namespace CriWare
 			/// 疑似乱数生成器を破棄します。
 			/// </para>
 			/// </remarks>
-			public IntPtr destroy;
+			public delegate* unmanaged[Cdecl]<IntPtr, void> Destroy;
 
 			/// <summary>疑似乱数の生成</summary>
 			/// <returns>疑似乱数</returns>
@@ -1190,7 +1190,7 @@ namespace CriWare
 			/// 生成された疑似乱数はmin以上max以下である必要があります。（min,maxは範囲に含む）
 			/// </para>
 			/// </remarks>
-			public IntPtr generate;
+			public delegate* unmanaged[Cdecl]<IntPtr, Int32, Int32, Int32> Generate;
 
 			/// <summary>乱数種の設定</summary>
 			/// <remarks>
@@ -1199,7 +1199,7 @@ namespace CriWare
 			/// 擬似乱数生成の元となる乱数種を設定します。
 			/// </para>
 			/// </remarks>
-			public IntPtr setSeed;
+			public delegate* unmanaged[Cdecl]<IntPtr, UInt32, void> SetSeed;
 
 		}
 		/// <summary>ライブラリ初期化状態の取得</summary>
@@ -1327,7 +1327,7 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// Atomライブラリ内のマスタタイマから時刻を取得します。
+		/// Atomライブラリ内のマスタタイマーから時刻を取得します。
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ResetTimer"/>
@@ -1336,11 +1336,11 @@ namespace CriWare
 			return NativeMethods.criAtomEx_GetTimeMicro();
 		}
 
-		/// <summary>タイマのリセット</summary>
+		/// <summary>タイマーのリセット</summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// Atomライブラリ内のマスタタイマの時刻をリセットします。
+		/// Atomライブラリ内のマスタタイマーの時刻をリセットします。
 		/// </para>
 		/// <para>
 		/// 備考:
@@ -1354,24 +1354,24 @@ namespace CriWare
 			NativeMethods.criAtomEx_ResetTimer();
 		}
 
-		/// <summary>タイマのポーズ</summary>
-		/// <param name="sw">true=タイマ一時停止、false=タイマ再開</param>
+		/// <summary>タイマーのポーズ</summary>
+		/// <param name="sw">true=タイマー一時停止、false=タイマー再開</param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// Atomライブラリ内のマスタタイマを一時停止／再開します。
-		/// マスタタイマを一時停止すると、シーケンス時刻が進行しなくなります。
+		/// Atomライブラリ内のマスタタイマーを一時停止／再開します。
+		/// マスタタイマーを一時停止すると、シーケンス時刻が進行しなくなります。
 		/// </para>
 		/// <para>
 		/// 備考:
 		/// 本関数は アプリケーションが休止したり一時停止するようなプラットフォームにおいて、
-		/// 休止中や一時停止中でもタイマが進行してしまうプラットフォーム向けの機能です。
+		/// 休止中や一時停止中でもタイマーが進行してしまうプラットフォーム向けの機能です。
 		/// アプリケーションが休止状態や一時停止状態に遷移する前に
-		/// 本関数でマスタタイマを一時停止しておくことで、休止中のシーケンスの進行を止める事ができます。
+		/// 本関数でマスタタイマーを一時停止しておくことで、休止中のシーケンスの進行を止める事ができます。
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// 本関数で一時停止する対象はあくまでAtomライブラリ内のマスタタイマです。
+		/// 本関数で一時停止する対象はあくまでAtomライブラリ内のマスタタイマーです。
 		/// 本関数では発音中のボイス等を一時停止できません。
 		/// 本関数で設定したポーズフラグは、CRI Atomサーバー処理が実行されたタイミングで反映されます。
 		/// 即座に同期をとる必要がある場合は、<see cref="CriAtomEx.ExecuteAudioProcess"/> 関数を呼び出す事で同期をとることができます。
@@ -1606,10 +1606,6 @@ namespace CriWare
 		/// -# カテゴリ
 		/// -# セレクターラベル
 		/// -# バスセンド
-		/// 本関数は、関数実行開始時に criFsLoader_Create 関数でローダーを確保し、
-		/// 終了時に criFsLoader_Destroy 関数でローダーを破棄します。
-		/// 本関数を実行する際には、空きローダーオブジェクトが１つ以上ある状態になるよう、
-		/// ローダー数を調整してください。
 		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドによるアロケーター登録を行わずに
 		/// <see cref="CriAtomEx.CalculateWorkSizeForRegisterAcfFile"/> 関数によって計算したワークサイズ分の
 		/// ワーク領域を指定した本関数の呼び出しでfalseが返された場合、ワーク領域不足が要因
@@ -1723,10 +1719,6 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// 本関数は、関数実行開始時に criFsLoader_Create 関数でローダーを確保し、
-		/// 終了時に criFsLoader_Destroy 関数でローダーを破棄します。
-		/// 本関数を実行する際には、空きローダーオブジェクトが１つ以上ある状態になるよう、
-		/// ローダー数を調整してください。
 		/// 本関数にセットしたワーク領域は、 アプリケーションで保持する必要はありません。
 		/// （ロードしたデータは関数終了時に解放されます。）
 		/// </para>
@@ -2143,18 +2135,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static Int32 CallbackFunc(IntPtr obj, CriAtomEx.CueLinkInfo* info) =>
+			static Int32 CriAtomExCueLinkCbFuncCallbackFunc(IntPtr obj, CriAtomEx.CueLinkInfo* info) =>
 				InvokeCallbackInternal(obj, new(info));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate Int32 NativeDelegate(IntPtr obj, CriAtomEx.CueLinkInfo* info);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal CueLinkCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.CueLinkInfo*, Int32>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.CueLinkInfo*, Int32>)&CriAtomExCueLinkCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExCueLinkCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -2166,13 +2159,13 @@ namespace CriWare
 			public IntPtr player;
 
 			/// <summary>リンク元再生ID</summary>
-			public UInt32 baseId;
+			public CriAtomExPlayback baseId;
 
 			/// <summary>リンク元キュー</summary>
 			public CriAtomEx.SourceInfo baseCue;
 
 			/// <summary>リンク先再生ID</summary>
-			public UInt32 targetId;
+			public CriAtomExPlayback targetId;
 
 			/// <summary>リンク先キュー</summary>
 			public CriAtomEx.SourceInfo targetCue;
@@ -2770,18 +2763,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtomEx.TrackTransitionBySelectorInfo* info) =>
+			static void CriAtomExTrackTransitionBySelectorCbFuncCallbackFunc(IntPtr obj, CriAtomEx.TrackTransitionBySelectorInfo* info) =>
 				InvokeCallbackInternal(obj, new(info));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtomEx.TrackTransitionBySelectorInfo* info);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal TrackTransitionBySelectorCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.TrackTransitionBySelectorInfo*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.TrackTransitionBySelectorInfo*, void>)&CriAtomExTrackTransitionBySelectorCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExTrackTransitionBySelectorCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -2793,7 +2787,7 @@ namespace CriWare
 			public IntPtr player;
 
 			/// <summary>再生ID</summary>
-			public UInt32 id;
+			public CriAtomExPlayback id;
 
 			/// <summary>セレクター名</summary>
 			public NativeString selector;
@@ -2929,7 +2923,7 @@ namespace CriWare
 			Bus6Send = 13,
 			/// <summary>バスセンドレベル7</summary>
 			Bus7Send = 14,
-			/// <summary>パンニング3D角度</summary>
+			/// <summary>パンニング3D方位角度</summary>
 			Pan3dAngle = 15,
 			/// <summary>パンニング3Dボリューム</summary>
 			Pan3dVolume = 16,
@@ -3007,6 +3001,12 @@ namespace CriWare
 			Wideness = 52,
 			/// <summary>スプレッド</summary>
 			Spread = 53,
+			/// <summary>任意バスセンド</summary>
+			ArbitraryBusSend = 54,
+			/// <summary>任意AISACコントロールID</summary>
+			ArbitraryAisacControl = 55,
+			/// <summary>パンニング3D仰俯角度</summary>
+			Pan3dElevationAngle = 56,
 		}
 		/// <summary>文字コード</summary>
 		/// <remarks>
@@ -3151,7 +3151,7 @@ namespace CriWare
 			/// <summary>3D情報</summary>
 			public CriAtomEx.CuePos3dInfo pos3dInfo;
 
-			/// <summary>ゲーム変数</summary>
+			/// <summary>ゲーム変数（スイッチ変数のみ）</summary>
 			public CriAtomEx.GameVariableInfo gameVariableInfo;
 
 			/// <summary>ボリューム</summary>
@@ -3159,6 +3159,15 @@ namespace CriWare
 
 			/// <summary>無音時処理モード</summary>
 			public CriAtomEx.SilentMode silentMode;
+
+			/// <summary>ピッチ</summary>
+			public Single pitch;
+
+			/// <summary>セレクターインデックス（スイッチ変数のみ）</summary>
+			public UInt16 selectorIndex;
+
+			/// <summary>予約領域</summary>
+			public InlineArray1<UInt16> reserved;
 
 		}
 		/// <summary>パンタイプ</summary>
@@ -3325,6 +3334,15 @@ namespace CriWare
 			/// </para>
 			/// </remarks>
 			VirtualRetrigger = 3,
+			/// <summary>一時停止復帰型でバーチャル化する</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// 無音となった際は自動的に一時停止復帰型でバーチャル化します。
+			/// 復帰する際はバーチャル化した位置から再生されます。
+			/// </para>
+			/// </remarks>
+			VirtualResume = 4,
 		}
 		/// <summary>標準ボイスプール作成用コンフィグ構造体</summary>
 		/// <remarks>
@@ -3344,6 +3362,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateStandardVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForStandardVoicePool"/>
+		[Serializable]
 		public unsafe partial struct StandardVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -3380,6 +3399,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateAdxVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForAdxVoicePool"/>
+		[Serializable]
 		public unsafe partial struct AdxVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -3416,6 +3436,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateHcaVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForHcaVoicePool"/>
+		[Serializable]
 		public unsafe partial struct HcaVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -3452,6 +3473,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateWaveVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForWaveVoicePool"/>
+		[Serializable]
 		public unsafe partial struct WaveVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -3488,6 +3510,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateAiffVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForAiffVoicePool"/>
+		[Serializable]
 		public unsafe partial struct AiffVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -3524,6 +3547,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateRawPcmVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForRawPcmVoicePool"/>
+		[Serializable]
 		public unsafe partial struct RawPcmVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -3554,6 +3578,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateInstrumentVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForInstrumentVoicePool"/>
+		[Serializable]
 		public unsafe partial struct InstrumentVoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>
@@ -4035,6 +4060,22 @@ namespace CriWare
 			/// </para>
 			/// </remarks>
 			_6_0_4ch = 7,
+			/// <summary>7.0.4.4chパンニング</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// L, R, C, Ls, Rs, Lsb, Rsb、Ltf、Rtf、Ltb、Rtb、Lbf、Rbf、Lbb、Rbbを使用してパンニングを行います。
+			/// </para>
+			/// </remarks>
+			_7_0_4_4ch = 8,
+			/// <summary>6.0.4.4chパンニング</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// L, R, Ls, Rs, Lsb, Rsb、Ltf、Rtf、Ltb、Rtb、Lbf、Rbf、Lbb、Rbbを使用してパンニングを行います。
+			/// </para>
+			/// </remarks>
+			_6_0_4_4ch = 9,
 			/// <summary>パンニング自動設定</summary>
 			/// <remarks>
 			/// <para>
@@ -4178,7 +4219,7 @@ namespace CriWare
 			public NativeString @string;
 
 			/// <summary>再生ID</summary>
-			public UInt32 id;
+			public CriAtomExPlayback id;
 
 			/// <summary>イベントタイプ</summary>
 			public CriAtomEx.SequecneEventType type;
@@ -4269,11 +4310,11 @@ namespace CriWare
 			return NativeMethods.criAtomEx_IsEnableCalculationAisacControlFrom3dPosition();
 		}
 
-		/// <summary>ピッチシフタDSPのアタッチ用コンフィグ構造体</summary>
+		/// <summary>ピッチシフターDSPのアタッチ用コンフィグ構造体</summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ピッチシフタDSPをボイスプールにアタッチするための構造体です。
+		/// ピッチシフターDSPをボイスプールにアタッチするための構造体です。
 		/// </para>
 		/// <para>
 		/// 注意:
@@ -4285,6 +4326,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomExVoicePool.AttachDspPitchShifter"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForDspPitchShifter"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForDspPitchShifter"/>
+		[Serializable]
 		public unsafe partial struct DspPitchShifterConfig
 		{
 			/// <summary>作成するDSPの数</summary>
@@ -4343,6 +4385,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomExVoicePool.AttachDspTimeStretch"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForDspTimeStretch"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForDspTimeStretch"/>
+		[Serializable]
 		public unsafe partial struct DspTimeStretchConfig
 		{
 			/// <summary>作成するDSPの数</summary>
@@ -4394,6 +4437,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspAfx"/>
+		[Serializable]
 		public unsafe partial struct DspAfxConfig
 		{
 			/// <summary>作成するDSPの数</summary>
@@ -4558,18 +4602,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtomEx.VoiceEvent voiceEvent, CriAtomEx.VoiceInfoDetail* request, CriAtomEx.VoiceInfoDetail* removed, CriAtomEx.VoiceInfoDetail* removedInGroup) =>
+			static void CriAtomExVoiceEventCbFuncCallbackFunc(IntPtr obj, CriAtomEx.VoiceEvent voiceEvent, CriAtomEx.VoiceInfoDetail* request, CriAtomEx.VoiceInfoDetail* removed, CriAtomEx.VoiceInfoDetail* removedInGroup) =>
 				InvokeCallbackInternal(obj, new(voiceEvent, request, removed, removedInGroup));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtomEx.VoiceEvent voiceEvent, CriAtomEx.VoiceInfoDetail* request, CriAtomEx.VoiceInfoDetail* removed, CriAtomEx.VoiceInfoDetail* removedInGroup);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal VoiceEventCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.VoiceEvent, CriAtomEx.VoiceInfoDetail*, CriAtomEx.VoiceInfoDetail*, CriAtomEx.VoiceInfoDetail*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.VoiceEvent, CriAtomEx.VoiceInfoDetail*, CriAtomEx.VoiceInfoDetail*, CriAtomEx.VoiceInfoDetail*, void>)&CriAtomExVoiceEventCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExVoiceEventCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -4683,7 +4728,7 @@ namespace CriWare
 		public unsafe partial struct VoiceInfoDetail
 		{
 			/// <summary>再生ID</summary>
-			public UInt32 playbackId;
+			public CriAtomExPlayback playbackId;
 
 			/// <summary>キュー情報</summary>
 			public CriAtomEx.SourceInfo cueInfo;
@@ -4789,18 +4834,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtomEx.VoiceInfoDetail* voiceInfo) =>
+			static void CriAtomExVoiceInfoCbFuncCallbackFunc(IntPtr obj, CriAtomEx.VoiceInfoDetail* voiceInfo) =>
 				InvokeCallbackInternal(obj, new(voiceInfo));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtomEx.VoiceInfoDetail* voiceInfo);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal VoiceInfoCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.VoiceInfoDetail*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.VoiceInfoDetail*, void>)&CriAtomExVoiceInfoCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExVoiceInfoCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -4875,18 +4921,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtomEx.MonitoringVoiceStopInfo* voiceStop) =>
+			static void CriAtomExMonitoringVoiceStopCbFuncCallbackFunc(IntPtr obj, CriAtomEx.MonitoringVoiceStopInfo* voiceStop) =>
 				InvokeCallbackInternal(obj, new(voiceStop));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtomEx.MonitoringVoiceStopInfo* voiceStop);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal MonitoringVoiceStopCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.MonitoringVoiceStopInfo*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.MonitoringVoiceStopInfo*, void>)&CriAtomExMonitoringVoiceStopCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExMonitoringVoiceStopCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -4903,7 +4950,7 @@ namespace CriWare
 		public unsafe partial struct MonitoringVoiceStopInfo
 		{
 			/// <summary>再生ID</summary>
-			public UInt32 playbackId;
+			public CriAtomExPlayback playbackId;
 
 			/// <summary>停止理由</summary>
 			public CriAtom.VoiceStopReason reason;
@@ -5026,7 +5073,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExStreamingCache.CriAtomExStreamingCache"/>
-		/// <seealso cref="CriAtomExStreamingCache.Destroy"/>
+		/// <seealso cref="CriAtomExStreamingCache.Dispose"/>
 		public const Int32 StreamingCacheIllegalId = (CriAtom.StreamingCacheIllegalId);
 		/// <summary>出力ポートの名前の長さの最大値</summary>
 		/// <remarks>
@@ -5039,6 +5086,7 @@ namespace CriWare
 		public const Int32 OutputPortMaxNameLength = (64);
 		/// <summary>HCA</summary>
 		public const Int32 FormatHca = (CriAtom.FormatHca);
+
 
 
 

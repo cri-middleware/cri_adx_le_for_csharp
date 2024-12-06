@@ -38,6 +38,7 @@ namespace CriWare
 		/// 初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる
 		/// メモリアロケータを使用したメモリ確保処理が必要になります。
 		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_IOS(const CriAtomExConfig_IOS *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigIOS"/>
 		/// <seealso cref="CriAtomEx.InitializeIOS"/>
@@ -49,6 +50,7 @@ namespace CriWare
 
 		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
 		/// <seealso cref="CriAtomEx.InitializeIOS"/>
+		[Serializable]
 		public unsafe partial struct ConfigIOS
 		{
 			/// <summary>AtomEx初期化用コンフィグ構造体</summary>
@@ -108,6 +110,7 @@ namespace CriWare
 		/// 本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizeIOS"/> 関数を実行してください。
 		/// また、 <see cref="CriAtomEx.FinalizeIOS"/> 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_IOS(const CriAtomExConfig_IOS *, void *, CriSint32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigIOS"/>
 		/// <seealso cref="CriAtomEx.FinalizeIOS"/>
@@ -134,6 +137,7 @@ namespace CriWare
 		/// 本関数を実行する場合、上記関数を実行しないでください。
 		/// <see cref="CriAtomEx.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_IOS()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeIOS"/>
 		public static void FinalizeIOS()
@@ -159,6 +163,7 @@ namespace CriWare
 		/// すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合
 		/// 本関数により設定が上書きされますのでご注意ください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_SetServerThreadPriority_IOS(CriSint32)"/>
 		/// </remarks>
 		public static void SetServerThreadPriorityIOS(Int32 prio)
 		{
@@ -172,11 +177,10 @@ namespace CriWare
 		/// AudioSessionのInterruption Callbak関数から呼び出すための関数です。
 		/// サウンド処理を再開します。
 		/// 本関数を呼び出す前に、AudioSessionのパメラータ設定とアクティベイトを行ってください。
-		/// </para>
-		/// <para>
 		/// 注意:
 		/// <see cref="CriAtomEx.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_StartSound_IOS()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StopSoundIOS"/>
 		public static void StartSoundIOS()
@@ -195,6 +199,7 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtomEx.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_StopSound_IOS()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StartSoundIOS"/>
 		public static void StopSoundIOS()
@@ -212,6 +217,7 @@ namespace CriWare
 		/// 再生成が必要になります。
 		/// このように、ボイスの復旧が必要な際に呼び出してください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_RecoverSound_IOS()"/>
 		/// </remarks>
 		public static void RecoverSoundIOS()
 		{
@@ -229,10 +235,68 @@ namespace CriWare
 		/// 再度ライブラリの初期化を行うか、 <see cref="CriAtomEx.RecoverSoundIOS"/> を用いて
 		/// サウンドの復旧を行う必要があります。
 		/// </para>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsInitializationSucceeded_IOS()"/>
 		/// </remarks>
 		public static bool IsInitializationSucceededIOS()
 		{
 			return NativeMethods.criAtomEx_IsInitializationSucceeded_IOS();
+		}
+
+		/// <summary>バックグラウンド再生の開始</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// バックグラウンド再生の開始をAtomライブラリに通知します。
+		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_EnableBackgroundPlayback_IOS()"/>
+		/// </remarks>
+		public static void EnableBackgroundPlaybackIOS()
+		{
+			NativeMethods.criAtomEx_EnableBackgroundPlayback_IOS();
+		}
+
+		/// <summary>バックグラウンド再生の終了</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// バックグラウンド再生の終了をAtomライブラリに通知します。
+		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_DisableBackgroundPlayback_IOS()"/>
+		/// </remarks>
+		public static void DisableBackgroundPlaybackIOS()
+		{
+			NativeMethods.criAtomEx_DisableBackgroundPlayback_IOS();
+		}
+
+		/// <summary>割り込みフラグの取得</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 外部要因によって音声の割り込みが発生し、Atomライブラリの音声が停止している場合trueが返ります。
+		/// <see cref="CriAtomEx.ConfigIOS"/>::use_handling_os_notificationsがtrueで初期化されている場合、
+		/// Atomライブラリの音声を自動復帰します。自動復帰が完了するとfalseが返ります。
+		/// <see cref="CriAtomEx.EnableBackgroundPlaybackIOS"/>でバックグラウンド再生を有効にしている場合、
+		/// 自動復帰は無効になります。音声を復帰させる場合は<see cref="CriAtomEx.ResumeAudioIOS"/>を呼び出して音声を再開してください。
+		/// </para>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsInterruptedOtherAudio_IOS()"/>
+		/// </remarks>
+		public static bool IsInterruptedOtherAudioIOS()
+		{
+			return NativeMethods.criAtomEx_IsInterruptedOtherAudio_IOS();
+		}
+
+		/// <summary>音声の再開</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// バックグラウンド再生有効時に音声が停止した際、音声を復帰させます。
+		/// <see cref="CriAtomEx.IsInterruptedOtherAudioIOS"/>がtrueを返すタイミングのみ効果があります。
+		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_ResumeAudio_IOS()"/>
+		/// </remarks>
+		public static void ResumeAudioIOS()
+		{
+			NativeMethods.criAtomEx_ResumeAudio_IOS();
 		}
 
 	}

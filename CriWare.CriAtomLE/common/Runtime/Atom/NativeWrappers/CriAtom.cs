@@ -105,6 +105,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>スレッドモデル</summary>
@@ -395,7 +396,7 @@ namespace CriWare
 		/// <para>
 		/// 補足:
 		/// サウンドデバイスが無効な場合でも、Atomライブラリは音声を出力せずに動作します。
-		/// （音声データ消費量をタイマを元に計算し、可能な限り音声出力が有効な場合と同等の動作をエミュレートします。）
+		/// （音声データ消費量をタイマーを元に計算し、可能な限り音声出力が有効な場合と同等の動作をエミュレートします。）
 		/// そのため、音声出力デバイスが使用できないケースであっても、
 		/// アプリケーション側でAtomライブラリのAPI呼び出しを回避する必要はありません。
 		/// （PC環境等、ユーザがサウンドデバイスを無効化しているケースに対し通知を行いたい場合に、
@@ -533,18 +534,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static IntPtr CallbackFunc(IntPtr obj, UInt32 size) =>
+			static IntPtr CriAtomMallocFuncCallbackFunc(IntPtr obj, UInt32 size) =>
 				InvokeCallbackInternal(obj, new(size));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate IntPtr NativeDelegate(IntPtr obj, UInt32 size);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal MallocFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, IntPtr>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, IntPtr>)&CriAtomMallocFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomMallocFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -592,18 +594,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr mem) =>
+			static void CriAtomFreeFuncCallbackFunc(IntPtr obj, IntPtr mem) =>
 				InvokeCallbackInternal(obj, new(mem));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr mem);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal FreeFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomFreeFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomFreeFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -684,18 +687,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj) =>
+			static void CriAtomAudioFrameStartCbFuncCallbackFunc(IntPtr obj) =>
 				InvokeCallbackInternal(obj, new());
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal AudioFrameStartCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CriAtomAudioFrameStartCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomAudioFrameStartCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -776,18 +780,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj) =>
+			static void CriAtomAudioFrameEndCbFuncCallbackFunc(IntPtr obj) =>
 				InvokeCallbackInternal(obj, new());
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal AudioFrameEndCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CriAtomAudioFrameEndCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomAudioFrameEndCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -841,18 +846,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj) =>
+			static void CriAtomDeviceUpdateCbFuncCallbackFunc(IntPtr obj) =>
 				InvokeCallbackInternal(obj, new());
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DeviceUpdateCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CriAtomDeviceUpdateCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomDeviceUpdateCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -931,6 +937,8 @@ namespace CriWare
 			_7_1_2 = 789567,
 			/// <summary>7.1.4ch</summary>
 			_7_1_4 = 212031,
+			/// <summary>7.1.4.4ch</summary>
+			_7_1_4_4 = 63126591,
 			/// <summary>1st Order Ambisonics</summary>
 			Ambisonics1p = 2130706433,
 			/// <summary>2nd Order Ambisonics</summary>
@@ -972,6 +980,7 @@ namespace CriWare
 		}
 
 		/// <summary>パフォーマンス情報の取得</summary>
+		/// <param name="info">パフォーマンス情報</param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -982,7 +991,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtom.AttachPerformanceMonitor"/>
 		/// <seealso cref="CriAtom.DetachPerformanceMonitor"/>
-		public static unsafe void GetPerformanceInfo(ref CriAtom.PerformanceInfo info)
+		public static unsafe void GetPerformanceInfo(out CriAtom.PerformanceInfo info)
 		{
 			fixed (CriAtom.PerformanceInfo* infoPtr = &info)
 				NativeMethods.criAtom_GetPerformanceInfo(infoPtr);
@@ -1296,6 +1305,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateStandardPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForStandardPlayer"/>
+		[Serializable]
 		public unsafe partial struct StandardPlayerConfig
 		{
 			/// <summary>最大出力チャンネル数</summary>
@@ -1463,6 +1473,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForAdxPlayer"/>
+		[Serializable]
 		public unsafe partial struct AdxPlayerConfig
 		{
 			/// <summary>最大出力チャンネル数</summary>
@@ -1629,6 +1640,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateHcaPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForHcaPlayer"/>
+		[Serializable]
 		public unsafe partial struct HcaPlayerConfig
 		{
 			/// <summary>最大出力チャンネル数</summary>
@@ -1772,6 +1784,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateWavePlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForWavePlayer"/>
+		[Serializable]
 		public unsafe partial struct WavePlayerConfig
 		{
 			/// <summary>最大出力チャンネル数</summary>
@@ -1915,6 +1928,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateAiffPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForAiffPlayer"/>
+		[Serializable]
 		public unsafe partial struct AiffPlayerConfig
 		{
 			/// <summary>最大出力チャンネル数</summary>
@@ -2058,6 +2072,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateRawPcmPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForRawPcmPlayer"/>
+		[Serializable]
 		public unsafe partial struct RawPcmPlayerConfig
 		{
 			/// <summary>PCMフォーマット</summary>
@@ -2295,6 +2310,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLevelMeter"/>
+		[Serializable]
 		public unsafe partial struct LevelMeterConfig
 		{
 			/// <summary>測定間隔（ミリ秒単位）</summary>
@@ -2385,6 +2401,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLoudnessMeter"/>
+		[Serializable]
 		public unsafe partial struct LoudnessMeterConfig
 		{
 			/// <summary>ショートターム測定時間</summary>
@@ -2477,6 +2494,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachTruePeakMeter"/>
+		[Serializable]
 		public unsafe partial struct TruePeakMeterConfig
 		{
 			/// <summary>クリッピング</summary>
@@ -2578,15 +2596,17 @@ namespace CriWare
 			_7_1_2 = 6,
 			/// <summary>7.1.4ch</summary>
 			_7_1_4 = 7,
+			/// <summary>7.1.4.4ch</summary>
+			_7_1_4_4 = 8,
 			/// <summary>1st order Ambisonics</summary>
-			Ambisonics1p = 8,
+			Ambisonics1p = 9,
 			/// <summary>2nd order Ambisonics</summary>
-			Ambisonics2p = 9,
+			Ambisonics2p = 10,
 			/// <summary>3rd order Ambisonics</summary>
-			Ambisonics3p = 10,
+			Ambisonics3p = 11,
 			/// <summary>オブジェクトベース再生</summary>
-			Object = 11,
-			Custom = 12,
+			Object = 12,
+			Custom = 13,
 		}
 		/// <summary>Ambisonicsオーダー（廃止済み）</summary>
 		/// <remarks>
@@ -2814,6 +2834,8 @@ namespace CriWare
 			ReasonMidiPlayerNoteOff = 83,
 			/// <summary>サーバー処理：OBA 再生でのボイスドロップ発生</summary>
 			ReasonVoiceDropInOba = 84,
+			/// <summary>ボイスリミットによるキャンセル</summary>
+			ReasonCancelVoiceLimit = 85,
 			/// <summary>initial state</summary>
 			ReasonNone = 2147483646,
 		}
@@ -2831,6 +2853,16 @@ namespace CriWare
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		/// <seealso cref="CriAtomStreamingCache.Dispose"/>
 		public const Int32 StreamingCacheIllegalId = (0);
+		/// <summary>HCA-MXの出力チャンネル数の最大値</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// HCA-MXの出力チャンネル数の最大値です。
+		/// <see cref="CriAtomHcaMx.Config"/>::output_channels の値は、この値以下に設定する必要があります。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomHcaMx.Config"/>
+		public const Int32 HcaMxMaxOutputChannels = (8);
 		/// <summary>ADX</summary>
 		public const Int32 FormatAdx = (0x00000001);
 		/// <summary>HCA</summary>

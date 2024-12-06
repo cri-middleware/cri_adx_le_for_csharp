@@ -122,6 +122,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>出力ポート名</summary>
@@ -262,14 +263,11 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// 但し、 <see cref="CriAtomExPlayer.AddOutputPort"/> 関数または <see cref="CriAtomExPlayer.AddPreferredOutputPort"/> 関数を使用して
-		/// プレーヤーに追加中の出力ポートオブジェクトは破棄することができません。
-		/// <see cref="CriAtomExPlayer.RemoveOutputPort"/> 関数または <see cref="CriAtomExPlayer.RemovePreferredOutputPort"/> 関数を使用して
-		/// プレーヤーから取り外してから破棄してください。
-		/// また、ACFファイルの情報から作成されたACF内の出力ポートオブジェクトは破棄することができません。
+		/// <see cref="CriAtomExOutputPort.IsDestroyable"/> 関数を使用することでオブジェクトが破棄できるか調べることができます。
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
+		/// <seealso cref="CriAtomExOutputPort.IsDestroyable"/>
 		public void Dispose()
 		{
 			if (NativeHandle.IsDestroyable)
@@ -369,9 +367,9 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExAcf.GetOutputPortHnByName"/>
-		public void IgnoreCategoryParametersById(CriAtomExCategory categoryId, NativeBool ignoreParameters)
+		public void IgnoreCategoryParametersById(UInt32 categoryId, NativeBool ignoreParameters)
 		{
-			NativeMethods.criAtomExOutputPort_IgnoreCategoryParametersById(NativeHandle, categoryId.NativeHandle, ignoreParameters);
+			NativeMethods.criAtomExOutputPort_IgnoreCategoryParametersById(NativeHandle, categoryId, ignoreParameters);
 		}
 
 		/// <summary>出力ポートに設定した指定カテゴリのパラメータを無視する設定をリセット</summary>

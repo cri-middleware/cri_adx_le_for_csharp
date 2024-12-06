@@ -17,10 +17,9 @@ namespace CriWare
 	/// <para>
 	/// 説明:
 	/// 入力ポートを操作するためのオブジェクトです。
-	/// ::criAtomExInputPort_Create 関数で作成します。
 	/// </para>
 	/// </remarks>
-	public partial struct CriAtomExInputPort
+	public readonly partial struct CriAtomExInputPort
 	{
 		/// <summary>入力ポート種別</summary>
 		public enum Type

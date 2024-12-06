@@ -87,6 +87,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomEx3dRegion.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomEx3dRegion.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dRegion.CriAtomEx3dRegion"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>予約値（0を指定してください）</summary>

@@ -38,6 +38,7 @@ namespace CriWare
 		/// 初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる
 		/// メモリアロケータを使用したメモリ確保処理が必要になります。
 		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_MACOSX(const CriAtomExConfig_MACOSX *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigMACOSX"/>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
@@ -49,6 +50,7 @@ namespace CriWare
 
 		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
+		[Serializable]
 		public unsafe partial struct ConfigMACOSX
 		{
 			/// <summary>AtomEx初期化用コンフィグ構造体</summary>
@@ -76,7 +78,7 @@ namespace CriWare
 		/// を確保する必要があります。
 		/// ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて
 		/// 変化します。
-		/// ワーク領域サイズの計算には、 ::criAtom_CalculateWorkSize_MACOSX
+		/// ワーク領域サイズの計算には、 <see cref="CriAtom.CalculateWorkSizeMACOSX"/>
 		/// 関数を使用してください。
 		/// </para>
 		/// <para>
@@ -100,6 +102,7 @@ namespace CriWare
 		/// 本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizeMACOSX"/> 関数を実行してください。
 		/// また、 <see cref="CriAtomEx.FinalizeMACOSX"/> 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_MACOSX(const CriAtomExConfig_MACOSX *, void *, CriSint32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigMACOSX"/>
 		/// <seealso cref="CriAtomEx.FinalizeMACOSX"/>
@@ -127,6 +130,7 @@ namespace CriWare
 		/// 本関数を実行する場合、上記関数を実行しないでください。
 		/// <see cref="CriAtomEx.InitializeMACOSX"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_MACOSX()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
 		public static void FinalizeMACOSX()
@@ -152,6 +156,7 @@ namespace CriWare
 		/// すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合
 		/// 本関数により設定が上書きされますのでご注意ください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomEx_SetServerThreadPriority_MACOSX(CriSint32)"/>
 		/// </remarks>
 		public static void SetServerThreadPriorityMACOSX(Int32 prio)
 		{

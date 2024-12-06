@@ -33,8 +33,9 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ::criAtom_Initialize_ANDROID 関数実行前に本関数を実行しないでください。
+		/// <see cref="CriAtom.Initialize"/>_ANDROID 関数実行前に本関数を実行しないでください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomLatencyEstimator_Initialize_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.FinalizeANDROID"/>
 		public static void InitializeANDROID()
@@ -57,8 +58,9 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ::criAtom_Initialize_ANDROID 関数実行前に本関数を実行しないでください。
+		/// <see cref="CriAtom.Initialize"/>_ANDROID 関数実行前に本関数を実行しないでください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomLatencyEstimator_Finalize_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.InitializeANDROID"/>
 		public static void FinalizeANDROID()
@@ -83,6 +85,7 @@ namespace CriWare
 		/// <see cref="CriAtomLatencyEstimator.InitializeANDROID"/> 関数実行前に本関数を実行しないでください。
 		/// <see cref="CriAtomLatencyEstimator.FinalizeANDROID"/> 関数実行後に本関数を実行しないでください。
 		/// </para>
+		/// <nativeinfo declaration="CriAtomLatencyEstimatorInfo criAtomLatencyEstimator_GetCurrentInfo_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.InitializeANDROID"/>
 		/// <seealso cref="CriAtomLatencyEstimator.FinalizeANDROID"/>
@@ -121,6 +124,7 @@ namespace CriWare
 		/// 説明:
 		/// 遅延推測器が既に初期化されているかどうかをチェックします。
 		/// </para>
+		/// <nativeinfo declaration="CriBool criAtomLatencyEstimator_IsInitialized_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.InitializeANDROID"/>
 		/// <seealso cref="CriAtomLatencyEstimator.FinalizeANDROID"/>

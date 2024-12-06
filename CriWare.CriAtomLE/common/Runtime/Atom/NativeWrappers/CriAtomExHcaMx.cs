@@ -50,8 +50,8 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExHcaMx.Initialize"/>
 		/// <seealso cref="CriAtomExHcaMx.SetDefaultConfig"/>
-		[System.Serializable]
 		[System.Xml.Serialization.XmlType(Namespace = "CriAtomExHcaMx")]
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>サーバー処理の実行頻度</summary>
@@ -69,19 +69,19 @@ namespace CriWare
 			/// <seealso cref="CriAtomEx.Config"/>
 			public Single serverFrequency;
 
-			/// <summary>ミキサ数</summary>
+			/// <summary>ミキサー数</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// HCA-MXデコード結果を送信するミキサの数を指定します。
-			/// ミキサを複数作成することで、
-			/// ミキサごとに異なるDSPバスのDSP FXを適用することが可能になります。
+			/// HCA-MXデコード結果を送信するミキサーの数を指定します。
+			/// ミキサーを複数作成することで、
+			/// ミキサーごとに異なるDSPバスのDSP FXを適用することが可能になります。
 			/// </para>
 			/// <para>
 			/// 注意:
 			/// HCA-MXのデコード処理、および定常状態の処理負荷は、
-			/// ミキサの数に比例して重くなります。
-			/// 本パラメーターを0に設定した場合でも、ミキサは 1 つだけ作成されます。
+			/// ミキサーの数に比例して重くなります。
+			/// 本パラメーターを0に設定した場合でも、ミキサーは 1 つだけ作成されます。
 			/// （旧バージョンとの互換性維持のため。）
 			/// HCA-MXを使用しない場合には、本パラメーターと max_voices の両方を 0
 			/// に設定してください。
@@ -89,11 +89,11 @@ namespace CriWare
 			/// </remarks>
 			public Int32 numMixers;
 
-			/// <summary>ミキサに登録可能な最大ボイス数</summary>
+			/// <summary>ミキサーに登録可能な最大ボイス数</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// ミキサごとに登録可能なHCA-MXボイスの数を指定します。
+			/// ミキサーごとに登録可能なHCA-MXボイスの数を指定します。
 			/// HCA-MXボイスプールを作成する際には、ボイスの総数が
 			/// num_mixers × max_voices を超えないようご注意ください。
 			/// </para>
@@ -124,8 +124,8 @@ namespace CriWare
 			/// <para>
 			/// 説明:
 			/// HCA-MXの出力に指定できる最大サンプリングレートです。
-			/// ミキサの最終出力でピッチを変更する場合に設定します。
-			/// ミキサの最終出力でピッチを変更しない場合は、output_sampling_rateと同じ値を設定してください。
+			/// ミキサーの最終出力でピッチを変更する場合に設定します。
+			/// ミキサーの最終出力でピッチを変更しない場合は、output_sampling_rateと同じ値を設定してください。
 			/// </para>
 			/// <para>
 			/// 備考:
@@ -412,6 +412,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateHcaMxVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForHcaMxVoicePool"/>
+		[Serializable]
 		public unsafe partial struct VoicePoolConfig
 		{
 			/// <summary>ボイスプール識別子</summary>

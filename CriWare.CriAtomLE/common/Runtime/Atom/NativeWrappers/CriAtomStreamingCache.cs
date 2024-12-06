@@ -79,6 +79,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>キャッシュするファイルの最大パス長</summary>

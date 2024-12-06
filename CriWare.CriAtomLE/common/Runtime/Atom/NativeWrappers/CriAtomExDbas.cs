@@ -22,8 +22,8 @@ namespace CriWare
 	/// </para>
 	/// </remarks>
 	/// <seealso cref="CriAtomExDbas.CriAtomExDbas"/>
-	/// <seealso cref="CriAtomExDbas.Destroy"/>
-	public partial struct CriAtomExDbas
+	/// <seealso cref="CriAtomExDbas.Dispose"/>
+	public partial class CriAtomExDbas : IDisposable
 	{
 		/// <summary><see cref="CriAtomExDbas.Config"/> へのデフォルトパラメーターのセット</summary>
 		/// <param name="pConfig">D-BAS作成用コンフィグ構造体へのポインタ</param>
@@ -59,6 +59,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomDbas.CriAtomDbas"/>
 		/// <seealso cref="CriAtomDbas.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomDbas.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>D-BAS 識別子</summary>
@@ -180,7 +181,7 @@ namespace CriWare
 		/// 作成に成功すると、D-BASをライブラリに登録し、有効な管理用IDを返します。
 		/// D-BASの作成に失敗した場合、本関数は <see cref="CriAtomExDbas.IllegalId"/> を返します。
 		/// （エラーの原因はエラーコールバックに返されます。）
-		/// 取得したIDは<see cref="CriAtomExDbas.Destroy"/> 関数で使用します。
+		/// 取得したIDは<see cref="CriAtomExDbas.Dispose"/> 関数で使用します。
 		/// </para>
 		/// <para>
 		/// 注意:
@@ -188,7 +189,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExDbas.CalculateWorkSize"/>
-		/// <seealso cref="CriAtomExDbas.Destroy"/>
+		/// <seealso cref="CriAtomExDbas.Dispose"/>
 		public unsafe CriAtomExDbas(in CriAtomExDbas.Config config, IntPtr work = default, Int32 workSize = default)
 		{
 			fixed (CriAtomExDbas.Config* configPtr = &config)
@@ -210,10 +211,15 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExDbas.CriAtomExDbas"/>
-		public void Destroy()
+		public void Dispose()
 		{
+
 			NativeMethods.criAtomExDbas_Destroy_(NativeHandle);
 		}
+#pragma warning disable 1591
+		/// <exclude />
+		~CriAtomExDbas() => Dispose();
+#pragma warning restore 1591
 
 		/// <summary>ストリーム再生中のAtomプレーヤーオブジェクトを取得</summary>
 		/// <param name="players">プレーヤーオブジェクト受け取り用配列</param>
@@ -260,7 +266,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExDbas.CriAtomExDbas"/>
-		/// <seealso cref="CriAtomExDbas.Destroy"/>
+		/// <seealso cref="CriAtomExDbas.Dispose"/>
 		public const Int32 IllegalId = (CriAtomDbas.IllegalId);
 		/// <summary>ネイティブハンドル</summary>
 
@@ -279,7 +285,7 @@ namespace CriWare
 		/// <exclude />
 		public static bool operator ==(CriAtomExDbas a, CriAtomExDbas b)
 		{
-
+			if (a is null) return b is null;
 			return a.Equals(b);
 		}
 		/// <exclude />

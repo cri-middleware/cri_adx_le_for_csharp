@@ -81,6 +81,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomAsr.Initialize"/>
 		/// <seealso cref="CriAtomAsr.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>サーバー処理の実行頻度</summary>

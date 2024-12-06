@@ -20,13 +20,8 @@ namespace CriWare.InteropHelpers {
 	/// </remarks>
 	[System.Serializable]
 	public struct NativeBool {
-		/// <summary>
-		/// Int32表現での値
-		/// </summary>
-		/// <remarks>
-		/// CRIWAREが取り扱う真偽値はメモリ上ではInt32として表現されます。
-		/// 通常、この値には0または1が格納されています。
-		/// </remarks>
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		public Int32 value;
 
 		/// <summary>
@@ -39,6 +34,10 @@ namespace CriWare.InteropHelpers {
 		public static implicit operator NativeBool(bool val) => new NativeBool(){value = val?1:0};
 	}
 
+	static class NativeStringCache {
+		public static Dictionary<IntPtr, string> stringsCache = new Dictionary<nint, string>();
+	}
+
 	/// <summary>
 	/// Blittable文字列型
 	/// </summary>
@@ -47,7 +46,6 @@ namespace CriWare.InteropHelpers {
 	/// <see cref="System.String"/>へのキャストが可能です。
 	/// </remarks>
 	public struct NativeString {
-		static Dictionary<IntPtr, string> stringsCache = new Dictionary<nint, string>();
 
 #pragma warning disable 0649
 		IntPtr pointer;
@@ -63,9 +61,9 @@ namespace CriWare.InteropHelpers {
 		/// ただし、ネイティブ文字列領域が動的に書き換わっている場合は現在の状態を取得できないため、<see cref="ToString"/>による変換をおすすめします。
 		/// </remarks>
 		public string ToStringCached(){
-			if (!stringsCache.ContainsKey(pointer))
-				stringsCache.Add(pointer, ToString());
-			return stringsCache[pointer];
+			if (!NativeStringCache.stringsCache.ContainsKey(pointer))
+				NativeStringCache.stringsCache.Add(pointer, ToString());
+			return NativeStringCache.stringsCache[pointer];
 		}
 
 		/// <inheritdoc/>
@@ -128,15 +126,10 @@ namespace CriWare.InteropHelpers {
 			return new ArgString(){pointer = (byte*)arg.GetUnsafeStringPointer()};
 		}
 		
-		/// <summary>
-		/// 文字コード変換時に必要になるバッファサイズ
-		/// </summary>
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		public int BufferSize => utf16str?.Length * 3 ?? 0;
-		/// <summary>
-		/// 文字列ポインタの取得
-		/// </summary>
-		/// <param name="buffer">変換時に利用するバッファ領域</param>
-		/// <returns>文字列ポインタ</returns>
+		/// <exclude/>
 		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		public nint GetPointer(Span<byte> buffer){
 			if(utf16str != null){
@@ -202,7 +195,7 @@ namespace CriWare.InteropHelpers {
 
 #pragma warning disable 0649
 #pragma warning disable 0169
-	// dotnet8のときはInlineArrayAttributeにまかせる対応入れてもいいかも
+	// dotnet8のときはInlineArrayAttributeにまかせる対応も可能
 	// パディングが怖いので16までは素直に並べる
 
 	/// <summary>
@@ -230,7 +223,7 @@ namespace CriWare.InteropHelpers {
 
 	/// <inheritdoc cref="InlineArray1{T}"/>
 	public struct InlineArray2<T> where T : unmanaged {
-		T element0, element1;
+		internal T element0, element1;
 		/// <inheritdoc cref="InlineArray1{T}.op_Implicit(InlineArray1{T})"/>
 		public static implicit operator Span<T>(InlineArray2<T> array)
 			=> MemoryMarshal.CreateSpan(ref array.element0, 2);
@@ -274,6 +267,16 @@ namespace CriWare.InteropHelpers {
 		/// <inheritdoc cref="InlineArray1{T}.op_Implicit(InlineArray1{T})"/>
 		public static implicit operator Span<T>(InlineArray16<T> array)
 			=> MemoryMarshal.CreateSpan(ref array.element0, 16);
+		/// <inheritdoc cref="InlineArray1{T}.this[int]"/>
+		public T this[int index] => ((Span<T>)this)[index];
+	}
+	/// <inheritdoc cref="InlineArray1{T}"/>
+	public struct InlineArray32<T> where T : unmanaged {
+		// 16以上ならパディング単位に揃ってるはずなので入れ子で並べる
+		InlineArray2<InlineArray16<T>> elements;
+		/// <inheritdoc cref="InlineArray1{T}.op_Implicit(InlineArray1{T})"/>
+		public static implicit operator Span<T>(InlineArray32<T> array)
+			=> MemoryMarshal.CreateSpan(ref array.elements.element0.element0, 64);
 		/// <inheritdoc cref="InlineArray1{T}.this[int]"/>
 		public T this[int index] => ((Span<T>)this)[index];
 	}

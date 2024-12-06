@@ -165,18 +165,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
+			static void CriAtomPlayerFilterCbFuncCallbackFunc(IntPtr obj, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
 				InvokeCallbackInternal(obj, new(format, numChannels, numSamples, data));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal FilterCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CriAtomPlayerFilterCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomPlayerFilterCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -420,10 +421,6 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// ストリーム再生用のAtomプレーヤーは、内部的にローダー（ CriFsLoaderHn ）を確保します。
-		/// ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保
-		/// できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// 標準プレーヤーの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -598,10 +595,6 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// ストリーム再生用のAtomプレーヤーは、内部的にローダー（ CriFsLoaderHn ）を確保します。
-		/// ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保
-		/// できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// ADXプレーヤーの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -811,10 +804,6 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ストリーム再生用のAtomプレーヤーは、内部的にローダー（ CriFsLoaderHn ）を確保します。
-		/// ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保
-		/// できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
 		/// 本関数を実行する前に、HCA-MXを初期化しておく必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// HCA-MXプレーヤーの作成にかかる時間は、プラットフォームによって異なります。
@@ -919,10 +908,6 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// ストリーム再生用のAtomプレーヤーは、内部的にローダー（ CriFsLoaderHn ）を確保します。
-		/// ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保
-		/// できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// WAVEプレーヤーの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -1031,10 +1016,6 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// ストリーム再生用のAtomプレーヤーは、内部的にローダー（ CriFsLoaderHn ）を確保します。
-		/// ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保
-		/// できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// AIFFプレーヤーの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -1143,10 +1124,6 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// ストリーム再生用のAtomプレーヤーは、内部的にローダー（ CriFsLoaderHn ）を確保します。
-		/// ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保
-		/// できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// RawPCMプレーヤーの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -2533,12 +2510,12 @@ namespace CriWare
 			NativeMethods.criAtomPlayer_LimitLoopCount(NativeHandle, count);
 		}
 
-		/// <summary>HCA-MXデコード先ミキサIDの指定</summary>
-		/// <param name="mixerId">ミキサID</param>
+		/// <summary>HCA-MXデコード先ミキサーIDの指定</summary>
+		/// <param name="mixerId">ミキサーID</param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// HCA-MXのデコード先ミキサIDを指定します。
+		/// HCA-MXのデコード先ミキサーIDを指定します。
 		/// </para>
 		/// <para>
 		/// 注意:
@@ -2654,18 +2631,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr player) =>
+			static void CriAtomPlayerDataRequestCbFuncCallbackFunc(IntPtr obj, IntPtr player) =>
 				InvokeCallbackInternal(obj, new(player));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr player);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DataRequestCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomPlayerDataRequestCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomPlayerDataRequestCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -2763,18 +2741,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr player) =>
+			static void CriAtomPlayerStatusChangeCbFuncCallbackFunc(IntPtr obj, IntPtr player) =>
 				InvokeCallbackInternal(obj, new(player));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr player);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal StatusChangeCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomPlayerStatusChangeCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomPlayerStatusChangeCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -2854,18 +2833,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr player, CriAtom.ParameterId id, Single value) =>
+			static void CriAtomPlayerParameterChangeCbFuncCallbackFunc(IntPtr obj, IntPtr player, CriAtom.ParameterId id, Single value) =>
 				InvokeCallbackInternal(obj, new(player, id, value));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr player, CriAtom.ParameterId id, Single value);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal ParameterChangeCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, CriAtom.ParameterId, Single, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, CriAtom.ParameterId, Single, void>)&CriAtomPlayerParameterChangeCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomPlayerParameterChangeCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -2951,18 +2931,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr binder, NativeString path, Int64 offset, Int64 length) =>
+			static void CriAtomPlayerLoadRequestCbFuncCallbackFunc(IntPtr obj, IntPtr binder, NativeString path, Int64 offset, Int64 length) =>
 				InvokeCallbackInternal(obj, new(binder, path, offset, length));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr binder, NativeString path, Int64 offset, Int64 length);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal LoadRequestCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, NativeString, Int64, Int64, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, NativeString, Int64, Int64, void>)&CriAtomPlayerLoadRequestCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomPlayerLoadRequestCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -2983,6 +2964,7 @@ namespace CriWare
 		/// （構造体のメンバに不定値が入らないようご注意ください。）
 		/// </para>
 		/// </remarks>
+		[Serializable]
 		public unsafe partial struct ConfigASR
 		{
 			/// <summary>センド可能バス数</summary>

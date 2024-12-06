@@ -18,8 +18,17 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_STANDALONE_OSX && !UNITY_EDITOR) || UNITY_EDITOR_OSX || osx)
 		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern Int32 criAtom_CalculateWorkSize_MACOSX(CriAtom.ConfigMACOSX* config);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_Initialize_MACOSX(CriAtom.ConfigMACOSX* config, IntPtr work, Int32 workSize);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_Finalize_MACOSX();
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern void criAtom_SetServerThreadPriority_MACOSX(Int32 prio);
 #else
+			internal static Int32 criAtom_CalculateWorkSize_MACOSX(CriAtom.ConfigMACOSX* config) { return default(Int32); }
+			internal static void criAtom_Initialize_MACOSX(CriAtom.ConfigMACOSX* config, IntPtr work, Int32 workSize) { }
+			internal static void criAtom_Finalize_MACOSX() { }
 			internal static void criAtom_SetServerThreadPriority_MACOSX(Int32 prio) { }
 #endif
 		}

@@ -16,6 +16,19 @@ namespace CriWare
 	/// <summary>CriAtomExAcf API</summary>
 	public static partial class CriAtomExAcf
 	{
+		/// <summary>REACT数の取得</summary>
+		/// <returns>REACT数</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 登録されたACFに含まれるREACTの数を取得します。
+		/// </para>
+		/// </remarks>
+		public static Int32 GetNumReacts()
+		{
+			return NativeMethods.criAtomExAcf_GetNumReacts();
+		}
+
 		/// <summary>ACFの出力ポートオブジェクトの取得（名前指定）</summary>
 		/// <param name="name">出力ポート名</param>
 		/// <returns></returns>

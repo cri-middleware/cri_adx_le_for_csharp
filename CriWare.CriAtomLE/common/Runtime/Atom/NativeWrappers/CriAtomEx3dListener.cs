@@ -88,6 +88,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomEx3dListener.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomEx3dListener.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dListener.CriAtomEx3dListener"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <exclude/>

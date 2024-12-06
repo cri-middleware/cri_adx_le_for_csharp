@@ -17,22 +17,13 @@ namespace CriWare {
 	/// <summary>ADXをC#から利用するための補助機能を持つクラス</summary>
 	public static partial class CriAtomCSharp {
 		internal const string libraryName =
-#if (UNITY_IOS && !UNITY_EDITOR) || ios
+#if ENABLE_IL2CPP || ios
 			"__Internal";
 #else
-			"cri_atom";
+            "cri_atom";
 #endif
 
 		internal const CallingConvention callingConversion = CallingConvention.Cdecl;
-
-#if !CRI_BUILD_LE
-		static CriAtomCSharp() {
-			CriErr.GetErrorCount(CriErr.Level.Error);
-			CriFs.GetDefaultIoInterface(out var _);
-		}
-#elif android
-		static CriAtomCSharp() => CriBaseCSharp.NativeMethods.criErr_GetErrorCount(CriErr.Level.Error);
-#endif
 
 		/// <summary>プラットフォーム共通初期化コンフィグ</summary>
 		[System.Serializable]
@@ -62,8 +53,8 @@ namespace CriWare {
 		public unsafe static void SetupDefaultAllocator(){
 			CriAtom.SetUserMallocFunction(default, IntPtr.Zero);
 			CriAtom.SetUserFreeFunction(default, IntPtr.Zero);	
-			CriAtom.SetUserMallocFunction(NativeAllocator.GetAllocateFunc(), IntPtr.Zero);
-			CriAtom.SetUserFreeFunction(NativeAllocator.GetFreeFunc(), IntPtr.Zero);	
+			CriAtom.SetUserMallocFunction(NativeAllocator.GetAllocateFunc(), NativeMethods.criAtomNativeAllocator_GetContext());
+			CriAtom.SetUserFreeFunction(NativeAllocator.GetFreeFunc(), NativeMethods.criAtomNativeAllocator_GetContext());	
 		}
 
 		/// <summary>
@@ -94,23 +85,53 @@ namespace CriWare {
 		/// </remarks>
 		public static void Finalize() =>
 			FinalizePlatform();
+		
+		/// <summary>ライブラリの使用メモリサイズ取得</summary>
+		public static unsafe ulong GetAllocatedMemorySize() =>
+			*(ulong*)NativeMethods.criAtomNativeAllocator_GetContext();
 
 		static partial void InitializePlatform(in Config config);
 		static partial void FinalizePlatform();
 
+		static class NativeMethods {
+#if !CRI_ENABLE_HEADLESS_MODE
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern IntPtr criAtomNativeAllocator_GetContext();
+#else
+			internal static IntPtr criAtomNativeAllocator_GetContext() => default;
+#endif
+		}
+
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		[Serializable]
-		class CriAtomCSharpLibrary : Interfaces.ILibrary
+		public class CriAtomCSharpLibrary : Interfaces.ILibrary
 		{
-			public Config config;
+			public CriAtomEx.Config atomEx;
+			public CriAtomExAsr.Config asr;
+			public CriAtomExHcaMx.Config hcaMx;
 			public Type[] DependentLibraries { get; } = new Type[] { 
 #if !CRI_BUILD_LE
 				typeof(CriFsCSharp.CriFsCSharpLibrary)
 #endif
 			};
 			public bool IsInitialized => CriAtomEx.IsInitialized();
-			public void FinalizeLibrary() => CriAtomCSharp.Finalize();
-			public void InitializeLibrary() => CriAtomCSharp.Initialize(config);
-			public CriAtomCSharpLibrary() => CriAtomCSharp.GetDefaultConfig(out config);
+			public IntPtr MemorySizeAddress => NativeMethods.criAtomNativeAllocator_GetContext();
+            public void FinalizeLibrary() => CriAtomCSharp.Finalize();
+			public void InitializeLibrary(){
+				var config = new CriAtomCSharp.Config(){
+					atomEx = atomEx,
+					asr = asr,
+					hcaMx = hcaMx,
+				};
+				CriAtomCSharp.Initialize(config);
+			}
+			public CriAtomCSharpLibrary() {
+				CriAtomCSharp.GetDefaultConfig(out var config);
+				atomEx=config.atomEx;
+				asr=config.asr;
+				hcaMx=config.hcaMx;
+			}
 		}
 	}
 }
