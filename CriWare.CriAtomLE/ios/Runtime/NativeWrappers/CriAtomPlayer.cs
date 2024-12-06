@@ -12,22 +12,7 @@ using CriWare.InteropHelpers;
 
 namespace CriWare
 {
-	/// <summary>Atomプレーヤーオブジェクト</summary>
-	/// <remarks>
-	/// <para>
-	/// 説明:
-	/// CriAtomPlayerHn は、音声再生用に作られたプレーヤーを操作するためのオブジェクトです。
-	/// ::criAtomPlayer_CreateAdxPlayer 関数等で音声再生用のプレーヤーを作成すると、
-	/// 関数はプレーヤー操作用に、この"Atomプレーヤーオブジェクト"を返します。
-	/// Atomプレーヤーとは、コーデックに依存しない再生制御のためのインターフェースを提供する、
-	/// 抽象化されたプレーヤーオブジェクトです。
-	/// Atomプレーヤーの作成方法は再生する音声コーデックにより異なりますが、
-	/// 作成されたプレーヤーの制御については、Atomプレーヤー用のAPIが共通で利用可能です。
-	/// データのセットや再生の開始、ステータスの取得等、プレーヤーに対して行う操作は、
-	/// 全てAtomプレーヤーオブジェクトを介して実行されます。
-	/// </para>
-	/// </remarks>
-	/// <seealso cref="criAtomPlayer_CreateAdxPlayer"/>
+
 	public partial class CriAtomPlayer : IDisposable
 	{
 		/// <summary>MP3プレーヤ作成用ワーク領域サイズの計算</summary>
@@ -49,6 +34,7 @@ namespace CriWare
 		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
 		/// 問題ありません。
 		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(const CriAtomMp3PlayerConfig_IOS *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.Mp3PlayerConfigIOS"/>
 		/// <seealso cref="CriAtomPlayer.CreateMp3PlayerIOS"/>
@@ -73,6 +59,7 @@ namespace CriWare
 		/// MP3プレーヤの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる
 		/// タイミングで行うようお願いいたします。
 		/// </para>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateMp3Player_IOS(const CriAtomMp3PlayerConfig_IOS *, void *, CriSint32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.Mp3PlayerConfigIOS"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForMp3PlayerIOS"/>

@@ -25,373 +25,8 @@ namespace CriWare
 	/// <seealso cref="CriAtomExPlayer.Start"/>
 	/// <seealso cref="CriAtomExPlayback.GetStatus"/>
 	/// <seealso cref="CriAtomEx.InvalidPlaybackId"/>
-	public partial struct CriAtomExPlayback
+	public readonly partial struct CriAtomExPlayback
 	{
-		/// <summary>ネイティブハンドル</summary>
-
-		public UInt32 NativeHandle { get; }
-
-		/// <exclude/>
-		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-		public CriAtomExPlayback(UInt32 handle) =>
-			NativeHandle = handle;
-		/// <exclude />
-		public override bool Equals(object obj) =>
-			obj is CriAtomExPlayback other && NativeHandle.Equals(other.NativeHandle);
-		/// <exclude />
-		public override int GetHashCode() =>
-			NativeHandle.GetHashCode();
-		/// <exclude />
-		public static bool operator ==(CriAtomExPlayback a, CriAtomExPlayback b)
-		{
-
-			return a.Equals(b);
-		}
-		/// <exclude />
-		public static bool operator !=(CriAtomExPlayback a, CriAtomExPlayback b) =>
-			!(a == b);
-
-		/// <summary>プレイバックキャンセルコールバック</summary>
-		/// <returns>
-		/// 
-		/// AtomExライブラリのプレイバックキャンセルコールバック関数型です。
-		/// コールバック関数の登録には <see cref="CriAtomEx.SetPlaybackCancelCallback"/> 関数を使用します。
-		/// 登録したコールバック関数は、ライブラリ内で再生開始処理がキャンセルされるタイミングで実行されます。
-		/// そのため、ライブラリ処理への割り込みを考慮しないAPIを実行した場合、
-		/// エラーが発生したり、デッドロックが発生する可能性があります。
-		/// 基本的に、コールバック関数内ではAtomライブラリAPIを使用しないでください。
-		/// 本コールバック関数内で長時間処理をブロックすると、音切れ等の問題が発生しますので、
-		/// ご注意ください。
-		/// </returns>
-		/// <remarks>
-		/// <para>説明:</para>
-		/// </remarks>
-		/// <seealso cref="CriAtomEx.SetPlaybackCancelCallback"/>
-		public unsafe class CancelCbFunc : NativeCallbackBase<CancelCbFunc.Arg>
-		{
-			/// <summary>コールバックイベント引数型</summary>
-			public struct Arg
-			{
-				/// <summary>プレイバックキャンセル情報</summary>
-				public NativeReference<CriAtomExPlayback.CancelInfo> info { get; }
-
-				internal Arg(NativeReference<CriAtomExPlayback.CancelInfo> info)
-				{
-					this.info = info;
-				}
-			}
-
-#if ENABLE_IL2CPP
-	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
-#endif
-#if NET5_0_OR_GREATER
-	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
-#endif
-			static void CallbackFunc(IntPtr obj, CriAtomExPlayback.CancelInfo* info) =>
-				InvokeCallbackInternal(obj, new(info));
-#if !NET5_0_OR_GREATER
-			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback.CancelInfo* info);
-			static NativeDelegate callbackDelegate = null;
-#endif
-			internal CancelCbFunc(Action<IntPtr, IntPtr> setFunction) :
-				base(setFunction,
-#if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.CancelInfo*, void>)&CallbackFunc
-#else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
-#endif
-				)
-			{ }
-		}
-		/// <summary>プレイバックキャンセルコールバック用Info構造体</summary>
-		public unsafe partial struct CancelInfo
-		{
-			/// <summary>キャンセルタイプ</summary>
-			public CriAtomExPlayback.CancelType type;
-
-			/// <summary>プレーヤーオブジェクト</summary>
-			public IntPtr player;
-
-			/// <summary>再生ID</summary>
-			public UInt32 id;
-
-		}
-		/// <summary>プレイバックキャンセルタイプ</summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// プレイバックキャンセルの種別を示す値です。
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="CriAtomExPlayback.CancelInfo"/>
-		/// <seealso cref="CriAtomEx.SetPlaybackCancelCallback"/>
-		public enum CancelType
-		{
-			/// <summary>キューリミット</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューリミットによる発音キャンセル。
-			/// </para>
-			/// </remarks>
-			CueLimit = 0,
-			/// <summary>カテゴリキューリミット</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// カテゴリキューリミットによる発音キャンセル。
-			/// </para>
-			/// </remarks>
-			CategoryCueLimit = 1,
-			/// <summary>プロバビリティ</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 確率による発音キャンセル。
-			/// </para>
-			/// </remarks>
-			Probability = 2,
-			/// <summary>キューリミット</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューリミットによる発音停止。
-			/// </para>
-			/// </remarks>
-			StopByCueLimit = 3,
-			/// <summary>スイッチ</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// スイッチによる発音キャンセル。
-			/// </para>
-			/// </remarks>
-			Switch = 4,
-			/// <summary>トラック不明</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 再生トラック不明による発音キャンセル。
-			/// </para>
-			/// </remarks>
-			NoTrackToPlay = 5,
-		}
-		/// <summary>プレイバックコールバック関数型</summary>
-		/// <returns>列挙を続けるかどうか（true：継続、false：中止）</returns>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// プレイバックの列挙に使用する、コールバック関数の型です。
-		/// <see cref="CriAtomExPlayer.EnumeratePlaybacks"/> 関数に本関数型のコールバック関数を登録することで、
-		/// プレーヤーで再生中のプレイバックIDをコールバックで受け取ることが可能となります。
-		/// 本コールバック関数内で長時間処理をブロックすると、音切れ等の問題が発生しますので、
-		/// ご注意ください。
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="CriAtomExPlayer.EnumeratePlaybacks"/>
-		public unsafe class CbFunc : NativeCallbackBase<CbFunc.Arg, NativeBool>
-		{
-			/// <summary>コールバックイベント引数型</summary>
-			public struct Arg
-			{
-				/// <summary>プレイバックID</summary>
-				public UInt32 playbackId { get; }
-
-				internal Arg(UInt32 playbackId)
-				{
-					this.playbackId = playbackId;
-				}
-			}
-
-#if ENABLE_IL2CPP
-	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
-#endif
-#if NET5_0_OR_GREATER
-	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
-#endif
-			static NativeBool CallbackFunc(IntPtr obj, UInt32 playbackId) =>
-				InvokeCallbackInternal(obj, new(playbackId));
-#if !NET5_0_OR_GREATER
-			delegate NativeBool NativeDelegate(IntPtr obj, UInt32 playbackId);
-			static NativeDelegate callbackDelegate = null;
-#endif
-			internal CbFunc(Action<IntPtr, IntPtr> setFunction) :
-				base(setFunction,
-#if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, NativeBool>)&CallbackFunc
-#else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
-#endif
-				)
-			{ }
-		}
-		/// <summary>再生トラック情報用Info構造体</summary>
-		public unsafe partial struct TrackInfo
-		{
-			/// <summary>再生ID</summary>
-			public UInt32 id;
-
-			/// <summary>親シーケンスタイプ</summary>
-			public CriAtomExAcb.CueType sequenceType;
-
-			/// <summary>プレーヤーオブジェクト</summary>
-			public IntPtr player;
-
-			/// <summary>トラック番号</summary>
-			public UInt16 trackNo;
-
-			/// <summary>予約領域</summary>
-			public InlineArray1<UInt16> reserved;
-
-		}
-		/// <summary>再生イベントコールバック関数型</summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// 再生イベントの通知に使用される、コールバック関数の型です。
-		/// <see cref="CriAtomExPlayer.SetPlaybackEventCallback"/> 関数に本関数型のコールバック関数を登録することで、
-		/// 再生イベント発生時にコールバックを受け取ることが可能となります。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// 本コールバック関数内で長時間処理をブロックすると、音切れ等の問題が発生しますので、
-		/// ご注意ください。
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="CriAtomExPlayer.SetPlaybackEventCallback"/>
-		/// <seealso cref="CriAtomExPlayback.Event"/>
-		/// <seealso cref="CriAtomExPlayback.InfoDetail"/>
-		public unsafe class EventCbFunc : NativeCallbackBase<EventCbFunc.Arg>
-		{
-			/// <summary>コールバックイベント引数型</summary>
-			public struct Arg
-			{
-				/// <summary>発生したイベント</summary>
-				public CriAtomExPlayback.Event playbackEvent { get; }
-				/// <summary>詳細情報</summary>
-				public NativeReference<CriAtomExPlayback.InfoDetail> info { get; }
-
-				internal Arg(CriAtomExPlayback.Event playbackEvent, NativeReference<CriAtomExPlayback.InfoDetail> info)
-				{
-					this.playbackEvent = playbackEvent;
-					this.info = info;
-				}
-			}
-
-#if ENABLE_IL2CPP
-	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
-#endif
-#if NET5_0_OR_GREATER
-	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
-#endif
-			static void CallbackFunc(IntPtr obj, CriAtomExPlayback.Event playbackEvent, CriAtomExPlayback.InfoDetail* info) =>
-				InvokeCallbackInternal(obj, new(playbackEvent, info));
-#if !NET5_0_OR_GREATER
-			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback.Event playbackEvent, CriAtomExPlayback.InfoDetail* info);
-			static NativeDelegate callbackDelegate = null;
-#endif
-			internal EventCbFunc(Action<IntPtr, IntPtr> setFunction) :
-				base(setFunction,
-#if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.Event, CriAtomExPlayback.InfoDetail*, void>)&CallbackFunc
-#else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
-#endif
-				)
-			{ }
-		}
-		/// <summary>再生イベント</summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// 再生イベントの種別を示す値です。
-		/// 再生イベントコールバックに引数として渡されます。
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="CriAtomExPlayback.EventCbFunc"/>
-		/// <seealso cref="CriAtomExPlayer.SetPlaybackEventCallback"/>
-		public enum Event
-		{
-			/// <summary>新規再生リソースの確保</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューの再生に必要なリソースが確保されたことを示す値です。
-			/// リソース確保時点ではボイスの割り当ては行われておらず、
-			/// 発音がされていません（バーチャル化した状態で作成されます）。
-			/// </para>
-			/// </remarks>
-			Allocate = 0,
-			/// <summary>ボイスの割り当て</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// バーチャル状態の再生リソースに対してボイスが割り当てられたことを示す値です。
-			/// ボイスが割り当てられたことで、キューの発音が開始されます。
-			/// </para>
-			/// <para>
-			/// 備考:
-			/// キューに複数の波形データが含まれる場合、いずれか1つの波形データが再生された時点で本イベントが発生します。
-			/// （キュー再生に関連するボイスの数が0から1に変わる瞬間に本イベントが発生します。）
-			/// 既にボイスが割り当てられた状態で、さらに追加のボイスが割り当てられるタイミングでは本イベントは発生ません。
-			/// </para>
-			/// </remarks>
-			FromVirtualToNormal = 1,
-			/// <summary>バーチャル化</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューの再生がバーチャル化されたことを示す値です。
-			/// 以下のいずれかの要因により、発音中のキューからボイスが切り離された場合に発生します。
-			/// - キューに含まれる波形データを終端まで再生したため、ボイスが不要になった
-			/// - <see cref="CriAtomExPlayer.Stop"/> 関数等の呼び出しにより、再生中の波形データが停止された
-			/// - プライオリティ制御により、再生中の波形データが停止され、ボイスが奪い取られた
-			/// </para>
-			/// <para>
-			/// 備考:
-			/// 本イベントは、キューに含まれる"波形データ"が再生されなくなった状態を示します。
-			/// 本イベント発生時点では、キューの再生は終了していません。
-			/// （キューの再生が終了した際には、別途 <see cref="CriAtomExPlayback.Event.Remove"/> イベントが発生します。）
-			/// キューに複数の波形データが含まれる場合、全ての波形データが再生されなくなった時点で本イベントが発生します。
-			/// （キュー再生に関連するボイスの数が1から0に変わる瞬間に本イベントが発生します。）
-			/// 複数のボイスが割り当てられた状態でそのうちの1つが停止された場合には、本イベントは発生ません。
-			/// </para>
-			/// </remarks>
-			FromNormalToVirtual = 2,
-			/// <summary>再生リソースの解放</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 再生リソースが解放されたことを示す値です。
-			/// キューの再生が完了した際や、再生停止要求によりキューが停止された場合に本イベントが発生します。
-			/// </para>
-			/// <para>
-			/// 備考:
-			/// キューに含まれる波形データが再生されている場合、
-			/// 本イベント発生前に、必ず <see cref="CriAtomExPlayback.Event.FromNormalToVirtual"/> イベントが発生します。
-			/// </para>
-			/// </remarks>
-			Remove = 3,
-		}
-		/// <summary>再生情報詳細</summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// 再生イベント発生時に、当該再生に関する詳細情報を通知するための構造体です。
-		/// 再生イベントコールバックに引数として渡されます。
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="CriAtomExPlayback.EventCbFunc"/>
-		/// <seealso cref="CriAtomExPlayer.SetPlaybackEventCallback"/>
-		public unsafe partial struct InfoDetail
-		{
-			/// <summary>再生中のプレーヤー</summary>
-			public IntPtr player;
-
-			/// <summary>再生ID</summary>
-			public UInt32 id;
-
-		}
 		/// <summary>再生音の停止</summary>
 		/// <remarks>
 		/// <para>
@@ -590,43 +225,6 @@ namespace CriWare
 			return NativeMethods.criAtomExPlayback_GetStatus(NativeHandle);
 		}
 
-		/// <summary>再生ステータス</summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// AtomExプレーヤーで再生済みの音声のステータスです。
-		/// <see cref="CriAtomExPlayback.GetStatus"/> 関数で取得可能です。
-		/// 再生状態は、通常以下の順序で遷移します。
-		/// -# <see cref="CriAtomExPlayback.Status.Prep"/>
-		/// -# <see cref="CriAtomExPlayback.Status.Playing"/>
-		/// -# <see cref="CriAtomExPlayback.Status.Removed"/>
-		/// </para>
-		/// <para>
-		/// 備考
-		/// <see cref="CriAtomExPlayback.Status"/>はAtomExプレーヤーのステータスではなく、
-		/// プレーヤーで再生を行った（ <see cref="CriAtomExPlayer.Start"/> 関数を実行した）
-		/// 音声のステータスです。
-		/// 再生中の音声リソースは、発音が停止された時点で破棄されます。
-		/// そのため、以下のケースで再生音のステータスが
-		/// <see cref="CriAtomExPlayback.Status.Removed"/> に遷移します。
-		/// - 再生が完了した場合。
-		/// - <see cref="CriAtomExPlayback.Stop"/> 関数で再生中の音声を停止した場合。
-		/// - 高プライオリティの発音リクエストにより再生中のボイスが奪い取られた場合。
-		/// - 再生中にエラーが発生した場合。
-		/// </para>
-		/// </remarks>
-		/// <seealso cref="CriAtomExPlayer.Start"/>
-		/// <seealso cref="CriAtomExPlayback.GetStatus"/>
-		/// <seealso cref="CriAtomExPlayback.Stop"/>
-		public enum Status
-		{
-			/// <summary>再生準備中</summary>
-			Prep = 1,
-			/// <summary>再生中</summary>
-			Playing = 2,
-			/// <summary>削除された</summary>
-			Removed = 3,
-		}
 		/// <summary>再生音声のフォーマット情報の取得</summary>
 		/// <param name="info">フォーマット情報</param>
 		/// <returns>情報が取得できたかどうか（ true = 取得できた、 false = 取得できなかった）</returns>
@@ -1238,5 +836,410 @@ namespace CriWare
 			return NativeMethods.criAtomExPlayback_SetBeatSyncOffset(NativeHandle, timeMs);
 		}
 
+		/// <summary>ネイティブハンドル</summary>
+
+		public UInt32 NativeHandle { get; }
+
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public CriAtomExPlayback(UInt32 handle) =>
+			NativeHandle = handle;
+		/// <exclude />
+		public override bool Equals(object obj) =>
+			obj is CriAtomExPlayback other && NativeHandle.Equals(other.NativeHandle);
+		/// <exclude />
+		public override int GetHashCode() =>
+			NativeHandle.GetHashCode();
+		/// <exclude />
+		public static bool operator ==(CriAtomExPlayback a, CriAtomExPlayback b)
+		{
+
+			return a.Equals(b);
+		}
+		/// <exclude />
+		public static bool operator !=(CriAtomExPlayback a, CriAtomExPlayback b) =>
+			!(a == b);
+
+		/// <summary>プレイバックキャンセルコールバック</summary>
+		/// <returns>
+		/// 
+		/// AtomExライブラリのプレイバックキャンセルコールバック関数型です。
+		/// コールバック関数の登録には <see cref="CriAtomEx.SetPlaybackCancelCallback"/> 関数を使用します。
+		/// 登録したコールバック関数は、ライブラリ内で再生開始処理がキャンセルされるタイミングで実行されます。
+		/// そのため、ライブラリ処理への割り込みを考慮しないAPIを実行した場合、
+		/// エラーが発生したり、デッドロックが発生する可能性があります。
+		/// 基本的に、コールバック関数内ではAtomライブラリAPIを使用しないでください。
+		/// 本コールバック関数内で長時間処理をブロックすると、音切れ等の問題が発生しますので、
+		/// ご注意ください。
+		/// </returns>
+		/// <remarks>
+		/// <para>説明:</para>
+		/// </remarks>
+		/// <seealso cref="CriAtomEx.SetPlaybackCancelCallback"/>
+		public unsafe class CancelCbFunc : NativeCallbackBase<CancelCbFunc.Arg>
+		{
+			/// <summary>コールバックイベント引数型</summary>
+			public struct Arg
+			{
+				/// <summary>プレイバックキャンセル情報</summary>
+				public NativeReference<CriAtomExPlayback.CancelInfo> info { get; }
+
+				internal Arg(NativeReference<CriAtomExPlayback.CancelInfo> info)
+				{
+					this.info = info;
+				}
+			}
+
+#if ENABLE_IL2CPP
+	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
+#endif
+#if NET5_0_OR_GREATER
+	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
+#endif
+			static void CriAtomExPlaybackCancelCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback.CancelInfo* info) =>
+				InvokeCallbackInternal(obj, new(info));
+#if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback.CancelInfo* info);
+			static NativeDelegate callbackDelegate = null;
+#endif
+			internal CancelCbFunc(Action<IntPtr, IntPtr> setFunction) :
+				base(setFunction,
+#if NET5_0_OR_GREATER
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.CancelInfo*, void>)&CriAtomExPlaybackCancelCbFuncCallbackFunc
+#else
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlaybackCancelCbFuncCallbackFunc)
+#endif
+				)
+			{ }
+		}
+		/// <summary>プレイバックキャンセルコールバック用Info構造体</summary>
+		public unsafe partial struct CancelInfo
+		{
+			/// <summary>キャンセルタイプ</summary>
+			public CriAtomExPlayback.CancelType type;
+
+			/// <summary>プレーヤーオブジェクト</summary>
+			public IntPtr player;
+
+			/// <summary>再生ID</summary>
+			public CriAtomExPlayback id;
+
+		}
+		/// <summary>プレイバックキャンセルタイプ</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// プレイバックキャンセルの種別を示す値です。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayback.CancelInfo"/>
+		/// <seealso cref="CriAtomEx.SetPlaybackCancelCallback"/>
+		public enum CancelType
+		{
+			/// <summary>キューリミット</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// キューリミットによる発音キャンセル。
+			/// </para>
+			/// </remarks>
+			CueLimit = 0,
+			/// <summary>カテゴリキューリミット</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// カテゴリキューリミットによる発音キャンセル。
+			/// </para>
+			/// </remarks>
+			CategoryCueLimit = 1,
+			/// <summary>プロバビリティ</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// 確率による発音キャンセル。
+			/// </para>
+			/// </remarks>
+			Probability = 2,
+			/// <summary>キューリミット</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// キューリミットによる発音停止。
+			/// </para>
+			/// </remarks>
+			StopByCueLimit = 3,
+			/// <summary>スイッチ</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// スイッチによる発音キャンセル。
+			/// </para>
+			/// </remarks>
+			Switch = 4,
+			/// <summary>トラック不明</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// 再生トラック不明による発音キャンセル。
+			/// </para>
+			/// </remarks>
+			NoTrackToPlay = 5,
+		}
+		/// <summary>プレイバックコールバック関数型</summary>
+		/// <returns>列挙を続けるかどうか（true：継続、false：中止）</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// プレイバックの列挙に使用する、コールバック関数の型です。
+		/// <see cref="CriAtomExPlayer.EnumeratePlaybacks"/> 関数に本関数型のコールバック関数を登録することで、
+		/// プレーヤーで再生中のプレイバックIDをコールバックで受け取ることが可能となります。
+		/// 本コールバック関数内で長時間処理をブロックすると、音切れ等の問題が発生しますので、
+		/// ご注意ください。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayer.EnumeratePlaybacks"/>
+		public unsafe class CbFunc : NativeCallbackBase<CbFunc.Arg, NativeBool>
+		{
+			/// <summary>コールバックイベント引数型</summary>
+			public struct Arg
+			{
+				/// <summary>プレイバックID</summary>
+				public CriAtomExPlayback playbackId { get; }
+
+				internal Arg(CriAtomExPlayback playbackId)
+				{
+					this.playbackId = playbackId;
+				}
+			}
+
+#if ENABLE_IL2CPP
+	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
+#endif
+#if NET5_0_OR_GREATER
+	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
+#endif
+			static NativeBool CriAtomExPlaybackCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback playbackId) =>
+				InvokeCallbackInternal(obj, new(playbackId));
+#if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate NativeBool NativeDelegate(IntPtr obj, CriAtomExPlayback playbackId);
+			static NativeDelegate callbackDelegate = null;
+#endif
+			internal CbFunc(Action<IntPtr, IntPtr> setFunction) :
+				base(setFunction,
+#if NET5_0_OR_GREATER
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, NativeBool>)&CriAtomExPlaybackCbFuncCallbackFunc
+#else
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlaybackCbFuncCallbackFunc)
+#endif
+				)
+			{ }
+		}
+		/// <summary>再生トラック情報用Info構造体</summary>
+		public unsafe partial struct TrackInfo
+		{
+			/// <summary>再生ID</summary>
+			public CriAtomExPlayback id;
+
+			/// <summary>親シーケンスタイプ</summary>
+			public CriAtomExAcb.CueType sequenceType;
+
+			/// <summary>プレーヤーオブジェクト</summary>
+			public IntPtr player;
+
+			/// <summary>トラック番号</summary>
+			public UInt16 trackNo;
+
+			/// <summary>予約領域</summary>
+			public InlineArray1<UInt16> reserved;
+
+		}
+		/// <summary>再生イベントコールバック関数型</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 再生イベントの通知に使用される、コールバック関数の型です。
+		/// <see cref="CriAtomExPlayer.SetPlaybackEventCallback"/> 関数に本関数型のコールバック関数を登録することで、
+		/// 再生イベント発生時にコールバックを受け取ることが可能となります。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本コールバック関数内で長時間処理をブロックすると、音切れ等の問題が発生しますので、
+		/// ご注意ください。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayer.SetPlaybackEventCallback"/>
+		/// <seealso cref="CriAtomExPlayback.Event"/>
+		/// <seealso cref="CriAtomExPlayback.InfoDetail"/>
+		public unsafe class EventCbFunc : NativeCallbackBase<EventCbFunc.Arg>
+		{
+			/// <summary>コールバックイベント引数型</summary>
+			public struct Arg
+			{
+				/// <summary>発生したイベント</summary>
+				public CriAtomExPlayback.Event playbackEvent { get; }
+				/// <summary>詳細情報</summary>
+				public NativeReference<CriAtomExPlayback.InfoDetail> info { get; }
+
+				internal Arg(CriAtomExPlayback.Event playbackEvent, NativeReference<CriAtomExPlayback.InfoDetail> info)
+				{
+					this.playbackEvent = playbackEvent;
+					this.info = info;
+				}
+			}
+
+#if ENABLE_IL2CPP
+	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
+#endif
+#if NET5_0_OR_GREATER
+	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
+#endif
+			static void CriAtomExPlaybackEventCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback.Event playbackEvent, CriAtomExPlayback.InfoDetail* info) =>
+				InvokeCallbackInternal(obj, new(playbackEvent, info));
+#if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback.Event playbackEvent, CriAtomExPlayback.InfoDetail* info);
+			static NativeDelegate callbackDelegate = null;
+#endif
+			internal EventCbFunc(Action<IntPtr, IntPtr> setFunction) :
+				base(setFunction,
+#if NET5_0_OR_GREATER
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.Event, CriAtomExPlayback.InfoDetail*, void>)&CriAtomExPlaybackEventCbFuncCallbackFunc
+#else
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlaybackEventCbFuncCallbackFunc)
+#endif
+				)
+			{ }
+		}
+		/// <summary>再生イベント</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 再生イベントの種別を示す値です。
+		/// 再生イベントコールバックに引数として渡されます。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayback.EventCbFunc"/>
+		/// <seealso cref="CriAtomExPlayer.SetPlaybackEventCallback"/>
+		public enum Event
+		{
+			/// <summary>新規再生リソースの確保</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// キューの再生に必要なリソースが確保されたことを示す値です。
+			/// リソース確保時点ではボイスの割り当ては行われておらず、
+			/// 発音がされていません（バーチャル化した状態で作成されます）。
+			/// </para>
+			/// </remarks>
+			Allocate = 0,
+			/// <summary>ボイスの割り当て</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// バーチャル状態の再生リソースに対してボイスが割り当てられたことを示す値です。
+			/// ボイスが割り当てられたことで、キューの発音が開始されます。
+			/// </para>
+			/// <para>
+			/// 備考:
+			/// キューに複数の波形データが含まれる場合、いずれか1つの波形データが再生された時点で本イベントが発生します。
+			/// （キュー再生に関連するボイスの数が0から1に変わる瞬間に本イベントが発生します。）
+			/// 既にボイスが割り当てられた状態で、さらに追加のボイスが割り当てられるタイミングでは本イベントは発生ません。
+			/// </para>
+			/// </remarks>
+			FromVirtualToNormal = 1,
+			/// <summary>バーチャル化</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// キューの再生がバーチャル化されたことを示す値です。
+			/// 以下のいずれかの要因により、発音中のキューからボイスが切り離された場合に発生します。
+			/// - キューに含まれる波形データを終端まで再生したため、ボイスが不要になった
+			/// - <see cref="CriAtomExPlayer.Stop"/> 関数等の呼び出しにより、再生中の波形データが停止された
+			/// - プライオリティ制御により、再生中の波形データが停止され、ボイスが奪い取られた
+			/// </para>
+			/// <para>
+			/// 備考:
+			/// 本イベントは、キューに含まれる"波形データ"が再生されなくなった状態を示します。
+			/// 本イベント発生時点では、キューの再生は終了していません。
+			/// （キューの再生が終了した際には、別途 <see cref="CriAtomExPlayback.Event.Remove"/> イベントが発生します。）
+			/// キューに複数の波形データが含まれる場合、全ての波形データが再生されなくなった時点で本イベントが発生します。
+			/// （キュー再生に関連するボイスの数が1から0に変わる瞬間に本イベントが発生します。）
+			/// 複数のボイスが割り当てられた状態でそのうちの1つが停止された場合には、本イベントは発生ません。
+			/// </para>
+			/// </remarks>
+			FromNormalToVirtual = 2,
+			/// <summary>再生リソースの解放</summary>
+			/// <remarks>
+			/// <para>
+			/// 説明:
+			/// 再生リソースが解放されたことを示す値です。
+			/// キューの再生が完了した際や、再生停止要求によりキューが停止された場合に本イベントが発生します。
+			/// </para>
+			/// <para>
+			/// 備考:
+			/// キューに含まれる波形データが再生されている場合、
+			/// 本イベント発生前に、必ず <see cref="CriAtomExPlayback.Event.FromNormalToVirtual"/> イベントが発生します。
+			/// </para>
+			/// </remarks>
+			Remove = 3,
+		}
+		/// <summary>再生情報詳細</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 再生イベント発生時に、当該再生に関する詳細情報を通知するための構造体です。
+		/// 再生イベントコールバックに引数として渡されます。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayback.EventCbFunc"/>
+		/// <seealso cref="CriAtomExPlayer.SetPlaybackEventCallback"/>
+		public unsafe partial struct InfoDetail
+		{
+			/// <summary>再生中のプレーヤー</summary>
+			public IntPtr player;
+
+			/// <summary>再生ID</summary>
+			public CriAtomExPlayback id;
+
+		}
+		/// <summary>再生ステータス</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// AtomExプレーヤーで再生済みの音声のステータスです。
+		/// <see cref="CriAtomExPlayback.GetStatus"/> 関数で取得可能です。
+		/// 再生状態は、通常以下の順序で遷移します。
+		/// -# <see cref="CriAtomExPlayback.Status.Prep"/>
+		/// -# <see cref="CriAtomExPlayback.Status.Playing"/>
+		/// -# <see cref="CriAtomExPlayback.Status.Removed"/>
+		/// </para>
+		/// <para>
+		/// 備考
+		/// <see cref="CriAtomExPlayback.Status"/>はAtomExプレーヤーのステータスではなく、
+		/// プレーヤーで再生を行った（ <see cref="CriAtomExPlayer.Start"/> 関数を実行した）
+		/// 音声のステータスです。
+		/// 再生中の音声リソースは、発音が停止された時点で破棄されます。
+		/// そのため、以下のケースで再生音のステータスが
+		/// <see cref="CriAtomExPlayback.Status.Removed"/> に遷移します。
+		/// - 再生が完了した場合。
+		/// - <see cref="CriAtomExPlayback.Stop"/> 関数で再生中の音声を停止した場合。
+		/// - 高プライオリティの発音リクエストにより再生中のボイスが奪い取られた場合。
+		/// - 再生中にエラーが発生した場合。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayer.Start"/>
+		/// <seealso cref="CriAtomExPlayback.GetStatus"/>
+		/// <seealso cref="CriAtomExPlayback.Stop"/>
+		public enum Status
+		{
+			/// <summary>再生準備中</summary>
+			Prep = 1,
+			/// <summary>再生中</summary>
+			Playing = 2,
+			/// <summary>削除された</summary>
+			Removed = 3,
+		}
 	}
 }

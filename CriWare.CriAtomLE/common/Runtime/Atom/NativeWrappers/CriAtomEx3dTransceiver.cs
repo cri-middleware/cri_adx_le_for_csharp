@@ -88,6 +88,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomEx3dTransceiver.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomEx3dTransceiver.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dTransceiver.CriAtomEx3dTransceiver"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>予約値（0を指定してください）</summary>

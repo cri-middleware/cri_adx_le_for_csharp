@@ -24,6 +24,23 @@ namespace CriWare
 	/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 	public partial class CriAtomExAsrRack : IDisposable
 	{
+		/// <summary>アタッチ済みのDSPバス設定の名前取得</summary>
+		/// <param name="settingName">アタッチ済み DSP バス設定の名前</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ASRラックにアタッチされている DSP バス設定の名前が取得できます。
+		/// 本関数を実行するには、あらかじめ::criAtomEx_RegisterAcfConfig 関数でACF情報を
+		/// 登録しておく必要があります
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
+		/// <seealso cref="CriAtomExAsrRack.DetachDspBusSetting"/>
+		public NativeString GetAttachedDspBusSettingName()
+		{
+			return NativeMethods.criAtomExAsrRack_GetAttachedDspBusSettingName(NativeHandle);
+		}
+
 		/// <summary>波形フィルターコールバック関数の登録</summary>
 		/// <param name="busName">バス名</param>
 		/// <param name="preFunc">エフェクト処理前のフィルターコールバック関数</param>
@@ -57,13 +74,16 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// チャンネルベース 再生のみを行うASRラックのIDを取得します。
-		/// 作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>が返されます。
+		/// チャンネルベース再生用ASRラックは、出力ポート「_7_1_4」の設定で
+		/// 「専用のミキサーを使用する」にTrueを指定しているACFの登録により自動で作成されます。
+		/// 取得したASRラックIDはACF登録中のみ有効です。
+		/// ACFの登録を解除すると、チャンネルベース再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
+		/// チャンネルベース再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。
 		/// </para>
 		/// </remarks>
-		public static Int32 GetChannelBasedAudioRackId()
+		public static CriAtomExAsrRack GetChannelBasedAudioRackId()
 		{
-			return NativeMethods.criAtomExAsrRack_GetChannelBasedAudioRackId();
+			return new CriAtomExAsrRack(NativeMethods.criAtomExAsrRack_GetChannelBasedAudioRackId());
 		}
 
 		/// <summary>ObjectBasedAudio 再生用ASRラックIDを取得</summary>
@@ -71,13 +91,16 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ObjectBasedAudio 再生のみを行うASRラックのIDを取得します。
-		/// 作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>が返されます。
+		/// ObjectBasedAudio再生に使用するASRラックIDを取得します。
+		/// ObjectBasedAudio再生用ASRラックは、出力ポート「_object_based_audio」の設定があるACFの登録により自動で作成されます。
+		/// 取得したASRラックIDはACF登録中のみ有効です。
+		/// ACFの登録を解除すると、ObjectBasedAudio再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
+		/// ObjectBasedAudio再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。
 		/// </para>
 		/// </remarks>
-		public static Int32 GetObjectBasedAudioRackId()
+		public static CriAtomExAsrRack GetObjectBasedAudioRackId()
 		{
-			return NativeMethods.criAtomExAsrRack_GetObjectBasedAudioRackId();
+			return new CriAtomExAsrRack(NativeMethods.criAtomExAsrRack_GetObjectBasedAudioRackId());
 		}
 
 		/// <summary><see cref="CriAtomAsr.Config"/>へのデフォルトパラメーターをセット</summary>
@@ -145,6 +168,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.CriAtomExAsrRack"/>
 		/// <seealso cref="CriAtomExAsrRack.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>サーバー処理の実行頻度</summary>
@@ -411,7 +435,7 @@ namespace CriWare
 		/// 本関数のレンダリング済みサンプル数の増加パターンは実行中のプラットフォームや出力デバイスによって変化する可能性があります。
 		/// </para>
 		/// </remarks>
-		public unsafe void GetNumRenderedSamples(ref Int64 numSamples, ref Int32 samplingRate)
+		public unsafe void GetNumRenderedSamples(out Int64 numSamples, out Int32 samplingRate)
 		{
 			fixed (Int64* numSamplesPtr = &numSamples)
 			fixed (Int32* samplingRatePtr = &samplingRate)
@@ -1107,13 +1131,16 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// Ambisonics再生のみを行うASRラックのIDを取得します。
-		/// 作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>が返されます。
+		/// Ambisonics再生に使用するASRラックIDを取得します。
+		/// Ambisonics再生用ASRラックは、出力ポート「_ambisonics」の設定があるACFの登録により自動で作成されます。
+		/// 取得したASRラックIDはACF登録中のみ有効です。
+		/// ACFの登録を解除すると、Ambisonics再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
+		/// Ambisonics再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。
 		/// </para>
 		/// </remarks>
-		public static Int32 GetAmbisonicRackId()
+		public static CriAtomExAsrRack GetAmbisonicRackId()
 		{
-			return NativeMethods.criAtomExAsrRack_GetAmbisonicRackId();
+			return new CriAtomExAsrRack(NativeMethods.criAtomExAsrRack_GetAmbisonicRackId());
 		}
 
 		/// <summary>ASRラック指定レベルメーター機能用のワークサイズの計算</summary>

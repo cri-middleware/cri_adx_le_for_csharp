@@ -21,7 +21,7 @@ namespace CriWare
 	/// </para>
 	/// </remarks>
 	/// <seealso cref="CriAtomExStreamingCache.CriAtomExStreamingCache"/>
-	public partial struct CriAtomExStreamingCache
+	public partial class CriAtomExStreamingCache : IDisposable
 	{
 		/// <summary>指定したCue（ID指定）のストリーム用データがキャッシュ済みかを取得します</summary>
 		/// <param name="acbHn">Cueを含んでいるACBオブジェクト</param>
@@ -71,62 +71,6 @@ namespace CriWare
 			return NativeMethods.criAtomExStreamingCache_IsCachedWaveformByName(NativeHandle, acbHn?.NativeHandle ?? default, name.GetPointer(stackalloc byte[name.BufferSize]));
 		}
 
-		/// <summary>指定したCue（ID指定）のストリーム用データをキャッシュにロード</summary>
-		/// <param name="acbHn">Cueを含んでいるACBオブジェクト</param>
-		/// <param name="cueId">キャッシュ対象のCueID</param>
-		/// <returns>成功／失敗</returns>
-		/// <returns>= ロードの失敗</returns>
-		/// <returns>= ロードの成功</returns>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// ストリーミングキャッシュに対し、IDで指定したCueのストリーミング用データをロードします。
-		/// 本関数に成功すると::trueを返し、指定したCueがキャッシュ完了状態になります。
-		/// 本関数に失敗すると、::falseを返します。
-		/// </para>
-		/// <para>
-		/// 備考:
-		/// 本関数は完了復帰です。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// Cueが複数のストリーム用データを持つ場合、
-		/// 本関数はCue内で最初に見つかったストリーム用データのみをロードします。
-		/// </para>
-		/// </remarks>
-		public bool LoadWaveformById(CriAtomExAcb acbHn, Int32 cueId)
-		{
-			return NativeMethods.criAtomExStreamingCache_LoadWaveformById(NativeHandle, acbHn?.NativeHandle ?? default, cueId);
-		}
-
-		/// <summary>指定したCue（名前指定）のストリーム用データをキャッシュにロード</summary>
-		/// <param name="acbHn">Cueを含んでいるACBオブジェクト</param>
-		/// <param name="name">キャッシュ対象のCue名</param>
-		/// <returns>成功／失敗</returns>
-		/// <returns>= ロードの失敗</returns>
-		/// <returns>= ロードの成功</returns>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// ストリーミングキャッシュに対し、IDで指定したCueのストリーミング用データをロードします。
-		/// 本関数に成功すると::trueを返し、指定したCueがキャッシュ完了状態になります。
-		/// 本関数に失敗すると、::falseを返します。
-		/// </para>
-		/// <para>
-		/// 備考:
-		/// 本関数は完了復帰です。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// Cueが複数のストリーム用データを持つ場合、
-		/// 本関数はCue内で最初に見つかったストリーム用データのみをロードします。
-		/// </para>
-		/// </remarks>
-		public bool LoadWaveformByName(CriAtomExAcb acbHn, ArgString name)
-		{
-			return NativeMethods.criAtomExStreamingCache_LoadWaveformByName(NativeHandle, acbHn?.NativeHandle ?? default, name.GetPointer(stackalloc byte[name.BufferSize]));
-		}
-
 		/// <summary><see cref="CriAtomExStreamingCache.Config"/>へのデフォルトパラメーターのセット</summary>
 		/// <param name="pConfig">ストリーミングキャッシュ作成用コンフィグ構造体へのポインタ</param>
 		/// <remarks>
@@ -162,6 +106,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>キャッシュするファイルの最大パス長</summary>
@@ -241,7 +186,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExStreamingCache.CalculateWorkSize"/>
-		/// <seealso cref="CriAtomExStreamingCache.Destroy"/>
+		/// <seealso cref="CriAtomExStreamingCache.Dispose"/>
 		public unsafe CriAtomExStreamingCache(in CriAtomExStreamingCache.Config config, IntPtr work = default, Int32 workSize = default)
 		{
 			fixed (CriAtomExStreamingCache.Config* configPtr = &config)
@@ -268,10 +213,15 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExStreamingCache.CriAtomExStreamingCache"/>
-		public void Destroy()
+		public void Dispose()
 		{
-			NativeMethods.criAtomExStreamingCache_Destroy_(NativeHandle);
+			if (NativeHandle.IsDestroyable)
+				NativeMethods.criAtomExStreamingCache_Destroy_(NativeHandle);
 		}
+#pragma warning disable 1591
+		/// <exclude />
+		~CriAtomExStreamingCache() => Dispose();
+#pragma warning restore 1591
 
 		/// <summary>ストリーミングキャッシュのキャッシュ内容をクリア</summary>
 		/// <remarks>
@@ -351,7 +301,7 @@ namespace CriWare
 		/// <exclude />
 		public static bool operator ==(CriAtomExStreamingCache a, CriAtomExStreamingCache b)
 		{
-
+			if (a is null) return b is null;
 			return a.Equals(b);
 		}
 		/// <exclude />

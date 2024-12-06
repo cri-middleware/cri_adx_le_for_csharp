@@ -24,9 +24,9 @@ namespace CriWare
 		/// <remarks>
 		/// <para header="説明">エラーID文字列から詳細なエラーメッセージへ変換します。</para>
 		/// </remarks>
-		public static NativeString ConvertIdToMessage(ArgString errid, UInt32 p1, UInt32 p2)
+		public static NativeString ConvertIdToMessage(NativeString errid, UInt32 p1, UInt32 p2)
 		{
-			return NativeMethods.criErr_ConvertIdToMessage(errid.GetPointer(stackalloc byte[errid.BufferSize]), p1, p2);
+			return NativeMethods.criErr_ConvertIdToMessage(errid.GetUnsafeStringPointer(), p1, p2);
 		}
 
 		/// <summary>エラーコールバック関数の登録</summary>
@@ -64,17 +64,17 @@ namespace CriWare
 			[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
 #endif
 			static void CallbackFunc(NativeString errid, UInt32 p1, UInt32 p2, IntPtr parray) =>
-				InvokeCallbackInternal(instanceKey, (errid, p1, p2, parray));
+				InvokeCallbackInternal(default, (errid, p1, p2, parray));
 
-			delegate void NativeDelegate(NativeString errid, UInt32 p1, UInt32 p2, IntPtr parray);
+			/// <exclude/>
+			[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)] 
+			public delegate void NativeDelegate(NativeString errid, UInt32 p1, UInt32 p2, IntPtr parray);
 
-			static IntPtr instanceKey;
 			static NativeDelegate callbackDelegate = null;
 			internal CbFunc(Action<IntPtr> setFunction) :
-				base((ptr, key) => {
-					instanceKey = key;
-					setFunction(ptr);
-				}, Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc))
+				base(setFunction,
+				Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc))
 			{ }
 		}
 		/// <summary>エラー通知レベルの変更</summary>

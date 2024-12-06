@@ -30,16 +30,17 @@ namespace CriWare
 			return NativeMethods.criAtomDsp_ConvertParameterFromCent(cent);
 		}
 
-		/// <summary>ピッチシフタアタッチ用パラメーター構造体</summary>
+		/// <summary>ピッチシフターアタッチ用パラメーター構造体</summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ピッチシフタDSPをアタッチする際に指定するパラメーターです。
+		/// ピッチシフターDSPをアタッチする際に指定するパラメーターです。
 		/// <see cref="CriAtomExVoicePool.AttachDspPitchShifter"/> 関数に
 		/// <see cref="CriAtomEx.DspPitchShifterConfig"/> 構造体のメンバとして指定します。
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspPitchShifter"/>
+		[Serializable]
 		public unsafe partial struct PitchShifterConfig
 		{
 			/// <summary>ピッチシフトモード</summary>
@@ -90,6 +91,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspTimeStretch"/>
+		[Serializable]
 		public unsafe partial struct TimeStretchConfig
 		{
 			/// <exclude/>
@@ -106,44 +108,45 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspAfx"/>
+		[Serializable]
 		public unsafe partial struct AfxConfig
 		{
-			/// <summary>コンフィグパラメータ数</summary>
+			/// <summary>コンフィグパラメーター数</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// コンフィグパラメータ数を指定します。
+			/// コンフィグパラメーター数を指定します。
 			/// </para>
 			/// </remarks>
 			public UInt32 numConfigParameters;
 
-			/// <summary>コンフィグパラメータ配列</summary>
+			/// <summary>コンフィグパラメーター配列</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// エフェクトインスタンス初期化時に使用するパラメータの配列を設定します。
-			/// 本パラメータは、インスタンス生成時に必要となる追加のパラメータ情報であり、動作時パラメータとは異なります。
-			/// 例えば、ディレイエフェクトのコンフィグパラメータである最大遅延時間は、
+			/// エフェクトインスタンス初期化時に使用するパラメーターの配列を設定します。
+			/// 本パラメーターは、インスタンス生成時に必要となる追加のパラメーター情報であり、動作時パラメーターとは異なります。
+			/// 例えば、ディレイエフェクトのコンフィグパラメーターである最大遅延時間は、
 			/// インスタンス生成時に用意する遅延バッファサイズを確定させる為に用意されており、動作時は使用しません。
 			/// </para>
 			/// </remarks>
 			public NativeReference<Single> configParameters;
 
-			/// <summary>動作時パラメータ数</summary>
+			/// <summary>動作時パラメーター数</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// 動作時パラメータ数を指定します。
+			/// 動作時パラメーター数を指定します。
 			/// </para>
 			/// </remarks>
 			public UInt32 numParameters;
 
-			/// <summary>デフォルトパラメータ配列</summary>
+			/// <summary>デフォルトパラメーター配列</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// エフェクトの動作時パラメータのデフォルト値配列を設定します。
-			/// ボイスプールにエフェクトをアタッチした時や、エフェクトのパラメーターを初期化した場合、ここで指定したパラメータになります。
+			/// エフェクトの動作時パラメーターのデフォルト値配列を設定します。
+			/// ボイスプールにエフェクトをアタッチした時や、エフェクトのパラメーターを初期化した場合、ここで指定したパラメーターになります。
 			/// </para>
 			/// </remarks>
 			public NativeReference<Single> defaultParameters;

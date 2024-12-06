@@ -8,6 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../SampleExtensions/SampleExtensions.csproj" />
-    <PackageReference Include="CriWare.CriAtomLE" Version="2.27.378" />
+    <PackageReference Include="CriWare.CriAtomLE" Version="2.28.257" />
   </ItemGroup>
 </Project>

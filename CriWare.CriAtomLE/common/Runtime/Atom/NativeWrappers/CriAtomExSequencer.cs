@@ -85,18 +85,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static Int32 CallbackFunc(IntPtr obj, CriAtomEx.SequenceEventInfo* info) =>
+			static Int32 CriAtomExSequencerEventCbFuncCallbackFunc(IntPtr obj, CriAtomEx.SequenceEventInfo* info) =>
 				InvokeCallbackInternal(obj, new(info));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate Int32 NativeDelegate(IntPtr obj, CriAtomEx.SequenceEventInfo* info);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal EventCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.SequenceEventInfo*, Int32>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx.SequenceEventInfo*, Int32>)&CriAtomExSequencerEventCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExSequencerEventCbFuncCallbackFunc)
 #endif
 				)
 			{ }

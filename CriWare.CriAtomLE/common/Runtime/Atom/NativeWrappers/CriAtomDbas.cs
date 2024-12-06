@@ -123,6 +123,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomDbas.CriAtomDbas"/>
 		/// <seealso cref="CriAtomDbas.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomDbas.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>D-BAS 識別子</summary>

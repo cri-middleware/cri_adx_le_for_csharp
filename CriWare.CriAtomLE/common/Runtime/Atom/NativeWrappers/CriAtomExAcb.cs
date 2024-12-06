@@ -198,10 +198,6 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時）
 		/// に指定したパラメーターによって変化します。
 		/// そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// 本関数は、関数実行開始時に criFsLoader_Create 関数でローダーを確保し、
-		/// 終了時に criFsLoader_Destroy 関数でローダーを破棄します。
-		/// 本関数を実行する際には、空きローダーオブジェクトが１つ以上ある状態になるよう、
-		/// ローダー数を調整してください。
 		/// 本関数は完了復帰型の関数です。
 		/// ACBファイルのロードにかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -286,9 +282,6 @@ namespace CriWare
 		/// 本関数にワーク領域をセットした場合、セットした領域のメモリをACBオブジェクト破棄時
 		/// までアプリケーション中で保持し続ける必要があります。
 		/// （セット済みのワーク領域に値を書き込んだり、メモリ解放したりしてはいけません。）
-		/// ACBオブジェクトは内部的にバインダー（ <see cref="CriFsBinder"/> ）とローダー（ CriFsLoaderHn ）を確保します。
-		/// ACBファイルをロードする場合、ACBオブジェクト数分のバインダーとローダーが確保できる設定で
-		/// Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// ACBファイルのロードにかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -514,18 +507,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static NativeBool CallbackFunc(IntPtr obj, IntPtr acbHn) =>
+			static NativeBool CriAtomExAcbHandleCbFuncCallbackFunc(IntPtr obj, IntPtr acbHn) =>
 				InvokeCallbackInternal(obj, new(acbHn));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate NativeBool NativeDelegate(IntPtr obj, IntPtr acbHn);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal HandleCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, NativeBool>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, NativeBool>)&CriAtomExAcbHandleCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExAcbHandleCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -577,10 +571,6 @@ namespace CriWare
 		/// 注意:
 		/// 本関数にセットしたワーク領域は、 アプリケーションで保持する必要はありません。
 		/// （メモリにロードしたデータは関数終了時に解放されます。）
-		/// 本関数は、関数実行開始時に criFsLoader_Create 関数でローダーを確保し、
-		/// 終了時に criFsLoader_Destroy 関数でローダーを破棄します。
-		/// 本関数を実行する際には、空きローダーオブジェクトが１つ以上ある状態になるよう、
-		/// ローダー数を調整してください。
 		/// </para>
 		/// </remarks>
 		public static unsafe UInt32 GetVersionFromFile(CriFsBinder acbBinder, ArgString acbPath, out NativeBool flag, IntPtr work = default, Int32 workSize = default)
@@ -1677,18 +1667,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, NativeString acbName) =>
+			static void CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc(IntPtr obj, NativeString acbName) =>
 				InvokeCallbackInternal(obj, new(acbName));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, NativeString acbName);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DetectionInGamePreviewDataCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, NativeString, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, NativeString, void>)&CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc)
 #endif
 				)
 			{ }

@@ -154,6 +154,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomEx3dSource.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomEx3dSource.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dSource.CriAtomEx3dSource"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>距離によるボイスプライオリティ減衰を有効にする</summary>
@@ -875,6 +876,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetRandomPositionConfig"/>
 		/// <seealso cref="CriAtomEx3dSource.SetDefaultConfigForRandomPosition"/>
+		[Serializable]
 		public unsafe partial struct RandomPositionConfig
 		{
 			/// <summary>元の3D音源に追従するかどうか</summary>
@@ -1111,18 +1113,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr ex3dSource, CriAtomEx.Vector* resultPos) =>
+			static void CriAtomEx3dSourceRandomPositionCalculationCbFuncCallbackFunc(IntPtr obj, IntPtr ex3dSource, CriAtomEx.Vector* resultPos) =>
 				InvokeCallbackInternal(obj, new(ex3dSource, resultPos));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr ex3dSource, CriAtomEx.Vector* resultPos);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal RandomPositionCalculationCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, CriAtomEx.Vector*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, CriAtomEx.Vector*, void>)&CriAtomEx3dSourceRandomPositionCalculationCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomEx3dSourceRandomPositionCalculationCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -1242,18 +1245,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtomEx3dSource.RandomPositionResultInfoDetail* resultInfo) =>
+			static void CriAtomEx3dSourceRandomPositionResultCbFuncCallbackFunc(IntPtr obj, CriAtomEx3dSource.RandomPositionResultInfoDetail* resultInfo) =>
 				InvokeCallbackInternal(obj, new(resultInfo));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtomEx3dSource.RandomPositionResultInfoDetail* resultInfo);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal RandomPositionResultCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx3dSource.RandomPositionResultInfoDetail*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomEx3dSource.RandomPositionResultInfoDetail*, void>)&CriAtomEx3dSourceRandomPositionResultCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomEx3dSourceRandomPositionResultCbFuncCallbackFunc)
 #endif
 				)
 			{ }

@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c7jcendoqsvra" path="res://icon/pause.png" id="6_whaif"]
 [ext_resource type="Texture2D" uid="uid://by5hxuyw67bub" path="res://icon/pause_p.png" id="7_mtgd5"]
 [ext_resource type="Script" path="res://script/CriWareConsole.cs" id="8_wci37"]
-[ext_resource type="ButtonGroup" path="res://radiobutton.tres" id="9_23abx"]
+[ext_resource type="ButtonGroup" uid="uid://c4h4kkm22fv7e" path="res://radiobutton.tres" id="9_23abx"]
 [ext_resource type="Script" path="res://script/PlayCue.cs" id="10_4vfmq"]
 [ext_resource type="Script" path="res://script/SetNextBlock.cs" id="11_8eaus"]
 

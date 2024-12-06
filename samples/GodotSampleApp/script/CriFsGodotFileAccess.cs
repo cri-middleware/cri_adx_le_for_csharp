@@ -65,14 +65,14 @@ public static unsafe class CriFsGodotFileAccess{
 	}
 
 	[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
-	static CriFs.IoError Read(IntPtr key, Int64 Offset, Int64 ReadSize, void *Buffer, Int64 BufferSize){
+	static CriFs.IoError Read(IntPtr key, Int64 Offset, Int64 ReadSize, nint Buffer, Int64 BufferSize){
 		if(!_handles.ContainsKey(key)) return CriFs.IoError.Ng;
 		var readsize = Math.Min(ReadSize, BufferSize);
 		readsize = Math.Min(readsize, (long)_handles[key].fileSize - Offset);
 		CollectionsMarshal.GetValueRefOrNullRef(_handles, key).readSize = Math.Max(readsize, 0);
 		if(readsize <= 0) return CriFs.IoError.Ok;
 		_handles[key].fileAccess.Seek((ulong)Offset);
-		Marshal.Copy(_handles[key].fileAccess.GetBuffer(readsize), 0, (IntPtr)Buffer, (int)readsize);
+		Marshal.Copy(_handles[key].fileAccess.GetBuffer(readsize), 0, Buffer, (int)readsize);
 		return CriFs.IoError.Ok;
 	}
 
@@ -118,7 +118,7 @@ public static unsafe class CriFsGodotFileAccess{
 		CriFs.SetSelectIoCallback(&SelectIO);
 		
 		[UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
-		static CriErr.Error SelectIO(NativeString filename, CriFs.DeviceId* deviceId, CriFs.IoInterfacePtr* ioi){
+		static CriErr.Error SelectIO(NativeString filename, CriFs.DeviceId* deviceId, NativeReference<CriFs.IoInterface>* ioi){
 			*deviceId = CriFs.DeviceId._00;
 			*ioi = ioInterface;
 			return CriErr.Error.Ok;

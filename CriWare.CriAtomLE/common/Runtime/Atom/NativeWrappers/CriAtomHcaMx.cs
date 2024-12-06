@@ -85,6 +85,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomHcaMx.Initialize"/>
 		/// <seealso cref="CriAtomHcaMx.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>サーバー処理の実行頻度</summary>
@@ -102,27 +103,27 @@ namespace CriWare
 			/// <seealso cref="CriAtom.Config"/>
 			public Single serverFrequency;
 
-			/// <summary>ミキサ数</summary>
+			/// <summary>ミキサー数</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// HCA-MXデコード結果を送信するミキサの数を指定します。
-			/// ミキサを複数作成することで、
-			/// ミキサごとに異なるバスエフェクトを適用することが可能になります。
+			/// HCA-MXデコード結果を送信するミキサーの数を指定します。
+			/// ミキサーを複数作成することで、
+			/// ミキサーごとに異なるバスエフェクトを適用することが可能になります。
 			/// </para>
 			/// <para>
 			/// 注意:
 			/// HCA-MXのデコード処理、および定常状態の処理負荷は、
-			/// ミキサの数に比例して重くなります。
+			/// ミキサーの数に比例して重くなります。
 			/// </para>
 			/// </remarks>
 			public Int32 numMixers;
 
-			/// <summary>ミキサに登録可能な最大プレーヤー数</summary>
+			/// <summary>ミキサーに登録可能な最大プレーヤー数</summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// ミキサごとに登録可能なHCA-MXプレーヤーの数を指定します。
+			/// ミキサーごとに登録可能なHCA-MXプレーヤーの数を指定します。
 			/// </para>
 			/// </remarks>
 			public Int32 maxPlayers;
@@ -167,6 +168,7 @@ namespace CriWare
 			/// HCA-MXデータの出力チャンネル数を指定します。
 			/// 通常、ターゲット機に接続されたスピーカーの数（出力デバイスの
 			/// 最大チャンネル数）を指定します。
+			/// 出力チャンネル数の最大値は <see cref="CriAtom.HcaMxMaxOutputChannels"/> で、最小数は 1 です。
 			/// </para>
 			/// <para>
 			/// 備考:
@@ -320,18 +322,18 @@ namespace CriWare
 			NativeMethods.criAtomHcaMx_Finalize();
 		}
 
-		/// <summary>ミキサのバスセンドレベル設定</summary>
-		/// <param name="mixerId">ミキサID</param>
+		/// <summary>ミキサーのバスセンドレベル設定</summary>
+		/// <param name="mixerId">ミキサーID</param>
 		/// <param name="busName">バス名</param>
 		/// <param name="level">センドレベル値（0.0f～1.0f）</param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ミキサのバスセンドレベルを設定します。
-		/// デフォルト状態では、HCA-MXのデコード結果はミキサに格納された後、
+		/// ミキサーのバスセンドレベルを設定します。
+		/// デフォルト状態では、HCA-MXのデコード結果はミキサーに格納された後、
 		/// バス0へ1.0fのレベルで送信されます。
 		/// 本関数を使用することで、デコード結果を他のバスへもセンドすることが可能になります。
-		/// （ミキサごとに異なるバスエフェクトを適用可能になります。）
+		/// （ミキサーごとに異なるバスエフェクトを適用可能になります。）
 		/// </para>
 		/// </remarks>
 		public static void SetBusSendLevelByName(Int32 mixerId, ArgString busName, Single level)
@@ -339,17 +341,17 @@ namespace CriWare
 			NativeMethods.criAtomHcaMx_SetBusSendLevelByName(mixerId, busName.GetPointer(stackalloc byte[busName.BufferSize]), level);
 		}
 
-		/// <summary>ミキサの出力周波数調整比の設定</summary>
-		/// <param name="mixerId">ミキサID</param>
+		/// <summary>ミキサーの出力周波数調整比の設定</summary>
+		/// <param name="mixerId">ミキサーID</param>
 		/// <param name="ratio">センドレベル値（0.25f～4.0f）</param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ミキサの出力周波数調整比を設定します。
+		/// ミキサーの出力周波数調整比を設定します。
 		/// 周波数調整比は、音声データの周波数と再生周波数の比率で、再生速度の倍率と等価です。
 		/// 周波数比が1.0fを超える場合、音声データは原音より高速に再生され、
 		/// 1.0f未満の場合は、音声データは原音より低速で再生されます。
-		/// 本関数を使用することで、対象のミキサを使用する全てのプレーヤーの再生速度を
+		/// 本関数を使用することで、対象のミキサーを使用する全てのプレーヤーの再生速度を
 		/// 変更することができます（個々のプレーヤーの再生速度は変更できません）。
 		/// </para>
 		/// </remarks>
@@ -376,6 +378,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateHcaMxPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForHcaMxPlayer"/>
+		[Serializable]
 		public unsafe partial struct PlayerConfig
 		{
 			/// <summary>最大出力チャンネル数</summary>

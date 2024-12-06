@@ -41,6 +41,7 @@ namespace CriWare
 		/// すでにCRI AtomライブラリのAPIでサーバー処理スレッドの設定を変更している場合、
 		/// 本関数を呼び出すと設定を上書きしてしまうのでご注意ください。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetServerThreadPriority_PC(CriSint32)"/>
 		/// </remarks>
 		public static CriErr.Error SetServerThreadPriorityPC(Int32 prio)
 		{
@@ -64,6 +65,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetServerThreadPriority_PC(CriSint32 *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetServerThreadPriorityPC(out Int32 prio)
 		{
@@ -93,6 +95,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetFileAccessThreadPriority_PC(CriSint32)"/>
 		/// </remarks>
 		public static CriErr.Error SetFileAccessThreadPriorityPC(Int32 prio)
 		{
@@ -116,6 +119,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetFileAccessThreadPriority_PC(CriSint32 *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetFileAccessThreadPriorityPC(out Int32 prio)
 		{
@@ -145,6 +149,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetMemoryFileSystemThreadPriority_PC(CriSint32)"/>
 		/// </remarks>
 		public static CriErr.Error SetMemoryFileSystemThreadPriorityPC(Int32 prio)
 		{
@@ -168,6 +173,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetMemoryFileSystemThreadPriority_PC(CriSint32 *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetMemoryFileSystemThreadPriorityPC(out Int32 prio)
 		{
@@ -197,6 +203,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetDataDecompressionThreadPriority_PC(CriSint32)"/>
 		/// </remarks>
 		public static CriErr.Error SetDataDecompressionThreadPriorityPC(Int32 prio)
 		{
@@ -220,6 +227,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetDataDecompressionThreadPriority_PC(CriSint32 *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetDataDecompressionThreadPriorityPC(out Int32 prio)
 		{
@@ -249,6 +257,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetInstallerThreadPriority_PC(CriSint32)"/>
 		/// </remarks>
 		public static CriErr.Error SetInstallerThreadPriorityPC(Int32 prio)
 		{
@@ -272,6 +281,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetInstallerThreadPriority_PC(CriSint32 *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetInstallerThreadPriorityPC(out Int32 prio)
 		{
@@ -303,6 +313,7 @@ namespace CriWare
 		/// すでにCRI AtomライブラリのAPIでサーバー処理スレッドの設定を変更している場合、
 		/// 本関数を呼び出すと設定を上書きしてしまうのでご注意ください。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetServerThreadAffinityMask_PC(DWORD_PTR)"/>
 		/// </remarks>
 		public static CriErr.Error SetServerThreadAffinityMaskPC(IntPtr mask)
 		{
@@ -326,6 +337,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetServerThreadAffinityMask_PC(DWORD_PTR *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetServerThreadAffinityMaskPC(out IntPtr mask)
 		{
@@ -354,6 +366,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetFileAccessThreadAffinityMask_PC(DWORD_PTR)"/>
 		/// </remarks>
 		public static CriErr.Error SetFileAccessThreadAffinityMaskPC(IntPtr mask)
 		{
@@ -377,6 +390,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetFileAccessThreadAffinityMask_PC(DWORD_PTR *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetFileAccessThreadAffinityMaskPC(out IntPtr mask)
 		{
@@ -405,6 +419,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetMemoryFileSystemThreadAffinityMask_PC(DWORD_PTR)"/>
 		/// </remarks>
 		public static CriErr.Error SetMemoryFileSystemThreadAffinityMaskPC(IntPtr mask)
 		{
@@ -428,6 +443,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetMemoryFileSystemThreadAffinityMask_PC(DWORD_PTR *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetMemoryFileSystemThreadAffinityMaskPC(out IntPtr mask)
 		{
@@ -456,6 +472,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetDataDecompressionThreadAffinityMask_PC(DWORD_PTR)"/>
 		/// </remarks>
 		public static CriErr.Error SetDataDecompressionThreadAffinityMaskPC(IntPtr mask)
 		{
@@ -479,6 +496,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetDataDecompressionThreadAffinityMask_PC(DWORD_PTR *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetDataDecompressionThreadAffinityMaskPC(out IntPtr mask)
 		{
@@ -507,6 +525,7 @@ namespace CriWare
 		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
 		/// （エラーコールバックが発生します。）
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SetInstallerThreadAffinityMask_PC(DWORD_PTR)"/>
 		/// </remarks>
 		public static CriErr.Error SetInstallerThreadAffinityMaskPC(IntPtr mask)
 		{
@@ -530,6 +549,7 @@ namespace CriWare
 		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
 		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_GetInstallerThreadAffinityMask_PC(DWORD_PTR *)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetInstallerThreadAffinityMaskPC(out IntPtr mask)
 		{
@@ -549,6 +569,7 @@ namespace CriWare
 		/// 本関数を使用すると、ファイルパスをUnicodeとして取り扱うように変更することができます。(CreateFileWを使用)
 		/// 引数に true を指定して実行すると、ファイルパスはUTF-8としてみなし、ライブラリ内部でUTF-16に変換してファイルオープンを行います。
 		/// </para>
+		/// <nativeinfo declaration="CriError criFs_SwitchPathUnicodeToUtf8_PC(CriBool)"/>
 		/// </remarks>
 		public static CriErr.Error SwitchPathUnicodeToUtf8PC(NativeBool sw)
 		{

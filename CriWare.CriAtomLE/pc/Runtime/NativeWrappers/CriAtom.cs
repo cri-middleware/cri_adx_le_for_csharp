@@ -16,6 +16,140 @@ namespace CriWare
 	/// <summary>CriAtom API</summary>
 	public static partial class CriAtom
 	{
+		/// <summary>ライブラリ初期化用ワーク領域サイズの計算</summary>
+		/// <param name="config">初期化用コンフィグ構造体</param>
+		/// <returns>ワーク領域サイズ</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ライブラリを使用するために必要な、ワーク領域のサイズを取得します。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ
+		/// 構造体（ <see cref="CriAtom.ConfigWASAPI"/> ）の内容によって変化します。
+		/// 引数 config の情報は、関数内でのみ参照されます。
+		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
+		/// 問題ありません。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本関数の代わりに
+		/// <see cref="CriAtomEx.CalculateWorkSizeWASAPI"/> 関数をご利用ください。
+		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtom_CalculateWorkSize_WASAPI(const CriAtomConfig_WASAPI *)"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.ConfigWASAPI"/>
+		/// <seealso cref="CriAtom.InitializeWASAPI"/>
+		public static unsafe Int32 CalculateWorkSizeWASAPI(in CriAtom.ConfigWASAPI config)
+		{
+			fixed (CriAtom.ConfigWASAPI* configPtr = &config)
+				return NativeMethods.criAtom_CalculateWorkSize_WASAPI(configPtr);
+		}
+
+		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
+		/// <remarks>
+		/// <para>
+		/// 注意:
+		/// 本構造体は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本構造体の代わりに
+		/// <see cref="CriAtomEx.ConfigWASAPI"/> 構造体をご利用ください。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializeWASAPI"/>
+		[Serializable]
+		public unsafe partial struct ConfigWASAPI
+		{
+			/// <summary>Atom初期化用コンフィグ構造体</summary>
+			public CriAtom.Config atom;
+
+			/// <summary>ASR初期化用コンフィグ</summary>
+			public CriAtomAsr.Config asr;
+
+			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
+			public CriAtomHcaMx.Config hcaMx;
+
+		}
+		/// <summary>ライブラリの初期化</summary>
+		/// <param name="config">初期化用コンフィグ構造体</param>
+		/// <param name="work">ワーク領域</param>
+		/// <param name="workSize">ワーク領域サイズ</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ライブラリを初期化します。
+		/// ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
+		/// （ライブラリの機能は、本関数を実行後、 <see cref="CriAtom.FinalizeWASAPI"/> 関数を実行するまでの間、
+		/// 利用可能です。）
+		/// ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域）
+		/// を確保する必要があります。
+		/// ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて
+		/// 変化します。
+		/// ワーク領域サイズの計算には、 <see cref="CriAtom.CalculateWorkSizeWASAPI"/>
+		/// 関数を使用してください。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// <see cref="CriAtom.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、
+		/// 本関数にワーク領域を指定する必要はありません。
+		/// （ work に null 、 work_size に 0 を指定することで、登録済みのアロケーター
+		/// から必要なワーク領域サイズ分のメモリが動的に確保されます。）
+		/// 引数 config の情報は、関数内でのみ参照されます。
+		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
+		/// 問題ありません。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数は内部的に以下の関数を実行します。
+		/// - <see cref="CriAtom.Initialize"/>
+		/// - <see cref="CriAtomAsr.Initialize"/>
+		/// - <see cref="CriAtomHcaMx.Initialize"/>
+		/// 本関数を実行する場合、上記関数を実行しないでください。
+		/// 本関数を実行後、必ず対になる <see cref="CriAtom.FinalizeWASAPI"/> 関数を実行してください。
+		/// また、 <see cref="CriAtom.FinalizeWASAPI"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// 本関数は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本関数の代わりに
+		/// <see cref="CriAtomEx.InitializeWASAPI"/> 関数をご利用ください。
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_Initialize_WASAPI(const CriAtomConfig_WASAPI *, void *, CriSint32)"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.ConfigWASAPI"/>
+		/// <seealso cref="CriAtom.FinalizeWASAPI"/>
+		/// <seealso cref="CriAtom.SetUserAllocator"/>
+		/// <seealso cref="CriAtom.CalculateWorkSizeWASAPI"/>
+		public static unsafe void InitializeWASAPI(in CriAtom.ConfigWASAPI config, IntPtr work = default, Int32 workSize = default)
+		{
+			fixed (CriAtom.ConfigWASAPI* configPtr = &config)
+				NativeMethods.criAtom_Initialize_WASAPI(configPtr, work, workSize);
+		}
+
+		/// <summary>ライブラリの終了</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ライブラリを終了します。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数は内部的に以下の関数を実行します。
+		/// - <see cref="CriAtom.Finalize"/>
+		/// - <see cref="CriAtomAsr.Finalize"/>
+		/// - <see cref="CriAtomHcaMx.Finalize"/>
+		/// 本関数を実行する場合、上記関数を実行しないでください。
+		/// <see cref="CriAtom.InitializeWASAPI"/> 関数実行前に本関数を実行することはできません。
+		/// 本関数は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本関数の代わりに
+		/// <see cref="CriAtomEx.FinalizeWASAPI"/> 関数をご利用ください。
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_Finalize_WASAPI()"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializeWASAPI"/>
+		public static void FinalizeWASAPI()
+		{
+			NativeMethods.criAtom_Finalize_WASAPI();
+		}
+
 		/// <summary>ミキサフォーマットの取得</summary>
 		/// <param name="format">ミキサのフォーマット</param>
 		/// <returns>ミキサのフォーマットが取得できたかどうか（ true = 成功、false = 失敗）</returns>
@@ -36,6 +170,7 @@ namespace CriWare
 		/// 本関数で取得する WAVEFORMATEXTENSIBLE 構造体は IEEE float 形式のPCMデータフォーマットを返しますが、
 		/// このフォーマットは排他モードではほとんどの場合使用できません。
 		/// </para>
+		/// <nativeinfo declaration="CriBool criAtom_GetAudioClientMixFormat_WASAPI(WAVEFORMATEXTENSIBLE *)"/>
 		/// </remarks>
 		public static bool GetAudioClientMixFormatWASAPI(IntPtr format)
 		{
@@ -63,6 +198,7 @@ namespace CriWare
 		/// 本関数が true を返したにもかかわらず、ライブラリの初期化に失敗する場合には、
 		/// 指定するフォーマットを変更するか、または共有モードをご使用ください。
 		/// </para>
+		/// <nativeinfo declaration="CriBool criAtom_GetAudioClientIsFormatSupported_WASAPI(const WAVEFORMATEX *)"/>
 		/// </remarks>
 		public static bool GetAudioClientIsFormatSupportedWASAPI(IntPtr format)
 		{
@@ -86,6 +222,7 @@ namespace CriWare
 		/// 排他モードを使用する場合、本関数でのモード指定に加え、
 		/// <see cref="CriAtom.SetAudioClientFormatWASAPI"/> 関数によるフォーマットの指定が必要です。
 		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetAudioClientShareMode_WASAPI(AUDCLNT_SHAREMODE)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetAudioClientFormatWASAPI"/>
 		public static void SetAudioClientShareModeWASAPI(Int32 mode)
@@ -100,6 +237,7 @@ namespace CriWare
 		/// 説明:
 		/// 現在指定されている共有方式を取得します。
 		/// </para>
+		/// <nativeinfo declaration="AUDCLNT_SHAREMODE criAtom_GetAudioClientShareMode_WASAPI()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetAudioClientShareModeWASAPI"/>
 		public static Int32 GetAudioClientShareModeWASAPI()
@@ -125,6 +263,7 @@ namespace CriWare
 		/// 排他モードを使用する場合、本関数でのモード指定に加え、
 		/// <see cref="CriAtom.SetAudioClientShareModeWASAPI"/> 関数によるモード指定が必要です。
 		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetAudioClientFormat_WASAPI(const WAVEFORMATEX *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetAudioClientShareModeWASAPI"/>
 		public static void SetAudioClientFormatWASAPI(IntPtr format)
@@ -160,6 +299,7 @@ namespace CriWare
 		/// そのため、バッファリング量を変更する場合には、
 		/// ユーザが設定値を変更できる仕組み（オプション画面等）を提供することもご検討ください。
 		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetAudioClientBufferDuration_WASAPI(REFERENCE_TIME)"/>
 		/// </remarks>
 		public static void SetAudioClientBufferDurationWASAPI(Int64 refTime)
 		{
@@ -182,6 +322,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化する必要があります。
 		/// </para>
+		/// <nativeinfo declaration="int * criAtom_GetAudioClient_WASAPI()"/>
 		/// </remarks>
 		public static IntPtr GetAudioClientWASAPI()
 		{
@@ -201,6 +342,7 @@ namespace CriWare
 		/// 元々サウンドデバイスが搭載されていないPCで本関数を実行した場合、本関数はfalseを返します。
 		/// （サウンドデバイスの有無は別途 <see cref="CriAtom.GetAudioClientWASAPI"/> 関数でチェックする必要があります。）
 		/// </para>
+		/// <nativeinfo declaration="CriBool criAtom_IsDeviceInvalidated_WASAPI()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.GetAudioClientWASAPI"/>
 		public static bool IsDeviceInvalidatedWASAPI()
@@ -233,11 +375,11 @@ namespace CriWare
 		/// 指定されたIDに一致するサウンドデバイスが見つからない場合、
 		/// 当該デバイスを指定して再生された音声は、既定のデバイスから出力されます。
 		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetDeviceId_WASAPI(CriAtomSoundRendererType, LPCWSTR)"/>
 		/// </remarks>
-		public static unsafe void SetDeviceIdWASAPI(CriAtom.SoundRendererType type, in Int16 deviceId)
+		public static void SetDeviceIdWASAPI(CriAtom.SoundRendererType type, IntPtr deviceId)
 		{
-			fixed (Int16* deviceIdPtr = &deviceId)
-				NativeMethods.criAtom_SetDeviceId_WASAPI(type, deviceIdPtr);
+			NativeMethods.criAtom_SetDeviceId_WASAPI(type, deviceId);
 		}
 
 		/// <summary>オーディオエンドポイントの列挙</summary>
@@ -265,6 +407,7 @@ namespace CriWare
 		/// 注意:
 		/// IMMDeviceインスタンスをコールバック関数内で破棄してはいけません。
 		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtom_EnumAudioEndpoints_WASAPI(CriAtomAudioEndpointCbFunc_WASAPI, void *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AudioEndpointCbFuncWASAPI"/>
 		public static unsafe Int32 EnumAudioEndpointsWASAPI(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> callback, IntPtr @object)
@@ -306,18 +449,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr @object, IntPtr device) =>
+			static void CriAtomAudioEndpointCbFunc_WASAPICallbackFunc(IntPtr @object, IntPtr device) =>
 				InvokeCallbackInternal(@object, new(device));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr @object, IntPtr device);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal AudioEndpointCbFuncWASAPI(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomAudioEndpointCbFunc_WASAPICallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomAudioEndpointCbFunc_WASAPICallbackFunc)
 #endif
 				)
 			{ }
@@ -336,6 +480,7 @@ namespace CriWare
 		/// 備考:
 		/// 第 2 引数（ object ）にセットした値は、コールバック関数の引数として渡されます。
 		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetDeviceUpdateCallback_WASAPI(CriAtomDeviceUpdateCbFunc_WASAPI, void *)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AudioEndpointCbFuncWASAPI"/>
 		public static unsafe void SetDeviceUpdateCallbackWASAPI(delegate* unmanaged[Cdecl]<IntPtr, void> callback, IntPtr @object)
@@ -367,18 +512,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr @object) =>
+			static void CriAtomDeviceUpdateCbFunc_WASAPICallbackFunc(IntPtr @object) =>
 				InvokeCallbackInternal(@object, new());
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr @object);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DeviceUpdateCbFuncWASAPI(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, void>)&CriAtomDeviceUpdateCbFunc_WASAPICallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomDeviceUpdateCbFunc_WASAPICallbackFunc)
 #endif
 				)
 			{ }
@@ -401,6 +547,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数はライブラリ初期化前に使用する必要があります。
 		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetSpatialAudioEnabled_WASAPI(CriAtomSoundRendererType, CriBool)"/>
 		/// </remarks>
 		public static void SetSpatialAudioEnabledWASAPI(CriAtom.SoundRendererType type, NativeBool sw)
 		{
@@ -416,10 +563,267 @@ namespace CriWare
 		/// スペーシャルオーディオ機能が有効になっているかどうかをチェックします。
 		/// 引数の type には、スペーシャルオーディオ機能が有効化どうかをチェックしたいサウンドレンダラを指定します。
 		/// </para>
+		/// <nativeinfo declaration="CriBool criAtom_IsSpatialAudioEnabled_WASAPI(CriAtomSoundRendererType)"/>
 		/// </remarks>
 		public static bool IsSpatialAudioEnabledWASAPI(CriAtom.SoundRendererType type)
 		{
 			return NativeMethods.criAtom_IsSpatialAudioEnabled_WASAPI(type);
+		}
+
+		/// <summary>ライブラリ初期化用ワーク領域サイズの計算</summary>
+		/// <param name="config">初期化用コンフィグ構造体</param>
+		/// <returns>ワーク領域サイズ</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ライブラリを使用するために必要な、ワーク領域のサイズを取得します。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ
+		/// 構造体（ <see cref="CriAtom.ConfigPC"/> ）の内容によって変化します。
+		/// 引数 config の情報は、関数内でのみ参照されます。
+		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
+		/// 問題ありません。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本関数の代わりに
+		/// <see cref="CriAtomEx.CalculateWorkSizePC"/> 関数をご利用ください。
+		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtom_CalculateWorkSize_PC(const CriAtomConfig_PC *)"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.ConfigPC"/>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		public static unsafe Int32 CalculateWorkSizePC(in CriAtom.ConfigPC config)
+		{
+			fixed (CriAtom.ConfigPC* configPtr = &config)
+				return NativeMethods.criAtom_CalculateWorkSize_PC(configPtr);
+		}
+
+		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
+		/// <remarks>
+		/// <para>
+		/// 注意:
+		/// 本構造体は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本構造体の代わりに
+		/// <see cref="CriAtomEx.ConfigPC"/> 構造体をご利用ください。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		[Serializable]
+		public unsafe partial struct ConfigPC
+		{
+			/// <summary>Atom初期化用コンフィグ構造体</summary>
+			public CriAtom.Config atom;
+
+			/// <summary>ASR初期化用コンフィグ</summary>
+			public CriAtomAsr.Config asr;
+
+			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
+			public CriAtomHcaMx.Config hcaMx;
+
+		}
+		/// <summary>ライブラリの初期化</summary>
+		/// <param name="config">初期化用コンフィグ構造体</param>
+		/// <param name="work">ワーク領域</param>
+		/// <param name="workSize">ワーク領域サイズ</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ライブラリを初期化します。
+		/// ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
+		/// （ライブラリの機能は、本関数を実行後、 <see cref="CriAtom.FinalizePC"/> 関数を実行するまでの間、
+		/// 利用可能です。）
+		/// ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域）
+		/// を確保する必要があります。
+		/// ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて
+		/// 変化します。
+		/// ワーク領域サイズの計算には、 <see cref="CriAtom.CalculateWorkSizePC"/>
+		/// 関数を使用してください。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// <see cref="CriAtom.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、
+		/// 本関数にワーク領域を指定する必要はありません。
+		/// （ work に null 、 work_size に 0 を指定することで、登録済みのアロケーター
+		/// から必要なワーク領域サイズ分のメモリが動的に確保されます。）
+		/// 引数 config の情報は、関数内でのみ参照されます。
+		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
+		/// 問題ありません。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数は内部的に以下の関数を実行します。
+		/// - <see cref="CriAtom.Initialize"/>
+		/// - <see cref="CriAtomAsr.Initialize"/>
+		/// - <see cref="CriAtomHcaMx.Initialize"/>
+		/// 本関数を実行する場合、上記関数を実行しないでください。
+		/// 本関数を実行後、必ず対になる <see cref="CriAtom.FinalizePC"/> 関数を実行してください。
+		/// また、 <see cref="CriAtom.FinalizePC"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// 本関数は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本関数の代わりに
+		/// <see cref="CriAtomEx.InitializePC"/> 関数をご利用ください。
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_Initialize_PC(const CriAtomConfig_PC *, void *, CriSint32)"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.ConfigPC"/>
+		/// <seealso cref="CriAtom.FinalizePC"/>
+		/// <seealso cref="CriAtom.SetUserAllocator"/>
+		/// <seealso cref="CriAtom.CalculateWorkSizePC"/>
+		public static unsafe void InitializePC(in CriAtom.ConfigPC config, IntPtr work = default, Int32 workSize = default)
+		{
+			fixed (CriAtom.ConfigPC* configPtr = &config)
+				NativeMethods.criAtom_Initialize_PC(configPtr, work, workSize);
+		}
+
+		/// <summary>ライブラリの終了</summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ライブラリを終了します。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数は内部的に以下の関数を実行します。
+		/// - <see cref="CriAtom.Finalize"/>
+		/// - <see cref="CriAtomAsr.Finalize"/>
+		/// - <see cref="CriAtomHcaMx.Finalize"/>
+		/// 本関数を実行する場合、上記関数を実行しないでください。
+		/// <see cref="CriAtom.InitializePC"/> 関数実行前に本関数を実行することはできません。
+		/// 本関数は下位レイヤ向けのAPIです。
+		/// AtomExレイヤの機能を利用する際には、本関数の代わりに
+		/// <see cref="CriAtomEx.FinalizePC"/> 関数をご利用ください。
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_Finalize_PC()"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		public static void FinalizePC()
+		{
+			NativeMethods.criAtom_Finalize_PC();
+		}
+
+		/// <summary>サーバー処理スレッドのプライオリティ変更</summary>
+		/// <param name="prio">スレッドプライオリティ</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// サーバー処理（ライブラリの内部処理）を行うスレッドのプライオリティを変更します。
+		/// デフォルト状態（本関数を実行しない場合）では、サーバー処理スレッドのプライオリティは
+		/// THREAD_PRIORITY_HIGHEST に設定されます。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// :
+		/// 本関数は、ライブラリ初期化時にスレッドモデルをマルチスレッドモデル
+		/// （ <see cref="CriAtom.ThreadModel.Multi"/> ）に設定した場合にのみ効果を発揮します。
+		/// 他のスレッドモデルを選択した場合、本関数は何も処理を行いません。
+		/// （エラーコールバックが発生します。）
+		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
+		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
+		/// （エラーコールバックが発生します。）
+		/// サーバー処理スレッドは、CRI File Systemライブラリでも利用されています。
+		/// すでにCRI File SystemライブラリのAPIでサーバー処理スレッドの設定を変更している場合
+		/// 本関数により設定が上書きされますのでご注意ください。
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetThreadPriority_PC(CriSint32)"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		/// <seealso cref="CriAtom.GetThreadPriorityPC"/>
+		public static void SetThreadPriorityPC(Int32 prio)
+		{
+			NativeMethods.criAtom_SetThreadPriority_PC(prio);
+		}
+
+		/// <summary>サーバー処理スレッドのプライオリティ取得</summary>
+		/// <returns>スレッドプライオリティ</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// サーバー処理（ライブラリの内部処理）を行うスレッドのプライオリティを取得します。
+		/// 取得に成功すると、本関数はサーバー処理を行うスレッドのプライオリティを返します。
+		/// 取得に失敗した場合、本関数は THREAD_PRIORITY_ERROR_RETURN を返します。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// :
+		/// 本関数は、ライブラリ初期化時にスレッドモデルをマルチスレッドモデル
+		/// （ <see cref="CriAtom.ThreadModel.Multi"/> ）に設定した場合にのみ効果を発揮します。
+		/// 他のスレッドモデルを選択した場合、本関数はエラー値を返します。
+		/// （エラーコールバックが発生します。）
+		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
+		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラー値を返します。
+		/// （エラーコールバックが発生します。）
+		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtom_GetThreadPriority_PC()"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		/// <seealso cref="CriAtom.SetThreadPriorityPC"/>
+		public static Int32 GetThreadPriorityPC()
+		{
+			return NativeMethods.criAtom_GetThreadPriority_PC();
+		}
+
+		/// <summary>サーバー処理スレッドのアフィニティマスク変更</summary>
+		/// <param name="mask">スレッドアフィニティマスク</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// サーバー処理（ライブラリの内部処理）を行うスレッドのアフィニティマスクを変更します。
+		/// デフォルト状態（本関数を実行しない場合）では、サーバー処理が動作するプロセッサは
+		/// 一切制限されません。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// :
+		/// 本関数は、ライブラリ初期化時にスレッドモデルをマルチスレッドモデル
+		/// （ <see cref="CriAtom.ThreadModel.Multi"/> ）に設定した場合にのみ効果を発揮します。
+		/// 他のスレッドモデルを選択した場合、本関数は何も処理を行いません。
+		/// （エラーコールバックが発生します。）
+		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
+		/// 初期化前や終了処理後に本関数を実行しても、効果はありません。
+		/// （エラーコールバックが発生します。）
+		/// サーバー処理スレッドは、CRI File Systemライブラリでも利用されています。
+		/// すでにCRI File SystemライブラリのAPIでサーバー処理スレッドの設定を変更している場合
+		/// 本関数により設定が上書きされますのでご注意ください。
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_SetThreadAffinityMask_PC(DWORD_PTR)"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		/// <seealso cref="CriAtom.GetThreadAffinityMaskPC"/>
+		public static void SetThreadAffinityMaskPC(IntPtr mask)
+		{
+			NativeMethods.criAtom_SetThreadAffinityMask_PC(mask);
+		}
+
+		/// <summary>サーバー処理スレッドのアフィニティマスクの取得</summary>
+		/// <returns>スレッドアフィニティマスク</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// サーバー処理（ライブラリの内部処理）を行うスレッドのアフィニティマスクを取得します。
+		/// 取得に成功すると、本関数はサーバー処理を行うスレッドのアフィニティマスクを返します。
+		/// 取得に失敗した場合、本関数は 0 を返します。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// :
+		/// 本関数は、ライブラリ初期化時にスレッドモデルをマルチスレッドモデル
+		/// （ <see cref="CriAtom.ThreadModel.Multi"/> ）に設定した場合にのみ効果を発揮します。
+		/// 他のスレッドモデルを選択した場合、本関数はエラー値を返します。
+		/// （エラーコールバックが発生します。）
+		/// 本関数は初期化後～終了処理前の間に実行する必要があります。
+		/// 初期化前や終了処理後に本関数を実行した場合、本関数はエラー値を返します。
+		/// （エラーコールバックが発生します。）
+		/// </para>
+		/// <nativeinfo declaration="DWORD_PTR criAtom_GetThreadAffinityMask_PC()"/>
+		/// </remarks>
+		/// <seealso cref="CriAtom.InitializePC"/>
+		/// <seealso cref="CriAtom.SetThreadAffinityMaskPC"/>
+		public static IntPtr GetThreadAffinityMaskPC()
+		{
+			return NativeMethods.criAtom_GetThreadAffinityMask_PC();
 		}
 
 	}

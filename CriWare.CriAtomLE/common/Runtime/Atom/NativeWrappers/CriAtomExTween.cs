@@ -46,7 +46,38 @@ namespace CriWare
 		}
 
 		/// <summary>トゥイーンの作成に必要なワーク領域サイズの計算</summary>
-		public static unsafe Int32 CalculateWorkSize(ref CriAtomExTween.Config config)
+		/// <param name="config">トゥイーン作成用コンフィグ構造体</param>
+		/// <returns>ワーク領域サイズ</returns>
+		/// <returns>正常に処理が完了</returns>
+		/// <returns>エラーが発生</returns>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// トゥイーンを作成するのに必要な、ワーク領域のサイズを取得します。
+		/// アロケーターを登録せずにトゥイーンを作成する場合、あらかじめ本関数で計算した
+		/// ワーク領域サイズ分のメモリをワーク領域として <see cref="CriAtomExTween.CriAtomExTween"/> 関数に
+		/// セットする必要があります。
+		/// 引数にnullを指定した場合、デフォルト設定
+		/// （ <see cref="CriAtomExTween.SetDefaultConfig"/> 適用時と同じパラメーター）で
+		/// ワーク領域サイズを計算します。
+		/// ワーク領域サイズ計算時に失敗した場合、戻り値は -1 になります。
+		/// ワーク領域サイズの計算に失敗した理由については、エラーコールバックの
+		/// メッセージで確認可能です。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// 引数 config の情報は、関数内でのみ参照されます。
+		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
+		/// 問題ありません。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExTween.Config"/>
+		/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
+		public static unsafe Int32 CalculateWorkSize(in CriAtomExTween.Config config)
 		{
 			fixed (CriAtomExTween.Config* configPtr = &config)
 				return NativeMethods.criAtomExTween_CalculateWorkSize(configPtr);
@@ -65,6 +96,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomExTween.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomExTween.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>ID指定共用体</summary>

@@ -33,7 +33,6 @@ public class SampleAudioPlayer : ScriptableObject
 
 	CriAtomDbas dbas;
 	CriAtomExVoicePool voicePool;
-	CriAtomExPlayer player;
 	CriAtomEx3dListener listener;
 
 	CriAtomExAcb acb;
@@ -61,7 +60,6 @@ public class SampleAudioPlayer : ScriptableObject
 		CriAtomExVoicePool.SetDefaultConfigForStandardVoicePool(out var poolConfig);
 		voicePool = CriAtomExVoicePool.AllocateStandardVoicePool(poolConfig);
 
-		player = new CriAtomExPlayer();
 		listener = new CriAtomEx3dListener();
 
 		// use the NativeArray got from GetData<byte>() method if using TextAsset
@@ -80,19 +78,10 @@ public class SampleAudioPlayer : ScriptableObject
 			null, System.IO.Path.Join(streamingAssetsPath, awbPath));
 	}
 
-	public CriAtomExPlayback Play(int cueId, CriAtomEx3dSource source)
-	{
-		player.Set3dSourceHn(source);
-		player.SetCueId(acb, cueId);
-		return player.Start();
-	}
-
 	private void OnDisable()
 	{
 		listener?.Dispose();
 		listener = null;
-		player?.Dispose();
-		player = null;
 		acb?.Dispose();
 		acb = null;
 		voicePool?.Dispose();

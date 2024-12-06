@@ -70,14 +70,6 @@ namespace CriWare
 		/// 必要なワーク領域を関数内部で動的に確保します。
 		/// 動的に確保した領域は、<see cref="CriAtomAwb.Dispose"/> 関数で解放されます。
 		/// </para>
-		/// <para>
-		/// 注意:
-		/// AWBオブジェクトは内部的にバインダー（ <see cref="CriFsBinder"/> ）、およびローダー（ CriFsLoaderHn ）
-		/// を確保します。
-		/// AWBファイルのTOC情報をロードする場合、AWBオブジェクト数分のバインダー、およびローダーが
-		/// 確保できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
-		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetWaveId"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
@@ -140,14 +132,6 @@ namespace CriWare
 		/// 本関数で取得したAWBオブジェクトのステータスがエラー状態（<see cref="CriAtomAwb.Status.Error"/>）になった場合も、
 		/// <see cref="CriAtomAwb.Dispose"/> 関数で解放してください。
 		/// </para>
-		/// <para>
-		/// 注意:
-		/// AWBオブジェクトは内部的にバインダー（ <see cref="CriFsBinder"/> ）、およびローダー（ CriFsLoaderHn ）
-		/// を確保します。
-		/// AWBファイルのTOC情報をロードする場合、AWBオブジェクト数分のバインダー、およびローダーが
-		/// 確保できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する
-		/// 必要があります。
-		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetWaveId"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
@@ -204,13 +188,6 @@ namespace CriWare
 		/// Fixed Memor方式を用いる場合は、<see cref="CriAtomAwb.WorksizeForLoadfrommemory"/> 関数を使って
 		/// 必要なワーク領域サイズを求めてください。
 		/// ワーク領域とは異なり、awb_mem は必ずユーザの責任で管理する必要がある点には注意してください。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// 本関数が成功すると、 awb_memで渡されたメモリ領域をオンメモリAWBデータ用に書き換えます。
-		/// そのため、複数スレッドから<see cref="CriAtomAwb.WorksizeForLoadfrommemory"/> 関数を呼び出している場合は、
-		/// 排他処理によりスレッドの実行順が入れ替わる場合があります。
-		/// なお、awb_mem で指すメモリ領域は <see cref="CriAtomAwb.Dispose"/> 関数実行後に手動で解放してください。
 		/// AWBオブジェクトは内部的にバインダー（ <see cref="CriFsBinder"/> ）を確保します。
 		/// AWBファイルのTOC情報をロードする場合、AWBオブジェクト数分のバインダーが確保できる設定で
 		/// Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。

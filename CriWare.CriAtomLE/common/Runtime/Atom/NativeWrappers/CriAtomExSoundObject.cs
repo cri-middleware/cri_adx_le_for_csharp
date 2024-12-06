@@ -112,6 +112,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.CriAtomExSoundObject"/>
 		/// <seealso cref="CriAtomExSoundObject.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>ボイスリミットスコープの有効化</summary>

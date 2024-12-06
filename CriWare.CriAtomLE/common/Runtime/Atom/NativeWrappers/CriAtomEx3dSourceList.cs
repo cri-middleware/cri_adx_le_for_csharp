@@ -87,6 +87,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomEx3dSourceList.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomEx3dSourceList.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dSourceList.CriAtomEx3dSourceList"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <exclude/>

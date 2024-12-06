@@ -26,6 +26,61 @@ namespace CriWare
 	/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
 	public partial class CriAtomExPlayer : IDisposable
 	{
+		/// <summary>再生開始位置の指定</summary>
+		/// <param name="startTimeUs">再生開始位置（マイクロ秒指定）</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// AtomExプレーヤーで再生する音声について、再生を開始する位置を指定します。
+		/// 音声データを途中から再生したい場合、再生開始前に本関数で再生開始位置を
+		/// 指定する必要があります。
+		/// 再生開始位置の指定はマイクロ秒単位で行います。
+		/// 例えば、 start_time_us に 10000000 をセットして本関数を実行すると、
+		/// 次に再生する音声データは 10 秒目の位置から再生されます。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// 音声データ途中からの再生は、音声データ先頭からの再生に比べ、発音開始の
+		/// タイミングが遅くなります。
+		/// これは、一旦音声データのヘッダーを解析後、指定位置にジャンプしてからデータを読み
+		/// 直して再生を開始するためです。
+		/// 設定した値は<see cref="CriAtomExPlayer.SetStartTime"/>による設定を上書きします。
+		/// 本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。
+		/// 機種固有の音声フォーマットについても、再生開始位置を指定できない場合があります。
+		/// 再生開始位置を指定してシーケンスを再生した場合、指定位置よりも前に配置された
+		/// 波形データは再生されません。
+		/// （シーケンス内の個々の波形が途中から再生されることはありません。）
+		/// </para>
+		/// </remarks>
+		public void SetStartTimeMicro(Int64 startTimeUs)
+		{
+			NativeMethods.criAtomExPlayer_SetStartTimeMicro(NativeHandle, startTimeUs);
+		}
+
+		/// <summary>パンニング3D仰俯角の設定</summary>
+		/// <param name="pan3dElevation">パンニング3D仰俯角（-180.0f～180.0f：度単位）</param>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// パンニング3D仰俯角を指定します。
+		/// 本関数でパンニング3D仰俯角を設定後、<see cref="CriAtomExPlayer.Start"/> 関数により再生開始すると、設定されたパンニング3D角度で再生されます。
+		/// また設定後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、
+		/// すでに再生された音声のパンニング3D角度を更新することができます。
+		/// 角度は度単位で指定します。
+		/// 前方を0度とし、上方向に180.0f、下方向に-180.0fまで設定できます。
+		/// 例えば、45.0fを指定した場合、上前方45度に定位します。-45.0fを指定した場合、下前方45度に定位します。
+		/// </para>
+		/// <para>本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。</para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExPlayer.Start"/>
+		/// <seealso cref="CriAtomExPlayer.Update"/>
+		/// <seealso cref="CriAtomExPlayer.UpdateAll"/>
+		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
+		public void SetPan3dElevation(Single pan3dElevation)
+		{
+			NativeMethods.criAtomExPlayer_SetPan3dElevation(NativeHandle, pan3dElevation);
+		}
+
 		/// <summary>デフォルトのパンニング処理を上書き</summary>
 		/// <param name="func">パンニング処理関数</param>
 		/// <param name="obj">ユーザ指定オブジェクト</param>
@@ -116,18 +171,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static NativeBool CallbackFunc(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix) =>
+			static NativeBool CriAtomExPlayerPanCbFuncCallbackFunc(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix) =>
 				InvokeCallbackInternal(@object, new(inputChannels, channelConfig, outputChannels, speakerMapping, location, parameter, (NativeReference<Single>*)matrix));
 #if !NET5_0_OR_GREATER
-			delegate NativeBool NativeDelegate(IntPtr obj, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix);
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate NativeBool NativeDelegate(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal PanCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, Int32, CriAtom.ChannelConfig, Int32, CriAtom.SpeakerMapping, CriAtomEx.SphericalCoordinates*, CriAtomEx._3dAttenuationParameter*, Single**, NativeBool>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, Int32, CriAtom.ChannelConfig, Int32, CriAtom.SpeakerMapping, CriAtomEx.SphericalCoordinates*, CriAtomEx._3dAttenuationParameter*, Single**, NativeBool>)&CriAtomExPlayerPanCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerPanCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -162,11 +218,11 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.FilterCbFunc"/>
-		public unsafe void SetFilterCallback(delegate* unmanaged[Cdecl]<IntPtr, UInt32, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void> func, IntPtr obj)
+		public unsafe void SetFilterCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void> func, IntPtr obj)
 		{
 			NativeMethods.criAtomExPlayer_SetFilterCallback(NativeHandle, (IntPtr)func, obj);
 		}
-		unsafe void SetFilterCallbackInternal(IntPtr func, IntPtr obj) => SetFilterCallback((delegate* unmanaged[Cdecl]<IntPtr, UInt32, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)func, obj);
+		unsafe void SetFilterCallbackInternal(IntPtr func, IntPtr obj) => SetFilterCallback((delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)func, obj);
 		CriAtomExPlayer.FilterCbFunc _filterCallback = null;
 		/// <summary>コールバックイベントオブジェクト</summary>
 		/// <seealso cref="SetFilterCallback" />
@@ -223,7 +279,7 @@ namespace CriWare
 			public struct Arg : Interfaces.IPcmData
 			{
 				/// <summary>再生ID</summary>
-				public UInt32 id { get; }
+				public CriAtomExPlayback id { get; }
 				/// <summary>PCMの形式</summary>
 				public CriAtom.PcmFormat format { get; }
 				/// <summary>チャンネル数</summary>
@@ -233,7 +289,7 @@ namespace CriWare
 				/// <summary>PCMデータのチャンネル配列</summary>
 				public NativeReference<IntPtr> data { get; }
 
-				internal Arg(UInt32 id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, NativeReference<IntPtr> data)
+				internal Arg(CriAtomExPlayback id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, NativeReference<IntPtr> data)
 				{
 					this.id = id;
 					this.format = format;
@@ -249,18 +305,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, UInt32 id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
+			static void CriAtomExPlayerFilterCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
 				InvokeCallbackInternal(obj, new(id, format, numChannels, numSamples, data));
 #if !NET5_0_OR_GREATER
-			delegate void NativeDelegate(IntPtr obj, UInt32 id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data);
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal FilterCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CriAtomExPlayerFilterCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerFilterCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -591,6 +648,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
 		/// <seealso cref="CriAtomExPlayer.SetDefaultConfig"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>ボイス確保方式</summary>
@@ -1398,11 +1456,12 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// ストリーミング再生時には、 <see cref="CriAtomExPlayer.Start"/> 関数で再生を開始しても、
+		/// ストリーミング再生の音声を再生する際、本関数を使用せず <see cref="CriAtomExPlayer.Start"/> 関数を使用した場合、
 		/// 実際に音声の再生が開始されるまでにはタイムラグがあります。
 		/// （音声データのバッファリングに時間がかかるため。）
-		/// 以下の操作を行うことで、ストリーム再生の音声についても、発音のタイミングを
+		/// 本関数を使用することで、ストリーム再生の音声についても、発音のタイミングを
 		/// 制御することが可能になります。
+		/// 処理手順の概要は、以下のとおりです。
 		/// -# <see cref="CriAtomExPlayer.Prepare"/> 関数で準備を開始する。
 		/// -# 手順1.で取得した再生IDのステータスを <see cref="CriAtomExPlayback.GetStatus"/> 関数で確認。
 		/// -# ステータスが <see cref="CriAtomExPlayback.Status.Playing"/> になった時点で <see cref="CriAtomExPlayback.Pause"/> 関数でポーズを解除。
@@ -1620,18 +1679,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr player) =>
+			static void CriAtomExPlayerCbFuncCallbackFunc(IntPtr obj, IntPtr player) =>
 				InvokeCallbackInternal(obj, new(player));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr player);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal CbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomExPlayerCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -1779,7 +1839,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.CbFunc"/>
-		public unsafe void EnumeratePlaybacks(delegate* unmanaged[Cdecl]<IntPtr, UInt32, NativeBool> func, IntPtr obj)
+		public unsafe void EnumeratePlaybacks(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, NativeBool> func, IntPtr obj)
 		{
 			NativeMethods.criAtomExPlayer_EnumeratePlaybacks(NativeHandle, (IntPtr)func, obj);
 		}
@@ -4018,11 +4078,11 @@ namespace CriWare
 		/// <seealso cref="CriAtomPlayer.SetData"/>
 		/// <seealso cref="CriAtomPlayer.SetPreviousDataAgain"/>
 		/// <seealso cref="CriAtomPlayer.DeferCallback"/>
-		public unsafe void SetDataRequestCallback(delegate* unmanaged[Cdecl]<IntPtr, UInt32, IntPtr, void> func, IntPtr obj)
+		public unsafe void SetDataRequestCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, IntPtr, void> func, IntPtr obj)
 		{
 			NativeMethods.criAtomExPlayer_SetDataRequestCallback(NativeHandle, (IntPtr)func, obj);
 		}
-		unsafe void SetDataRequestCallbackInternal(IntPtr func, IntPtr obj) => SetDataRequestCallback((delegate* unmanaged[Cdecl]<IntPtr, UInt32, IntPtr, void>)func, obj);
+		unsafe void SetDataRequestCallbackInternal(IntPtr func, IntPtr obj) => SetDataRequestCallback((delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, IntPtr, void>)func, obj);
 		CriAtomExPlayer.DataRequestCbFunc _dataRequestCallback = null;
 		/// <summary>コールバックイベントオブジェクト</summary>
 		/// <seealso cref="SetDataRequestCallback" />
@@ -4101,11 +4161,11 @@ namespace CriWare
 			public struct Arg
 			{
 				/// <summary>再生ID</summary>
-				public UInt32 id { get; }
+				public CriAtomExPlayback id { get; }
 				/// <summary>Atomプレーヤーオブジェクト</summary>
 				public IntPtr player { get; }
 
-				internal Arg(UInt32 id, IntPtr player)
+				internal Arg(CriAtomExPlayback id, IntPtr player)
 				{
 					this.id = id;
 					this.player = player;
@@ -4118,18 +4178,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, UInt32 id, IntPtr player) =>
+			static void CriAtomExPlayerDataRequestCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback id, IntPtr player) =>
 				InvokeCallbackInternal(obj, new(id, player));
 #if !NET5_0_OR_GREATER
-			delegate void NativeDelegate(IntPtr obj, UInt32 id, IntPtr player);
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback id, IntPtr player);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DataRequestCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, IntPtr, void>)&CriAtomExPlayerDataRequestCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerDataRequestCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -4306,7 +4367,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomStreamingCache.Dispose"/>
 		public void SetStreamingCacheId(CriAtomExStreamingCache cacheId)
 		{
-			NativeMethods.criAtomExPlayer_SetStreamingCacheId(NativeHandle, cacheId.NativeHandle);
+			NativeMethods.criAtomExPlayer_SetStreamingCacheId(NativeHandle, cacheId?.NativeHandle ?? default);
 		}
 
 		/// <summary>プレーヤーにトゥイーンを取り付ける</summary>
@@ -4413,12 +4474,6 @@ namespace CriWare
 		/// 説明:
 		/// ブロックシーケンス再生時にブロックトランジションが発生したときに呼び出されるコールバック関数を登録します。
 		/// 登録されたコールバック関数は、ブロックトランジションが発生すると呼び出されます。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// コールバック関数の登録は、停止中のプレーヤーに対してのみ可能です。
-		/// 再生中のプレーヤーに対してコールバックを登録することはできません。
-		/// （エラーコールバックが発生し、登録に失敗します。）
 		/// コールバック関数内で、AtomライブラリのAPIを実行しないでください。
 		/// コールバック関数はAtomライブラリ内のサーバー処理から実行されます。
 		/// そのため、サーバー処理への割り込みを考慮しないAPIを実行した場合、
@@ -4432,11 +4487,11 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.BlockTransitionCbFunc"/>
-		public unsafe void SetBlockTransitionCallback(delegate* unmanaged[Cdecl]<IntPtr, UInt32, Int32, void> func, IntPtr obj)
+		public unsafe void SetBlockTransitionCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, Int32, void> func, IntPtr obj)
 		{
 			NativeMethods.criAtomExPlayer_SetBlockTransitionCallback(NativeHandle, (IntPtr)func, obj);
 		}
-		unsafe void SetBlockTransitionCallbackInternal(IntPtr func, IntPtr obj) => SetBlockTransitionCallback((delegate* unmanaged[Cdecl]<IntPtr, UInt32, Int32, void>)func, obj);
+		unsafe void SetBlockTransitionCallbackInternal(IntPtr func, IntPtr obj) => SetBlockTransitionCallback((delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, Int32, void>)func, obj);
 		CriAtomExPlayer.BlockTransitionCbFunc _blockTransitionCallback = null;
 		/// <summary>コールバックイベントオブジェクト</summary>
 		/// <seealso cref="SetBlockTransitionCallback" />
@@ -4469,11 +4524,11 @@ namespace CriWare
 			public struct Arg
 			{
 				/// <summary>再生ID</summary>
-				public UInt32 id { get; }
+				public CriAtomExPlayback id { get; }
 				/// <summary>キュー内のブロックインデックス値</summary>
 				public Int32 index { get; }
 
-				internal Arg(UInt32 id, Int32 index)
+				internal Arg(CriAtomExPlayback id, Int32 index)
 				{
 					this.id = id;
 					this.index = index;
@@ -4486,18 +4541,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, UInt32 id, Int32 index) =>
+			static void CriAtomExPlayerBlockTransitionCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback id, Int32 index) =>
 				InvokeCallbackInternal(obj, new(id, index));
 #if !NET5_0_OR_GREATER
-			delegate void NativeDelegate(IntPtr obj, UInt32 id, Int32 index);
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback id, Int32 index);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal BlockTransitionCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, Int32, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, Int32, void>)&CriAtomExPlayerBlockTransitionCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerBlockTransitionCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -4615,12 +4671,6 @@ namespace CriWare
 		/// 説明:
 		/// 再生したトラック番号を通知するためのコールバック関数を登録します。
 		/// 登録されたコールバック関数は、ポリフォニックタイプ以外のキュー再生時に呼び出されます。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// コールバック関数の登録は、停止中のプレーヤーに対してのみ可能です。
-		/// 再生中のプレーヤーに対してコールバックを登録することはできません。
-		/// （エラーコールバックが発生し、登録に失敗します。）
 		/// コールバック関数内で、AtomライブラリのAPIを実行しないでください。
 		/// コールバック関数はAtomライブラリ内のサーバー処理から実行されます。
 		/// そのため、サーバー処理への割り込みを考慮しないAPIを実行した場合、
@@ -4683,18 +4733,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtomExPlayback.TrackInfo* info) =>
+			static void CriAtomExPlayerPlaybackTrackInfoNotificationCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback.TrackInfo* info) =>
 				InvokeCallbackInternal(obj, new(info));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback.TrackInfo* info);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal PlaybackTrackInfoNotificationCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.TrackInfo*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.TrackInfo*, void>)&CriAtomExPlayerPlaybackTrackInfoNotificationCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerPlaybackTrackInfoNotificationCbFuncCallbackFunc)
 #endif
 				)
 			{ }

@@ -11,7 +11,7 @@ namespace CriWare.InteropHelpers
 	/// <summary>コールバックオブジェクト基底クラス</summary>
 	/// <remarks>
 	/// CRIWAREが呼び出すコールバックを扱うオブジェクトの基底クラスです。
-	/// 本クラスの<see cref="Event"/>をい対してイベントリスナーを追加できます。
+	/// 本クラスの<see cref="Event"/>に対してイベントリスナーを追加できます。
 	/// </remarks>
 	public abstract class NativeCallbackBase<TArgs> : CriWare.Interfaces.ICallback<TArgs>
 		where TArgs : unmanaged
@@ -26,22 +26,24 @@ namespace CriWare.InteropHelpers
 		/// <inheritdoc/>
 		public event Action<TArgs> Event;
 
-		Action<IntPtr, IntPtr> setFunction;
-		/// <summary>
-		/// ネイティブコールバックオブジェクトのコンストラクタ
-		/// </summary>
+		Action clearCallback;
+		/// <exclude/>
 		protected NativeCallbackBase(Action<IntPtr, IntPtr> setFunction, IntPtr nativeCallback)
 		{
-			this.setFunction = setFunction;
+			clearCallback = () => setFunction(default, default);
 			nint key = Guid.NewGuid().GetHashCode();
 			instances.Add(key, this);
 			setFunction(nativeCallback, key);
 		}
-
-		/// <summary>
-		/// ネイティブコールバックオブジェクトのデストラクタ
-		/// </summary>
-		~NativeCallbackBase() => setFunction(IntPtr.Zero, IntPtr.Zero);
+		/// <exclude/>
+		protected NativeCallbackBase(Action<IntPtr> setFunction, IntPtr nativeCallback)
+		{
+			clearCallback = () => setFunction(default);
+			instances.Add(default, this);
+			setFunction(nativeCallback);
+		}
+		/// <exclude/>
+		~NativeCallbackBase() => clearCallback?.Invoke();
 	}
 
 	/// <inheritdoc cref="NativeCallbackBase{TArgs}"/>
@@ -59,18 +61,23 @@ namespace CriWare.InteropHelpers
 		/// <inheritdoc/>
 		public event Func<TArgs, TReturn> Event;
 
-		Action<IntPtr, IntPtr> setFunction;
-		/// <inheritdoc cref="NativeCallbackBase{TArgs}.NativeCallbackBase(Action{IntPtr, IntPtr}, IntPtr)"/>
+		Action clearCallback;
+		/// <exclude/>
 		protected NativeCallbackBase(Action<IntPtr, IntPtr> setFunction, IntPtr nativeCallback)
 		{
-			this.setFunction = setFunction;
+			clearCallback = () => setFunction(default, default);
 			nint key = Guid.NewGuid().GetHashCode();
 			instances.Add(key, this);
 			setFunction(nativeCallback, key);
 		}
-		/// <summary>
-		/// ネイティブコールバックオブジェクトのデストラクタ
-		/// </summary>
-		~NativeCallbackBase() => setFunction(IntPtr.Zero, IntPtr.Zero);
+		/// <exclude/>
+		protected NativeCallbackBase(Action<IntPtr> setFunction, IntPtr nativeCallback)
+		{
+			clearCallback = () => setFunction(default);
+			instances.Add(default, this);
+			setFunction(nativeCallback);
+		}
+		/// <exclude/>
+		~NativeCallbackBase() => clearCallback?.Invoke();
 	}
 }

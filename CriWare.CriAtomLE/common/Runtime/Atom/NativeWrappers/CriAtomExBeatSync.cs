@@ -23,7 +23,7 @@ namespace CriWare
 			public IntPtr player;
 
 			/// <summary>再生ID</summary>
-			public UInt32 playbackId;
+			public CriAtomExPlayback playbackId;
 
 			/// <summary>小節数</summary>
 			public UInt32 barCount;
@@ -116,18 +116,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static Int32 CallbackFunc(IntPtr obj, CriAtomExBeatSync.Info* info) =>
+			static Int32 CriAtomExBeatSyncCbFuncCallbackFunc(IntPtr obj, CriAtomExBeatSync.Info* info) =>
 				InvokeCallbackInternal(obj, new(info));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate Int32 NativeDelegate(IntPtr obj, CriAtomExBeatSync.Info* info);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal CbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExBeatSync.Info*, Int32>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExBeatSync.Info*, Int32>)&CriAtomExBeatSyncCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExBeatSyncCbFuncCallbackFunc)
 #endif
 				)
 			{ }

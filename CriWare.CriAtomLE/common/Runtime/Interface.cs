@@ -60,5 +60,7 @@ namespace CriWare.Interfaces
 		void FinalizeLibrary();
 		/// <exclude/>
 		bool IsInitialized { get; }
+		/// <exclude/>
+		IntPtr MemorySizeAddress { get; }
 	}
 }

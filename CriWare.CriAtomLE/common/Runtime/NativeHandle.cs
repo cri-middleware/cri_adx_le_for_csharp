@@ -36,7 +36,7 @@ namespace CriWare.InteropHelpers {
 		/// <see cref="System.IDisposable"/>を実装した各CRIWAREオブジェクトの<see cref="System.IDisposable.Dispose"/>メソッド内では本プロパティに従ったハンドリングを行っているため、
 		/// 破棄の呼び出し前に本プロパティを確認する必要はありません。
 		/// </remarks>
-		public bool IsDestroyable => IsAvailable && (NativeAllocator.GetHandle(memory) == handle);
+		public bool IsDestroyable => IsAvailable && (NativeAllocator.GetHandle(memory) == handle || NativeAllocator.IsOwnerless(memory));
 
 		/// <inheritdoc/>
 		public bool Equals(NativeHandleIntPtr other) =>
@@ -48,9 +48,7 @@ namespace CriWare.InteropHelpers {
 		public override int GetHashCode() =>
 			HashCode.Combine(handle, memory, memoryId);
 
-		/// <summary>
-		/// <see cref="IntPtr"/>からのキャスト
-		/// </summary>
+		/// <exclude/>
 		public static implicit operator NativeHandleIntPtr(IntPtr pointer){
 			if(pointer == IntPtr.Zero)
 				throw new Exception("[CRIWARE] Returned NativeHandle is NULL.");
@@ -61,9 +59,7 @@ namespace CriWare.InteropHelpers {
 				memoryId = NativeAllocator.GetId(mem),
 			};
 		}
-		/// <summary>
-		/// <see cref="IntPtr"/>へのキャスト
-		/// </summary>
+		/// <exclude/>
 		public static implicit operator IntPtr(NativeHandleIntPtr handle){
 			if(handle.handle == IntPtr.Zero) return IntPtr.Zero;
 			if(!handle.IsAvailable)

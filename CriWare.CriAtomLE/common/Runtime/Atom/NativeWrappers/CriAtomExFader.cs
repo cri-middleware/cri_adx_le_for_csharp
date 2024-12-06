@@ -32,6 +32,7 @@ namespace CriWare
 		/// <seealso cref="CriAtomExFader.SetDefaultConfig"/>
 		/// <seealso cref="CriAtomExPlayer.CalculateWorkSizeForFader"/>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>予約値（0を指定してください）</summary>

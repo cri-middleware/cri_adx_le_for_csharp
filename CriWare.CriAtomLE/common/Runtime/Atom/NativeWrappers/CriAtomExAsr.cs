@@ -136,18 +136,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
+			static void CriAtomExAsrBusFilterCbFuncCallbackFunc(IntPtr obj, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
 				InvokeCallbackInternal(obj, new(format, numChannels, numSamples, data));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			internal delegate void NativeDelegate(IntPtr obj, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal BusFilterCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CriAtomExAsrBusFilterCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExAsrBusFilterCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -240,8 +241,8 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsr.Initialize"/>
 		/// <seealso cref="CriAtomExAsr.SetDefaultConfig"/>
-		[System.Serializable]
 		[System.Xml.Serialization.XmlType(Namespace = "CriAtomExAsr")]
+		[Serializable]
 		public unsafe partial struct Config
 		{
 			/// <summary>サーバー処理の実行頻度</summary>
@@ -797,6 +798,7 @@ namespace CriWare
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsr.AttachBusAnalyzerByName"/>
+		[Serializable]
 		public unsafe partial struct BusAnalyzerConfig
 		{
 			/// <summary>測定間隔（ミリ秒単位）</summary>
@@ -839,6 +841,7 @@ namespace CriWare
 		/// <para>
 		/// 説明:
 		/// バスからレベル測定機能の結果を取得します。
+		/// 本関数呼び出し前に <see cref="CriAtomExAsr.AttachBusAnalyzerByName"/> 関数を呼び出す必要があります。
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsr.AttachBusAnalyzerByName"/>

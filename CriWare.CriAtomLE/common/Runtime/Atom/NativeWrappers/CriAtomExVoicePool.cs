@@ -258,18 +258,19 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CallbackFunc(IntPtr obj, IntPtr pool) =>
+			static void CriAtomExVoicePoolCbFuncCallbackFunc(IntPtr obj, IntPtr pool) =>
 				InvokeCallbackInternal(obj, new(pool));
 #if !NET5_0_OR_GREATER
+			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 			delegate void NativeDelegate(IntPtr obj, IntPtr pool);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal CbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomExVoicePoolCbFuncCallbackFunc
 #else
-					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc)
+					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExVoicePoolCbFuncCallbackFunc)
 #endif
 				)
 			{ }
@@ -503,9 +504,6 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// 本関数にワーク領域をセットした場合、セットした領域のメモリをボイスプール破棄時
-		/// までアプリケーション中で保持し続ける必要があります。
-		/// （セット済みのワーク領域に値を書き込んだり、メモリ解放したりしてはいけません。）
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
 		/// 問題ありません。
@@ -637,10 +635,6 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
 		/// 問題ありません。
-		/// ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ CriFsLoaderHn ）
-		/// を確保します。
-		/// ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で
-		/// Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -770,10 +764,6 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
 		/// 問題ありません。
-		/// ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ CriFsLoaderHn ）
-		/// を確保します。
-		/// ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で
-		/// Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -1029,10 +1019,6 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
 		/// 問題ありません。
-		/// ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ CriFsLoaderHn ）
-		/// を確保します。
-		/// ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で
-		/// Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -1148,10 +1134,6 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
 		/// 問題ありません。
-		/// ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ CriFsLoaderHn ）
-		/// を確保します。
-		/// ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で
-		/// Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// 本関数は完了復帰型の関数です。
 		/// ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		/// ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で
@@ -1347,7 +1329,7 @@ namespace CriWare
 			NativeMethods.criAtomExVoicePool_DetachDsp(NativeHandle);
 		}
 
-		/// <summary>ピッチシフタDSPアタッチ用ワーク領域サイズの計算</summary>
+		/// <summary>ピッチシフターDSPアタッチ用ワーク領域サイズの計算</summary>
 		/// <param name="config">アタッチ用コンフィグ</param>
 		/// <returns>ワーク領域サイズ</returns>
 		/// <returns>正常に処理が完了</returns>
@@ -1355,7 +1337,7 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ピッチシフタDSPのアタッチに必要なワーク領域サイズを計算します。
+		/// ピッチシフターDSPのアタッチに必要なワーク領域サイズを計算します。
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspPitchShifter"/>
@@ -1365,14 +1347,14 @@ namespace CriWare
 				return NativeMethods.criAtomExVoicePool_CalculateWorkSizeForDspPitchShifter(configPtr);
 		}
 
-		/// <summary>ピッチシフタDSPのアタッチ</summary>
+		/// <summary>ピッチシフターDSPのアタッチ</summary>
 		/// <param name="config">アタッチ用コンフィグ</param>
 		/// <param name="work">アタッチ用ワーク領域へのポインタ</param>
 		/// <param name="workSize">アタッチ用ワーク領域のサイズ</param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ボイスプールにピッチシフタDSPを追加します。
+		/// ボイスプールにピッチシフターDSPを追加します。
 		/// </para>
 		/// <para>
 		/// 注意:
