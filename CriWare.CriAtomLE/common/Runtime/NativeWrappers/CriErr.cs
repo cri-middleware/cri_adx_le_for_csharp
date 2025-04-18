@@ -5,6 +5,7 @@
  ****************************************************************************/
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Threading;
 using CriWare.InteropHelpers;
@@ -63,19 +64,25 @@ namespace CriWare
 #if ENABLE_IL2CPP
 			[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
 #endif
-			static void CallbackFunc(NativeString errid, UInt32 p1, UInt32 p2, IntPtr parray) =>
+#if NET5_0_OR_GREATER
+			[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
+#endif
+			static void CriErrCbFuncCallbackFunc(IntPtr errid, UInt32 p1, UInt32 p2, IntPtr parray) =>
 				InvokeCallbackInternal(default, (errid, p1, p2, parray));
 
-			/// <exclude/>
-			[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+#if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)] 
-			public delegate void NativeDelegate(NativeString errid, UInt32 p1, UInt32 p2, IntPtr parray);
-
+			delegate void NativeDelegate(IntPtr errid, UInt32 p1, UInt32 p2, IntPtr parray);
 			static NativeDelegate callbackDelegate = null;
+#endif
 			internal CbFunc(Action<IntPtr> setFunction) :
 				base(setFunction,
-				Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CallbackFunc))
-			{ }
+#if NET5_0_OR_GREATER
+				(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, UInt32, IntPtr, void>)&CriErrCbFuncCallbackFunc
+#else
+				Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriErrCbFuncCallbackFunc)
+#endif
+				){ }
 		}
 		/// <summary>エラー通知レベルの変更</summary>
 		/// <param name="level">エラー通知レベル</param>

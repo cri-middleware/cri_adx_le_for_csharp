@@ -66,5 +66,5 @@ https://github.com/cri-middleware/cri_adx_le_for_csharp.git?path=CriWare.CriAtom
 ADX LEのご利用者の皆様向けには個別サポートは行っておりません。  
 不具合報告や技術的な質問をしたい場合、下記のリンクをご参考ください。  
 - [よくある質問](https://game.criware.jp/products/adx2-le/le-faq/)
-- [ADX ユーザー助け合い所（Facebook）](https://www.facebook.com/groups/adx2userj/)
+- [CRIWARE User Community（Discord）](https://discord.com/invite/MSjVdSbeeM)
 - [ゲームサウンド制作よろず（Discord）](https://discordapp.com/invite/hJn9Cyc)

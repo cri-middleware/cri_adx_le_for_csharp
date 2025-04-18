@@ -56,5 +56,5 @@ Further instructions about Unity Package Manager can be found here:
 We do not provide individual support for ADX LE users. For bug reports or technical support, please refer to this link instead.
 
 - [Frequent asked questions concerning ADX LE](https://game.criware.jp/products/adx2-le/le-faq/)
-- [ADX User Help Center (Facebook)](https://www.facebook.com/groups/adx2userj/): A forum where ADX users can engage within the CRIWARE community.
-- [Game Sound Production Community (Discord)](https://discordapp.com/invite/hJn9Cyc): A forum where users can engage in a wide range of discussions about game sound production. Users can ask questions about ADX LE to the Technical Support team of CRIWARE.
+- [CRIWARE User Community（Discord）](https://discord.com/invite/MSjVdSbeeM)
+- [Game Sound Production Community (Discord)](https://discordapp.com/invite/hJn9Cyc)

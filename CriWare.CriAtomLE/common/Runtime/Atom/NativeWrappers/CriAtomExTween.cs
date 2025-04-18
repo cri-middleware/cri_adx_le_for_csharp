@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -12,31 +12,28 @@ using CriWare.InteropHelpers;
 
 namespace CriWare
 {
-	/// <summary>トゥイーンオブジェクト</summary>
+	/// <summary>トゥイーンハンドル </summary>
 	/// <remarks>
 	/// <para>
 	/// 説明:
 	/// <see cref="CriAtomExTween"/> は、トゥイーンを操作するためのオブジェクトです。
-	/// トゥイーンとは、簡単な手順でパラメーターの時間変化を行うためのモジュールです。
-	/// <see cref="CriAtomExTween.CriAtomExTween"/> 関数でトゥイーンを作成すると、
-	/// 本関数はトゥイーン操作用に、この"トゥイーンオブジェクト"を返します。
-	/// パラメーターの時間変化の開始等、トゥイーンに対して行う操作は、
-	/// 全てトゥイーンオブジェクトを介して実行されます。
-	/// また、AtomExプレーヤーにトゥイーンを関連づける際にも使用します。
+	///  トゥイーンとは、簡単な手順でパラメーターの時間変化を行うためのモジュールです。 <see cref="CriAtomExTween.CriAtomExTween"/> 関数でトゥイーンを作成すると、 本関数はトゥイーン操作用に、この"トゥイーンオブジェクト"を返します。 
+	///  パラメーターの時間変化の開始等、トゥイーンに対して行う操作は、 全てトゥイーンオブジェクトを介して実行されます。
+	///  また、AtomExプレーヤーにトゥイーンを関連づける際にも使用します。 
 	/// </para>
 	/// </remarks>
 	/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
 	/// <seealso cref="CriAtomExPlayer.AttachTween"/>
 	public partial class CriAtomExTween : IDisposable
 	{
-		/// <summary>トゥイーン作成用コンフィグ構造体にデフォルト値をセット</summary>
-		/// <param name="pConfig">コンフィグ構造体へのポインタ</param>
+		/// <summary>トゥイーン作成用コンフィグ構造体にデフォルト値をセット </summary>
+		/// <param name="pConfig">コンフィグ構造体へのポインタ </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// <see cref="CriAtomExTween.CriAtomExTween"/> 関数に設定するコンフィグ構造体（ <see cref="CriAtomExTween.Config"/> ）に、
-		/// デフォルトの値をセットします。
+		/// <see cref="CriAtomExTween.CriAtomExTween"/> 関数に設定するコンフィグ構造体（ <see cref="CriAtomExTween.Config"/> ）に、 デフォルトの値をセットします。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomExTween_SetDefaultConfig_(CriAtomExTweenConfig *p_config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.Config"/>
 		public static unsafe void SetDefaultConfig(out CriAtomExTween.Config pConfig)
@@ -45,35 +42,28 @@ namespace CriWare
 				NativeMethods.criAtomExTween_SetDefaultConfig_(pConfigPtr);
 		}
 
-		/// <summary>トゥイーンの作成に必要なワーク領域サイズの計算</summary>
-		/// <param name="config">トゥイーン作成用コンフィグ構造体</param>
-		/// <returns>ワーク領域サイズ</returns>
-		/// <returns>正常に処理が完了</returns>
-		/// <returns>エラーが発生</returns>
+		/// <summary>トゥイーンの作成に必要なワーク領域サイズの計算 </summary>
+		/// <param name="config">トゥイーン作成用コンフィグ構造体 </param>
+		/// <returns>CriSint32 ワーク領域サイズ </returns>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーンを作成するのに必要な、ワーク領域のサイズを取得します。
-		/// アロケーターを登録せずにトゥイーンを作成する場合、あらかじめ本関数で計算した
-		/// ワーク領域サイズ分のメモリをワーク領域として <see cref="CriAtomExTween.CriAtomExTween"/> 関数に
-		/// セットする必要があります。
-		/// 引数にnullを指定した場合、デフォルト設定
-		/// （ <see cref="CriAtomExTween.SetDefaultConfig"/> 適用時と同じパラメーター）で
-		/// ワーク領域サイズを計算します。
-		/// ワーク領域サイズ計算時に失敗した場合、戻り値は -1 になります。
-		/// ワーク領域サイズの計算に失敗した理由については、エラーコールバックの
-		/// メッセージで確認可能です。
+		///  アロケーターを登録せずにトゥイーンを作成する場合、あらかじめ本関数で計算した ワーク領域サイズ分のメモリをワーク領域として <see cref="CriAtomExTween.CriAtomExTween"/> 関数に セットする必要があります。
+		///  引数にnullを指定した場合、デフォルト設定 （ <see cref="CriAtomExTween.SetDefaultConfig"/> 適用時と同じパラメーター）で ワーク領域サイズを計算します。
+		///  ワーク領域サイズ計算時に失敗した場合、戻り値は -1 になります。
+		///  ワーク領域サイズの計算に失敗した理由については、エラーコールバックの メッセージで確認可能です。
 		/// </para>
 		/// <para>
 		/// 備考:
 		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
+		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExTween_CalculateWorkSize(const CriAtomExTweenConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.Config"/>
 		/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
@@ -83,14 +73,13 @@ namespace CriWare
 				return NativeMethods.criAtomExTween_CalculateWorkSize(configPtr);
 		}
 
-		/// <summary>トゥイーン作成用コンフィグ構造体</summary>
+		/// <summary>トゥイーン作成用コンフィグ構造体 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーンを作成する際に、動作仕様を指定するための構造体です。
 		/// <see cref="CriAtomExTween.CriAtomExTween"/> 関数の引数に指定します。
-		/// 本構造体を使用する際には <see cref="CriAtomExTween.SetDefaultConfig"/> メソッドを使用し、
-		/// 構造体の初期化を行ってください。
+		///  本構造体を使用する際には <see cref="CriAtomExTween.SetDefaultConfig"/> メソッドを使用し、 構造体の初期化を行ってください。 
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.SetDefaultConfig"/>
@@ -99,55 +88,44 @@ namespace CriWare
 		[Serializable]
 		public unsafe partial struct Config
 		{
-			/// <summary>ID指定共用体</summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// パラメータータイプに従い、パラメーターIDまたはAISACコントロールIDを指定します。
-			/// </para>
-			/// </remarks>
 			public CriAtomExTween.ConfigParameterIdTag id;
 
-			/// <summary>パラメータータイプ</summary>
+			/// <summary>パラメータータイプ </summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// パラメータータイプを指定します。
+			/// パラメータータイプを指定します。 
 			/// </para>
 			/// </remarks>
 			public CriAtomExTween.ParameterType parameterType;
 
 		}
-		/// <summary>ID指定共用体</summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// パラメータータイプに従い、パラメーターIDまたはAISACコントロールIDを指定します。
-		/// </para>
-		/// </remarks>
+
 		[StructLayout(LayoutKind.Explicit)]
 		public unsafe partial struct ConfigParameterIdTag
 		{
-			/// <summary>パラメーターID</summary>
+			/// <summary>パラメーターID </summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// パラメータータイプに<see cref="CriAtomExTween.ParameterType.Basic"/>を指定する場合、このメンバでパラメーターIDを指定します。
+			/// パラメーターを指定するためのIDです。
+			/// <see cref="CriAtomExPlayer.GetParameterFloat32"/> 関数等で利用します。 
 			/// </para>
 			/// </remarks>
 			[FieldOffset(0)] public CriAtomEx.ParameterId parameterId;
 
-			/// <summary>AISACコントロールID</summary>
+			/// <summary>AISACコントロールID. </summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// パラメータータイプに<see cref="CriAtomExTween.ParameterType.Aisac"/>を指定する場合、このメンバでAISACコントロールIDを指定します。
+			/// AISACコントロールIDは、AISACコントロールに対して割り当てられている一意のIDです。
+			///  AISACコントロールIDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
 			/// </para>
 			/// </remarks>
 			[FieldOffset(0)] public UInt32 aisacControlId;
 
 		}
-		/// <summary>Tweenのパラメータータイプ</summary>
+		/// <summary>Tweenのパラメータータイプ </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -157,77 +135,73 @@ namespace CriWare
 		/// <seealso cref="CriAtomExTween.Config"/>
 		public enum ParameterType
 		{
-			/// <summary>基本パラメーター</summary>
+			/// <summary>基本パラメーター </summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// ボリューム、ピッチ等、<see cref="CriAtomEx.ParameterId"/>で指定するパラメーターを操作する際に指定します。
+			/// ボリューム、ピッチ等、<see cref="CriAtomEx.ParameterId"/>で指定するパラメーターを操作する際に指定します。 
 			/// </para>
 			/// </remarks>
 			Basic = 0,
-			/// <summary>AISACコントロール値</summary>
+			/// <summary>AISACコントロール値 </summary>
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// AISACコントロール値を操作する際に指定します。
+			/// AISACコントロール値を操作する際に指定します。 
 			/// </para>
 			/// </remarks>
 			Aisac = 1,
 		}
-		/// <summary>トゥイーンの作成</summary>
-		/// <param name="config">トゥイーン作成用コンフィグ構造体へのポインタ</param>
-		/// <param name="work">トゥイーン作成用ワーク領域へのポインタ</param>
-		/// <param name="workSize">トゥイーン作成用ワークサイズ</param>
-		/// <returns>トゥイーンオブジェクト</returns>
+		/// <summary>トゥイーンの作成 </summary>
+		/// <param name="config">トゥイーン作成用コンフィグ構造体へのポインタ </param>
+		/// <returns><see cref="CriAtomExTween"/> トゥイーンオブジェクト </returns>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーン作成用コンフィグに基づいて、トゥイーンを作成します。
-		/// 作成に成功すると、トゥイーンオブジェクトを返します。
-		/// トゥイーンを作成する際には、ワーク領域としてメモリを渡す必要があります。
-		/// 必要なメモリのサイズは、 <see cref="CriAtomExTween.CalculateWorkSize"/>
-		/// 関数で計算します。
-		/// （<see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、
-		/// 本関数にワーク領域を指定する必要はありません。）
-		/// 作成したトゥイーンは、<see cref="CriAtomExPlayer.AttachTween"/> 関数にてAtomExプレーヤーにアタッチすることで効果を発揮します。
+		///  作成に成功すると、トゥイーンオブジェクトを返します。
+		///  トゥイーンを作成する際には、ワーク領域としてメモリを渡す必要があります。
+		///  必要なメモリのサイズは、 <see cref="CriAtomExTween.CalculateWorkSize"/> 関数で計算します。
+		///  （<see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、 本関数にワーク領域を指定する必要はありません。）
+		///  作成したトゥイーンは、<see cref="CriAtomExPlayer.AttachTween"/> 関数にてAtomExプレーヤーにアタッチすることで効果を発揮します。 
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// トゥイーンの保持するパラメーターの初期値は、コンフィグ構造体でパラメータータイプに<see cref="CriAtomExTween.ParameterType.Basic"/>を指定した場合は各パラメーターのデフォルト値、またはパラメータータイプに<see cref="CriAtomExTween.ParameterType.Aisac"/>を指定した場合は0.0fです。
+		/// トゥイーンの保持するパラメーターの初期値は、コンフィグ構造体でパラメータータイプに<see cref="CriAtomExTween.ParameterType.Basic"/>を指定した場合は各パラメーターのデフォルト値、またはパラメータータイプに<see cref="CriAtomExTween.ParameterType.Aisac"/>を指定した場合は0.0fです。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		/// TweenオブジェクトをアタッチしたAtomExプレーヤーで再生している音声がある場合、
-		/// 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。
+		///  TweenオブジェクトをアタッチしたAtomExプレーヤーで再生している音声がある場合、 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。 
 		/// </para>
+		/// <nativeinfo declaration="CriAtomExTweenHn CRIAPI criAtomExTween_Create(const CriAtomExTweenConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomExTween.Dispose"/>
 		/// <seealso cref="CriAtomExPlayer.AttachTween"/>
-		public unsafe CriAtomExTween(in CriAtomExTween.Config config, IntPtr work = default, Int32 workSize = default)
+		public unsafe CriAtomExTween(in CriAtomExTween.Config config)
 		{
 			fixed (CriAtomExTween.Config* configPtr = &config)
 
-				NativeHandle = NativeMethods.criAtomExTween_Create(configPtr, work, workSize);
+				NativeHandle = NativeMethods.criAtomExTween_Create(configPtr, default, default);
 		}
 		/// <summary>デフォルト設定でのインスタンス作成</summary>
-		public unsafe CriAtomExTween(IntPtr work = default, Int32 workSize = default)
+		public unsafe CriAtomExTween()
 		{
 			CriAtomExTween.Config* configPtr = null;
-			NativeHandle = NativeMethods.criAtomExTween_Create(configPtr, work, workSize);
+			NativeHandle = NativeMethods.criAtomExTween_Create(configPtr, default, default);
 		}
 
-		/// <summary>トゥイーンの破棄</summary>
+		/// <summary>トゥイーンの破棄 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーンを破棄します。
-		/// 本関数を実行した時点で、トゥイーン作成時に確保されたリソースが全て解放されます。
-		/// また、引数に指定したトゥイーンオブジェクトも無効になります。
-		/// トゥイーンをアタッチしたAtomExプレーヤーで再生している音声がある場合、
-		/// 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。
+		///  本関数を実行した時点で、トゥイーン作成時に確保されたリソースが全て解放されます。
+		///  また、引数に指定したトゥイーンオブジェクトも無効になります。
+		///  トゥイーンをアタッチしたAtomExプレーヤーで再生している音声がある場合、 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。 
 		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomExTween_Destroy(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
 		public void Dispose()
@@ -240,71 +214,76 @@ namespace CriWare
 		~CriAtomExTween() => Dispose();
 #pragma warning restore 1591
 
-		/// <summary>現在値の取得</summary>
+		/// <summary>現在値の取得 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーンが保持しているパラメーターの現在値を取得します。
 		/// </para>
+		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExTween_GetValue(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		public Single GetValue()
 		{
 			return NativeMethods.criAtomExTween_GetValue(NativeHandle);
 		}
 
-		/// <summary>現在値から指定値に変化</summary>
-		/// <param name="timeMs">変化に要する時間（ミリ秒単位）</param>
-		/// <param name="value">変化後の最終値</param>
+		/// <summary>現在値から指定値に変化 </summary>
+		/// <param name="timeMs">変化に要する時間（ミリ秒単位） </param>
+		/// <param name="value">変化後の最終値 </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// time_msで指定した時間をかけて、本関数呼び出し時にトゥイーンが保持している現在値から、valueで指定した値へと変化します。
-		/// 変化カーブはリニア（線形）です。
+		///  変化カーブはリニア（線形）です。 
 		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomExTween_MoveTo(CriAtomExTweenHn tween, CriUint16 time_ms, CriFloat32 value)"/>
 		/// </remarks>
 		public void MoveTo(UInt16 timeMs, Single value)
 		{
 			NativeMethods.criAtomExTween_MoveTo(NativeHandle, timeMs, value);
 		}
 
-		/// <summary>指定値から現在値に変化</summary>
-		/// <param name="timeMs">変化に要する時間（ミリ秒単位）</param>
-		/// <param name="value">変化前の開始値</param>
+		/// <summary>指定値から現在値に変化 </summary>
+		/// <param name="timeMs">変化に要する時間（ミリ秒単位） </param>
+		/// <param name="value">変化前の開始値 </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// time_msで指定した時間をかけて、valueで指定した値から、本関数呼び出し時にトゥイーンが保持している現在値へと変化します。
-		/// 変化カーブはリニア（線形）です。
+		///  変化カーブはリニア（線形）です。 
 		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomExTween_MoveFrom(CriAtomExTweenHn tween, CriUint16 time_ms, CriFloat32 value)"/>
 		/// </remarks>
 		public void MoveFrom(UInt16 timeMs, Single value)
 		{
 			NativeMethods.criAtomExTween_MoveFrom(NativeHandle, timeMs, value);
 		}
 
-		/// <summary>トゥイーンの停止</summary>
+		/// <summary>トゥイーンの停止 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーンによるパラメーターの時間変化を停止します。
 		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomExTween_Stop(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		public void Stop()
 		{
 			NativeMethods.criAtomExTween_Stop(NativeHandle);
 		}
 
-		/// <summary>トゥイーンのリセット</summary>
+		/// <summary>トゥイーンのリセット </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// トゥイーンの保持しているパラメーターの現在値をリセットし、初期値に戻します。
-		/// トゥイーンの保持するパラメーターの初期値は、コンフィグ構造体でパラメータータイプに<see cref="CriAtomExTween.ParameterType.Basic"/>を指定した場合は各パラメーターのデフォルト値、またはパラメータータイプに<see cref="CriAtomExTween.ParameterType.Aisac"/>を指定した場合は0.0fです。
+		///  トゥイーンの保持するパラメーターの初期値は、コンフィグ構造体でパラメータータイプに<see cref="CriAtomExTween.ParameterType.Basic"/>を指定した場合は各パラメーターのデフォルト値、またはパラメータータイプに<see cref="CriAtomExTween.ParameterType.Aisac"/>を指定した場合は0.0fです。 
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// トゥイーンによる時間変化が動作していた場合、動作を停止します。
+		/// トゥイーンによる時間変化が動作していた場合、動作を停止します。 
 		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomExTween_Reset(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		public void Reset()
 		{

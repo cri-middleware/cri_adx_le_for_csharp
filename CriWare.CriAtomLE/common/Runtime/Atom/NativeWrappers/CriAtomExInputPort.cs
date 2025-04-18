@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -12,7 +12,7 @@ using CriWare.InteropHelpers;
 
 namespace CriWare
 {
-	/// <summary>入力ポートオブジェクト</summary>
+	/// <summary>入力ポートハンドル </summary>
 	/// <remarks>
 	/// <para>
 	/// 説明:
@@ -21,13 +21,19 @@ namespace CriWare
 	/// </remarks>
 	public readonly partial struct CriAtomExInputPort
 	{
-		/// <summary>入力ポート種別</summary>
+		/// <summary>入力ポート種別 </summary>
 		public enum Type
 		{
 			None = 0,
-			/// <summary>マイク入力</summary>
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>マイク入力 </para>
+			/// </remarks>
 			Mic = 1,
-			/// <summary>AUX入力</summary>
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>AUX入力 </para>
+			/// </remarks>
 			Aux = 2,
 		}
 		/// <summary>ネイティブハンドル</summary>

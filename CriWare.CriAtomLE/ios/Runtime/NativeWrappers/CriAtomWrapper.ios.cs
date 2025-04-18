@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -48,6 +48,21 @@ internal static extern void criAtom_SetupAudioSession_IOS(CriAtom.AudioSessionCo
 #endif
 		}
 	}
+	public partial class CriAtomPlayer
+	{
+		unsafe partial class NativeMethods
+		{
+#if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_IOS && !UNITY_EDITOR) || ios)
+		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize);
+#else
+			internal static Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config) { return default(Int32); }
+			internal static IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize) { return default(IntPtr); }
+#endif
+		}
+	}
 	public partial class CriAtomEx
 	{
 		unsafe partial class NativeMethods
@@ -90,21 +105,6 @@ internal static extern void criAtomEx_ResumeAudio_IOS();
 			internal static void criAtomEx_DisableBackgroundPlayback_IOS() { }
 			internal static NativeBool criAtomEx_IsInterruptedOtherAudio_IOS() { return default(NativeBool); }
 			internal static void criAtomEx_ResumeAudio_IOS() { }
-#endif
-		}
-	}
-	public partial class CriAtomPlayer
-	{
-		unsafe partial class NativeMethods
-		{
-#if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_IOS && !UNITY_EDITOR) || ios)
-		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config);
-[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize);
-#else
-			internal static Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config) { return default(Int32); }
-			internal static IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize) { return default(IntPtr); }
 #endif
 		}
 	}

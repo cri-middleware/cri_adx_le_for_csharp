@@ -38,6 +38,14 @@ namespace CriWare.InteropHelpers {
 		/// </remarks>
 		public bool IsDestroyable => IsAvailable && (NativeAllocator.GetHandle(memory) == handle || NativeAllocator.IsOwnerless(memory));
 
+		/// <exclude />
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public bool IsOwningHandle => NativeAllocator.GetHandle(memory) == handle;
+
+		/// <exclude />
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public unsafe nint Memory => memory + sizeof(NativeAllocator.MemoryInfo);
+
 		/// <inheritdoc/>
 		public bool Equals(NativeHandleIntPtr other) =>
 			handle == other.handle && memory == other.memory && memoryId == other.memoryId;

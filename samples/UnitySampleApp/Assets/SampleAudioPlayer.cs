@@ -2,6 +2,8 @@ using UnityEngine;
 using CriWare;
 using Unity.Collections.LowLevel.Unsafe;
 using System;
+using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 [CreateAssetMenu(menuName = "AtomSamplePlayer")]
 public class SampleAudioPlayer : ScriptableObject
@@ -15,7 +17,7 @@ public class SampleAudioPlayer : ScriptableObject
 		Instance.InitializeInstance();
 	}
 
-	// each condif structs are Serializable
+	// each config structs are Serializable
 	// see Assets/Resources/SampleAudioPlayer.asset
 	[SerializeField]
 	CriAtomEx.Config exConfig;
@@ -37,7 +39,7 @@ public class SampleAudioPlayer : ScriptableObject
 
 	CriAtomExAcb acb;
 
-	unsafe void InitializeInstance()
+	void InitializeInstance()
 	{
 		if (CriAtomEx.IsInitialized()) return;
 
@@ -48,11 +50,11 @@ public class SampleAudioPlayer : ScriptableObject
 		CriAtomCSharp.Initialize(config);
 
 #if UNITY_ANDROID && !UNITY_EDITOR
-		// Setup the Access for StreamingAssets Folder
+		// Setup the access for StreamingAssets Folder
 		using AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		using AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
 		var activityRef = AndroidJNI.NewGlobalRef(activity.GetRawObject());
-		CriFs.EnableAssetsAccessANDROID(CriBaseCSharp.GetJavaVM(), activityRef);
+		CriFs.EnableAssetsAccessForPrefixANDROID(CriBaseCSharp.GetJavaVM(), activityRef, Application.streamingAssetsPath + "/");
 		AndroidJNI.DeleteGlobalRef(activityRef);
 #endif
 
@@ -62,20 +64,29 @@ public class SampleAudioPlayer : ScriptableObject
 
 		listener = new CriAtomEx3dListener();
 
-		// use the NativeArray got from GetData<byte>() method if using TextAsset
-		// NativeArray<byte>.AsSpan() mathod is available if using Unity 2022 or newer
-		var acfSpan = new System.ReadOnlySpan<byte>(acfData.GetData<byte>().GetUnsafeReadOnlyPtr(), (int)acfData.dataSize);
-		CriAtomEx.RegisterAcfData(acfSpan);
+		unsafe {
+			// use the NativeArray got from GetData<byte>() method if using TextAsset
+			CriAtomEx.RegisterAcfData((nint)acfData.GetData<byte>().GetUnsafeReadOnlyPtr(), acfData.GetData<byte>().Length);
+		}
 
-		var streamingAssetsPath =
-#if !UNITY_ANDROID || UNITY_EDITOR
-			Application.streamingAssetsPath;
-#else
-			"";
-#endif
+		var acbFullpath = 
+			System.IO.Path.Join(Application.streamingAssetsPath, acbPath);
+		// StreamingAssets folder may hosted in http(Web build).
+		if(acbFullpath.StartsWith("http")){
+			var req = new UnityWebRequest(acbFullpath);
+			acbFullpath = System.IO.Path.Join(Application.temporaryCachePath, acbPath);
+			req.downloadHandler = new DownloadHandlerFile(acbFullpath);
+			req.SendWebRequest().completed += (op) => {
+				acb = CriAtomExAcb.LoadAcbFile(
+					null, acbFullpath,
+					null, null);
+			};
+			return;
+		}
+
 		acb = CriAtomExAcb.LoadAcbFile(
-			null, System.IO.Path.Join(streamingAssetsPath, acbPath),
-			null, System.IO.Path.Join(streamingAssetsPath, awbPath));
+			null, acbFullpath,
+			null, null);	
 	}
 
 	private void OnDisable()

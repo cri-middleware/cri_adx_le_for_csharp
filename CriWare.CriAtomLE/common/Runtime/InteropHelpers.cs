@@ -79,6 +79,9 @@ namespace CriWare.InteropHelpers {
 		/// </summary>
 		/// <returns>ネイティブ文字列へのポインタ</returns>
 		public IntPtr GetUnsafeStringPointer() => pointer;
+
+		/// <exclude />
+		public static implicit operator NativeString(IntPtr ptr) => new NativeString(){pointer = ptr};
 	}
 
 	/// <summary>

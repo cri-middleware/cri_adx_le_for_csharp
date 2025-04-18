@@ -1,0 +1,96 @@
+@page "/"
+@inject HttpClient httpClient
+@using CriWare
+@implements IDisposable
+
+<PageTitle>CRI ADX</PageTitle>
+
+<h1>CRI ADX Sample</h1>
+
+<p>
+	<button class="btn btn-primary" @onclick="() => player.Stop()">Stop All</button>
+</p>
+
+<h2><a href="https://game.criware.jp/manual/adx2_tool/latest/criatom_tools_atomcraft_category.html">Category</a></h2>
+<p>
+	<button class="btn btn-primary" @onclick="() => PlayCue(4)">Play BGM</button>
+	<button class="btn btn-primary" @onclick="() => PlayCue(1)">Play SE</button>
+</p>
+<p>
+	<label>BGM</label><input type="range" class="form-range" min="0" max="1" step="0.01" @oninput="OnChangeBgm" />
+</p>
+<p>
+	<label>SE</label><input type="range" class="form-range" min="0" max="1" step="0.01" @oninput="OnChangeSe" />
+</p>
+
+<h2><a href="https://game.criware.jp/manual/adx2_tool/latest/criatom_tools_atomcraft_aisac.html">AISAC</a></h2>
+<p>
+	<button class="btn btn-primary" @onclick="() => PlayCue(40)">Play Cue with AISAC</button>
+</p>
+<p>
+	<label>RPM</label><input type="range" class="form-range" min="0" max="1" step="0.01" @oninput="OnChangeRpm" />
+</p>
+<p>
+	<label>Load</label><input type="range" class="form-range" min="0" max="1" step="0.01" @oninput="OnChangeLoad" />
+</p>
+
+@code {
+	CriAtomExVoicePool pool;
+	CriAtomExPlayer player;
+	CriAtomExAcb acb;
+
+	protected override async Task OnInitializedAsync()
+	{
+		CriAtomExVoicePool.SetDefaultConfigForStandardVoicePool(out var poolConfig);
+		poolConfig.playerConfig.streamingFlag = true;
+		pool = CriAtomExVoicePool.AllocateStandardVoicePool(poolConfig);
+
+		player = new CriAtomExPlayer();
+
+		using(var responce = await httpClient.GetAsync("sample-data/DemoProj.acf", HttpCompletionOption.ResponseHeadersRead)){
+			using var stream = await responce.Content.ReadAsStreamAsync();
+			using var fileStream = new FileStream("tmpacf", FileMode.Create, FileAccess.Write);
+			await stream.CopyToAsync(fileStream);
+		}
+		CriAtomEx.RegisterAcfFile(null, "tmpacf");
+
+		using(var responce = await httpClient.GetAsync("sample-data/DemoProj.acb", HttpCompletionOption.ResponseHeadersRead)){
+			using var stream = await responce.Content.ReadAsStreamAsync();
+			using var fileStream = new FileStream("tmpfile", FileMode.Create, FileAccess.Write);
+			await stream.CopyToAsync(fileStream);
+		}
+		acb = CriAtomExAcb.LoadAcbFile(null, "tmpfile", null, null);
+	}
+
+	private void OnChangeBgm(ChangeEventArgs e) =>
+		CriWare.CriAtomExCategory.SetVolumeByName("BGM", float.Parse(e.Value as string));
+
+	private void OnChangeSe(ChangeEventArgs e) =>
+		CriWare.CriAtomExCategory.SetVolumeByName("SE", float.Parse(e.Value as string));
+
+
+	void PlayCue(int cueId)
+	{
+		player.SetCueId(acb, cueId);
+		player.Start();
+	}
+
+	void OnChangeRpm(ChangeEventArgs e)
+	{
+		player.SetAisacControlByName("rpm", float.Parse(e.Value as string));
+		player.UpdateAll();
+	}
+
+	void OnChangeLoad(ChangeEventArgs e)
+	{
+		player.SetAisacControlByName("load", float.Parse(e.Value as string));
+		player.UpdateAll();
+	}
+
+	public void Dispose()
+	{
+		player.Dispose();
+		acb.Dispose();
+		pool.Dispose();
+	}
+}

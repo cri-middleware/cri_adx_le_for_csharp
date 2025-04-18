@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -16,7 +16,7 @@ namespace CriWare
 	/// <summary>CriAtomExFader API</summary>
 	public static partial class CriAtomExFader
 	{
-		/// <summary>フェーダーアタッチ用コンフィグ構造体</summary>
+		/// <summary>フェーダーアタッチ用コンフィグ構造体 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -24,9 +24,7 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// 現状指定可能なパラメーターはありませんが、将来パラメーターが追加される可能性があるため、
-		/// 本構造体を使用する際には <see cref="CriAtomExFader.SetDefaultConfig"/> メソッドを使用し、
-		/// 構造体の初期化を行ってください。
+		/// 現状指定可能なパラメーターはありませんが、将来パラメーターが追加される可能性があるため、 本構造体を使用する際には <see cref="CriAtomExFader.SetDefaultConfig"/> メソッドを使用し、 構造体の初期化を行ってください。 
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="CriAtomExFader.SetDefaultConfig"/>
@@ -35,18 +33,21 @@ namespace CriWare
 		[Serializable]
 		public unsafe partial struct Config
 		{
-			/// <summary>予約値（0を指定してください）</summary>
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>予約値（0を指定してください） </para>
+			/// </remarks>
 			public Int32 reserved;
 
 		}
-		/// <summary>フェーダーアタッチ用コンフィグ構造体にデフォルト値をセット</summary>
-		/// <param name="pConfig">フェーダーアタッチ用コンフィグ構造体へのポインタ</param>
+		/// <summary>フェーダーアタッチ用コンフィグ構造体にデフォルト値をセット </summary>
+		/// <param name="pConfig">フェーダーアタッチ用コンフィグ構造体へのポインタ </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// <see cref="CriAtomExPlayer.AttachFader"/> 関数に設定するコンフィグ構造体
-		/// （ <see cref="CriAtomExFader.Config"/> ）に、デフォルトの値をセットします。
+		/// <see cref="CriAtomExPlayer.AttachFader"/> 関数に設定するコンフィグ構造体 （ <see cref="CriAtomExFader.Config"/> ）に、デフォルトの値をセットします。
 		/// </para>
+		/// <nativeinfo declaration="void criAtomExFader_SetDefaultConfig_(CriAtomExFaderConfig *p_config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExFader.Config"/>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
