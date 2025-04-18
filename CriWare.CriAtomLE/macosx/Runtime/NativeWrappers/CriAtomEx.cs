@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -16,9 +16,9 @@ namespace CriWare
 	/// <summary>CriAtomEx API</summary>
 	public static partial class CriAtomEx
 	{
-		/// <summary>ライブラリ初期化用ワーク領域サイズの計算</summary>
-		/// <param name="config">初期化用コンフィグ構造体</param>
-		/// <returns>ワーク領域サイズ</returns>
+		/// <summary>ライブラリ初期化用ワーク領域サイズの計算 </summary>
+		/// <param name="config">初期化用コンフィグ構造体 </param>
+		/// <returns>CriSint32 ワーク領域サイズ </returns>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -26,19 +26,16 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ
-		/// 構造体（ <see cref="CriAtomEx.ConfigMACOSX"/> ）の内容によって変化します。
-		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ 構造体（ <see cref="CriAtomEx.ConfigMACOSX"/> ）の内容によって変化します。
+		///  引数 config の情報は、関数内でのみ参照されます。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// <see cref="CriAtomEx.ConfigMACOSX"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
-		/// 初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる
-		/// メモリアロケータを使用したメモリ確保処理が必要になります。
+		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケータを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_MACOSX(const CriAtomExConfig_MACOSX *)"/>
+		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_MACOSX(const CriAtomExConfig_MACOSX *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigMACOSX"/>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
@@ -48,73 +45,56 @@ namespace CriWare
 				return NativeMethods.criAtomEx_CalculateWorkSize_MACOSX(configPtr);
 		}
 
-		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
-		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
-		[Serializable]
-		public unsafe partial struct ConfigMACOSX
-		{
-			/// <summary>AtomEx初期化用コンフィグ構造体</summary>
-			public CriAtomEx.Config atomEx;
-
-			/// <summary>ASR初期化用コンフィグ</summary>
-			public CriAtomExAsr.Config asr;
-
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			public CriAtomExHcaMx.Config hcaMx;
-
-		}
-		/// <summary>ライブラリの初期化</summary>
-		/// <param name="config">初期化用コンフィグ構造体</param>
-		/// <param name="work">ワーク領域</param>
-		/// <param name="workSize">ワーク領域サイズ</param>
+		/// <summary>ライブラリの初期化 </summary>
+		/// <param name="config">初期化用コンフィグ構造体 </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// ライブラリを初期化します。
-		/// ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
-		/// （ライブラリの機能は、本関数を実行後、 <see cref="CriAtomEx.FinalizeMACOSX"/> 関数を実行するまでの間、
-		/// 利用可能です。）
-		/// ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域）
-		/// を確保する必要があります。
-		/// ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて
-		/// 変化します。
-		/// ワーク領域サイズの計算には、 <see cref="CriAtom.CalculateWorkSizeMACOSX"/>
-		/// 関数を使用してください。
+		///  ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
+		///  （ライブラリの機能は、本関数を実行後、 <see cref="CriAtomEx.FinalizeMACOSX"/> 関数を実行するまでの間、 利用可能です。）
+		///  ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域） を確保する必要があります。
+		///  ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて 変化します。
+		///  ワーク領域サイズの計算には、 <see cref="CriAtom.CalculateWorkSizeMACOSX"/> 関数を使用してください。
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケータを登録済みの場合、
-		/// 本関数にワーク領域を指定する必要はありません。
-		/// （ work に null 、 work_size に 0 を指定することで、登録済みのアロケータ
-		/// から必要なワーク領域サイズ分のメモリが動的に確保されます。）
-		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケータを登録済みの場合、 本関数にワーク領域を指定する必要はありません。
+		///  （ work に null 、 work_size に 0 を指定することで、登録済みのアロケータ から必要なワーク領域サイズ分のメモリが動的に確保されます。） 
+		///  引数 config の情報は、関数内でのみ参照されます。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
-		/// - <see cref="CriAtomEx.Initialize"/>
-		/// - <see cref="CriAtomExAsr.Initialize"/>
-		/// - <see cref="CriAtomExHcaMx.Initialize"/>
-		/// .
-		/// 本関数を実行する場合、上記関数を実行しないでください。
-		/// 本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizeMACOSX"/> 関数を実行してください。
-		/// また、 <see cref="CriAtomEx.FinalizeMACOSX"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// <list type="bullet">
+		/// <item><description><see cref="CriAtomEx.Initialize"/></description></item>
+		/// <item><description><see cref="CriAtomExAsr.Initialize"/></description></item>
+		/// <item><description><see cref="CriAtomExHcaMx.Initialize"/></description></item>
+		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_Initialize_MACOSX(const CriAtomExConfig_MACOSX *, void *, CriSint32)"/>
+		/// <see><see cref="CriAtomEx.FinalizeMACOSX"/></see>
+		/// <see><see cref="CriAtomEx.FinalizeMACOSX"/></see>
+		/// <para>
+		/// 本関数を実行する場合、上記関数を実行しないでください。
+		///  本関数を実行後、必ず対になる 
+		///  関数を実行してください。
+		///  また、 
+		///  関数を実行するまでは、本関数を再度実行しないでください。
+		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_MACOSX(const CriAtomExConfig_MACOSX *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigMACOSX"/>
 		/// <seealso cref="CriAtomEx.FinalizeMACOSX"/>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomEx.CalculateWorkSizeMACOSX"/>
-		public static unsafe void InitializeMACOSX(in CriAtomEx.ConfigMACOSX config, IntPtr work = default, Int32 workSize = default)
+		public static unsafe void InitializeMACOSX(in CriAtomEx.ConfigMACOSX config)
 		{
 			fixed (CriAtomEx.ConfigMACOSX* configPtr = &config)
-				NativeMethods.criAtomEx_Initialize_MACOSX(configPtr, work, workSize);
+				NativeMethods.criAtomEx_Initialize_MACOSX(configPtr, default, default);
 		}
 
-		/// <summary>ライブラリの終了</summary>
+		/// <summary>ライブラリの終了 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -123,14 +103,18 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
-		/// - <see cref="CriAtomEx.Finalize"/>
-		/// - <see cref="CriAtomExAsr.Finalize"/>
-		/// - <see cref="CriAtomExHcaMx.Finalize"/>
-		/// .
-		/// 本関数を実行する場合、上記関数を実行しないでください。
-		/// <see cref="CriAtomEx.InitializeMACOSX"/> 関数実行前に本関数を実行することはできません。
+		/// <list type="bullet">
+		/// <item><description><see cref="CriAtomEx.Finalize"/></description></item>
+		/// <item><description><see cref="CriAtomExAsr.Finalize"/></description></item>
+		/// <item><description><see cref="CriAtomExHcaMx.Finalize"/></description></item>
+		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_Finalize_MACOSX()"/>
+		/// <see><see cref="CriAtomEx.InitializeMACOSX"/></see>
+		/// <para>
+		/// 本関数を実行する場合、上記関数を実行しないでください。
+		///  関数実行前に本関数を実行することはできません。
+		/// </para>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_MACOSX(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
 		public static void FinalizeMACOSX()
@@ -138,30 +122,83 @@ namespace CriWare
 			NativeMethods.criAtomEx_Finalize_MACOSX();
 		}
 
-		/// <summary>サーバスレッドプライオリティの設定</summary>
-		/// <param name="prio">スレッドのプライオリティ</param>
+		/// <summary>サーバスレッドプライオリティの設定 </summary>
+		/// <param name="prio">スレッドのプライオリティ </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// CRIサーバスレッドのプライオリティを設定します。
-		/// 引数 prio は pthread のプライオリティ設定値として使用します。
-		/// 指定できる値の範囲は通常 -16～99で、数字が大きい方が優先度が高くなります。
-		/// アプリケーションのメインスレッド(0)よりも高いプライオリティを指定してください。
-		/// プライオリティのデフォルト値は10です。
+		///  引数 prio は pthread のプライオリティ設定値として使用します。
+		///  指定できる値の範囲は通常 -16～99で、数字が大きい方が優先度が高くなります。
+		///  アプリケーションのメインスレッド(0)よりも高いプライオリティを指定してください。
+		///  プライオリティのデフォルト値は10です。
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// <see cref="CriAtomEx.InitializeMACOSX"/> 関数実行前に本関数を実行することはできません。
-		/// サーバ処理スレッドは、CRI File Systemライブラリでも利用されています。
-		/// すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合
-		/// 本関数により設定が上書きされますのでご注意ください。
+		///  サーバ処理スレッドは、CRI File Systemライブラリでも利用されています。
+		///  すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合 本関数により設定が上書きされますのでご注意ください。
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_SetServerThreadPriority_MACOSX(CriSint32)"/>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetServerThreadPriority_MACOSX(int prio)"/>
 		/// </remarks>
 		public static void SetServerThreadPriorityMACOSX(Int32 prio)
 		{
 			NativeMethods.criAtomEx_SetServerThreadPriority_MACOSX(prio);
 		}
 
+		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
+		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
+		[Serializable]
+		public unsafe partial struct ConfigMACOSX
+		{
+			/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
+			/// <remarks>
+			/// <para>
+			/// 備考:
+			/// デフォルト設定を使用する場合、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 <see cref="CriAtomEx.Initialize"/> 関数に構造体を指定してください。
+			/// </para>
+			/// <para>
+			/// 注意:
+			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドを使用しない 場合には、使用前に必ず構造体をゼロクリアしてください。
+			///  （構造体のメンバに不定値が入らないようご注意ください。） 
+			/// </para>
+			/// </remarks>
+			/// <seealso cref="CriAtomEx.Initialize"/>
+			/// <seealso cref="CriAtomEx.SetDefaultConfig"/>
+			public CriAtomEx.Config atomEx;
+
+			/// <summary>ASR初期化用コンフィグ構造体</summary>
+			/// <remarks>
+			/// <para>
+			/// 備考:
+			/// デフォルト設定を使用する場合、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExAsr.Initialize"/> 関数 に構造体を指定してください。
+			/// </para>
+			/// <para>
+			/// 注意:
+			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
+			///  （構造体のメンバに不定値が入らないようご注意ください。） 
+			/// </para>
+			/// </remarks>
+			/// <seealso cref="CriAtomExAsr.Initialize"/>
+			/// <seealso cref="CriAtomExAsr.SetDefaultConfig"/>
+			public CriAtomExAsr.Config asr;
+
+			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
+			/// <remarks>
+			/// <para>
+			/// 備考:
+			/// デフォルト設定を使用する場合、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExHcaMx.Initialize"/> 関数 に構造体を指定してください。
+			/// </para>
+			/// <para>
+			/// 注意:
+			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
+			///  （構造体のメンバに不定値が入らないようご注意ください。） 
+			/// </para>
+			/// </remarks>
+			/// <seealso cref="CriAtomExHcaMx.Initialize"/>
+			/// <seealso cref="CriAtomExHcaMx.SetDefaultConfig"/>
+			public CriAtomExHcaMx.Config hcaMx;
+
+		}
 	}
 }

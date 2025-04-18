@@ -5,6 +5,7 @@ using CriWare;
 using System;
 using Unity.Burst;
 using Unity.Collections;
+using System.Runtime.InteropServices;
 
 [BurstCompile]
 class SampleErrorHandler : System.IDisposable
@@ -22,15 +23,27 @@ class SampleErrorHandler : System.IDisposable
 		_instance ??= new SampleErrorHandler();
 	}
 
+	[UnmanagedFunctionPointer(CallingConvention.Cdecl)] 
+	delegate void NativeDelegate(CriWare.InteropHelpers.NativeString errid, UInt32 p1, UInt32 p2, IntPtr parray);
+
+	NativeDelegate _callback = null;
 	unsafe SampleErrorHandler() =>
-		CriErr.SetCallback((delegate*unmanaged[Cdecl]<CriWare.InteropHelpers.NativeString, uint, uint, IntPtr, void>)BurstCompiler.CompileFunctionPointer<CriErr.CbFunc.NativeDelegate>(LogMessage).Value);
+		CriErr.SetCallback((delegate*unmanaged[Cdecl]<CriWare.InteropHelpers.NativeString, uint, uint, IntPtr, void>)
+#if ENABLE_IL2CPP
+			Marshal.GetFunctionPointerForDelegate(_callback = LogMessage)
+#else
+			BurstCompiler.CompileFunctionPointer<NativeDelegate>(LogMessage).Value
+#endif
+		);
 	public unsafe void Dispose() =>
 		CriErr.SetCallback(null);
 	~SampleErrorHandler() =>
 		Dispose();
 
+#if !ENABLE_IL2CPP
 	[BurstCompile]
-	[AOT.MonoPInvokeCallback(typeof(CriErr.CbFunc.NativeDelegate))]
+#endif
+	[AOT.MonoPInvokeCallback(typeof(NativeDelegate))]
 	static unsafe void LogMessage(CriWare.InteropHelpers.NativeString msg, uint p1, uint p2, IntPtr parray){
 		var msgPtr = (byte*)CriErr.ConvertIdToMessage(msg, p1, p2).GetUnsafeStringPointer();
 		var logMessage = new FixedString512Bytes();

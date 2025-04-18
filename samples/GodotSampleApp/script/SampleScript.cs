@@ -15,6 +15,8 @@ public partial class SampleScript : Node {
 	IDisposable errorHandler;
 
 	public override void _Ready() {
+		DisplayServer.WindowSetTitle(CriAtom.GetVersionString());
+
 		// Register error callback
 		errorHandler = CriBaseCSharp.ErrorCallback.RegisterListener(msg => {
 			GD.Print(msg);

@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -24,6 +24,8 @@ internal static extern void criAtom_Initialize_WASAPI(CriAtom.ConfigWASAPI* conf
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern void criAtom_Finalize_WASAPI();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern void criAtom_SetDefaultDeviceRole_WASAPI(Int32 role);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern NativeBool criAtom_GetAudioClientMixFormat_WASAPI(IntPtr format);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern NativeBool criAtom_GetAudioClientIsFormatSupported_WASAPI(IntPtr format);
@@ -41,6 +43,8 @@ internal static extern IntPtr criAtom_GetAudioClient_WASAPI();
 internal static extern NativeBool criAtom_IsDeviceInvalidated_WASAPI();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern void criAtom_SetDeviceId_WASAPI(CriAtom.SoundRendererType type, IntPtr deviceId);
+[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+internal static extern NativeBool criAtom_GetDeviceId_WASAPI(CriAtom.SoundRendererType type, IntPtr deviceId, Int32 count, NativeBool* isDefaultDevice);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 internal static extern Int32 criAtom_EnumAudioEndpoints_WASAPI(IntPtr callback, IntPtr @object);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -67,6 +71,7 @@ internal static extern IntPtr criAtom_GetThreadAffinityMask_PC();
 			internal static Int32 criAtom_CalculateWorkSize_WASAPI(CriAtom.ConfigWASAPI* config) { return default(Int32); }
 			internal static void criAtom_Initialize_WASAPI(CriAtom.ConfigWASAPI* config, IntPtr work, Int32 workSize) { }
 			internal static void criAtom_Finalize_WASAPI() { }
+			internal static void criAtom_SetDefaultDeviceRole_WASAPI(Int32 role) { }
 			internal static NativeBool criAtom_GetAudioClientMixFormat_WASAPI(IntPtr format) { return default(NativeBool); }
 			internal static NativeBool criAtom_GetAudioClientIsFormatSupported_WASAPI(IntPtr format) { return default(NativeBool); }
 			internal static void criAtom_SetAudioClientShareMode_WASAPI(Int32 mode) { }
@@ -76,6 +81,7 @@ internal static extern IntPtr criAtom_GetThreadAffinityMask_PC();
 			internal static IntPtr criAtom_GetAudioClient_WASAPI() { return default(IntPtr); }
 			internal static NativeBool criAtom_IsDeviceInvalidated_WASAPI() { return default(NativeBool); }
 			internal static void criAtom_SetDeviceId_WASAPI(CriAtom.SoundRendererType type, IntPtr deviceId) { }
+			internal static NativeBool criAtom_GetDeviceId_WASAPI(CriAtom.SoundRendererType type, IntPtr deviceId, Int32 count, NativeBool* isDefaultDevice) { return default(NativeBool); }
 			internal static Int32 criAtom_EnumAudioEndpoints_WASAPI(IntPtr callback, IntPtr @object) { return default(Int32); }
 			internal static void criAtom_SetDeviceUpdateCallback_WASAPI(IntPtr callback, IntPtr @object) { }
 			internal static void criAtom_SetSpatialAudioEnabled_WASAPI(CriAtom.SoundRendererType type, NativeBool sw) { }

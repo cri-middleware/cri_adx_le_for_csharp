@@ -8,9 +8,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using CriWare.InteropHelpers;
+using System.ComponentModel;
+
 namespace CriWare{
 	public partial class CriAtomEx {
-		/// <inheritdoc cref="CriAtomEx.RegisterAcfData(nint, int, nint, int)"/>
+		/// <exclude />
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static unsafe void RegisterAcfData(ReadOnlySpan<byte> data){
 			fixed(byte* ptr = data)
 				RegisterAcfData((IntPtr)ptr, data.Length);
@@ -18,7 +21,8 @@ namespace CriWare{
 	}
 
 	public partial class CriAtomExAcb {
-		/// <inheritdoc cref="CriAtomExAcb.LoadAcbData(nint, int, CriFsBinder, ArgString, nint, int)"/>
+		/// <exclude />
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static unsafe CriAtomExAcb LoadAcbData(ReadOnlySpan<byte> data, CriFsBinder awbBinder, ArgString awbPath){
 			fixed(byte* ptr = data)
 				return LoadAcbData((IntPtr)ptr, data.Length, awbBinder, awbPath);
@@ -147,6 +151,18 @@ namespace CriWare{
 			if (!CriAtomEx.IsInitialized()) return;
 			SetBusFilterCallbackByName(busName, (delegate* unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)preFunc, (delegate* unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)postFunc, obj);
 		}
+
+		/// <summary>
+		/// デフォルトASRラック
+		/// </summary>
+		public static CriAtomExAsrRack Default {get;} = new CriAtomExAsrRack(CriAtomExAsr.RackDefaultId);
+	}
+
+	public partial struct CriAtomExPlayback {
+		/// <summary>
+		/// 無効なプレイバック
+		/// </summary>
+		public static CriAtomExPlayback Invalid {get;} = new CriAtomExPlayback(CriAtomEx.InvalidPlaybackId);
 	}
 }
 

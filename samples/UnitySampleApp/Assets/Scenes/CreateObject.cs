@@ -12,8 +12,6 @@ public class CreateObject : MonoBehaviour
 	public void SpawnOne() =>
 		instances.Add(Instantiate(original));
 
-	private void Awake() => SpawnOne();
-
 	public void DestroyAll()
 	{
 		foreach (var obj in instances)

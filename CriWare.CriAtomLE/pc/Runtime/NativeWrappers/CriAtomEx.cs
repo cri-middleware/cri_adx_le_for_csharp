@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- * Copyright (c) 2024 CRI Middleware Co., Ltd.
+ * Copyright (c) 2025 CRI Middleware Co., Ltd.
  *
  ****************************************************************************/
 using System;
@@ -16,9 +16,9 @@ namespace CriWare
 	/// <summary>CriAtomEx API</summary>
 	public static partial class CriAtomEx
 	{
-		/// <summary>ライブラリ初期化用ワーク領域サイズの計算</summary>
-		/// <param name="config">初期化用コンフィグ構造体</param>
-		/// <returns>ワーク領域サイズ</returns>
+		/// <summary>ライブラリ初期化用ワーク領域サイズの計算 </summary>
+		/// <param name="config">初期化用コンフィグ構造体 </param>
+		/// <returns>CriSint32 ワーク領域サイズ </returns>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -26,19 +26,16 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ
-		/// 構造体（ <see cref="CriAtomEx.ConfigWASAPI"/> ）の内容によって変化します。
-		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ 構造体（ <see cref="CriAtomEx.ConfigWASAPI"/> ）の内容によって変化します。
+		///  引数 config の情報は、関数内でのみ参照されます。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// <see cref="CriAtomEx.ConfigWASAPI"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
-		/// 初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる
-		/// メモリアロケーターを使用したメモリ確保処理が必要になります。
+		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケーターを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_WASAPI(const CriAtomExConfig_WASAPI *)"/>
+		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_WASAPI(const CriAtomExConfig_WASAPI *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigWASAPI"/>
 		/// <seealso cref="CriAtomEx.InitializeWASAPI"/>
@@ -48,72 +45,50 @@ namespace CriWare
 				return NativeMethods.criAtomEx_CalculateWorkSize_WASAPI(configPtr);
 		}
 
-		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
-		/// <seealso cref="CriAtomEx.InitializeWASAPI"/>
-		[Serializable]
-		public unsafe partial struct ConfigWASAPI
-		{
-			/// <summary>AtomEx初期化用コンフィグ構造体</summary>
-			public CriAtomEx.Config atomEx;
-
-			/// <summary>ASR初期化用コンフィグ</summary>
-			public CriAtomExAsr.Config asr;
-
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			public CriAtomExHcaMx.Config hcaMx;
-
-		}
-		/// <summary>ライブラリの初期化</summary>
-		/// <param name="config">初期化用コンフィグ構造体</param>
-		/// <param name="work">ワーク領域</param>
-		/// <param name="workSize">ワーク領域サイズ</param>
+		/// <summary>ライブラリの初期化 </summary>
+		/// <param name="config">初期化用コンフィグ構造体 </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// ライブラリを初期化します。
-		/// ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
-		/// （ライブラリの機能は、本関数を実行後、 <see cref="CriAtomEx.FinalizeWASAPI"/> 関数を実行するまでの間、
-		/// 利用可能です。）
-		/// ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域）
-		/// を確保する必要があります。
-		/// ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて
-		/// 変化します。
-		/// ワーク領域サイズの計算には、 <see cref="CriAtomEx.CalculateWorkSizeWASAPI"/>
-		/// 関数を使用してください。
+		///  ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
+		///  （ライブラリの機能は、本関数を実行後、 <see cref="CriAtomEx.FinalizeWASAPI"/> 関数を実行するまでの間、 利用可能です。）
+		///  ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域） を確保する必要があります。
+		///  ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて 変化します。
+		///  ワーク領域サイズの計算には、 <see cref="CriAtomEx.CalculateWorkSizeWASAPI"/> 関数を使用してください。
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、
-		/// 本関数にワーク領域を指定する必要はありません。
-		/// （ work に null 、 work_size に 0 を指定することで、登録済みのアロケーター
-		/// から必要なワーク領域サイズ分のメモリが動的に確保されます。）
-		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、 本関数にワーク領域を指定する必要はありません。
+		///  （ work に null 、 work_size に 0 を指定することで、登録済みのアロケーター から必要なワーク領域サイズ分のメモリが動的に確保されます。） 
+		///  引数 config の情報は、関数内でのみ参照されます。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
-		/// - <see cref="CriAtomEx.Initialize"/>
-		/// - <see cref="CriAtomExAsr.Initialize"/>
-		/// - <see cref="CriAtomExHcaMx.Initialize"/>
-		/// 本関数を実行する場合、上記関数を実行しないでください。
-		/// 本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizeWASAPI"/> 関数を実行してください。
-		/// また、 <see cref="CriAtomEx.FinalizeWASAPI"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// <list type="bullet">
+		/// <item><description><see cref="CriAtomEx.Initialize"/></description></item>
+		/// <item><description><see cref="CriAtomExAsr.Initialize"/></description></item>
+		/// <item><description><see cref="CriAtomExHcaMx.Initialize"/> 本関数を実行する場合、上記関数を実行しないでください。
+		///  本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizeWASAPI"/> 関数を実行してください。
+		///  また、 <see cref="CriAtomEx.FinalizeWASAPI"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// </description></item>
+		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_Initialize_WASAPI(const CriAtomExConfig_WASAPI *, void *, CriSint32)"/>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_WASAPI(const CriAtomExConfig_WASAPI *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigWASAPI"/>
 		/// <seealso cref="CriAtomEx.FinalizeWASAPI"/>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomEx.CalculateWorkSizeWASAPI"/>
-		public static unsafe void InitializeWASAPI(in CriAtomEx.ConfigWASAPI config, IntPtr work = default, Int32 workSize = default)
+		public static unsafe void InitializeWASAPI(in CriAtomEx.ConfigWASAPI config)
 		{
 			fixed (CriAtomEx.ConfigWASAPI* configPtr = &config)
-				NativeMethods.criAtomEx_Initialize_WASAPI(configPtr, work, workSize);
+				NativeMethods.criAtomEx_Initialize_WASAPI(configPtr, default, default);
 		}
 
-		/// <summary>ライブラリの終了</summary>
+		/// <summary>ライブラリの終了 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -122,13 +97,15 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
-		/// - <see cref="CriAtomEx.Finalize"/>
-		/// - <see cref="CriAtomExAsr.Finalize"/>
-		/// - <see cref="CriAtomExHcaMx.Finalize"/>
-		/// 本関数を実行する場合、上記関数を実行しないでください。
+		/// <list type="bullet">
+		/// <item><description><see cref="CriAtomEx.Finalize"/></description></item>
+		/// <item><description><see cref="CriAtomExAsr.Finalize"/></description></item>
+		/// <item><description><see cref="CriAtomExHcaMx.Finalize"/> 本関数を実行する場合、上記関数を実行しないでください。
 		/// <see cref="CriAtomEx.InitializeWASAPI"/> 関数実行前に本関数を実行することはできません。
+		/// </description></item>
+		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_Finalize_WASAPI()"/>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_WASAPI(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeWASAPI"/>
 		public static void FinalizeWASAPI()
@@ -136,9 +113,9 @@ namespace CriWare
 			NativeMethods.criAtomEx_Finalize_WASAPI();
 		}
 
-		/// <summary>ライブラリ初期化用ワーク領域サイズの計算</summary>
-		/// <param name="config">初期化用コンフィグ構造体</param>
-		/// <returns>ワーク領域サイズ</returns>
+		/// <summary>ライブラリ初期化用ワーク領域サイズの計算 </summary>
+		/// <param name="config">初期化用コンフィグ構造体 </param>
+		/// <returns>CriSint32 ワーク領域サイズ </returns>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -146,19 +123,16 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ
-		/// 構造体（ <see cref="CriAtomEx.ConfigPC"/> ）の内容によって変化します。
-		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		/// ライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ 構造体（ <see cref="CriAtomEx.ConfigPC"/> ）の内容によって変化します。
+		///  引数 config の情報は、関数内でのみ参照されます。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// <see cref="CriAtomEx.Config"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
-		/// 初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる
-		/// メモリアロケーターを使用したメモリ確保処理が必要になります。
+		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケーターを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_PC(const CriAtomExConfig_PC *)"/>
+		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_PC(const CriAtomExConfig_PC *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigPC"/>
 		/// <seealso cref="CriAtomEx.InitializePC"/>
@@ -168,72 +142,50 @@ namespace CriWare
 				return NativeMethods.criAtomEx_CalculateWorkSize_PC(configPtr);
 		}
 
-		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
-		/// <seealso cref="CriAtomEx.InitializePC"/>
-		[Serializable]
-		public unsafe partial struct ConfigPC
-		{
-			/// <summary>AtomEx初期化用コンフィグ構造体</summary>
-			public CriAtomEx.Config atomEx;
-
-			/// <summary>ASR初期化用コンフィグ</summary>
-			public CriAtomExAsr.Config asr;
-
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			public CriAtomExHcaMx.Config hcaMx;
-
-		}
-		/// <summary>ライブラリの初期化</summary>
-		/// <param name="config">初期化用コンフィグ構造体</param>
-		/// <param name="work">ワーク領域</param>
-		/// <param name="workSize">ワーク領域サイズ</param>
+		/// <summary>ライブラリの初期化 </summary>
+		/// <param name="config">初期化用コンフィグ構造体 </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// ライブラリを初期化します。
-		/// ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
-		/// （ライブラリの機能は、本関数を実行後、 <see cref="CriAtomEx.FinalizePC"/> 関数を実行するまでの間、
-		/// 利用可能です。）
-		/// ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域）
-		/// を確保する必要があります。
-		/// ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて
-		/// 変化します。
-		/// ワーク領域サイズの計算には、 <see cref="CriAtomEx.CalculateWorkSizePC"/>
-		/// 関数を使用してください。
+		///  ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
+		///  （ライブラリの機能は、本関数を実行後、 <see cref="CriAtomEx.FinalizePC"/> 関数を実行するまでの間、 利用可能です。）
+		///  ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域） を確保する必要があります。
+		///  ライブラリが必要とするワーク領域のサイズは、初期化用コンフィグ構造体の内容に応じて 変化します。
+		///  ワーク領域サイズの計算には、 <see cref="CriAtomEx.CalculateWorkSizePC"/> 関数を使用してください。
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、
-		/// 本関数にワーク領域を指定する必要はありません。
-		/// （ work に null 、 work_size に 0 を指定することで、登録済みのアロケーター
-		/// から必要なワーク領域サイズ分のメモリが動的に確保されます。）
-		/// 引数 config の情報は、関数内でのみ参照されます。
-		/// 関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても
-		/// 問題ありません。
+		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、 本関数にワーク領域を指定する必要はありません。
+		///  （ work に null 、 work_size に 0 を指定することで、登録済みのアロケーター から必要なワーク領域サイズ分のメモリが動的に確保されます。） 
+		///  引数 config の情報は、関数内でのみ参照されます。
+		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
-		/// - <see cref="CriAtomEx.Initialize"/>
-		/// - <see cref="CriAtomExAsr.Initialize"/>
-		/// - <see cref="CriAtomExHcaMx.Initialize"/>
-		/// 本関数を実行する場合、上記関数を実行しないでください。
-		/// 本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizePC"/> 関数を実行してください。
-		/// また、 <see cref="CriAtomEx.FinalizePC"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// <list type="bullet">
+		/// <item><description><see cref="CriAtomEx.Initialize"/></description></item>
+		/// <item><description><see cref="CriAtomExAsr.Initialize"/></description></item>
+		/// <item><description><see cref="CriAtomExHcaMx.Initialize"/> 本関数を実行する場合、上記関数を実行しないでください。
+		///  本関数を実行後、必ず対になる <see cref="CriAtomEx.FinalizePC"/> 関数を実行してください。
+		///  また、 <see cref="CriAtomEx.FinalizePC"/> 関数を実行するまでは、本関数を再度実行しないでください。
+		/// </description></item>
+		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_Initialize_PC(const CriAtomExConfig_PC *, void *, CriSint32)"/>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_PC(const CriAtomExConfig_PC *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigPC"/>
 		/// <seealso cref="CriAtomEx.FinalizePC"/>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomEx.CalculateWorkSizePC"/>
-		public static unsafe void InitializePC(in CriAtomEx.ConfigPC config, IntPtr work = default, Int32 workSize = default)
+		public static unsafe void InitializePC(in CriAtomEx.ConfigPC config)
 		{
 			fixed (CriAtomEx.ConfigPC* configPtr = &config)
-				NativeMethods.criAtomEx_Initialize_PC(configPtr, work, workSize);
+				NativeMethods.criAtomEx_Initialize_PC(configPtr, default, default);
 		}
 
-		/// <summary>ライブラリの終了</summary>
+		/// <summary>ライブラリの終了 </summary>
 		/// <remarks>
 		/// <para>
 		/// 説明:
@@ -242,13 +194,15 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
-		/// - <see cref="CriAtomEx.Finalize"/>
-		/// - <see cref="CriAtomExAsr.Finalize"/>
-		/// - <see cref="CriAtomExHcaMx.Finalize"/>
-		/// 本関数を実行する場合、上記関数を実行しないでください。
+		/// <list type="bullet">
+		/// <item><description><see cref="CriAtomEx.Finalize"/></description></item>
+		/// <item><description><see cref="CriAtomExAsr.Finalize"/></description></item>
+		/// <item><description><see cref="CriAtomExHcaMx.Finalize"/> 本関数を実行する場合、上記関数を実行しないでください。
 		/// <see cref="CriAtomEx.InitializePC"/> 関数実行前に本関数を実行することはできません。
+		/// </description></item>
+		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void criAtomEx_Finalize_PC()"/>
+		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_PC(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializePC"/>
 		public static void FinalizePC()
@@ -256,5 +210,53 @@ namespace CriWare
 			NativeMethods.criAtomEx_Finalize_PC();
 		}
 
+		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
+		/// <seealso cref="CriAtomEx.InitializeWASAPI"/>
+		[Serializable]
+		public unsafe partial struct ConfigWASAPI
+		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>AtomEx初期化用コンフィグ構造体 </para>
+			/// </remarks>
+			public CriAtomEx.Config atomEx;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ASR初期化用コンフィグ </para>
+			/// </remarks>
+			public CriAtomExAsr.Config asr;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>HCA-MX初期化用コンフィグ構造体 </para>
+			/// </remarks>
+			public CriAtomExHcaMx.Config hcaMx;
+
+		}
+		/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
+		/// <seealso cref="CriAtomEx.InitializePC"/>
+		[Serializable]
+		public unsafe partial struct ConfigPC
+		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>AtomEx初期化用コンフィグ構造体 </para>
+			/// </remarks>
+			public CriAtomEx.Config atomEx;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ASR初期化用コンフィグ </para>
+			/// </remarks>
+			public CriAtomExAsr.Config asr;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>HCA-MX初期化用コンフィグ構造体 </para>
+			/// </remarks>
+			public CriAtomExHcaMx.Config hcaMx;
+
+		}
 	}
 }

@@ -17,13 +17,15 @@ namespace CriWare {
 	/// <summary>ADXをC#から利用するための補助機能を持つクラス</summary>
 	public static partial class CriAtomCSharp {
 		internal const string libraryName =
-#if ENABLE_IL2CPP || ios
+#if CRI_BUILD_LE && UNITY_ANDROID
+            "cri_atom";
+#elif (ENABLE_IL2CPP && !UNITY_STANDALONE) || ios
 			"__Internal";
 #else
             "cri_atom";
 #endif
 
-		internal const CallingConvention callingConversion = CallingConvention.Cdecl;
+        internal const CallingConvention callingConversion = CallingConvention.Cdecl;
 
 		/// <summary>プラットフォーム共通初期化コンフィグ</summary>
 		[System.Serializable]
@@ -51,6 +53,10 @@ namespace CriWare {
 		/// <see cref="CriAtomCSharp.Initialize(Config)"/>を利用する場合は初期化処理内でアロケータ登録が行われるため、本メソッドの呼び出しは不要です。
 		/// </remarks>
 		public unsafe static void SetupDefaultAllocator(){
+			CriAtomEx.SetDefaultConfig(out var config);
+			if(!config.versionExString.ToStringCached().StartsWith("2.29."))
+				throw new InvalidOperationException("[CRI ADX] The library version does not match the expected value.");
+
 			CriAtom.SetUserMallocFunction(default, IntPtr.Zero);
 			CriAtom.SetUserFreeFunction(default, IntPtr.Zero);	
 			CriAtom.SetUserMallocFunction(NativeAllocator.GetAllocateFunc(), NativeMethods.criAtomNativeAllocator_GetContext());
