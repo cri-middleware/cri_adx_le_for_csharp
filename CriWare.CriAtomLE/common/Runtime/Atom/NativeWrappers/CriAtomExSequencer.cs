@@ -34,7 +34,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExSequencer_SetEventCallback(CriAtomExSequencerEventCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExSequencer_SetEventCallback(CriAtomExSequencerEventCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSequencer.EventCbFunc"/>
 		public static unsafe void SetEventCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomEx.SequenceEventInfo*, Int32> func, IntPtr obj)

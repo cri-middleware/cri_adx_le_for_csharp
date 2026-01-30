@@ -41,10 +41,8 @@ namespace CriWare
 		///  設定した値は<see cref="CriAtomExPlayer.SetStartTime"/>による設定を上書きします。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		///  機種固有の音声フォーマットについても、再生開始位置を指定できない場合があります。
-		///  再生開始位置を指定してシーケンスを再生した場合、指定位置よりも前に配置された 波形データは再生されません。
-		///  （シーケンス内の個々の波形が途中から再生されることはありません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetStartTimeMicro(CriAtomExPlayerHn player, CriSint64 start_time_us)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetStartTimeMicro(CriAtomExPlayerHn player, CriSint64 start_time_us)"/>
 		/// </remarks>
 		public void SetStartTimeMicro(Int64 startTimeUs)
 		{
@@ -66,7 +64,7 @@ namespace CriWare
 		/// <para>
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPan3dElevation(CriAtomExPlayerHn player, CriFloat32 pan3d_elevation)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPan3dElevation(CriAtomExPlayerHn player, CriFloat32 pan3d_elevation)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -90,7 +88,7 @@ namespace CriWare
 		/// 本関数でパンニング処理関数を登録すると、Atomライブラリのパンニング処理が無効化され、 パンニングの際にユーザーが指定したコールバック関数を呼び出すよう動作が変更されます。
 		///  コールバック内でセンドレベルマトリクスを操作することにより、 ユーザー独自のパンニングアルゴリズムを使用することが可能となります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_OverrideDefaultPanMethod(CriAtomExPlayerPanCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_OverrideDefaultPanMethod(CriAtomExPlayerPanCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.PanCbFunc"/>
 		public static unsafe void OverrideDefaultPanMethod(delegate* unmanaged[Cdecl]<IntPtr, Int32, CriAtom.ChannelConfig, Int32, CriAtom.SpeakerMapping, CriAtomEx.SphericalCoordinates*, CriAtomEx._3dAttenuationParameter*, Single**, NativeBool> func, IntPtr obj)
@@ -159,17 +157,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static Int32 CriAtomExPlayerPanCbFuncCallbackFunc(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix) =>
-				InvokeCallbackInternal(@object, new(inputChannels, channelConfig, outputChannels, speakerMapping, location, parameter, (NativeReference<Single>*)matrix)).value;
+			static NativeBool CriAtomExPlayerPanCbFuncCallbackFunc(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix) =>
+				InvokeCallbackInternal(@object, new(inputChannels, channelConfig, outputChannels, speakerMapping, location, parameter, (NativeReference<Single>*)matrix));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate Int32 NativeDelegate(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix);
+			delegate NativeBool NativeDelegate(IntPtr @object, Int32 inputChannels, CriAtom.ChannelConfig channelConfig, Int32 outputChannels, CriAtom.SpeakerMapping speakerMapping, CriAtomEx.SphericalCoordinates* location, CriAtomEx._3dAttenuationParameter* parameter, Single** matrix);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal PanCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, Int32, CriAtom.ChannelConfig, Int32, CriAtom.SpeakerMapping, CriAtomEx.SphericalCoordinates*, CriAtomEx._3dAttenuationParameter*, Single**, Int32>)&CriAtomExPlayerPanCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, Int32, CriAtom.ChannelConfig, Int32, CriAtom.SpeakerMapping, CriAtomEx.SphericalCoordinates*, CriAtomEx._3dAttenuationParameter*, Single**, NativeBool>)&CriAtomExPlayerPanCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerPanCbFuncCallbackFunc)
 #endif
@@ -198,7 +196,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFilterCallback(CriAtomExPlayerHn player, CriAtomExPlayerFilterCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFilterCallback(CriAtomExPlayerHn player, CriAtomExPlayerFilterCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.FilterCbFunc"/>
 		public unsafe void SetFilterCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void> func, IntPtr obj)
@@ -282,17 +280,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CriAtomExPlayerFilterCbFuncCallbackFunc(IntPtr obj, UInt32 id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
-				InvokeCallbackInternal(obj, new(new(id), format, numChannels, numSamples, data));
+			static void CriAtomExPlayerFilterCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data) =>
+				InvokeCallbackInternal(obj, new(id, format, numChannels, numSamples, data));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate void NativeDelegate(IntPtr obj, UInt32 id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data);
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback id, CriAtom.PcmFormat format, Int32 numChannels, Int32 numSamples, IntPtr* data);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal FilterCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CriAtomExPlayerFilterCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void>)&CriAtomExPlayerFilterCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerFilterCbFuncCallbackFunc)
 #endif
@@ -316,7 +314,7 @@ namespace CriWare
 		///  また設定後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生された音声の広がりを更新することができます。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetWideness(CriAtomExPlayerHn player, CriFloat32 wideness)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetWideness(CriAtomExPlayerHn player, CriFloat32 wideness)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -347,7 +345,7 @@ namespace CriWare
 		///  また設定後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生された音声の広がりを更新することができます。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSpread(CriAtomExPlayerHn player, CriFloat32 spread)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSpread(CriAtomExPlayerHn player, CriFloat32 spread)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -367,14 +365,14 @@ namespace CriWare
 		/// このAtomExプレーヤーに関連付けられているサウンドオブジェクトを取得します。
 		///  どのサウンドオブジェクトにも関連付けられていない場合はnullを返します。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExSoundObjectHn CRIAPI criAtomExPlayer_GetSoundObject(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomExSoundObjectHn criAtomExPlayer_GetSoundObject(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject"/>
 		/// <seealso cref="CriAtomExSoundObject.AddPlayer"/>
 		public CriAtomExSoundObject GetSoundObject()
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExPlayer_GetSoundObject(NativeHandle)) == IntPtr.Zero) ? null : new CriAtomExSoundObject(handle);
+			return ((handle = NativeMethods.criAtomExPlayer_GetSoundObject(NativeHandle)) == IntPtr.Zero) ? default : new CriAtomExSoundObject(handle);
 		}
 
 		/// <summary>プレーヤー作成用コンフィグ構造体にデフォルト値をセット </summary>
@@ -424,7 +422,7 @@ namespace CriWare
 		///  （他のボイスを使用する場合、本関数の設定値は無視されます。）
 		/// <see cref="CriAtomExHcaMx.SetAsrRackId"/> 関数を使用して、HCA-MXミキサ自体の出力先ASRラックIDを設定してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AddOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AddOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.RemoveOutputPort"/>
@@ -449,7 +447,7 @@ namespace CriWare
 		/// 注意:
 		/// 既に再生が開始された音声に対し、後から出力ポートを変更することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_RemoveOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_RemoveOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.AddOutputPort"/>
@@ -473,7 +471,7 @@ namespace CriWare
 		/// 注意:
 		/// 既に再生が開始された音声に対し、後から出力ポートを変更することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ClearOutputPorts(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ClearOutputPorts(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.AddOutputPort"/>
@@ -506,7 +504,7 @@ namespace CriWare
 		/// <see cref="CriAtomExPlayer.SetAsrRackId"/> 関数実行後に本関数を実行すると、 <see cref="CriAtomExPlayer.SetAsrRackId"/> 関数にて 設定したASRラックID設定は上書きされます。
 		///  HCA-MX用にエンコードされた音声データには、本関数の設定が適用されません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AddPreferredOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AddPreferredOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.RemovePreferredOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.RemovePreferredOutputPortByName"/>
@@ -531,7 +529,7 @@ namespace CriWare
 		/// 注意:
 		/// 優先出力ポートを取り外しても、既に再生が開始された音声には影響しません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_RemovePreferredOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_RemovePreferredOutputPort(CriAtomExPlayerHn player, CriAtomExOutputPortHn output_port)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AddOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.RemovePreferredOutputPortByName"/>
@@ -556,7 +554,7 @@ namespace CriWare
 		/// 注意:
 		/// 優先出力ポートを取り外しても、既に再生が開始された音声には影響しません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_RemovePreferredOutputPortByName(CriAtomExPlayerHn player, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_RemovePreferredOutputPortByName(CriAtomExPlayerHn player, const CriChar8 *name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AddOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.RemovePreferredOutputPort"/>
@@ -580,7 +578,7 @@ namespace CriWare
 		/// 注意:
 		/// 優先出力ポートを取り外しても、既に再生が開始された音声には影響しません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ClearPreferredOutputPorts(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ClearPreferredOutputPorts(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AddOutputPort"/>
 		/// <seealso cref="CriAtomExPlayer.RemovePreferredOutputPort"/>
@@ -612,7 +610,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_CalculateWorkSize(const CriAtomExPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_CalculateWorkSize(const CriAtomExPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Config"/>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
@@ -818,7 +816,7 @@ namespace CriWare
 		///  【Fixed Memory方式によるAtomExプレーヤーの作成】
 		///  Fixed Memory方式を用いる場合、AtomExプレーヤーの作成／破棄の手順は以下のようになります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExPlayerHn CRIAPI criAtomExPlayer_Create(const CriAtomExPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExPlayerHn criAtomExPlayer_Create(const CriAtomExPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public unsafe CriAtomExPlayer(in CriAtomExPlayer.Config config)
 		{
@@ -849,7 +847,7 @@ namespace CriWare
 		///  そのため、本関数内で処理が長時間（数フレーム）ブロックされる可能性があります。
 		///  AtomExプレーヤーの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Destroy(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Destroy(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
 		/// <seealso cref="CriAtomExPlayer"/>
@@ -890,7 +888,7 @@ namespace CriWare
 		/// </list>
 		/// </para>
 		/// <para>（音声フォーマットやチャンネル数、サンプリングレート等の情報は、 ACB ファイルの情報を元に自動的にセットされます。）</para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetCueId(CriAtomExPlayerHn player, CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetCueId(CriAtomExPlayerHn player, CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public void SetCueId(CriAtomExAcb acbHn, Int32 id)
@@ -935,7 +933,7 @@ namespace CriWare
 		///  AtomExプレーヤーのステータスをチェックし、ステータスに応じて処理を切り替えることで、 音声の再生状態に連動したプログラムを作成することが可能です。
 		///  例えば、音声の再生完了を待って処理を進めたい場合には、以下のようなコードになります。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExPlaybackId CRIAPI criAtomExPlayer_Start(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomExPlaybackId criAtomExPlayer_Start(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetData"/>
 		/// <seealso cref="CriAtomExPlayer.SetFile"/>
@@ -972,7 +970,7 @@ namespace CriWare
 		/// </list>
 		/// </para>
 		/// <para>（音声フォーマットやチャンネル数、サンプリングレート等の情報は、 ACB ファイルの情報を元に自動的にセットされます。）</para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetCueName(CriAtomExPlayerHn player, CriAtomExAcbHn acb_hn, const CriChar8 *cue_name)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetCueName(CriAtomExPlayerHn player, CriAtomExAcbHn acb_hn, const CriChar8 *cue_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public void SetCueName(CriAtomExAcb acbHn, ArgString cueName)
@@ -1009,7 +1007,7 @@ namespace CriWare
 		///  本関数を使用することで、キュー名やキューIDを指定せずにプレーヤーに対して 音声をセットすることが可能です。
 		///  （キュー名やキューIDがわからない場合でも、ACBファイル内のコンテンツを一通り再生 可能なので、デバッグ用途に利用可能です。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetCueIndex(CriAtomExPlayerHn player, CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetCueIndex(CriAtomExPlayerHn player, CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public void SetCueIndex(CriAtomExAcb acbHn, Int32 index)
@@ -1044,13 +1042,14 @@ namespace CriWare
 		/// <item><description><see cref="CriAtomExPlayer.SetSamplingRate"/></description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetData(CriAtomExPlayerHn player, void *buffer, CriSint32 size)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetData(CriAtomExPlayerHn player, void *buffer, CriSint32 size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFormat"/>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomEx.IsDataPlaying"/>
 		public void SetData(IntPtr buffer, Int32 size)
 		{
+			NativeHandle.BindDataSection(buffer, size);
 			NativeMethods.criAtomExPlayer_SetData(NativeHandle, buffer, size);
 		}
 
@@ -1070,7 +1069,7 @@ namespace CriWare
 		/// 本関数は、ACBファイルを使用せずに音声を再生する場合にのみセットする必要があります。
 		///  キューを再生する場合、フォーマットはキューシートから自動で取得されるため、 別途本関数を実行する必要はありません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFormat(CriAtomExPlayerHn player, CriAtomExFormat format)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFormat(CriAtomExPlayerHn player, CriAtomExFormat format)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetSamplingRate"/>
 		/// <seealso cref="CriAtomExPlayer.SetNumChannels"/>
@@ -1095,7 +1094,7 @@ namespace CriWare
 		/// 本関数は、ACBファイルを使用せずに音声を再生する場合にのみセットする必要があります。
 		///  キューを再生する場合、フォーマットはキューシートから自動で取得されるため、 別途本関数を実行する必要はありません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetNumChannels(CriAtomExPlayerHn player, CriSint32 num_channels)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetNumChannels(CriAtomExPlayerHn player, CriSint32 num_channels)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFormat"/>
 		/// <seealso cref="CriAtomExPlayer.SetSamplingRate"/>
@@ -1120,7 +1119,7 @@ namespace CriWare
 		/// 本関数は、ACBファイルを使用せずに音声を再生する場合にのみセットする必要があります。
 		///  キューを再生する場合、フォーマットはキューシートから自動で取得されるため、 別途本関数を実行する必要はありません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSamplingRate(CriAtomExPlayerHn player, CriSint32 sampling_rate)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSamplingRate(CriAtomExPlayerHn player, CriSint32 sampling_rate)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFormat"/>
 		/// <seealso cref="CriAtomExPlayer.SetNumChannels"/>
@@ -1165,7 +1164,7 @@ namespace CriWare
 		/// <item><description><see cref="CriAtomExPlayer.SetSamplingRate"/></description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFile(CriAtomExPlayerHn player, CriFsBinderHn binder, const CriChar8 *path)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFile(CriAtomExPlayerHn player, CriFsBinderHn binder, const CriChar8 *path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Config"/>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
@@ -1204,7 +1203,7 @@ namespace CriWare
 		/// <item><description><see cref="CriAtomExPlayer.SetSamplingRate"/></description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetContentId(CriAtomExPlayerHn player, CriFsBinderHn binder, CriSint32 id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetContentId(CriAtomExPlayerHn player, CriFsBinderHn binder, CriSint32 id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Config"/>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
@@ -1246,7 +1245,7 @@ namespace CriWare
 		///  AWBファイルを破棄する際には、必ず再生を停止した状態で 
 		///  関数を実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetWaveId(CriAtomExPlayerHn player, CriAtomAwbHn awb, CriAtomExWaveId id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetWaveId(CriAtomExPlayerHn player, CriAtomAwbHn awb, CriAtomExWaveId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Config"/>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
@@ -1281,7 +1280,7 @@ namespace CriWare
 		///  AtomExプレーヤーのステータスをチェックし、ステータスに応じて処理を切り替えることで、 音声の再生状態に連動したプログラムを作成することが可能です。
 		///  例えば、音声の再生完了を待って処理を進めたい場合には、以下のようなコードになります。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExPlayerStatus CRIAPI criAtomExPlayer_GetStatus(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomExPlayerStatus criAtomExPlayer_GetStatus(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public CriAtomExPlayer.Status GetStatus()
@@ -1310,7 +1309,7 @@ namespace CriWare
 		///  本関数を実行すると、プレーヤーで再生している"全ての"音声に対してポーズ／ポーズ解除 の処理が行われます。
 		///  再生中の個々の音声に対し、個別にポーズ／ポーズ解除の処理を行う場合には、 <see cref="CriAtomExPlayback.Pause"/> 関数をご利用ください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Pause(CriAtomExPlayerHn player, CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Pause(CriAtomExPlayerHn player, CriBool sw)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.IsPaused"/>
 		/// <seealso cref="CriAtomExPlayback.Pause"/>
@@ -1338,8 +1337,12 @@ namespace CriWare
 		///  （音声データのバッファリングに時間がかかるため。）
 		///  本関数を使用することで、ストリーム再生の音声についても、発音のタイミングを 制御することが可能になります。 
 		///  処理手順の概要は、以下のとおりです。
-		/// <NOT SUPPORTED TAG : programlisting/> ポーズ解除処理に <see cref="CriAtomExPlayback.Pause"/> 関数を使用した場合、 本関数による再生準備のためのポーズと、 <see cref="CriAtomExPlayer.Pause"/> 関数による一時停止処理の両方が解除されます。
-		/// <see cref="CriAtomExPlayer.Pause"/> 関数でポーズした音声を停止したまま 本関数で再生準備を行った音声を再生したい場合、ポーズの解除に <see cref="CriAtomExPlayer.Resume"/> 関数（または <see cref="CriAtomExPlayback.Resume"/> 関数）をご利用ください。
+		/// <list type="number">
+		/// <item><description><see cref="CriAtomExPlayer.Prepare"/> 関数で準備を開始する。</description></item>
+		/// <item><description>手順1.で取得した再生IDのステータスを <see cref="CriAtomExPlayback.GetStatus"/> 関数で確認。</description></item>
+		/// <item><description>ステータスが <see cref="CriAtomExPlayback.Status.Playing"/> になった時点で <see cref="CriAtomExPlayback.Pause"/> 関数でポーズを解除。</description></item>
+		/// <item><description>ポーズ解除後、次にサーバー処理が動作するタイミングで発音が開始される。</description></item>
+		/// </list>
 		/// </para>
 		/// <see><see cref="CriAtomExPlayback.Pause"/></see>
 		/// <see><see cref="CriAtomExPlayer.Pause"/></see>
@@ -1354,7 +1357,7 @@ namespace CriWare
 		///  関数（または 
 		///  関数）をご利用ください。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExPlaybackId CRIAPI criAtomExPlayer_Prepare(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomExPlaybackId criAtomExPlayer_Prepare(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.GetStatus"/>
 		/// <seealso cref="CriAtomExPlayback.Pause"/>
@@ -1381,7 +1384,7 @@ namespace CriWare
 		///  （停止状態になるまでに、時間がかかる場合があります。）
 		///  停止を保証する必要がある場合には、本関数呼び出し後、 AtomExプレーヤーのステータスが停止状態（<see cref="CriAtomExPlayer.Status.Stop"/>） になることを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Stop(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Stop(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -1409,7 +1412,7 @@ namespace CriWare
 		///  （停止状態になるまでに、時間がかかる場合があります。）
 		///  停止を保証する必要がある場合には、本関数呼び出し後、 AtomExプレーヤーのステータスが停止状態（<see cref="CriAtomExPlayer.Status.Stop"/>） になることを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_StopWithoutReleaseTime(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_StopWithoutReleaseTime(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -1436,7 +1439,7 @@ namespace CriWare
 		///  （停止状態になるまでに、時間がかかる場合があります。）
 		///  停止を保証する必要がある場合には、本関数呼び出し後、 AtomExプレーヤーのステータスが停止状態（<see cref="CriAtomExPlayer.Status.Stop"/>） になることを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_StopAllPlayers(void)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_StopAllPlayers(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -1464,7 +1467,7 @@ namespace CriWare
 		///  （停止状態になるまでに、時間がかかる場合があります。）
 		///  停止を保証する必要がある場合には、本関数呼び出し後、 AtomExプレーヤーのステータスが停止状態（<see cref="CriAtomExPlayer.Status.Stop"/>） になることを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_StopAllPlayersWithoutReleaseTime(void)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_StopAllPlayersWithoutReleaseTime(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -1488,7 +1491,7 @@ namespace CriWare
 		/// 第 2 引数（ obj ）にセットした値は、コールバック関数の引数として渡されます。
 		///  コールバック関数のその他の引数については、 別途 <see cref="CriAtomExPlayer.CbFunc"/> の説明をご参照ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_EnumeratePlayers(CriAtomExPlayerCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_EnumeratePlayers(CriAtomExPlayerCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.CbFunc"/>
 		public static unsafe void EnumeratePlayers(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> func, IntPtr obj)
@@ -1568,7 +1571,7 @@ namespace CriWare
 		/// 本関数を実行すると、プレーヤーで再生している"全ての"音声に対してポーズ解除 の処理が行われます。
 		///  再生中の個々の音声に対し、個別にポーズ解除の処理を行う場合には、 <see cref="CriAtomExPlayback.Resume"/> 関数をご利用ください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Resume(CriAtomExPlayerHn player, CriAtomExResumeMode mode)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Resume(CriAtomExPlayerHn player, CriAtomExResumeMode mode)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.Resume"/>
 		/// <seealso cref="CriAtomExPlayer.Pause"/>
@@ -1591,7 +1594,7 @@ namespace CriWare
 		///  本関数は <see cref="CriAtomExPlayer.Pause"/> 関数でポーズされた音声と、 <see cref="CriAtomExPlayer.Prepare"/> 関数でポーズされた音声とを区別しません。
 		///  （ポーズ方法に関係なく、全ての再生音がポーズされているかどうかのみを判定します。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayer_IsPaused(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayer_IsPaused(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Pause"/>
 		/// <seealso cref="CriAtomExPlayback.Pause"/>
@@ -1683,7 +1686,7 @@ namespace CriWare
 		/// 第 3 引数（ obj ）にセットした値は、コールバック関数の引数として渡されます。
 		///  コールバック関数のその他の引数については、 別途 <see cref="CriAtomExPlayback.CbFunc"/> の説明をご参照ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_EnumeratePlaybacks(CriAtomExPlayerHn player, CriAtomExPlaybackCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_EnumeratePlaybacks(CriAtomExPlayerHn player, CriAtomExPlaybackCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.CbFunc"/>
 		public unsafe void EnumeratePlaybacks(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, NativeBool> func, IntPtr obj)
@@ -1704,7 +1707,7 @@ namespace CriWare
 		///  （ 使用中のボイス数の数ではありません。複数の波形データを含むシーケンスを1回再生した場合でも、 1つとカウントされます。）
 		///  使用中のボイス数を取得したい場合には、 <see cref="CriAtomExVoicePool.GetNumUsedVoices"/> 関数をご利用ください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetNumPlaybacks(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetNumPlaybacks(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExVoicePool.GetNumUsedVoices"/>
@@ -1721,7 +1724,7 @@ namespace CriWare
 		/// プレーヤーで最後に再生した音声の再生IDを取得します。
 		/// </para>
 		/// <para>備考:</para>
-		/// <nativeinfo declaration="CriAtomExPlaybackId CRIAPI criAtomExPlayer_GetLastPlaybackId(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomExPlaybackId criAtomExPlayer_GetLastPlaybackId(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public CriAtomExPlayback GetLastPlaybackId()
@@ -1764,7 +1767,7 @@ namespace CriWare
 		///  そのため、本関数で取得した時刻を元に映像との同期を行った場合、 リードリトライ発生毎に同期が大きくズレる可能性があります。
 		///  波形データと映像の同期を厳密に取る必要がある場合は、本関数の代わりに <see cref="CriAtomExPlayback.GetNumPlayedSamples"/> 関数を使用し、 再生済みサンプル数との同期を取ってください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExPlayer_GetTime(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExPlayer_GetTime(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.GetTime"/>
 		/// <seealso cref="CriAtomExPlayback.GetNumPlayedSamples"/>
@@ -1786,7 +1789,7 @@ namespace CriWare
 		/// 備考:
 		/// <see cref="CriAtom.SoundRendererType.Any"/> を指定した場合、プレーヤーはボイスの出力先に関係なく、 最初に見つかったボイスプールを使用して発音を行います。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSoundRendererType(CriAtomExPlayerHn player, CriAtomSoundRendererType type)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSoundRendererType(CriAtomExPlayerHn player, CriAtomSoundRendererType type)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SoundRendererType"/>
 		public void SetSoundRendererType(CriAtom.SoundRendererType type)
@@ -1810,7 +1813,7 @@ namespace CriWare
 		///  キュー再生時に本関数を呼び出すと、データ側に設定されているボイスリミットグループ設定を<b>上書き</b>します（データ側の設定値は無視されます）。
 		///  ただし、group_no に <see cref="CriAtomExPlayer.NoGroupLimitation"/> を指定した場合はデータ側に設定されているボイスリミットグループを参照します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetGroupNumber(CriAtomExPlayerHn player, CriSint32 group_no)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetGroupNumber(CriAtomExPlayerHn player, CriSint32 group_no)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.NoGroupLimitation"/>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
@@ -1848,7 +1851,7 @@ namespace CriWare
 		///  <see cref="CriAtomEx.VoiceControlMethod.PreferData"/> を指定しているにもかかわらず、単体ファイル再生等、 データにボイス制御方式が設定されていない場合、 後着優先（ <see cref="CriAtomEx.VoiceControlMethod.PreferLast"/> ）でボイスが制御されます。
 		///  関数実行前のデフォルト設定値はデータ依存（ <see cref="CriAtomEx.VoiceControlMethod.PreferData"/> ）です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetVoiceControlMethod(CriAtomExPlayerHn player, CriAtomExVoiceControlMethod method)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetVoiceControlMethod(CriAtomExPlayerHn player, CriAtomExVoiceControlMethod method)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.SetVoicePriority"/>
@@ -1870,7 +1873,7 @@ namespace CriWare
 		/// ボイスプール識別子のデフォルト値は 0 です。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetVoicePoolIdentifier(CriAtomExPlayerHn player, CriAtomExVoicePoolIdentifier identifier)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetVoicePoolIdentifier(CriAtomExPlayerHn player, CriAtomExVoicePoolIdentifier identifier)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StandardVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.AllocateStandardVoicePool"/>
@@ -1880,12 +1883,12 @@ namespace CriWare
 			NativeMethods.criAtomExPlayer_SetVoicePoolIdentifier(NativeHandle, identifier);
 		}
 
-		/// <summary>HCAデコード先ミキサIDの指定 </summary>
-		/// <param name="mixerId">ミキサID </param>
+		/// <summary>HCAデコード先ミキサーIDの指定 </summary>
+		/// <param name="mixerId">ミキサーID </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// HCA-MXのデコード先ミキサIDを指定します。
+		/// HCA-MXのデコード先ミキサーIDを指定します。
 		/// </para>
 		/// <para>
 		/// 備考:
@@ -1895,10 +1898,10 @@ namespace CriWare
 		/// 注意:
 		/// 本関数は HCA-MX ボイスを使用する場合にのみ効果があります。
 		///  （他のボイスを使用する場合、本関数の設定値は無視されます。）
-		///  ミキサIDは再生開始前に設定する必要があります。
-		///  既に再生が開始された音声に対し、後からミキサIDを変更することはできません。
+		///  ミキサーIDは再生開始前に設定する必要があります。
+		///  既に再生が開始された音声に対し、後からミキサーIDを変更することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetHcaMxMixerId(CriAtomExPlayerHn player, CriSint32 mixer_id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetHcaMxMixerId(CriAtomExPlayerHn player, CriSint32 mixer_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExHcaMx.VoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.AllocateHcaMxVoicePool"/>
@@ -1929,9 +1932,9 @@ namespace CriWare
 		///  既に再生が開始された音声に対し、後からASRラックIDを変更することはできません。
 		/// <see cref="CriAtomExPlayer.SetAsrRackIdArray"/> 関数実行後に本関数を実行すると、 <see cref="CriAtomExPlayer.SetAsrRackIdArray"/> 関数にて 設定した複数のASRラックID設定は上書きされます。
 		///  HCA-MX用にエンコードされた音声データには、本関数の設定が適用されません。
-		///  HCA-MX用にエンコードされた音声データについて出力先ASRラックIDを設定する場合、 <see cref="CriAtomExHcaMx.SetAsrRackId"/> 関数を使用して、HCA-MXミキサ自体の出力先ASRラックIDを設定してください。
+		///  HCA-MX用にエンコードされた音声データについて出力先ASRラックIDを設定する場合、 <see cref="CriAtomExHcaMx.SetAsrRackId"/> 関数を使用して、HCA-MXミキサー自体の出力先ASRラックIDを設定してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetAsrRackId(CriAtomExPlayerHn player, CriSint32 rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetAsrRackId(CriAtomExPlayerHn player, CriSint32 rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAsrRackIdArray"/>
 		/// <seealso cref="CriAtomExHcaMx.SetAsrRackId"/>
@@ -1967,9 +1970,9 @@ namespace CriWare
 		/// <see cref="CriAtomExPlayer.SetData"/> 関数等を使用したキュー再生以外の再生時では、本関数にて指定した複数のASRラックIDの内、 1つ目（配列のインデックスが0）の要素に格納されているASRラックIDのみが適用されます。
 		/// <see cref="CriAtomExPlayer.SetAsrRackId"/> 関数実行後に本関数を実行すると、 <see cref="CriAtomExPlayer.SetAsrRackId"/> 関数にて 設定したASRラックID設定は上書きされます。
 		///  HCA-MX用にエンコードされた音声データには、本関数の設定が適用されません。
-		///  HCA-MX用にエンコードされた音声データについて出力先ASRラックIDを設定する場合、 <see cref="CriAtomExHcaMx.SetAsrRackId"/> 関数を使用して、HCA-MXミキサ自体の出力先ASRラックIDを設定してください。
+		///  HCA-MX用にエンコードされた音声データについて出力先ASRラックIDを設定する場合、 <see cref="CriAtomExHcaMx.SetAsrRackId"/> 関数を使用して、HCA-MXミキサー自体の出力先ASRラックIDを設定してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetAsrRackIdArray(CriAtomExPlayerHn player, const CriSint32 *rack_id_array, CriSint32 num_racks)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetAsrRackIdArray(CriAtomExPlayerHn player, const CriSint32 *rack_id_array, CriSint32 num_racks)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAsrRackId"/>
 		/// <seealso cref="CriAtomExHcaMx.SetAsrRackId"/>
@@ -1994,15 +1997,15 @@ namespace CriWare
 		/// 備考:
 		/// 音声データ途中からの再生は、音声データ先頭からの再生に比べ、発音開始の タイミングが遅くなります。
 		///  これは、一旦音声データのヘッダーを解析後、指定位置にジャンプしてからデータを読み 直して再生を開始するためです。
+		///  設定した値は<see cref="CriAtomExPlayer.SetStartTimeMicro"/>による設定を上書きします。
+		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
 		/// <para>
 		/// 注意:
 		/// start_time_ms には64bit値をセット可能ですが、現状、32bit以上の再生時刻を 指定することはできません。
 		///  機種固有の音声フォーマットについても、再生開始位置を指定できない場合があります。
-		///  再生開始位置を指定してシーケンスを再生した場合、指定位置よりも前に配置された 波形データは再生されません。
-		///  （シーケンス内の個々の波形が途中から再生されることはありません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetStartTime(CriAtomExPlayerHn player, CriSint64 start_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetStartTime(CriAtomExPlayerHn player, CriSint64 start_time_ms)"/>
 		/// </remarks>
 		public void SetStartTime(Int64 startTimeMs)
 		{
@@ -2061,7 +2064,7 @@ namespace CriWare
 		///  再生時刻の確認には、これらの関数の代わりに、 
 		///  関数をご利用ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSyncPlaybackId(CriAtomExPlayerHn player, CriAtomExPlaybackId playback_id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSyncPlaybackId(CriAtomExPlayerHn player, CriAtomExPlaybackId playback_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.GetNumPlayedSamples"/>
 		public void SetSyncPlaybackId(CriAtomExPlayback playbackId)
@@ -2087,7 +2090,7 @@ namespace CriWare
 		/// 本関数による設定値は、シーケンスタイプのキューを再生する場合にのみ適用されます。
 		///  シーケンスにて発音する波形データの再生レシオには利用できません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPlaybackRatio(CriAtomExPlayerHn player, CriFloat32 playback_ratio)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPlaybackRatio(CriAtomExPlayerHn player, CriFloat32 playback_ratio)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
 		public void SetPlaybackRatio(Single playbackRatio)
@@ -2131,7 +2134,7 @@ namespace CriWare
 		///  プラットフォーム依存の音声コーデックに対して本関数を実行しないでください。
 		///  （再生が終了しない、ノイズが発生する等の問題が発生します。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_LimitLoopCount(CriAtomExPlayerHn player, CriSint32 count)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_LimitLoopCount(CriAtomExPlayerHn player, CriSint32 count)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
 		public void LimitLoopCount(Int32 count)
@@ -2178,7 +2181,7 @@ namespace CriWare
 		///  （1.0fを超えるボリューム値を指定した場合、同じ波形データを再生した場合でも、 機種ごとに異なる音量で出力される可能性があります。）
 		///  また、音量を上げることが可能な機種であっても、 ハードウェアで出力可能な音量には上限があるため、 音割れによるノイズが発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetVolume(CriAtomExPlayerHn player, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetVolume(CriAtomExPlayerHn player, CriFloat32 volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2195,7 +2198,7 @@ namespace CriWare
 		/// 説明:
 		/// AtomExプレーヤーに設定されている再生パラメーター（AISACコントロール値を含む）を使用して、 このAtomExプレーヤーで再生中の音全ての再生パラメーターを更新します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_UpdateAll(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_UpdateAll(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
 		public void UpdateAll()
@@ -2214,7 +2217,7 @@ namespace CriWare
 		/// 備考:
 		/// 再生IDは、このAtomExプレーヤーで再生された音声を指している必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Update(CriAtomExPlayerHn player, CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Update(CriAtomExPlayerHn player, CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.UpdateAll"/>
 		public void Update(CriAtomExPlayback id)
@@ -2236,7 +2239,7 @@ namespace CriWare
 		///  本関数でリセットされるパラメーターは、各パラメーターの設定を行う関数に対象かどうかを記載しているため、そちらを参照して下さい。
 		///  なお、本関数では3D音源オブジェクトや3Dリスナーオブジェクト自体のもつパラメーター（位置等）はリセットされません。「AtomExプレーヤーに設定されているオブジェクトが何か」という設定だけがリセットされます。 これらのオブジェクト自体のパラメーターをリセットしたい場合には、それぞれのオブジェクトのパラメーターリセット関数を呼び出してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ResetParameters(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ResetParameters(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.ResetParameters"/>
 		/// <seealso cref="CriAtomEx3dListener.ResetParameters"/>
@@ -2254,7 +2257,7 @@ namespace CriWare
 		/// AtomExプレーヤーに設定されている各種パラメーターの値を取得します。
 		///  値は浮動小数点数で取得されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExPlayer_GetParameterFloat32(CriAtomExPlayerHn player, CriAtomExParameterId id)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExPlayer_GetParameterFloat32(CriAtomExPlayerHn player, CriAtomExParameterId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ParameterId"/>
 		/// <seealso cref="CriAtomExPlayer.GetParameterUint32"/>
@@ -2273,7 +2276,7 @@ namespace CriWare
 		/// AtomExプレーヤーに設定されている各種パラメーターの値を取得します。
 		///  値は符号なし整数で取得されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriUint32 CRIAPI criAtomExPlayer_GetParameterUint32(CriAtomExPlayerHn player, CriAtomExParameterId id)"/>
+		/// <nativeinfo declaration="CriUint32 criAtomExPlayer_GetParameterUint32(CriAtomExPlayerHn player, CriAtomExParameterId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ParameterId"/>
 		/// <seealso cref="CriAtomExPlayer.GetParameterFloat32"/>
@@ -2292,7 +2295,7 @@ namespace CriWare
 		/// AtomExプレーヤーに設定されている各種パラメーターの値を取得します。
 		///  値は符号付き整数で取得されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetParameterSint32(CriAtomExPlayerHn player, CriAtomExParameterId id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetParameterSint32(CriAtomExPlayerHn player, CriAtomExParameterId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ParameterId"/>
 		/// <seealso cref="CriAtomExPlayer.GetParameterFloat32"/>
@@ -2330,7 +2333,7 @@ namespace CriWare
 		///  例えば、音声データのサンプリングレートが24kHzで、ボイスプールの最大サンプリングレートが48kHzの場合、 設定可能な最大ピッチは1200(周波数比率2倍)になります。
 		///  再生サンプリングレートの上下によりピッチを実装しているため、 ピッチを変更すると音程と一緒に再生速度も変化します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPitch(CriAtomExPlayerHn player, CriFloat32 pitch)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPitch(CriAtomExPlayerHn player, CriFloat32 pitch)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2360,7 +2363,7 @@ namespace CriWare
 		///  短時間にピッチを上げ下げするケースについては、 予想される最大ピッチをあらかじめ本関数で設定してから再生を行ってください。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetMaxPitch(CriAtomExPlayerHn player, CriFloat32 pitch)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetMaxPitch(CriAtomExPlayerHn player, CriFloat32 pitch)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetPitch"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -2390,7 +2393,7 @@ namespace CriWare
 		///  （+360.0f, -360.0fしても定位は変わらないため、実質的には-180.0f～180.0fの範囲を超えて設定可能です。）
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPan3dAngle(CriAtomExPlayerHn player, CriFloat32 pan3d_angle)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPan3dAngle(CriAtomExPlayerHn player, CriFloat32 pan3d_angle)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2420,7 +2423,7 @@ namespace CriWare
 		///  同様に、実際に適用されるパンニング3D距離が-1.0f未満の値になった場合も、値は-1.0fにクリップされます。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPan3dInteriorDistance(CriAtomExPlayerHn player, CriFloat32 pan3d_interior_distance)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPan3dInteriorDistance(CriAtomExPlayerHn player, CriFloat32 pan3d_interior_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2447,7 +2450,7 @@ namespace CriWare
 		/// 備考:
 		/// 本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPan3dVolume(CriAtomExPlayerHn player, CriFloat32 pan3d_volume)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPan3dVolume(CriAtomExPlayerHn player, CriFloat32 pan3d_volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2479,7 +2482,7 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtomEx.PanType.Unknown"/> を指定して実行した場合、エラーが発生します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPanType(CriAtomExPlayerHn player, CriAtomExPanType pan_type)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPanType(CriAtomExPlayerHn player, CriAtomExPanType pan_type)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2509,7 +2512,7 @@ namespace CriWare
 		/// <item><description><see cref="CriAtomEx3dSourceList"/> が設定されているかどうか </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExPanType CRIAPI criAtomExPlayer_GetPanTypeOnPlayback(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomExPanType criAtomExPlayer_GetPanTypeOnPlayback(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetPanType"/>
 		public CriAtomEx.PanType GetPanTypeOnPlayback()
@@ -2535,7 +2538,7 @@ namespace CriWare
 		///  本パラメーターはデータ側には設定できないため、常に本関数の設定値が適用されます。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPanSpeakerType(CriAtomExPlayerHn player, CriAtomExPanSpeakerType pan_speaker_type)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPanSpeakerType(CriAtomExPlayerHn player, CriAtomExPanSpeakerType pan_speaker_type)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2562,7 +2565,7 @@ namespace CriWare
 		///  1より大きい値：出力振幅値の増幅によりクリッピングノイズ等が発生することがあります。
 		///  負値：データ設定値との和が負となった場合は、正値結果に対して位相を反転した結果が出力されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AddMixDownCenterVolumeOffset(CriAtomExPlayerHn player, CriFloat32 mixdown_center_volume_offset)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AddMixDownCenterVolumeOffset(CriAtomExPlayerHn player, CriFloat32 mixdown_center_volume_offset)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2589,7 +2592,7 @@ namespace CriWare
 		///  1より大きい値：出力振幅値の増幅によりクリッピングノイズ等が発生することがあります。
 		///  負値：データ設定値との和が負となった場合は、正値結果に対して位相を反転した結果が出力されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AddMixDownLfeVolumeOffset(CriAtomExPlayerHn player, CriFloat32 mixdown_lfe_volume_offset)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AddMixDownLfeVolumeOffset(CriAtomExPlayerHn player, CriFloat32 mixdown_lfe_volume_offset)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2622,7 +2625,7 @@ namespace CriWare
 		///  そのため、再生中にデフォルト値を変更した場合、意図したタイミングで変更が反映されるとは限りません。
 		///  本関数を使用する場合、初期化時など音声を再生する前に実行するようにしてください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ChangeDefaultPanSpeakerType(CriAtomExPanSpeakerType pan_speaker_type)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ChangeDefaultPanSpeakerType(CriAtomExPanSpeakerType pan_speaker_type)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetPanSpeakerType"/>
 		/// <seealso cref="CriAtomEx.PanSpeakerType"/>
@@ -2649,7 +2652,7 @@ namespace CriWare
 		///  本パラメーターはデータ側には設定できないため、常に本関数の設定値が適用されます。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPanAngleType(CriAtomExPlayerHn player, CriAtomExPanAngleType pan_angle_type)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPanAngleType(CriAtomExPlayerHn player, CriAtomExPanAngleType pan_angle_type)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2707,7 +2710,7 @@ namespace CriWare
 		///  センドレベルをコントロールする際には、必ず出力を行いたい全てのチャンネルについてセンド レベルの設定を行ってください。
 		///  本関数を用いてセンドレベルを設定した場合、パン3Dや3Dポジショニングの設定は無視されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSendLevel(CriAtomExPlayerHn player, CriSint32 ch, CriAtomExSpeakerId spk, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSendLevel(CriAtomExPlayerHn player, CriSint32 ch, CriAtomExSpeakerId spk, CriFloat32 level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2741,7 +2744,7 @@ namespace CriWare
 		/// 本関数に異なるバス名を指定して複数回呼び出すことで、複数のバスに流すこともできます。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetBusSendLevelByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetBusSendLevelByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2759,7 +2762,7 @@ namespace CriWare
 		/// 説明:
 		/// AtomEx プレーヤーに設定されているバスセンド情報をリセットし、初期状態（未設定状態）に戻します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ResetBusSends(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ResetBusSends(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetBusSendLevelByName"/>
 		public void ResetBusSends()
@@ -2781,7 +2784,7 @@ namespace CriWare
 		/// <item><description>第1引数にて指定した AtomEx プレーヤーに第2引数のバス名に関するバスセンドレベルの設定を行っていない</description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayer_GetBusSendLevelByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 *level)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayer_GetBusSendLevelByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 *level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetBusSendLevelByName"/>
 		public unsafe bool GetBusSendLevelByName(ArgString busName, out Single level)
@@ -2806,7 +2809,7 @@ namespace CriWare
 		///  データ側に設定されていたバスセンドレベルを無視して値が設定可能です。（上書き設定）
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetBusSendLevelOffsetByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 level_offset)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetBusSendLevelOffsetByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 level_offset)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetBusSendLevelByName"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -2829,7 +2832,7 @@ namespace CriWare
 		/// <item><description>第1引数にて指定した AtomEx プレーヤーに第2引数のバス名に関するバスセンドレベルの設定を行っていない</description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayer_GetBusSendLevelOffsetByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 *level_offset)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayer_GetBusSendLevelOffsetByName(CriAtomExPlayerHn player, const CriChar8 *bus_name, CriFloat32 *level_offset)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetBusSendLevelByName"/>
 		public unsafe bool GetBusSendLevelOffsetByName(ArgString busName, out Single levelOffset)
@@ -2865,7 +2868,7 @@ namespace CriWare
 		///  本関数と<see cref="CriAtomExPlayer.SetPan3dAngle"/> 関数や <see cref="CriAtomExPlayer.SetSendLevel"/> 関数を併用しないでください。
 		///  両者を併用した場合、意図しないパンで再生される可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPanAdx1Compatible(CriAtomExPlayerHn player, CriSint32 ch, CriFloat32 pan)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPanAdx1Compatible(CriAtomExPlayerHn player, CriSint32 ch, CriFloat32 pan)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2908,7 +2911,7 @@ namespace CriWare
 		///  本パラメーターは 
 		///  関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetBandpassFilterParameters(CriAtomExPlayerHn player, CriFloat32 cof_low, CriFloat32 cof_high)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetBandpassFilterParameters(CriAtomExPlayerHn player, CriFloat32 cof_low, CriFloat32 cof_high)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -2966,7 +2969,7 @@ namespace CriWare
 		///  本パラメーターは 
 		///  関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetBiquadFilterParameters(CriAtomExPlayerHn player, CriAtomExBiquadFilterType type, CriFloat32 frequency, CriFloat32 gain, CriFloat32 q_value)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetBiquadFilterParameters(CriAtomExPlayerHn player, CriAtomExBiquadFilterType type, CriFloat32 frequency, CriFloat32 gain, CriFloat32 q_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -3018,7 +3021,7 @@ namespace CriWare
 		///  本パラメーターは 
 		///  関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetVoicePriority(CriAtomExPlayerHn player, CriSint32 priority)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetVoicePriority(CriAtomExPlayerHn player, CriSint32 priority)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -3063,7 +3066,7 @@ namespace CriWare
 		///  本パラメーターは 
 		///  関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetAisacControlById(CriAtomExPlayerHn player, CriAtomExAisacControlId control_id, CriFloat32 control_value)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetAisacControlById(CriAtomExPlayerHn player, CriAtomExAisacControlId control_id, CriFloat32 control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -3092,7 +3095,7 @@ namespace CriWare
 		/// 備考:
 		/// 本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetAisacControlByName(CriAtomExPlayerHn player, const CriChar8 *control_name, CriFloat32 control_value)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetAisacControlByName(CriAtomExPlayerHn player, const CriChar8 *control_name, CriFloat32 control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -3112,7 +3115,7 @@ namespace CriWare
 		/// プレーヤーに設定されているAISACコントロール値を全て削除します。
 		///  また削除後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生中の音声に対してAISACコントロール値の削除が行えます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ClearAisacControls(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ClearAisacControls(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAisacControlById"/>
 		/// <seealso cref="CriAtomExPlayer.SetAisacControlByName"/>
@@ -3153,7 +3156,7 @@ namespace CriWare
 		///  本パラメーターは 
 		///  関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Set3dListenerHn(CriAtomExPlayerHn player, CriAtomEx3dListenerHn listener)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Set3dListenerHn(CriAtomExPlayerHn player, CriAtomEx3dListenerHn listener)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener"/>
 		/// <seealso cref="CriAtomExPlayer.Set3dSourceHn"/>
@@ -3189,7 +3192,7 @@ namespace CriWare
 		///  例えば、 <see cref="CriAtomExPlayer.Set3dSourceListHn"/> 関数にて3D音源オブジェクトリストをAtomExプレーヤーに設定後、本関数にてAtomExプレーヤーに3D音源オブジェクトを設定すると、 AtomExプレーヤーには新たに3D音源オブジェクトが設定され、既に設定されていた3D音源オブジェクトリストはAtomExプレーヤーからクリアされます。 
 		///  本関数を用いてAtomExプレーヤーに設定された3D音源オブジェクトは、3D音源オブジェクトリストに追加することはできません。 もし3D音源オブジェクトリストに追加する場合は、既に設定されているAtomExプレーヤーの3D音源オブジェクトに関する設定をクリアしてください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Set3dSourceHn(CriAtomExPlayerHn player, CriAtomEx3dSourceHn source)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Set3dSourceHn(CriAtomExPlayerHn player, CriAtomEx3dSourceHn source)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource"/>
 		/// <seealso cref="CriAtomEx3dSourceList"/>
@@ -3224,7 +3227,7 @@ namespace CriWare
 		///  本関数と <see cref="CriAtomExPlayer.Set3dSourceHn"/> 関数はお互いに設定を上書きします。
 		///  例えば、 <see cref="CriAtomExPlayer.Set3dSourceHn"/> 関数にて3D音源オブジェクトをAtomExプレーヤーに設定後、本関数にてAtomExプレーヤーに3D音源オブジェクトリストを設定すると、 AtomExプレーヤーには新たに3D音源オブジェクトリストが設定され、既に設定されていた3D音源オブジェクトはAtomExプレーヤーからクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_Set3dSourceListHn(CriAtomExPlayerHn player, CriAtomEx3dSourceListHn source_list)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_Set3dSourceListHn(CriAtomExPlayerHn player, CriAtomEx3dSourceListHn source_list)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList"/>
 		/// <seealso cref="CriAtomEx3dSource"/>
@@ -3251,7 +3254,7 @@ namespace CriWare
 		/// 本関数は、AtomExプレーヤーに設定されたAISACコントロール値を取得します。
 		///  再生中の音声にAISACコントロール値を変更するAISACが設定されていたとしても、その変更結果を取得することはできません。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExPlayer_GetAisacControlById(CriAtomExPlayerHn player, CriAtomExAisacControlId control_id)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExPlayer_GetAisacControlById(CriAtomExPlayerHn player, CriAtomExAisacControlId control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAisacControlById"/>
 		/// <seealso cref="CriAtomExPlayer.GetAisacControlByName"/>
@@ -3274,7 +3277,7 @@ namespace CriWare
 		/// 本関数は、AtomExプレーヤーに設定されたAISACコントロール値を取得します。
 		///  再生中の音声にAISACコントロール値を変更するAISACが設定されていたとしても、その変更結果を取得することはできません。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExPlayer_GetAisacControlByName(CriAtomExPlayerHn player, const CriChar8 *control_name)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExPlayer_GetAisacControlByName(CriAtomExPlayerHn player, const CriChar8 *control_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAisacControlByName"/>
 		/// <seealso cref="CriAtomExPlayer.GetAisacControlById"/>
@@ -3301,7 +3304,7 @@ namespace CriWare
 		/// 注意:
 		/// カテゴリ設定は再生開始前に行ってください。再生中の音声のカテゴリは更新されません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetCategoryById(CriAtomExPlayerHn player, CriUint32 category_id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetCategoryById(CriAtomExPlayerHn player, CriUint32 category_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.UnsetCategory"/>
 		/// <seealso cref="CriAtomExPlayer.SetCategoryByName"/>
@@ -3328,7 +3331,7 @@ namespace CriWare
 		/// 注意:
 		/// カテゴリ設定は再生開始前に行ってください。再生中の音声のカテゴリは更新されません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetCategoryByName(CriAtomExPlayerHn player, const CriChar8 *category_name)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetCategoryByName(CriAtomExPlayerHn player, const CriChar8 *category_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.UnsetCategory"/>
 		/// <seealso cref="CriAtomExPlayer.SetCategoryById"/>
@@ -3344,7 +3347,7 @@ namespace CriWare
 		/// 説明:
 		/// プレーヤーオブジェクトに設定されているカテゴリ情報を削除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_UnsetCategory(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_UnsetCategory(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetCategoryByName"/>
 		/// <seealso cref="CriAtomExPlayer.SetCategoryById"/>
@@ -3360,7 +3363,7 @@ namespace CriWare
 		/// 説明:
 		/// プレーヤーオブジェクトに設定されているカテゴリの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetNumCategories(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetNumCategories(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		public Int32 GetNumCategories()
 		{
@@ -3377,7 +3380,7 @@ namespace CriWare
 		/// インデックスを指定してプレーヤーオブジェクトに設定されているカテゴリ情報を取得します。
 		///  指定したインデックスのカテゴリが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayer_GetCategoryInfo(CriAtomExPlayerHn player, CriUint16 index, CriAtomExCategoryInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayer_GetCategoryInfo(CriAtomExPlayerHn player, CriUint16 index, CriAtomExCategoryInfo *info)"/>
 		/// </remarks>
 		public unsafe bool GetCategoryInfo(UInt16 index, out CriAtomExCategory.Info info)
 		{
@@ -3402,7 +3405,7 @@ namespace CriWare
 		///  本関数は、３チャンネル以上の入力に対応した機種でしか利用できません。
 		///  ２チャンネル（ステレオ）以下の入力までしか対応していない機種ではリンクエラーとなります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetTrackInfo(CriAtomExPlayerHn player, CriSint32 num_tracks, const CriSint32 *channels_per_track)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetTrackInfo(CriAtomExPlayerHn player, CriSint32 num_tracks, const CriSint32 *channels_per_track)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetTrackVolume"/>
 		public unsafe void SetTrackInfo(Int32 numTracks, in Int32 channelsPerTrack)
@@ -3432,7 +3435,7 @@ namespace CriWare
 		///  本関数は、３チャンネル以上の入力に対応した機種でしか利用できません。
 		///  ２チャンネル（ステレオ）以下の入力までしか対応していない機種ではリンクエラーとなります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetTrackVolume(CriAtomExPlayerHn player, CriSint32 track_no, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetTrackVolume(CriAtomExPlayerHn player, CriSint32 track_no, CriFloat32 volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetTrackInfo"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3456,7 +3459,7 @@ namespace CriWare
 		/// 備考:
 		/// 本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSilentMode(CriAtomExPlayerHn player, CriAtomExSilentMode silent_mode)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSilentMode(CriAtomExPlayerHn player, CriAtomExSilentMode silent_mode)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SilentMode"/>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
@@ -3487,7 +3490,7 @@ namespace CriWare
 		///  AtomExプレーヤーの再生リクエストが、再生中のキューのプライオリティと等しい場合、 AtomExプレーヤーは後着優先で発音制御を行います。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetCuePriority(CriAtomExPlayerHn player, CriSint32 cue_priority)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetCuePriority(CriAtomExPlayerHn player, CriSint32 cue_priority)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3514,7 +3517,7 @@ namespace CriWare
 		/// 備考:
 		/// キュー再生時、データ側にプリディレイタイムが設定されている場合に本関数を呼び出すと、 データ側に設定されている値と本関数の設定値を<b>加算</b>した値が適用されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPreDelayTime(CriAtomExPlayerHn player, CriFloat32 predelay_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPreDelayTime(CriAtomExPlayerHn player, CriFloat32 predelay_time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public void SetPreDelayTime(Single predelayTimeMs)
@@ -3541,7 +3544,7 @@ namespace CriWare
 		/// キュー再生時、データ側にアタックタイムが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeAttackTime(CriAtomExPlayerHn player, CriFloat32 attack_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeAttackTime(CriAtomExPlayerHn player, CriFloat32 attack_time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3572,7 +3575,7 @@ namespace CriWare
 		/// キュー再生時、データ側にアタックカーブが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeAttackCurve(CriAtomExPlayerHn player, CriAtomExCurveType curve_type, CriFloat32 strength)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeAttackCurve(CriAtomExPlayerHn player, CriAtomExCurveType curve_type, CriFloat32 strength)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3600,7 +3603,7 @@ namespace CriWare
 		/// キュー再生時、データ側にホールドタイムが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeHoldTime(CriAtomExPlayerHn player, CriFloat32 hold_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeHoldTime(CriAtomExPlayerHn player, CriFloat32 hold_time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3628,7 +3631,7 @@ namespace CriWare
 		/// キュー再生時、データ側にディケイタイムが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeDecayTime(CriAtomExPlayerHn player, CriFloat32 decay_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeDecayTime(CriAtomExPlayerHn player, CriFloat32 decay_time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3659,7 +3662,7 @@ namespace CriWare
 		/// キュー再生時、データ側にディケイカーブが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeDecayCurve(CriAtomExPlayerHn player, CriAtomExCurveType curve_type, CriFloat32 strength)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeDecayCurve(CriAtomExPlayerHn player, CriAtomExCurveType curve_type, CriFloat32 strength)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3683,7 +3686,7 @@ namespace CriWare
 		/// キュー再生時、データ側にリリースタイムが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeReleaseTime(CriAtomExPlayerHn player, CriFloat32 release_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeReleaseTime(CriAtomExPlayerHn player, CriFloat32 release_time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3714,7 +3717,7 @@ namespace CriWare
 		/// キュー再生時、データ側にリリースカーブが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeReleaseCurve(CriAtomExPlayerHn player, CriAtomExCurveType curve_type, CriFloat32 strength)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeReleaseCurve(CriAtomExPlayerHn player, CriAtomExCurveType curve_type, CriFloat32 strength)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3742,7 +3745,7 @@ namespace CriWare
 		/// キュー再生時、データ側にサスティンレベルが設定されている場合に本関数を呼び出すと、 データ側に設定されている値を<b>上書き</b>して適用されます（データ側の設定値は無視されます）。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetEnvelopeSustainLevel(CriAtomExPlayerHn player, CriFloat32 susutain_level)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetEnvelopeSustainLevel(CriAtomExPlayerHn player, CriFloat32 susutain_level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -3803,7 +3806,7 @@ namespace CriWare
 		/// コールバック関数内で上記以外のAPIを実行した場合、 エラーコールバックやデッドロック等の問題が発生する可能性があります。
 		///  シームレス連結再生をサポートしないコーデックを使用している場合、 データ要求コールバック関数内で次のデータをセットしても、 データは続けて再生されません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetDataRequestCallback(CriAtomExPlayerHn player, CriAtomExPlayerDataRequestCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetDataRequestCallback(CriAtomExPlayerHn player, CriAtomExPlayerDataRequestCbFunc func, void *obj)"/>
 		/// </remarks>
 		public unsafe void SetDataRequestCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, IntPtr, void> func, IntPtr obj)
 		{
@@ -3892,17 +3895,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CriAtomExPlayerDataRequestCbFuncCallbackFunc(IntPtr obj, UInt32 id, IntPtr player) =>
-				InvokeCallbackInternal(obj, new(new(id), player));
+			static void CriAtomExPlayerDataRequestCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback id, IntPtr player) =>
+				InvokeCallbackInternal(obj, new(id, player));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate void NativeDelegate(IntPtr obj, UInt32 id, IntPtr player);
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback id, IntPtr player);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DataRequestCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, IntPtr, void>)&CriAtomExPlayerDataRequestCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, IntPtr, void>)&CriAtomExPlayerDataRequestCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerDataRequestCbFuncCallbackFunc)
 #endif
@@ -3917,7 +3920,7 @@ namespace CriWare
 		/// AtomExプレーヤーが保持する疑似乱数生成器に乱数種を設定します。
 		///  乱数種を設定することにより、各種ランダム再生処理に再現性を持たせることができます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetRandomSeed(CriAtomExPlayerHn player, CriUint32 seed)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetRandomSeed(CriAtomExPlayerHn player, CriUint32 seed)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetRandomSeed"/>
 		public void SetRandomSeed(UInt32 seed)
@@ -3938,7 +3941,7 @@ namespace CriWare
 		/// 備考:
 		/// 本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetDspParameter(CriAtomExPlayerHn player, CriSint32 param_id, CriFloat32 param_val)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetDspParameter(CriAtomExPlayerHn player, CriSint32 param_id, CriFloat32 param_val)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
 		public void SetDspParameter(Int32 paramId, Single paramVal)
@@ -3958,7 +3961,7 @@ namespace CriWare
 		/// 備考:
 		/// 本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetDspBypass(CriAtomExPlayerHn player, CriBool is_bypassed)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetDspBypass(CriAtomExPlayerHn player, CriBool is_bypassed)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
 		public void SetDspBypass(NativeBool isBypassed)
@@ -3988,7 +3991,7 @@ namespace CriWare
 		/// キューやトラックに「AISACコントロール値を変更するAISAC」が設定されていたとしても、その適用結果のAISACコントロール値は、プレーヤーにアタッチしたAISACには影響しません。 現在、「オートモジュレーション」や「ランダム」といったコントロールタイプのAISACのアタッチには対応しておりません。
 		///  現在、プレーヤーにアタッチできるAISACの最大数は、8個固定です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AttachAisac(CriAtomExPlayerHn player, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AttachAisac(CriAtomExPlayerHn player, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.DetachAisac"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -4008,7 +4011,7 @@ namespace CriWare
 		///  AISACのデタッチに失敗した場合、関数内でエラーコールバックが発生します。
 		///  AISACのデタッチに失敗した理由については、エラーコールバックのメッセージを確認してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_DetachAisac(CriAtomExPlayerHn player, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_DetachAisac(CriAtomExPlayerHn player, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachAisac"/>
 		public void DetachAisac(ArgString globalAisacName)
@@ -4024,7 +4027,7 @@ namespace CriWare
 		///  本関数でAISACをデタッチ後、<see cref="CriAtomExPlayer.Start"/> 関数により再生開始すると、デタッチしたAISACの影響は受けなくなります。
 		///  またデタッチ後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生された音声に対しても、デタッチしたAISACによる影響を受けなくなります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_DetachAisacAll(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_DetachAisacAll(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachAisac"/>
 		public void DetachAisacAll()
@@ -4039,7 +4042,7 @@ namespace CriWare
 		/// 説明:
 		/// プレーヤーにアタッチされているAISAC数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetNumAttachedAisacs(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetNumAttachedAisacs(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		public Int32 GetNumAttachedAisacs()
 		{
@@ -4055,7 +4058,7 @@ namespace CriWare
 		/// プレーヤーにアタッチされているAISACの情報を取得します。
 		///  無効なインデックスを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayer_GetAttachedAisacInfo(CriAtomExPlayerHn player, CriSint32 aisac_attached_index, CriAtomExAisacInfo *aisac_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayer_GetAttachedAisacInfo(CriAtomExPlayerHn player, CriSint32 aisac_attached_index, CriAtomExAisacInfo *aisac_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.GetNumAttachedAisacs"/>
 		public unsafe bool GetAttachedAisacInfo(Int32 aisacAttachedIndex, out CriAtomEx.AisacInfo aisacInfo)
@@ -4076,7 +4079,7 @@ namespace CriWare
 		/// プレーヤーで使用中のストリーミングキャッシュを破棄する場合は、 先にプレーヤーを破棄してください。
 		///  逆の順序で処理した場合の結果は不定です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetStreamingCacheId(CriAtomExPlayerHn player, CriAtomExStreamingCacheId cache_id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetStreamingCacheId(CriAtomExPlayerHn player, CriAtomExStreamingCacheId cache_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		/// <seealso cref="CriAtomStreamingCache.Dispose"/>
@@ -4101,7 +4104,7 @@ namespace CriWare
 		///  現在、プレーヤーにアタッチできるトゥイーンの最大数は、8個固定です。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AttachTween(CriAtomExPlayerHn player, CriAtomExTweenHn tween)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AttachTween(CriAtomExPlayerHn player, CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.DetachTween"/>
 		/// <seealso cref="CriAtomExPlayer.DetachTweenAll"/>
@@ -4121,7 +4124,7 @@ namespace CriWare
 		///  本関数でトゥイーンをデタッチ後、<see cref="CriAtomExPlayer.Start"/> 関数により再生開始すると、デタッチしたトゥイーンの影響は受けなくなります。
 		///  またデタッチ後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生された音声に対しても、デタッチしたトゥイーンによる影響を受けなくなります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_DetachTween(CriAtomExPlayerHn player, CriAtomExTweenHn tween)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_DetachTween(CriAtomExPlayerHn player, CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachTween"/>
 		public void DetachTween(CriAtomExTween tween)
@@ -4137,7 +4140,7 @@ namespace CriWare
 		///  本関数でトゥイーンをデタッチ後、<see cref="CriAtomExPlayer.Start"/> 関数により再生開始すると、デタッチしたトゥイーンの影響は受けなくなります。
 		///  またデタッチ後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生された音声に対しても、デタッチしたトゥイーンによる影響を受けなくなります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_DetachTweenAll(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_DetachTweenAll(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachTween"/>
 		public void DetachTweenAll()
@@ -4165,7 +4168,7 @@ namespace CriWare
 		/// 再生開始後のブロック遷移は <see cref="CriAtomExPlayback.SetNextBlockIndex"/> 関数を使用して行い、 再生中のブロックインデックス取得は <see cref="CriAtomExPlayback.GetCurrentBlockIndex"/> 関数を使用します。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFirstBlockIndex(CriAtomExPlayerHn player, CriAtomExBlockIndex index)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFirstBlockIndex(CriAtomExPlayerHn player, CriAtomExBlockIndex index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayback.SetNextBlockIndex"/>
@@ -4192,7 +4195,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetBlockTransitionCallback(CriAtomExPlayerHn player, CriAtomExPlayerBlockTransitionCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetBlockTransitionCallback(CriAtomExPlayerHn player, CriAtomExPlayerBlockTransitionCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.BlockTransitionCbFunc"/>
 		public unsafe void SetBlockTransitionCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, Int32, void> func, IntPtr obj)
@@ -4247,17 +4250,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CriAtomExPlayerBlockTransitionCbFuncCallbackFunc(IntPtr obj, UInt32 id, Int32 index) =>
-				InvokeCallbackInternal(obj, new(new(id), index));
+			static void CriAtomExPlayerBlockTransitionCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback id, Int32 index) =>
+				InvokeCallbackInternal(obj, new(id, index));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate void NativeDelegate(IntPtr obj, UInt32 id, Int32 index);
+			delegate void NativeDelegate(IntPtr obj, CriAtomExPlayback id, Int32 index);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal BlockTransitionCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, Int32, void>)&CriAtomExPlayerBlockTransitionCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, Int32, void>)&CriAtomExPlayerBlockTransitionCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlayerBlockTransitionCbFuncCallbackFunc)
 #endif
@@ -4289,7 +4292,7 @@ namespace CriWare
 		///  通常では6ch素材を再生した際、自動的にセンター／LFEから出力されますが、 データ側または本関数でドライセンドレベルが設定された場合、自動では出力されなくなります。 また同様に、データ側または本関数でドライセンドレベルが設定された場合、CRI Atom Craftで設定したセンター／LFEミックスレベルは無効となります。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetDrySendLevel(CriAtomExPlayerHn player, CriAtomExSpeakerId spk, CriFloat32 offset, CriFloat32 gain)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetDrySendLevel(CriAtomExPlayerHn player, CriAtomExSpeakerId spk, CriFloat32 offset, CriFloat32 gain)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -4313,7 +4316,7 @@ namespace CriWare
 		///  プレーヤーに設定したラベル情報の一括削除は、 <see cref="CriAtomExPlayer.ClearSelectorLabels"/> 関数を実行してください。
 		///  ラベル情報を含む全てのプレーヤー設定値削除は、 <see cref="CriAtomExPlayer.ResetParameters"/> 関数を実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetSelectorLabel(CriAtomExPlayerHn player, const CriChar8 *selector, const CriChar8 *label)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetSelectorLabel(CriAtomExPlayerHn player, const CriChar8 *selector, const CriChar8 *label)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.ClearSelectorLabels"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -4332,7 +4335,7 @@ namespace CriWare
 		/// プレーヤーに設定されている指定されたセレクター名とそれに紐づくラベル名の情報を削除します。
 		///  また削除後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生中の音声に対してセレクター情報の削除が行えますが、再生中音声が停止することはありません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_UnsetSelectorLabel(CriAtomExPlayerHn player, const CriChar8 *selector)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_UnsetSelectorLabel(CriAtomExPlayerHn player, const CriChar8 *selector)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetSelectorLabel"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -4349,7 +4352,7 @@ namespace CriWare
 		/// プレーヤーに設定されているセレクター名、ラベル名情報を全て削除します。
 		///  また削除後、<see cref="CriAtomExPlayer.Update"/> 関数、<see cref="CriAtomExPlayer.UpdateAll"/> 関数を呼び出すことにより、 すでに再生中の音声に対してセレクター情報の削除が行えますが、再生中音声が停止することはありません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ClearSelectorLabels(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ClearSelectorLabels(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetSelectorLabel"/>
 		/// <seealso cref="CriAtomExPlayer.Update"/>
@@ -4375,7 +4378,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPlaybackTrackInfoNotificationCallback(CriAtomExPlayerHn player, CriAtomExPlayerPlaybackTrackInfoNotificationCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPlaybackTrackInfoNotificationCallback(CriAtomExPlayerHn player, CriAtomExPlayerPlaybackTrackInfoNotificationCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.PlaybackTrackInfoNotificationCbFunc"/>
 		public unsafe void SetPlaybackTrackInfoNotificationCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.TrackInfo*, void> func, IntPtr obj)
@@ -4463,7 +4466,7 @@ namespace CriWare
 		/// 1つのAtomExプレーヤーに対し、1つのコールバック関数しか登録できません。
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetPlaybackEventCallback(CriAtomExPlayerHn player, CriAtomExPlaybackEventCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetPlaybackEventCallback(CriAtomExPlayerHn player, CriAtomExPlaybackEventCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.VoiceEventCbFunc"/>
 		public unsafe void SetPlaybackEventCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.Event, CriAtomExPlayback.InfoDetail*, void> func, IntPtr obj)
@@ -4490,7 +4493,7 @@ namespace CriWare
 		/// デフォルト値は<see cref="CriAtom.ChangeDefaultChannelConfig"/> 関数にて変更可能です。
 		///  本パラメーターは <see cref="CriAtomExPlayer.ResetParameters"/> 関数にてクリアされます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetChannelConfig(CriAtomExPlayerHn player, CriSint32 num_channels, CriAtomChannelConfig channel_config)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetChannelConfig(CriAtomExPlayerHn player, CriSint32 num_channels, CriAtomChannelConfig channel_config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.ChangeDefaultChannelConfig"/>
 		/// <seealso cref="CriAtomExPlayer.ResetParameters"/>
@@ -4520,7 +4523,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_CalculateWorkSizeForFader(const CriAtomExFaderConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_CalculateWorkSizeForFader(const CriAtomExFaderConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExFader.Config"/>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
@@ -4555,7 +4558,7 @@ namespace CriWare
 		///  また、再生停止時（ 
 		///  関数実行時）には、 以下の制御を行います。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_AttachFader(CriAtomExPlayerHn player, const CriAtomExFaderConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_AttachFader(CriAtomExPlayerHn player, const CriAtomExFaderConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public unsafe void AttachFader(in CriAtomExFader.Config config)
 		{
@@ -4580,7 +4583,7 @@ namespace CriWare
 		///  本関数で設定したフェード時間は、本関数実行後に <see cref="CriAtomExPlayer.Start"/> 関数を 実行するタイミングで適用されます。
 		///  （既にフェードインを開始している音声に対しては、 本関数で後からフェードイン時間を変更することはできません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFadeInTime(CriAtomExPlayerHn player, CriSint32 ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFadeInTime(CriAtomExPlayerHn player, CriSint32 ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
 		/// <seealso cref="CriAtomExPlayer.SetFadeInTime"/>
@@ -4621,7 +4624,7 @@ namespace CriWare
 		///  第2引数（ ms ）に 0 を指定する場合と、 
 		///  を指定する場合とでは、以下のように挙動が異なります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFadeOutTime(CriAtomExPlayerHn player, CriSint32 ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFadeOutTime(CriAtomExPlayerHn player, CriSint32 ms)"/>
 		/// </remarks>
 		public void SetFadeOutTime(Int32 ms)
 		{
@@ -4640,7 +4643,7 @@ namespace CriWare
 		/// フェーダーをデタッチするプレーヤーが音声再生中の場合、本関数を実行したタイミングで プレーヤーが再生中の音声は全て停止されます。
 		///  本関数を実行せずにプレーヤーを破棄した場合、プレーヤー破棄時（ <see cref="CriAtomExPlayer.Dispose"/> 関数実行時） にライブラリ内でフェーダーのデタッチが行われます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_DetachFader(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_DetachFader(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
 		public void DetachFader()
@@ -4659,7 +4662,7 @@ namespace CriWare
 		/// 備考:
 		/// 本関数は <see cref="CriAtomExPlayer.SetFadeOutTime"/> 関数でセットした値を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetFadeOutTime(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetFadeOutTime(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFadeOutTime"/>
 		public Int32 GetFadeOutTime()
@@ -4678,7 +4681,7 @@ namespace CriWare
 		/// 備考:
 		/// 本関数は <see cref="CriAtomExPlayer.SetFadeInTime"/> 関数でセットした値を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetFadeInTime(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetFadeInTime(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFadeInTime"/>
 		public Int32 GetFadeInTime()
@@ -4711,7 +4714,7 @@ namespace CriWare
 		///  本関数で設定したフェード時間は、本関数実行後に <see cref="CriAtomExPlayer.Start"/> 関数や <see cref="CriAtomExPlayer.Stop"/> 関数を実行するタイミングで適用されます。
 		///  （既にフェード処理を開始している音声に対しては、 本関数で後からフェード処理のタイミングを変更することはできません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFadeInStartOffset(CriAtomExPlayerHn player, CriSint32 ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFadeInStartOffset(CriAtomExPlayerHn player, CriSint32 ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
 		/// <seealso cref="CriAtomExPlayer.SetFadeInTime"/>
@@ -4731,7 +4734,7 @@ namespace CriWare
 		/// 備考:
 		/// 本関数は <see cref="CriAtomExPlayer.SetFadeInStartOffset"/> 関数でセットした値を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetFadeInStartOffset(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetFadeInStartOffset(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFadeInStartOffset"/>
 		public Int32 GetFadeInStartOffset()
@@ -4762,7 +4765,7 @@ namespace CriWare
 		///  ボリュームの制御とボイスの停止が反映されるタイミングは、プラットフォームによって異なります。
 		///  そのため、本関数に 0 を指定した場合、プラットフォームによってはボリュームの変更が反映される 前にボイスが停止される恐れがあります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_SetFadeOutEndDelay(CriAtomExPlayerHn player, CriSint32 ms)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_SetFadeOutEndDelay(CriAtomExPlayerHn player, CriSint32 ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
 		/// <seealso cref="CriAtomExPlayer.SetFadeInTime"/>
@@ -4782,7 +4785,7 @@ namespace CriWare
 		/// 備考:
 		/// 本関数は <see cref="CriAtomExPlayer.SetFadeOutEndDelay"/> 関数でセットした値を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExPlayer_GetFadeOutEndDelay(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExPlayer_GetFadeOutEndDelay(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFadeOutEndDelay"/>
 		public Int32 GetFadeOutEndDelay()
@@ -4806,7 +4809,7 @@ namespace CriWare
 		/// <item><description>フェードアウト完了後のディレイ期間中。 </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayer_IsFading(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayer_IsFading(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		public bool IsFading()
 		{
@@ -4826,7 +4829,7 @@ namespace CriWare
 		///  本関数でクリアしたフェーダーパラメーターは、本関数実行後に <see cref="CriAtomExPlayer.Start"/> 関数や <see cref="CriAtomExPlayer.Stop"/> 関数を実行するタイミングで適用されます。
 		///  （既にフェード処理を開始している音声に対しては、 本関数でクリアしたフェーダーパラメーターを適用することはできません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayer_ResetFaderParameters(CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExPlayer_ResetFaderParameters(CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.AttachFader"/>
 		/// <seealso cref="CriAtomExPlayer.SetFadeInTime"/>
@@ -4853,12 +4856,12 @@ namespace CriWare
 		/// ループ回数制限なし 
 		/// </para>
 		/// </remarks>
-		public const Int32 NoLoopLimitation = (CriAtomPlayer.NoLoopLimitation);
+		public const Int32 NoLoopLimitation = CriAtomPlayer.NoLoopLimitation;
 		/// <summary></summary>
 		/// <remarks>
 		/// <para>ループ情報を無視 </para>
 		/// </remarks>
-		public const Int32 IgnoreLoop = (CriAtomPlayer.IgnoreLoop);
+		public const Int32 IgnoreLoop = CriAtomPlayer.IgnoreLoop;
 		/// <summary>プレーヤーに指定可能な最大ASRラック数 </summary>
 		/// <remarks>
 		/// <para>

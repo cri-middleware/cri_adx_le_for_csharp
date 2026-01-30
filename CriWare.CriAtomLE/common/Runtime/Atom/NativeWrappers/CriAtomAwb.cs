@@ -37,7 +37,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomAwb_CalculateWorkSizeForLoadToc(CriSint32 num)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomAwb_CalculateWorkSizeForLoadToc(CriSint32 num)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.LoadToc"/>
 		/// <seealso cref="CriAtomAwb.LoadTocAsync"/>
@@ -63,7 +63,7 @@ namespace CriWare
 		/// 備考:
 		/// 第三引数にnull、第四引数に0を指定して実行すると、 必要なワーク領域を関数内部で動的に確保します。 動的に確保した領域は、<see cref="CriAtomAwb.Dispose"/> 関数で解放されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomAwb_LoadToc(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomAwb_LoadToc(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetWaveId"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
@@ -71,7 +71,7 @@ namespace CriWare
 		public static CriAtomAwb LoadToc(CriFsBinder binder, ArgString path)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomAwb_LoadToc(binder?.NativeHandle ?? default, path.GetPointer(stackalloc byte[path.BufferSize]), default, default)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomAwb_LoadToc(binder?.NativeHandle ?? default, path.GetPointer(stackalloc byte[path.BufferSize]), default, default)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>ID指定によるAWBファイルのTOC情報ロード（同期版） </summary>
@@ -83,7 +83,7 @@ namespace CriWare
 		/// 説明:
 		/// <see cref="CriAtomAwb.LoadToc"/> 関数とほぼ同様の機能を持つ関数です。 <see cref="CriAtomAwb.LoadToc"/> 関数と異なる点は、 パス指定ではなくCPK内のコンテンツID指定でAWBファイルのTOC情報をロードする点です。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomAwb_LoadTocById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomAwb_LoadTocById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetWaveId"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
@@ -91,7 +91,7 @@ namespace CriWare
 		public static CriAtomAwb LoadTocById(CriFsBinder binder, UInt16 id)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomAwb_LoadTocById(binder?.NativeHandle ?? default, id, default, default)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomAwb_LoadTocById(binder?.NativeHandle ?? default, id, default, default)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>AWBファイルのTOC情報ロード（非同期版） </summary>
@@ -115,7 +115,7 @@ namespace CriWare
 		/// 第三引数にnull、第四引数に0を指定して実行すると、 必要なワーク領域を関数内部で動的に確保します。 動的に確保した領域は、<see cref="CriAtomAwb.Dispose"/> 関数で解放されます。
 		///  本関数で取得したAWBオブジェクトのステータスがエラー状態（<see cref="CriAtomAwb.Status.Error"/>）になった場合も、 <see cref="CriAtomAwb.Dispose"/> 関数で解放してください。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomAwb_LoadTocAsync(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomAwb_LoadTocAsync(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetWaveId"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
@@ -124,7 +124,7 @@ namespace CriWare
 		public static CriAtomAwb LoadTocAsync(CriFsBinder binder, ArgString path)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomAwb_LoadTocAsync(binder?.NativeHandle ?? default, path.GetPointer(stackalloc byte[path.BufferSize]), default, default)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomAwb_LoadTocAsync(binder?.NativeHandle ?? default, path.GetPointer(stackalloc byte[path.BufferSize]), default, default)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>ID指定によるAWBファイルのTOC情報ロード（非同期版） </summary>
@@ -136,7 +136,7 @@ namespace CriWare
 		/// 説明:
 		/// <see cref="CriAtomAwb.LoadTocAsync"/> 関数とほぼ同様の機能を持つ関数です。 <see cref="CriAtomAwb.LoadTocAsync"/> 関数と異なる点は、 パス指定ではなくCPK内のコンテンツID指定でAWBファイルのTOC情報をロードする点です。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomAwb_LoadTocAsyncById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomAwb_LoadTocAsyncById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetWaveId"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
@@ -145,7 +145,7 @@ namespace CriWare
 		public static CriAtomAwb LoadTocAsyncById(CriFsBinder binder, UInt16 id)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomAwb_LoadTocAsyncById(binder?.NativeHandle ?? default, id, default, default)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomAwb_LoadTocAsyncById(binder?.NativeHandle ?? default, id, default, default)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>オンメモリAWBハンドルの作成 </summary>
@@ -166,17 +166,23 @@ namespace CriWare
 		///  オンメモリAWB破棄時（ <see cref="CriAtomAwb.Dispose"/> 関数実行時）に解放されます。
 		///  Fixed Memor方式を用いる場合は、<see cref="CriAtomAwb.WorksizeForLoadfrommemory"/> 関数を使って 必要なワーク領域サイズを求めてください。
 		///  ワーク領域とは異なり、awb_mem は必ずユーザの責任で管理する必要がある点には注意してください。
-		///  AWBオブジェクトは内部的にバインダー（ <see cref="CriFsBinder"/> ）を確保します。
-		///  AWBファイルのTOC情報をロードする場合、AWBオブジェクト数分のバインダーが確保できる設定で Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomAwb_LoadFromMemory(void *awb_mem, CriSint32 awb_mem_size, void *work, CriSint32 work_size)"/>
+		/// <para>
+		/// 注意:
+		/// 本関数が成功すると、 awb_memで渡されたメモリ領域をオンメモリAWBデータ用に書き換えます。
+		///  そのため、複数スレッドから<see cref="CriAtomAwb.WorksizeForLoadfrommemory"/> 関数を呼び出している場合は、
+		///  排他処理によりスレッドの実行順が入れ替わる場合があります。
+		///  なお、awb_mem で指すメモリ領域は <see cref="CriAtomAwb.Dispose"/> 関数実行後に手動で解放してください。 
+		/// </para>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomAwb_LoadFromMemory(void *awb_mem, CriSint32 awb_mem_size, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.WorksizeForLoadfrommemory"/>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
 		public static CriAtomAwb LoadFromMemory(IntPtr awbMem, Int32 awbMemSize)
 		{
+			using var _ = new NativeAllocator.BindDataSectionScope(awbMem, awbMemSize);
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomAwb_LoadFromMemory(awbMem, awbMemSize, default, default)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomAwb_LoadFromMemory(awbMem, awbMemSize, default, default)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>AWBハンドルの種別を示す値を取得 </summary>
@@ -186,7 +192,7 @@ namespace CriWare
 		/// 説明:
 		/// AWBオブジェクトがTOC情報のみであるか、オンメモリAWBオブジェクトなのかを示す値を取得します。 本関数が失敗した場合は<see cref="CriAtomAwb.Type.Error"/>を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbType CRIAPI criAtomAwb_GetType(CriAtomAwbHn awb)"/>
+		/// <nativeinfo declaration="CriAtomAwbType criAtomAwb_GetType(CriAtomAwbHn awb)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.GetWaveDataInfo"/>
 		/// <seealso cref="CriAtomPlayer.SetData"/>
@@ -238,7 +244,7 @@ namespace CriWare
 		///  AWBオブジェクトの種別が<see cref="CriAtomAwb.Type.Toc"/>と異なる場合、または不正なAWBオブジェクトだった場合、本関数は失敗し、エラーコールバックが発生します。
 		///  本関数が失敗した場合、出力値であるoffsetとsizeの値は不定です。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomAwb_GetWaveFileInfo(CriAtomAwbHn awb, CriSint32 id, CriSint64 *offset, CriUint32 *size)"/>
+		/// <nativeinfo declaration="CriBool criAtomAwb_GetWaveFileInfo(CriAtomAwbHn awb, CriSint32 id, CriSint64 *offset, CriUint32 *size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.GetAwbType"/>
 		/// <seealso cref="CriAtomAwb.GetWaveDataInfo"/>
@@ -268,7 +274,7 @@ namespace CriWare
 		///  AWBオブジェクトの種別が異なる場合、または不正なAWBオブジェクトだった場合、本関数は失敗し、エラーコールバックが発生します。
 		///  本関数が失敗した場合、出力値であるwave_data_startとsizeの値は不定です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomAwb_GetWaveDataInfo(CriAtomAwbHn awb, CriSint32 id, void **wave_data_start, CriUint32 *size)"/>
+		/// <nativeinfo declaration="void criAtomAwb_GetWaveDataInfo(CriAtomAwbHn awb, CriSint32 id, void **wave_data_start, CriUint32 *size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.GetAwbType"/>
 		/// <seealso cref="CriAtomAwb.GetWaveFileInfo"/>
@@ -290,7 +296,7 @@ namespace CriWare
 		///  コンテンツファイル数の値の有効範囲は1～65535です。
 		///  エラーが発生した場合は 0 を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriUint16 CRIAPI criAtomAwb_GetNumContents(CriAtomAwbHn awb)"/>
+		/// <nativeinfo declaration="CriUint16 criAtomAwb_GetNumContents(CriAtomAwbHn awb)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.LoadToc"/>
 		/// <seealso cref="CriAtomAwb.LoadFromMemory"/>
@@ -316,7 +322,7 @@ namespace CriWare
 		///  AtomExプレーヤーを使用してAWBファイルを再生する場合、 再生中に本関数でAWBオブジェクトを破棄してはいけません。
 		///  必ずAtomExプレーヤーを停止させてから本関数を実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomAwb_Release(CriAtomAwbHn awb)"/>
+		/// <nativeinfo declaration="void criAtomAwb_Release(CriAtomAwbHn awb)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.LoadToc"/>
 		/// <seealso cref="CriAtomAwb.LoadTocAsync"/>
@@ -346,7 +352,7 @@ namespace CriWare
 		///  そのため、本関数実行中に他スレッドでAtomプレーヤーの作成／破棄を行うと、 アクセス違反やデッドロック等の重大な不具合を誘発する恐れがあります。
 		///  本関数実行時にAtomプレーヤーの作成／破棄を他スレッドで行う必要がある場合、 本関数を <see cref="CriAtom.Lock"/> 関数でロックしてから実行してください。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomAwb_IsReadyToRelease(CriAtomAwbHn awb)"/>
+		/// <nativeinfo declaration="CriBool criAtomAwb_IsReadyToRelease(CriAtomAwbHn awb)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.Dispose"/>
 		public bool IsReadyToRelease()
@@ -362,7 +368,7 @@ namespace CriWare
 		/// AWBオブジェクトのステータスを取得します。
 		///  本関数で取得するAWBオブジェクトのステータスは、<see cref="CriAtom.ExecuteMain"/> 関数を 実行することで更新されます。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbStatus CRIAPI criAtomAwb_GetStatus(CriAtomAwbHn awb)"/>
+		/// <nativeinfo declaration="CriAtomAwbStatus criAtomAwb_GetStatus(CriAtomAwbHn awb)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.LoadToc"/>
 		/// <seealso cref="CriAtomAwb.LoadTocAsync"/>
@@ -410,7 +416,7 @@ namespace CriWare
 		/// 説明:
 		/// AWBオブジェクトからindexで指定した波形データIDを取得します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomAwb_GetIdByIndex(CriAtomAwbHn awb, CriUint16 index)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomAwb_GetIdByIndex(CriAtomAwbHn awb, CriUint16 index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomAwb.LoadToc"/>
 		/// <seealso cref="CriAtomAwb.LoadTocAsync"/>

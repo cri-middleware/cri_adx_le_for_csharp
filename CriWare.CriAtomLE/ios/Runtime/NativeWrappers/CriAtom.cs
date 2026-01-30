@@ -35,7 +35,7 @@ namespace CriWare
 		/// 本関数は下位レイヤ向けのAPIです。
 		///  AtomExレイヤの機能を利用する際には、本関数の代わりに <see cref="CriAtomEx.CalculateWorkSizeIOS"/> 関数をご利用ください。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtom_CalculateWorkSize_IOS(const CriAtomConfig_IOS *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtom_CalculateWorkSize_IOS(const CriAtomConfig_IOS *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.ConfigIOS"/>
 		/// <seealso cref="CriAtom.InitializeIOS"/>
@@ -68,7 +68,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
 		/// <list type="bullet">
-		/// <item><description><see cref="CriAtom.Initialize"/></description></item>
+		/// <item><description>criAtom_Initialize</description></item>
 		/// <item><description><see cref="CriAtomAsr.Initialize"/></description></item>
 		/// <item><description><see cref="CriAtomHcaMx.Initialize"/> 本関数を実行する場合、上記関数を実行しないでください。
 		///  本関数を実行後、必ず対になる <see cref="CriAtom.FinalizeIOS"/> 関数を実行してください。
@@ -77,7 +77,7 @@ namespace CriWare
 		///  AtomExレイヤの機能を利用する際には、本関数の代わりに <see cref="CriAtomEx.InitializeIOS"/> 関数をご利用ください。 </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_Initialize_IOS(const CriAtomConfig_IOS *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtom_Initialize_IOS(const CriAtomConfig_IOS *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.ConfigIOS"/>
 		/// <seealso cref="CriAtom.FinalizeIOS"/>
@@ -99,7 +99,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数は内部的に以下の関数を実行します。
 		/// <list type="bullet">
-		/// <item><description><see cref="CriAtom.Finalize"/></description></item>
+		/// <item><description>criAtom_Finalize</description></item>
 		/// <item><description><see cref="CriAtomAsr.Finalize"/></description></item>
 		/// <item><description><see cref="CriAtomHcaMx.Finalize"/> 本関数を実行する場合、上記関数を実行しないでください。
 		/// <see cref="CriAtom.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
@@ -107,7 +107,7 @@ namespace CriWare
 		///  AtomExレイヤの機能を利用する際には、本関数の代わりに <see cref="CriAtomEx.FinalizeIOS"/> 関数をご利用ください。 </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_Finalize_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtom_Finalize_IOS(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.InitializeIOS"/>
 		public static void FinalizeIOS()
@@ -132,7 +132,7 @@ namespace CriWare
 		///  サーバ処理スレッドは、CRI File Systemライブラリでも利用されています。
 		///  すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合 本関数により設定が上書きされますのでご注意ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetServerThreadPriority_IOS(int prio)"/>
+		/// <nativeinfo declaration="void criAtom_SetServerThreadPriority_IOS(CriSint32 prio)"/>
 		/// </remarks>
 		public static void SetServerThreadPriorityIOS(Int32 prio)
 		{
@@ -153,7 +153,7 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtom.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_StartSound_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtom_StartSound_IOS(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.StopSoundIOS"/>
 		public static void StartSoundIOS()
@@ -174,7 +174,7 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtom.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_StopSound_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtom_StopSound_IOS(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.StartSoundIOS"/>
 		public static void StopSoundIOS()
@@ -193,7 +193,7 @@ namespace CriWare
 		///  本関数は下位レイヤ向けのAPIです。
 		///  AtomExレイヤの機能を利用する際には、本関数の代わりに <see cref="CriAtomEx.RecoverSoundIOS"/> 関数をご利用ください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_RecoverSound_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtom_RecoverSound_IOS(void)"/>
 		/// </remarks>
 		public static void RecoverSoundIOS()
 		{
@@ -210,7 +210,7 @@ namespace CriWare
 		///  本関数は下位レイヤ向けのAPIです。
 		///  AtomExレイヤの機能を利用する際には、本関数の代わりに <see cref="CriAtomEx.IsInitializationSucceededIOS"/> 関数をご利用ください。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtom_IsInitializationSucceeded_IOS(void)"/>
+		/// <nativeinfo declaration="CriBool criAtom_IsInitializationSucceeded_IOS(void)"/>
 		/// </remarks>
 		public static bool IsInitializationSucceededIOS()
 		{
@@ -225,7 +225,7 @@ namespace CriWare
 		/// コンフィグに従ってAudioSessionの設定を行います。
 		///  より詳細な設定を行いたい場合はこの関数を呼び出さず、AudioSessionの各種APIを用いて設定してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetupAudioSession_IOS(CriAtomAudioSessionConfig_IOS *config)"/>
+		/// <nativeinfo declaration="void criAtom_SetupAudioSession_IOS(CriAtomAudioSessionConfig_IOS *config)"/>
 		/// </remarks>
 		public static unsafe void SetupAudioSessionIOS(in CriAtom.AudioSessionConfigIOS config)
 		{
@@ -245,59 +245,10 @@ namespace CriWare
 		[Serializable]
 		public unsafe partial struct ConfigIOS
 		{
-			/// <summary>ライブラリ初期化用コンフィグ構造体 </summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// CRI Atomライブラリの動作仕様を指定するための構造体です。
-			/// <see cref="CriAtom.Initialize"/> 関数の引数に指定します。
-			///  CRI Atomライブラリは、初期化時に本構造体で指定された設定に応じて、内部リソースを 必要なだけ確保します。
-			///  ライブラリが必要とするワーク領域のサイズは、本構造体で指定されたパラメーターに応じて 変化します。 
-			/// </para>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtom.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 <see cref="CriAtom.Initialize"/> 関数に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtom.SetDefaultConfig"/> メソッドで必ず構造体を初期化してください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtom.Initialize"/>
-			/// <seealso cref="CriAtom.SetDefaultConfig"/>
 			public CriAtom.Config atom;
 
-			/// <summary>ASR初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomAsr.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomAsr.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomAsr.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomAsr.Initialize"/>
-			/// <seealso cref="CriAtomAsr.SetDefaultConfig"/>
 			public CriAtomAsr.Config asr;
 
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomHcaMx.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomHcaMx.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomHcaMx.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomHcaMx.Initialize"/>
-			/// <seealso cref="CriAtomHcaMx.SetDefaultConfig"/>
 			public CriAtomHcaMx.Config hcaMx;
 
 			public UInt32 bufferingTime;
@@ -328,22 +279,6 @@ namespace CriWare
 
 			public NativeBool streamingFlag;
 
-			/// <summary>サウンドレンダラタイプ </summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// Atomプレーヤー、またはASRがが内部で作成するサウンドレンダラの種別を指定するためのデータ型です。
-			///  AtomプレーヤーやASR作成時にコンフィグ構造体のパラメーターとして指定します。 
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// <see cref="CriAtom.SoundRendererType.Any"/> は <see cref="CriAtomExPlayer.SetSoundRendererType"/> 関数に対してのみ指定可能です。
-			///  ボイスプール作成時には使用できません。
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtom.AdxPlayerConfig"/>
-			/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
-			/// <seealso cref="CriAtomExAsrRack.CriAtomExAsrRack"/>
 			public CriAtom.SoundRendererType soundRendererType;
 
 		}

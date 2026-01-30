@@ -58,7 +58,7 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx3dTransceiver_CalculateWorkSize(const CriAtomEx3dTransceiverConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx3dTransceiver_CalculateWorkSize(const CriAtomEx3dTransceiverConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.CriAtomEx3dTransceiver"/>
 		/// <seealso cref="CriAtomEx3dTransceiver.Config"/>
@@ -105,7 +105,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomEx3dTransceiverHn CRIAPI criAtomEx3dTransceiver_Create(const CriAtomEx3dTransceiverConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomEx3dTransceiverHn criAtomEx3dTransceiver_Create(const CriAtomEx3dTransceiverConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dTransceiver.Dispose"/>
@@ -130,7 +130,7 @@ namespace CriWare
 		///  本関数を実行した時点で、3Dトランシーバーオブジェクト作成時に確保されたリソースが全て解放されます。
 		///  また、引数に指定した3Dトランシーバーオブジェクトも無効になります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_Destroy(CriAtomEx3dTransceiverHn ex_3d_transceiver)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_Destroy(CriAtomEx3dTransceiverHn ex_3d_transceiver)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.CriAtomEx3dTransceiver"/>
 		public void Dispose()
@@ -157,7 +157,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetInputPosition(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *position)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetInputPosition(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *position)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public unsafe void SetInputPosition(in CriAtomEx.Vector position)
@@ -180,7 +180,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetOutputPosition(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *position)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetOutputPosition(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *position)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public unsafe void SetOutputPosition(in CriAtomEx.Vector position)
@@ -200,7 +200,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数はAtomExプレーヤーのパラメーター更新（<see cref="CriAtomExPlayer.UpdateAll"/>, <see cref="CriAtomExPlayer.Update"/>） とは独立して動作します。3Dトランシーバーのパラメーターを変更した際は、本関数にて更新処理を行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_Update(CriAtomEx3dTransceiverHn ex_3d_transceiver)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_Update(CriAtomEx3dTransceiverHn ex_3d_transceiver)"/>
 		/// </remarks>
 		public void Update()
 		{
@@ -225,7 +225,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetInputOrientation(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *front, const CriAtomExVector *top)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetInputOrientation(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *front, const CriAtomExVector *top)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public unsafe void SetInputOrientation(in CriAtomEx.Vector front, in CriAtomEx.Vector top)
@@ -255,7 +255,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetOutputOrientation(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *front, const CriAtomExVector *top)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetOutputOrientation(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriAtomExVector *front, const CriAtomExVector *top)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.SetOutputConeParameter"/>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
@@ -287,7 +287,7 @@ namespace CriWare
 		/// </list>
 		/// </para>
 		/// <para>デフォルト値は、::criAtomEx3dTransceiver_ChangeDefaultConeParameter 関数にて変更可能です。</para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetOutputConeParameter(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 inside_angle, CriFloat32 outside_angle, CriFloat32 outside_volume)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetOutputConeParameter(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 inside_angle, CriFloat32 outside_angle, CriFloat32 outside_volume)"/>
 		/// </remarks>
 		public void SetOutputConeParameter(Single insideAngle, Single outsideAngle, Single outsideVolume)
 		{
@@ -312,7 +312,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetOutputMinMaxAttenuationDistance(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 min_attenuation_distance, CriFloat32 max_attenuation_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetOutputMinMaxAttenuationDistance(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 min_attenuation_distance, CriFloat32 max_attenuation_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetOutputMinMaxAttenuationDistance(Single minAttenuationDistance, Single maxAttenuationDistance)
@@ -342,7 +342,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetOutputInteriorPanField(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 transceiver_radius, CriFloat32 interior_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetOutputInteriorPanField(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 transceiver_radius, CriFloat32 interior_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetOutputInteriorPanField(Single transceiverRadius, Single interiorDistance)
@@ -371,7 +371,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetInputCrossFadeField(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 direct_audio_radius, CriFloat32 crossfade_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetInputCrossFadeField(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 direct_audio_radius, CriFloat32 crossfade_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetInputCrossFadeField(Single directAudioRadius, Single crossfadeDistance)
@@ -397,7 +397,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetOutputVolume(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetOutputVolume(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetOutputVolume(Single volume)
@@ -425,7 +425,7 @@ namespace CriWare
 		///  現在、「オートモジュレーション」や「ランダム」といったコントロールタイプのAISACのアタッチには対応しておりません。
 		///  現在、3DトランシーバーにアタッチできるAISACの最大数は、8個固定です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_AttachAisac(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_AttachAisac(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.DetachAisac"/>
 		public void AttachAisac(ArgString globalAisacName)
@@ -442,7 +442,7 @@ namespace CriWare
 		///  AISACのデタッチに失敗した場合、関数内でエラーコールバックが発生します。
 		///  AISACのデタッチに失敗した理由については、エラーコールバックのメッセージを確認してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_DetachAisac(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_DetachAisac(CriAtomEx3dTransceiverHn ex_3d_transceiver, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.AttachAisac"/>
 		public void DetachAisac(ArgString globalAisacName)
@@ -465,7 +465,7 @@ namespace CriWare
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		///  本関数で設定している最大変化量は、定位角度を元に計算されている、角度AISACコントロール値の変化にのみ適用されます。 定位角度自体には影響はありません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetMaxAngleAisacDelta(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 max_delta)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetMaxAngleAisacDelta(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriFloat32 max_delta)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetMaxAngleAisacDelta(Single maxDelta)
@@ -485,7 +485,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetDistanceAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetDistanceAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetDistanceAisacControlId(UInt32 aisacControlId)
@@ -504,7 +504,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetListenerBasedAzimuthAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetListenerBasedAzimuthAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetListenerBasedAzimuthAngleAisacControlId(UInt32 aisacControlId)
@@ -523,7 +523,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetListenerBasedElevationAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetListenerBasedElevationAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetListenerBasedElevationAngleAisacControlId(UInt32 aisacControlId)
@@ -542,7 +542,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetTransceiverOutputBasedAzimuthAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetTransceiverOutputBasedAzimuthAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetTransceiverOutputBasedAzimuthAngleAisacControlId(UInt32 aisacControlId)
@@ -561,7 +561,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_SetTransceiverOutputBasedElevationAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_SetTransceiverOutputBasedElevationAngleAisacControlId(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>
 		public void SetTransceiverOutputBasedElevationAngleAisacControlId(UInt32 aisacControlId)
@@ -580,7 +580,7 @@ namespace CriWare
 		/// 同一のExPlayerに設定されている3D音源と3Dリスナーに設定されているリージョンが異なり、 かつ3D音源と同じリージョンが設定されている3Dトランシーバーがない場合、音声はミュートされます。
 		///  設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dTransceiver.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dTransceiver_Set3dRegionHn(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomEx3dRegionHn ex_3d_region)"/>
+		/// <nativeinfo declaration="void criAtomEx3dTransceiver_Set3dRegionHn(CriAtomEx3dTransceiverHn ex_3d_transceiver, CriAtomEx3dRegionHn ex_3d_region)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dRegion.CriAtomEx3dRegion"/>
 		/// <seealso cref="CriAtomEx3dTransceiver.Update"/>

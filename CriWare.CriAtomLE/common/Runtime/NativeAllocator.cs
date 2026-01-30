@@ -16,6 +16,8 @@ namespace CriWare
 			public int size;
 			public int id;
 			public IntPtr handle;
+			public IntPtr data;
+			public Int64 data_size;
 #pragma warning restore CS0649
 		}
 
@@ -27,7 +29,8 @@ namespace CriWare
 			{
 				if ((nint)current == 0)
 					return 0;
-				if ((nint)current <= handle && handle < (nint)current + current->size)
+				if (((nint)current <= handle && handle < (nint)current + current->size) ||
+					((nint)current->data <= handle && handle < (nint)current->data + current->data_size))
 				{
 					if (current->handle == (nint)0)
 						current->handle = handle;
@@ -56,7 +59,7 @@ namespace CriWare
 		}
 
 		internal static int GetSize(nint memory) => ((MemoryInfo*)memory)->size;
-		internal static int GetId(nint memory) => ((MemoryInfo*)memory)->id;
+		internal static int GetId(nint memory) => memory == default ? 0 : ((MemoryInfo*)memory)->id;
 		internal static nint GetHandle(nint memory) => ((MemoryInfo*)memory)->handle;
 
 		/// <exclude/>
@@ -65,6 +68,33 @@ namespace CriWare
 		/// <exclude/>
 		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		public static bool IsOwnerless(nint memory) => GetHandle(memory) == (IntPtr)1;
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public ref struct BindDataSectionScope
+		{
+			nint data;
+			Int64 size;
+			MemoryInfo* first;
+			/// <exclude/>
+			[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+			public BindDataSectionScope(nint data, Int64 size, bool skipAllocationCheck = false)
+			{
+				this.data = data;
+				this.size = size;
+				this.first = skipAllocationCheck ? default : NativeMethods.criNativeAllocator_GetRoot()->next;
+			}
+			/// <exclude/>
+			[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+			public void Dispose()
+			{
+				var root = NativeMethods.criNativeAllocator_GetRoot();
+				if (first != default)
+					if (root->next->next != first)
+						throw new Exception("Unexpected allocation while binding data.");
+				root->next->data = data;
+				root->next->data_size = size;
+			}
+		}
 
 		/// <exclude/>
 		public unsafe static delegate* unmanaged[Cdecl]<nint, UInt32, nint> GetAllocateFunc() => (delegate* unmanaged[Cdecl]<nint, UInt32, nint>)NativeMethods.criNativeAllocator_GetAllocateFunc();

@@ -36,7 +36,7 @@ namespace CriWare
 		///  本関数によって登録を行って下さい。
 		///  Atomライブラリ使用中にインターフェースの登録解除を行う場合は、 <see cref="CriAtomInstrument.UnregisterInstrumentInterface"/> を使用して下さい。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomInstrument_RegisterInstrumentInterface(CriAtomAinstInterfaceWithVersionPtr ainst_interface)"/>
+		/// <nativeinfo declaration="CriBool criAtomInstrument_RegisterInstrumentInterface(CriAtomAinstInterfaceWithVersionPtr ainst_interface)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomInstrument.UnregisterInstrumentInterface"/>
 		public static bool RegisterInstrumentInterface(IntPtr ainstInterface)
@@ -57,9 +57,9 @@ namespace CriWare
 		/// 注意:
 		/// 登録を行ったユーザ定義インストゥルメントインターフェースはプレーヤーの再生中に参照され続けるため、
 		///  全てのプレーヤーが停止させた後で、本関数を実行してください。
-		///  Atomライブラリの終了時（<see cref="CriAtom.Finalize"/> 関数の呼び出し時）には全てのユーザ定義インストゥルメントインターフェースの登録が解除されます。 
+		///  Atomライブラリの終了時には全てのユーザ定義インストゥルメントインターフェースの登録が解除されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomInstrument_UnregisterInstrumentInterface(CriAtomAinstInterfaceWithVersionPtr ainst_interface)"/>
+		/// <nativeinfo declaration="void criAtomInstrument_UnregisterInstrumentInterface(CriAtomAinstInterfaceWithVersionPtr ainst_interface)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomInstrument.RegisterInstrumentInterface"/>
 		public static void UnregisterInstrumentInterface(IntPtr ainstInterface)

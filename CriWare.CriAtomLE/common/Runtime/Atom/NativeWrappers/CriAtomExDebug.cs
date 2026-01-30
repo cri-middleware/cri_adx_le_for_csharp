@@ -27,7 +27,7 @@ namespace CriWare
 		/// 注意:
 		/// 開発支援デバッグ機能です。アプリケーション開発時にのみ使用してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExDebug_GetResourcesInfo(CriAtomExDebugResourcesInfo *resources_info)"/>
+		/// <nativeinfo declaration="void criAtomExDebug_GetResourcesInfo(CriAtomExDebugResourcesInfo *resources_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExDebug.ResourcesInfo"/>
 		public static unsafe void GetResourcesInfo(out CriAtomExDebug.ResourcesInfo resourcesInfo)

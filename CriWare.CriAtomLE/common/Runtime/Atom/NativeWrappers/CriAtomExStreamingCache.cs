@@ -36,7 +36,7 @@ namespace CriWare
 		/// 本関数は、Cueが複数のストリーム用データを持つ場合については正確な情報を返しません。
 		///  Cueが複数のストリーム用データを持つ場合、 Cue内で最初に見つかったストリーム用データがキャッシュされた段階で trueを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExStreamingCache_IsCachedWaveformById(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExStreamingCache_IsCachedWaveformById(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		public bool IsCachedWaveformById(CriAtomExAcb acbHn, Int32 id)
 		{
@@ -56,7 +56,7 @@ namespace CriWare
 		/// 本関数は、Cueが複数のストリーム用データを持つ場合については正確な情報を返しません。
 		///  Cueが複数のストリーム用データを持つ場合、 Cue内で最初に見つかったストリーム用データがキャッシュされた段階で trueを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExStreamingCache_IsCachedWaveformByName(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExStreamingCache_IsCachedWaveformByName(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public bool IsCachedWaveformByName(CriAtomExAcb acbHn, ArgString name)
 		{
@@ -73,7 +73,7 @@ namespace CriWare
 		/// ストリーミングキャッシュに対し、IDで指定したCueのストリーミング用データのロードを開始します。
 		///  本関数に成功するとロードを開始し、::CRIFSLAODER_STATUS_LOADING状態の <see cref="CriFsLoader"/> オブジェクトを返します。
 		///  本関数に失敗すると、nullを返します。
-		///  戻り値のCriFsLoaderオブジェクトが::CRIFSLOADER_STATUS_COMPLETE状態になると、 ロードおよびキャッシュ処理は完了です。
+		///  戻り値のCriFsLoaderオブジェクトが<see cref="CriFsLoader.Status.Complete"/>状態になると、 ロードおよびキャッシュ処理は完了です。
 		///  ロード完了後は、本関数で取得したCriFsLoaderオブジェクトを <see cref="CriFsLoader.Dispose"/> 関数で破棄してください。
 		/// </para>
 		/// <para>
@@ -84,12 +84,12 @@ namespace CriWare
 		/// 注意:
 		/// Cueが複数のストリーム用データを持つ場合、 本関数はCue内で最初に見つかったストリーム用データのみをロードします。
 		/// </para>
-		/// <nativeinfo declaration="CriFsLoaderHn CRIAPI criAtomExStreamingCache_LoadWaveformByIdAsync(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, CriAtomExCueId cue_id)"/>
+		/// <nativeinfo declaration="CriFsLoaderHn criAtomExStreamingCache_LoadWaveformByIdAsync(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, CriAtomExCueId cue_id)"/>
 		/// </remarks>
 		public CriFsLoader LoadWaveformByIdAsync(CriAtomExAcb acbHn, Int32 cueId)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExStreamingCache_LoadWaveformByIdAsync(NativeHandle, acbHn?.NativeHandle ?? default, cueId)) == IntPtr.Zero) ? null : new CriFsLoader(handle);
+			return ((handle = NativeMethods.criAtomExStreamingCache_LoadWaveformByIdAsync(NativeHandle, acbHn?.NativeHandle ?? default, cueId)) == IntPtr.Zero) ? default : new CriFsLoader(handle);
 		}
 
 		/// <summary>指定したCue（名前指定）のストリーム用データをキャッシュにロード開始 </summary>
@@ -102,7 +102,7 @@ namespace CriWare
 		/// ストリーミングキャッシュに対し、名前で指定したCueのストリーミング用データをロードします。
 		///  本関数に成功するとロードを開始し、::CRIFSLAODER_STATUS_LOADING状態の <see cref="CriFsLoader"/> オブジェクトを返します。
 		///  本関数に失敗すると、nullを返します。
-		///  戻り値のCriFsLoaderオブジェクトが::CRIFSLOADER_STATUS_COMPLETE状態になると、 ロードおよびキャッシュ処理は完了です。
+		///  戻り値のCriFsLoaderオブジェクトが<see cref="CriFsLoader.Status.Complete"/>状態になると、 ロードおよびキャッシュ処理は完了です。
 		///  ロード完了後は、本関数で取得したCriFsLoaderオブジェクトを <see cref="CriFsLoader.Dispose"/> 関数で破棄してください。
 		/// </para>
 		/// <para>
@@ -113,12 +113,12 @@ namespace CriWare
 		/// 注意:
 		/// Cueが複数のストリーム用データを持つ場合、 本関数はCue内で最初に見つかったストリーム用データのみをロードします。
 		/// </para>
-		/// <nativeinfo declaration="CriFsLoaderHn CRIAPI criAtomExStreamingCache_LoadWaveformByNameAsync(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriFsLoaderHn criAtomExStreamingCache_LoadWaveformByNameAsync(CriAtomExStreamingCacheId stm_cache_id, CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public CriFsLoader LoadWaveformByNameAsync(CriAtomExAcb acbHn, ArgString name)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExStreamingCache_LoadWaveformByNameAsync(NativeHandle, acbHn?.NativeHandle ?? default, name.GetPointer(stackalloc byte[name.BufferSize]))) == IntPtr.Zero) ? null : new CriFsLoader(handle);
+			return ((handle = NativeMethods.criAtomExStreamingCache_LoadWaveformByNameAsync(NativeHandle, acbHn?.NativeHandle ?? default, name.GetPointer(stackalloc byte[name.BufferSize]))) == IntPtr.Zero) ? default : new CriFsLoader(handle);
 		}
 
 		/// <summary><see cref="CriAtomExStreamingCache.Config"/>へのデフォルトパラメーターのセット </summary>
@@ -143,7 +143,7 @@ namespace CriWare
 		/// <para>
 		/// 説明:
 		/// プレーヤーにストリーミングキャッシュを作成する際に、 キャッシュ可能なファイルサイズ等を登録するための構造体です。
-		/// <see cref="CriAtomStreamingCache.CalculateWorkSize"/> 関数、 <see cref="CriAtomStreamingCache.CriAtomStreamingCache"/> 関数の引数に指定します。
+		/// <see cref="CriAtomExStreamingCache.CalculateWorkSize"/> 関数、 <see cref="CriAtomExStreamingCache.CriAtomExStreamingCache"/> 関数の引数に指定します。
 		/// </para>
 		/// <para>
 		/// 注意:

@@ -215,7 +215,7 @@ namespace CriWare
 		/// 第 2 引数（ obj ）にセットした値は、コールバック関数の引数として渡されます。
 		///  コールバック関数のその他の引数については、 別途 <see cref="CriAtomExVoicePool.CbFunc"/> の説明をご参照ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_EnumerateVoicePools(CriAtomExVoicePoolCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_EnumerateVoicePools(CriAtomExVoicePoolCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.CbFunc"/>
 		public static unsafe void EnumerateVoicePools(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> func, IntPtr obj)
@@ -293,7 +293,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForStandardVoicePool(const CriAtomExStandardVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForStandardVoicePool(const CriAtomExStandardVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateStandardVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForStandardVoicePool(in CriAtomEx.StandardVoicePoolConfig config)
@@ -343,14 +343,12 @@ namespace CriWare
 		///  （セット済みのワーク領域に値を書き込んだり、メモリ解放したりしてはいけません。）
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
-		///  ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ <see cref="CriFsLoader"/> ） を確保します。
-		///  ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		///  本関数は完了復帰型の関数です。
 		///  ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateStandardVoicePool(const CriAtomExStandardVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateStandardVoicePool(const CriAtomExStandardVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StandardVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForStandardVoicePool"/>
@@ -359,7 +357,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.StandardVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateStandardVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateStandardVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>ADXボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -385,7 +383,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForAdxVoicePool(const CriAtomExAdxVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForAdxVoicePool(const CriAtomExAdxVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateAdxVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForAdxVoicePool(in CriAtomEx.AdxVoicePoolConfig config)
@@ -430,16 +428,16 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
+		///  本関数にワーク領域をセットした場合、セットした領域のメモリをボイスプール破棄時 までアプリケーション中で保持し続ける必要があります。
+		///  （セット済みのワーク領域に値を書き込んだり、メモリ解放したりしてはいけません。）
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
-		///  ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ <see cref="CriFsLoader"/> ） を確保します。
-		///  ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		///  本関数は完了復帰型の関数です。
 		///  ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateAdxVoicePool(const CriAtomExAdxVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateAdxVoicePool(const CriAtomExAdxVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AdxVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForAdxVoicePool"/>
@@ -448,7 +446,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.AdxVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateAdxVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateAdxVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>HCAボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -474,7 +472,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForHcaVoicePool(const CriAtomExHcaVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForHcaVoicePool(const CriAtomExHcaVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateHcaVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForHcaVoicePool(in CriAtomEx.HcaVoicePoolConfig config)
@@ -528,7 +526,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateHcaVoicePool(const CriAtomExHcaVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateHcaVoicePool(const CriAtomExHcaVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.HcaVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForHcaVoicePool"/>
@@ -537,7 +535,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.HcaVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateHcaVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateHcaVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>HCA-MXボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -563,7 +561,7 @@ namespace CriWare
 		/// ワーク領域のサイズはHCA-MX初期化時（ <see cref="CriAtomExHcaMx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、HCA-MXを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForHcaMxVoicePool(const CriAtomExHcaMxVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForHcaMxVoicePool(const CriAtomExHcaMxVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateHcaMxVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForHcaMxVoicePool(in CriAtomExHcaMx.VoicePoolConfig config)
@@ -619,7 +617,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateHcaMxVoicePool(const CriAtomExHcaMxVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateHcaMxVoicePool(const CriAtomExHcaMxVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExHcaMx.VoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForHcaMxVoicePool"/>
@@ -628,7 +626,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomExHcaMx.VoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateHcaMxVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateHcaMxVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>Waveボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -654,7 +652,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForWaveVoicePool(const CriAtomExWaveVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForWaveVoicePool(const CriAtomExWaveVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateWaveVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForWaveVoicePool(in CriAtomEx.WaveVoicePoolConfig config)
@@ -703,8 +701,6 @@ namespace CriWare
 		///  （セット済みのワーク領域に値を書き込んだり、メモリ解放したりしてはいけません。）
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
-		///  ストリーム再生用のボイスプールは、内部的にボイスの数分だけローダー（ <see cref="CriFsLoader"/> ） を確保します。
-		///  ストリーム再生用のボイスプールを作成する場合、ボイス数分のローダーが確保できる設定で Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		///  本関数は完了復帰型の関数です。
 		///  ボイスプールの作成にかかる時間は、プラットフォームによって異なります。
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
@@ -712,7 +708,7 @@ namespace CriWare
 		///  再生可能なフォーマットは、32bit以下の非圧縮PCMデータのみです。
 		///  ループ再生を行う場合、ストリーム再生用の音声データについては、 smplチャンクがdataチャンクよりも手前に配置されている必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateWaveVoicePool(const CriAtomExWaveVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateWaveVoicePool(const CriAtomExWaveVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.WaveVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForWaveVoicePool"/>
@@ -721,7 +717,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.WaveVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateWaveVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateWaveVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>AIFFボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -747,7 +743,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForAiffVoicePool(const CriAtomExAiffVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForAiffVoicePool(const CriAtomExAiffVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateAiffVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForAiffVoicePool(in CriAtomEx.AiffVoicePoolConfig config)
@@ -803,7 +799,7 @@ namespace CriWare
 		///  再生可能なフォーマットは、32bit以下の非圧縮PCMデータのみです。
 		///  ループ再生を行う場合、ストリーム再生用の音声データについては、 INSTチャンクがSSNDチャンクよりも手前に配置されている必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateAiffVoicePool(const CriAtomExAiffVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateAiffVoicePool(const CriAtomExAiffVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AiffVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForAiffVoicePool"/>
@@ -812,7 +808,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.AiffVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateAiffVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateAiffVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>RawPCMボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -838,7 +834,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForRawPcmVoicePool(const CriAtomExRawPcmVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForRawPcmVoicePool(const CriAtomExRawPcmVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateRawPcmVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForRawPcmVoicePool(in CriAtomEx.RawPcmVoicePoolConfig config)
@@ -886,7 +882,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateRawPcmVoicePool(const CriAtomExRawPcmVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateRawPcmVoicePool(const CriAtomExRawPcmVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.RawPcmVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForRawPcmVoicePool"/>
@@ -895,7 +891,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.RawPcmVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateRawPcmVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateRawPcmVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>インストゥルメントボイスプールの作成 </summary>
@@ -915,7 +911,7 @@ namespace CriWare
 		///  ボイスプールの作成に失敗すると、本関数はnullを返します。
 		///  ボイスプールの作成に失敗した理由については、エラーコールバックのメッセージで確認可能です。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVoicePoolHn CRIAPI criAtomExVoicePool_AllocateInstrumentVoicePool(const CriAtomExInstrumentVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExVoicePoolHn criAtomExVoicePool_AllocateInstrumentVoicePool(const CriAtomExInstrumentVoicePoolConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InstrumentVoicePoolConfig"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForInstrumentVoicePool"/>
@@ -924,7 +920,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomEx.InstrumentVoicePoolConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomExVoicePool_AllocateInstrumentVoicePool(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomExVoicePool(handle);
+				return ((handle = NativeMethods.criAtomExVoicePool_AllocateInstrumentVoicePool(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomExVoicePool(handle);
 		}
 
 		/// <summary>ボイスプールの破棄 </summary>
@@ -943,7 +939,7 @@ namespace CriWare
 		///  そのため、本関数内で処理が長時間（数フレーム）ブロックされる可能性があります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_Free(CriAtomExVoicePoolHn pool)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_Free(CriAtomExVoicePoolHn pool)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateStandardVoicePool"/>
 		public void Dispose()
@@ -972,7 +968,7 @@ namespace CriWare
 		///  そのため、本関数内で処理が長時間（数フレーム）ブロックされる可能性があります。
 		///  ボイスプールの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_FreeAll(void)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_FreeAll(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateStandardVoicePool"/>
 		public static void FreeAll()
@@ -988,7 +984,7 @@ namespace CriWare
 		/// 説明:
 		/// ボイスプール内のボイスのうち、現在使用中のボイスの数、および利用可能な 最大ボイス数（＝プール作成時に指定した max_voices の数）を取得します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_GetNumUsedVoices(CriAtomExVoicePoolHn pool, CriSint32 *cur_num, CriSint32 *limit)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_GetNumUsedVoices(CriAtomExVoicePoolHn pool, CriSint32 *cur_num, CriSint32 *limit)"/>
 		/// </remarks>
 		public unsafe void GetNumUsedVoices(out Int32 curNum, out Int32 limit)
 		{
@@ -1009,12 +1005,12 @@ namespace CriWare
 		/// 備考:
 		/// 本関数は情報取得用途にのみ利用可能なデバッグ関数です。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomExVoicePool_GetPlayerHandle(CriAtomExVoicePoolHn pool, CriSint32 index)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomExVoicePool_GetPlayerHandle(CriAtomExVoicePoolHn pool, CriSint32 index)"/>
 		/// </remarks>
 		public CriAtomPlayer GetPlayerHandle(Int32 index)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExVoicePool_GetPlayerHandle(NativeHandle, index)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+			return ((handle = NativeMethods.criAtomExVoicePool_GetPlayerHandle(NativeHandle, index)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>インストゥルメントボイスプール作成用ワーク領域サイズの計算 </summary>
@@ -1028,7 +1024,7 @@ namespace CriWare
 		///  ワーク領域サイズの計算に失敗すると、本関数は -1 を返します。
 		///  ワーク領域サイズの計算に失敗した理由については、エラーコールバックのメッセージで確認可能です。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForInstrumentVoicePool(const CriAtomExInstrumentVoicePoolConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForInstrumentVoicePool(const CriAtomExInstrumentVoicePoolConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AllocateInstrumentVoicePool"/>
 		public static unsafe Int32 CalculateWorkSizeForInstrumentVoicePool(in CriAtomEx.InstrumentVoicePoolConfig config)
@@ -1053,7 +1049,7 @@ namespace CriWare
 		/// 注意:
 		/// 備考: 現在、本関数を使用できないプラットフォームが存在します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_DetachDsp(CriAtomExVoicePoolHn pool)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_DetachDsp(CriAtomExVoicePoolHn pool)"/>
 		/// </remarks>
 		public void DetachDsp()
 		{
@@ -1068,7 +1064,7 @@ namespace CriWare
 		/// 説明:
 		/// ピッチシフターDSPのアタッチに必要なワーク領域サイズを計算します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForDspPitchShifter(const CriAtomExDspPitchShifterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForDspPitchShifter(const CriAtomExDspPitchShifterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspPitchShifter"/>
 		public static unsafe Int32 CalculateWorkSizeForDspPitchShifter(in CriAtomEx.DspPitchShifterConfig config)
@@ -1094,7 +1090,7 @@ namespace CriWare
 		/// 注意:
 		/// 備考: 現在、本関数を使用できないプラットフォームが存在します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_AttachDspPitchShifter(CriAtomExVoicePoolHn pool, const CriAtomExDspPitchShifterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_AttachDspPitchShifter(CriAtomExVoicePoolHn pool, const CriAtomExDspPitchShifterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public unsafe void AttachDspPitchShifter(in CriAtomEx.DspPitchShifterConfig config)
 		{
@@ -1110,7 +1106,7 @@ namespace CriWare
 		/// 説明:
 		/// タイムストレッチDSPのアタッチに必要なワーク領域サイズを計算します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForDspTimeStretch(const CriAtomExDspTimeStretchConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForDspTimeStretch(const CriAtomExDspTimeStretchConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspTimeStretch"/>
 		public static unsafe Int32 CalculateWorkSizeForDspTimeStretch(in CriAtomEx.DspTimeStretchConfig config)
@@ -1136,7 +1132,7 @@ namespace CriWare
 		/// 注意:
 		/// 備考: 現在、本関数を使用できないプラットフォームが存在します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_AttachDspTimeStretch(CriAtomExVoicePoolHn pool, const CriAtomExDspTimeStretchConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_AttachDspTimeStretch(CriAtomExVoicePoolHn pool, const CriAtomExDspTimeStretchConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public unsafe void AttachDspTimeStretch(in CriAtomEx.DspTimeStretchConfig config)
 		{
@@ -1152,7 +1148,7 @@ namespace CriWare
 		/// 説明:
 		/// AFX形式のDSPのアタッチに必要なワーク領域サイズを計算します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExVoicePool_CalculateWorkSizeForDspAfx(const CriAtomExDspAfxConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExVoicePool_CalculateWorkSizeForDspAfx(const CriAtomExDspAfxConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.AttachDspAfx"/>
 		public static unsafe Int32 CalculateWorkSizeForDspAfx(in CriAtomEx.DspAfxConfig config)
@@ -1178,7 +1174,7 @@ namespace CriWare
 		/// 注意:
 		/// 備考: 現在、本関数を使用できないプラットフォームが存在します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExVoicePool_AttachDspAfx(CriAtomExVoicePoolHn pool, const CriAtomExDspAfxConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExVoicePool_AttachDspAfx(CriAtomExVoicePoolHn pool, const CriAtomExDspAfxConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public unsafe void AttachDspAfx(in CriAtomEx.DspAfxConfig config)
 		{

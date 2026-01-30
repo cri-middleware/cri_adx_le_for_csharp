@@ -20,8 +20,11 @@ namespace CriWare
 	/// <see cref="CriAtomExAcb.LoadAcbFile"/> 関数等で読み込んだキューシートファイル内の 音声を再生する場合、本オブジェクトとキューIDをプレーヤーに対してセットします。
 	/// </para>
 	/// </remarks>
+	/// <seealso cref="CriAtomExAcb.LoadAcbFile"/>
+	/// <seealso cref="CriAtomExPlayer.SetCueId"/>
 	public partial class CriAtomExAcb : IDisposable
 	{
+
 		/// <summary>オンメモリACBデータのロードに必要なワーク領域サイズの計算 </summary>
 		/// <param name="acbData">ACBデータアドレス </param>
 		/// <param name="acbDataSize">ACBデータサイズ </param>
@@ -44,7 +47,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_CalculateWorkSizeForLoadAcbData(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, const CriChar8 *awb_path)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_CalculateWorkSizeForLoadAcbData(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, const CriChar8 *awb_path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.LoadAcbData"/>
 		public static Int32 CalculateWorkSizeForLoadAcbData(IntPtr acbData, Int32 acbDataSize, CriFsBinder awbBinder, ArgString awbPath)
@@ -67,7 +70,7 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_CalculateWorkSizeForLoadAcbDataById(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, CriUint16 awb_id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_CalculateWorkSizeForLoadAcbDataById(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, CriUint16 awb_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.CalculateWorkSizeForLoadAcbData"/>
 		/// <seealso cref="CriAtomExAcb.LoadAcbDataById"/>
@@ -110,19 +113,18 @@ namespace CriWare
 		///  ACBデータにはワーク領域も含まれています。
 		///  そのため、1つのACBデータ領域を複数回同時にロードすることはできません。
 		///  （作成されたACBオブジェクトを複数のAtomExプレーヤーで共有することは可能です。）
-		///  ACBオブジェクトは内部的にバインダー（ <see cref="CriFsBinder"/> ）を確保します。
-		///  ACBファイルをロードする場合、ACBオブジェクト数分のバインダーが確保できる設定で Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		///  本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAcbHn CRIAPI criAtomExAcb_LoadAcbData(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, const CriChar8 *awb_path, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExAcbHn criAtomExAcb_LoadAcbData(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, const CriChar8 *awb_path, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.CalculateWorkSizeForLoadAcbData"/>
 		/// <seealso cref="CriAtomExAcb"/>
 		/// <seealso cref="CriAtomExPlayer.SetCueId"/>
 		public static CriAtomExAcb LoadAcbData(IntPtr acbData, Int32 acbDataSize, CriFsBinder awbBinder, ArgString awbPath)
 		{
+			using var _ = new NativeAllocator.BindDataSectionScope(acbData, acbDataSize);
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_LoadAcbData(acbData, acbDataSize, awbBinder?.NativeHandle ?? default, awbPath.GetPointer(stackalloc byte[awbPath.BufferSize]), default, default)) == IntPtr.Zero) ? null : new CriAtomExAcb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_LoadAcbData(acbData, acbDataSize, awbBinder?.NativeHandle ?? default, awbPath.GetPointer(stackalloc byte[awbPath.BufferSize]), default, default)) == IntPtr.Zero) ? default : new CriAtomExAcb(handle);
 		}
 
 		/// <summary>オンメモリACBデータのロード（CPKコンテンツID指定） </summary>
@@ -141,13 +143,14 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAcbHn CRIAPI criAtomExAcb_LoadAcbDataById(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, CriUint16 awb_id, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExAcbHn criAtomExAcb_LoadAcbDataById(void *acb_data, CriSint32 acb_data_size, CriFsBinderHn awb_binder, CriUint16 awb_id, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.LoadAcbData"/>
 		public static CriAtomExAcb LoadAcbDataById(IntPtr acbData, Int32 acbDataSize, CriFsBinder awbBinder, UInt16 awbId)
 		{
+			using var _ = new NativeAllocator.BindDataSectionScope(acbData, acbDataSize);
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_LoadAcbDataById(acbData, acbDataSize, awbBinder?.NativeHandle ?? default, awbId, default, default)) == IntPtr.Zero) ? null : new CriAtomExAcb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_LoadAcbDataById(acbData, acbDataSize, awbBinder?.NativeHandle ?? default, awbId, default, default)) == IntPtr.Zero) ? default : new CriAtomExAcb(handle);
 		}
 
 		/// <summary>ACBファイルのロードに必要なワーク領域サイズの計算 </summary>
@@ -172,7 +175,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ACBファイルのロードは、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_CalculateWorkSizeForLoadAcbFile(CriFsBinderHn acb_binder, const CriChar8 *acb_path, CriFsBinderHn awb_binder, const CriChar8 *awb_path)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_CalculateWorkSizeForLoadAcbFile(CriFsBinderHn acb_binder, const CriChar8 *acb_path, CriFsBinderHn awb_binder, const CriChar8 *awb_path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.LoadAcbFile"/>
 		public static Int32 CalculateWorkSizeForLoadAcbFile(CriFsBinder acbBinder, ArgString acbPath, CriFsBinder awbBinder, ArgString awbPath)
@@ -195,7 +198,7 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_CalculateWorkSizeForLoadAcbFileById(CriFsBinderHn acb_binder, CriUint16 acb_id, CriFsBinderHn awb_binder, CriUint16 awb_id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_CalculateWorkSizeForLoadAcbFileById(CriFsBinderHn acb_binder, CriUint16 acb_id, CriFsBinderHn awb_binder, CriUint16 awb_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.CalculateWorkSizeForLoadAcbFile"/>
 		/// <seealso cref="CriAtomExAcb.LoadAcbFileById"/>
@@ -241,7 +244,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  ACBファイルのロードは、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAcbHn CRIAPI criAtomExAcb_LoadAcbFile(CriFsBinderHn acb_binder, const CriChar8 *acb_path, CriFsBinderHn awb_binder, const CriChar8 *awb_path, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExAcbHn criAtomExAcb_LoadAcbFile(CriFsBinderHn acb_binder, const CriChar8 *acb_path, CriFsBinderHn awb_binder, const CriChar8 *awb_path, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.CalculateWorkSizeForLoadAcbFile"/>
 		/// <seealso cref="CriAtomExAcb"/>
@@ -249,7 +252,7 @@ namespace CriWare
 		public static CriAtomExAcb LoadAcbFile(CriFsBinder acbBinder, ArgString acbPath, CriFsBinder awbBinder, ArgString awbPath)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_LoadAcbFile(acbBinder?.NativeHandle ?? default, acbPath.GetPointer(stackalloc byte[acbPath.BufferSize]), awbBinder?.NativeHandle ?? default, awbPath.GetPointer(stackalloc byte[awbPath.BufferSize]), default, default)) == IntPtr.Zero) ? null : new CriAtomExAcb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_LoadAcbFile(acbBinder?.NativeHandle ?? default, acbPath.GetPointer(stackalloc byte[acbPath.BufferSize]), awbBinder?.NativeHandle ?? default, awbPath.GetPointer(stackalloc byte[awbPath.BufferSize]), default, default)) == IntPtr.Zero) ? default : new CriAtomExAcb(handle);
 		}
 
 		/// <summary>ACBファイルのロード（CPKコンテンツID指定） </summary>
@@ -268,13 +271,13 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAcbHn CRIAPI criAtomExAcb_LoadAcbFileById(CriFsBinderHn acb_binder, CriUint16 acb_id, CriFsBinderHn awb_binder, CriUint16 awb_id, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExAcbHn criAtomExAcb_LoadAcbFileById(CriFsBinderHn acb_binder, CriUint16 acb_id, CriFsBinderHn awb_binder, CriUint16 awb_id, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.LoadAcbFile"/>
 		public static CriAtomExAcb LoadAcbFileById(CriFsBinder acbBinder, UInt16 acbId, CriFsBinder awbBinder, UInt16 awbId)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_LoadAcbFileById(acbBinder?.NativeHandle ?? default, acbId, awbBinder?.NativeHandle ?? default, awbId, default, default)) == IntPtr.Zero) ? null : new CriAtomExAcb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_LoadAcbFileById(acbBinder?.NativeHandle ?? default, acbId, awbBinder?.NativeHandle ?? default, awbId, default, default)) == IntPtr.Zero) ? default : new CriAtomExAcb(handle);
 		}
 
 		/// <summary>ACBハンドルのリリース </summary>
@@ -296,7 +299,7 @@ namespace CriWare
 		///  そのため、本関数実行中に他スレッドでAtomプレーヤーの作成／破棄を行うと、 アクセス違反やデッドロック等の重大な不具合を誘発する恐れがあります。
 		///  本関数実行時にAtomプレーヤーの作成／破棄を他スレッドで行う必要がある場合、 Atomプレーヤーの作成／破棄を <see cref="CriAtomEx.Lock"/> 関数でロックしてから実行ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_Release(CriAtomExAcbHn acb_hn)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_Release(CriAtomExAcbHn acb_hn)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.LoadAcbData"/>
 		/// <seealso cref="CriAtomExAcb.LoadAcbFile"/>
@@ -331,7 +334,7 @@ namespace CriWare
 		///  そのため、本関数実行中に他スレッドでAtomプレーヤーの作成／破棄を行うと、 アクセス違反やデッドロック等の重大な不具合を誘発する恐れがあります。
 		///  本関数実行時にAtomプレーヤーの作成／破棄を他スレッドで行う必要がある場合、 Atomプレーヤーの作成／破棄を <see cref="CriAtomEx.Lock"/> 関数でロックしてから実行ください。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_IsReadyToRelease(CriAtomExAcbHn acb_hn)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_IsReadyToRelease(CriAtomExAcbHn acb_hn)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.Dispose"/>
 		public bool IsReadyToRelease()
@@ -358,7 +361,7 @@ namespace CriWare
 		///  そのため、本関数実行中に他スレッドでAtomプレーヤーの作成／破棄を行うと、 アクセス違反やデッドロック等の重大な不具合を誘発する恐れがあります。
 		///  本関数実行時にAtomプレーヤーの作成／破棄を他スレッドで行う必要がある場合、 Atomプレーヤーの作成／破棄を <see cref="CriAtomEx.Lock"/> 関数でロックしてから実行ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_ReleaseAll(void)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_ReleaseAll(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.LoadAcbData"/>
 		/// <seealso cref="CriAtomExAcb.LoadAcbFile"/>
@@ -392,7 +395,7 @@ namespace CriWare
 		/// ACBオブジェクトをコールバック関数内で破棄してはいけません。
 		///  全てのACBオブジェクトを一括で破棄する場合には、本関数の代わりに、 <see cref="CriAtomExAcb.ReleaseAll"/> 関数を使用してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_EnumerateHandles(CriAtomExAcbHandleCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_EnumerateHandles(CriAtomExAcbHandleCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.HandleCbFunc"/>
 		/// <seealso cref="CriAtomExAcb.ReleaseAll"/>
@@ -436,17 +439,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static Int32 CriAtomExAcbHandleCbFuncCallbackFunc(IntPtr obj, IntPtr acbHn) =>
-				InvokeCallbackInternal(obj, new(acbHn)).value;
+			static NativeBool CriAtomExAcbHandleCbFuncCallbackFunc(IntPtr obj, IntPtr acbHn) =>
+				InvokeCallbackInternal(obj, new(acbHn));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate Int32 NativeDelegate(IntPtr obj, IntPtr acbHn);
+			delegate NativeBool NativeDelegate(IntPtr obj, IntPtr acbHn);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal HandleCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, Int32>)&CriAtomExAcbHandleCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, NativeBool>)&CriAtomExAcbHandleCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExAcbHandleCbFuncCallbackFunc)
 #endif
@@ -464,7 +467,7 @@ namespace CriWare
 		/// メモリ上に配置されたACBデータのフォーマットバージョンを取得します。
 		///  また、flag引数にロード可能なバージョンかどうかをBool値で返します。
 		/// </para>
-		/// <nativeinfo declaration="CriUint32 CRIAPI criAtomExAcb_GetVersion(void *acb_data, CriSint32 acb_data_size, void *flag)"/>
+		/// <nativeinfo declaration="CriUint32 criAtomExAcb_GetVersion(void *acb_data, CriSint32 acb_data_size, void *flag)"/>
 		/// </remarks>
 		public static UInt32 GetVersion(IntPtr acbData, Int32 acbDataSize, IntPtr flag)
 		{
@@ -497,7 +500,7 @@ namespace CriWare
 		/// 本関数にセットしたワーク領域は、 アプリケーションで保持する必要はありません。
 		///  （メモリにロードしたデータは関数終了時に解放されます。）
 		/// </para>
-		/// <nativeinfo declaration="CriUint32 CRIAPI criAtomExAcb_GetVersionFromFile(CriFsBinderHn acb_binder, const CriChar8 *acb_path, void *work, CriSint32 work_size, CriBool *flag)"/>
+		/// <nativeinfo declaration="CriUint32 criAtomExAcb_GetVersionFromFile(CriFsBinderHn acb_binder, const CriChar8 *acb_path, void *work, CriSint32 work_size, CriBool *flag)"/>
 		/// </remarks>
 		public static unsafe UInt32 GetVersionFromFile(CriFsBinder acbBinder, ArgString acbPath, out NativeBool flag)
 		{
@@ -514,7 +517,7 @@ namespace CriWare
 		/// ロード可能なACBのバージョン情報を取得します。
 		///  上位バージョンはライブラリビルド時点での情報のため、この値より上位のACBでも ロード可能な場合もあります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_GetSupportedVersion(CriUint32 *version_low, CriUint32 *version_high)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_GetSupportedVersion(CriUint32 *version_low, CriUint32 *version_high)"/>
 		/// </remarks>
 		public static unsafe void GetSupportedVersion(out UInt32 versionLow, out UInt32 versionHigh)
 		{
@@ -534,7 +537,7 @@ namespace CriWare
 		/// 備考:
 		/// 引数（ acb_hn ）に null を指定した場合、最後にロードしたACBデータを処理対象とします。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumCues(CriAtomExAcbHn acb_hn)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumCues(CriAtomExAcbHn acb_hn)"/>
 		/// </remarks>
 		public Int32 GetNumCues()
 		{
@@ -555,7 +558,7 @@ namespace CriWare
 		/// 第1引数（ ach_hn ）に null を指定した場合、全てのACBデータが検索対象となります。
 		///  （指定したIDを持つACBデータが1つでも存在すれば、本関数は true を返します。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_ExistsId(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_ExistsId(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		public bool ExistsId(Int32 id)
 		{
@@ -576,7 +579,7 @@ namespace CriWare
 		/// 第1引数（ ach_hn ）に null を指定した場合、全てのACBデータが検索対象となります。
 		///  （指定したキュー名を持つACBデータが1つでも存在すれば、本関数は true を返します。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_ExistsName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_ExistsName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public bool ExistsName(ArgString name)
 		{
@@ -597,7 +600,7 @@ namespace CriWare
 		/// 第1引数（ ach_hn ）に null を指定した場合、全てのACBデータが検索対象となります。
 		///  （指定したキューインデックスを持つACBデータが1つでも存在すれば、本関数は true を返します。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_ExistsIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_ExistsIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
 		/// </remarks>
 		public bool ExistsIndex(Int32 index)
 		{
@@ -620,7 +623,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExCueId CRIAPI criAtomExAcb_GetCueIdByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
+		/// <nativeinfo declaration="CriAtomExCueId criAtomExAcb_GetCueIdByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
 		/// </remarks>
 		public Int32 GetCueIdByIndex(Int32 index)
 		{
@@ -643,7 +646,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExCueId CRIAPI criAtomExAcb_GetCueIdByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriAtomExCueId criAtomExAcb_GetCueIdByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public Int32 GetCueIdByName(ArgString name)
 		{
@@ -666,7 +669,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcb_GetCueNameByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcb_GetCueNameByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
 		/// </remarks>
 		public NativeString GetCueNameByIndex(Int32 index)
 		{
@@ -689,7 +692,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcb_GetCueNameById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcb_GetCueNameById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		public NativeString GetCueNameById(Int32 id)
 		{
@@ -712,7 +715,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExCueIndex CRIAPI criAtomExAcb_GetCueIndexById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriAtomExCueIndex criAtomExAcb_GetCueIndexById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		public Int32 GetCueIndexById(Int32 id)
 		{
@@ -735,7 +738,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExCueIndex CRIAPI criAtomExAcb_GetCueIndexByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriAtomExCueIndex criAtomExAcb_GetCueIndexByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public Int32 GetCueIndexByName(ArgString name)
 		{
@@ -758,7 +761,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcb_GetUserDataById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcb_GetUserDataById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		public NativeString GetUserDataById(Int32 id)
 		{
@@ -781,7 +784,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcb_GetUserDataByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcb_GetUserDataByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public NativeString GetUserDataByName(ArgString name)
 		{
@@ -804,7 +807,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExAcb_GetLengthById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExAcb_GetLengthById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		public Int64 GetLengthById(Int32 id)
 		{
@@ -827,7 +830,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExAcb_GetLengthByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExAcb_GetLengthByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		public Int64 GetLengthByName(ArgString name)
 		{
@@ -850,7 +853,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumUsableAisacControlsById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumUsableAisacControlsById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumUsableAisacControlsByName"/>
 		/// <seealso cref="CriAtomExAcb.GetUsableAisacControlById"/>
@@ -876,7 +879,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumUsableAisacControlsByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumUsableAisacControlsByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumUsableAisacControlsById"/>
 		/// <seealso cref="CriAtomExAcb.GetUsableAisacControlById"/>
@@ -904,7 +907,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetUsableAisacControlById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriUint16 index, CriAtomExAisacControlInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetUsableAisacControlById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriUint16 index, CriAtomExAisacControlInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumUsableAisacControlsById"/>
 		/// <seealso cref="CriAtomExAcb.GetNumUsableAisacControlsByName"/>
@@ -933,7 +936,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetUsableAisacControlByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, CriUint16 index, CriAtomExAisacControlInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetUsableAisacControlByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, CriUint16 index, CriAtomExAisacControlInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumUsableAisacControlsById"/>
 		/// <seealso cref="CriAtomExAcb.GetNumUsableAisacControlsByName"/>
@@ -961,7 +964,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_IsUsingAisacControlById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_IsUsingAisacControlById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.IsUsingAisacControlByName"/>
 		public bool IsUsingAisacControlById(Int32 id, UInt32 aisacControlId)
@@ -986,7 +989,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_IsUsingAisacControlByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, const CriChar8 *aisac_control_name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_IsUsingAisacControlByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, const CriChar8 *aisac_control_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.IsUsingAisacControlById"/>
 		public bool IsUsingAisacControlByName(ArgString name, ArgString aisacControlName)
@@ -1010,7 +1013,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetCuePriorityById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetCuePriorityById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetCuePriorityByName"/>
 		public Int32 GetCuePriorityById(Int32 id)
@@ -1034,7 +1037,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetCuePriorityByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetCuePriorityByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetCuePriorityById"/>
 		public Int32 GetCuePriorityByName(ArgString name)
@@ -1059,7 +1062,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetWaveformInfoById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriAtomExWaveformInfo *waveform_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetWaveformInfoById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriAtomExWaveformInfo *waveform_info)"/>
 		/// </remarks>
 		public unsafe bool GetWaveformInfoById(Int32 id, out CriAtomEx.WaveformInfo waveformInfo)
 		{
@@ -1084,7 +1087,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetWaveformInfoByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, CriAtomExWaveformInfo *waveform_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetWaveformInfoByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, CriAtomExWaveformInfo *waveform_info)"/>
 		/// </remarks>
 		public unsafe bool GetWaveformInfoByName(ArgString name, out CriAtomEx.WaveformInfo waveformInfo)
 		{
@@ -1112,13 +1115,13 @@ namespace CriWare
 		/// ACB オブジェクトが保持する AWB オブジェクトは、 ACB オブジェクトリリース時に破棄されます。
 		///  本関数で取得した AWB オブジェクトを個別に破棄したり、 取得済みの AWB オブジェクトに ACB オブジェクトリリース後にアクセスしたりすると、 アクセス違反等の重大な不具合が発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomExAcb_GetOnMemoryAwbHandle(CriAtomExAcbHn acb_hn)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomExAcb_GetOnMemoryAwbHandle(CriAtomExAcbHn acb_hn)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetStreamingAwbHandle"/>
 		public CriAtomAwb GetOnMemoryAwbHandle()
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_GetOnMemoryAwbHandle(NativeHandle)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_GetOnMemoryAwbHandle(NativeHandle)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>ストリーム再生用 AWB ハンドルの取得 </summary>
@@ -1146,13 +1149,13 @@ namespace CriWare
 		/// ACB オブジェクトが保持する AWB オブジェクトは、 ACB オブジェクトリリース時に破棄されます。
 		///  本関数で取得した AWB オブジェクトを個別に破棄したり、 取得済みの AWB オブジェクトに ACB オブジェクトリリース後にアクセスしたりすると、 アクセス違反等の重大な不具合が発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomExAcb_GetStreamingAwbHandle(CriAtomExAcbHn acb_hn)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomExAcb_GetStreamingAwbHandle(CriAtomExAcbHn acb_hn)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetOnMemoryAwbHandle"/>
 		public CriAtomAwb GetStreamingAwbHandle()
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_GetStreamingAwbHandle(NativeHandle)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_GetStreamingAwbHandle(NativeHandle)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>指定した AWB スロット名のストリーム再生用 AWB ハンドルの取得 </summary>
@@ -1176,13 +1179,13 @@ namespace CriWare
 		/// ACB オブジェクトが保持する AWB オブジェクトは、 ACB オブジェクトリリース時に破棄されます。
 		///  本関数で取得した AWB オブジェクトを個別に破棄したり、 取得済みの AWB オブジェクトに ACB オブジェクトリリース後にアクセスしたりすると、 アクセス違反等の重大な不具合が発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomExAcb_GetStreamingAwbHandleBySlotName(CriAtomExAcbHn acb_hn, const CriChar8 *awb_slot_name)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomExAcb_GetStreamingAwbHandleBySlotName(CriAtomExAcbHn acb_hn, const CriChar8 *awb_slot_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetOnMemoryAwbHandle"/>
 		public CriAtomAwb GetStreamingAwbHandleBySlotName(ArgString awbSlotName)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_GetStreamingAwbHandleBySlotName(NativeHandle, awbSlotName.GetPointer(stackalloc byte[awbSlotName.BufferSize]))) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_GetStreamingAwbHandleBySlotName(NativeHandle, awbSlotName.GetPointer(stackalloc byte[awbSlotName.BufferSize]))) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>指定した AWB スロットインデックスのストリーム再生用 AWB ハンドルの取得 </summary>
@@ -1206,13 +1209,13 @@ namespace CriWare
 		/// ACB オブジェクトが保持する AWB オブジェクトは、 ACB オブジェクトリリース時に破棄されます。
 		///  本関数で取得した AWB オブジェクトを個別に破棄したり、 取得済みの AWB オブジェクトに ACB オブジェクトリリース後にアクセスしたりすると、 アクセス違反等の重大な不具合が発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomAwbHn CRIAPI criAtomExAcb_GetStreamingAwbHandleBySlotIndex(CriAtomExAcbHn acb_hn, CriUint16 awb_slot_index)"/>
+		/// <nativeinfo declaration="CriAtomAwbHn criAtomExAcb_GetStreamingAwbHandleBySlotIndex(CriAtomExAcbHn acb_hn, CriUint16 awb_slot_index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetOnMemoryAwbHandle"/>
 		public CriAtomAwb GetStreamingAwbHandleBySlotIndex(UInt16 awbSlotIndex)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcb_GetStreamingAwbHandleBySlotIndex(NativeHandle, awbSlotIndex)) == IntPtr.Zero) ? null : new CriAtomAwb(handle);
+			return ((handle = NativeMethods.criAtomExAcb_GetStreamingAwbHandleBySlotIndex(NativeHandle, awbSlotIndex)) == IntPtr.Zero) ? default : new CriAtomAwb(handle);
 		}
 
 		/// <summary>キュー情報の取得（キュー名指定） </summary>
@@ -1232,7 +1235,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetCueInfoByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, CriAtomExCueInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetCueInfoByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, CriAtomExCueInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetCueInfoById"/>
 		/// <seealso cref="CriAtomExAcb.GetCueInfoByIndex"/>
@@ -1250,7 +1253,7 @@ namespace CriWare
 			/// <remarks>
 			/// <para>ポリフォニック </para>
 			/// </remarks>
-			Polyphonic = 0,
+			Polyphonic = (0),
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>シーケンシャル </para>
@@ -1309,7 +1312,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetCueInfoById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriAtomExCueInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetCueInfoById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, CriAtomExCueInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetCueInfoByName"/>
 		/// <seealso cref="CriAtomExAcb.GetCueInfoByIndex"/>
@@ -1336,7 +1339,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetCueInfoByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index, CriAtomExCueInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetCueInfoByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index, CriAtomExCueInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetCueInfoByName"/>
 		/// <seealso cref="CriAtomExAcb.GetCueInfoById"/>
@@ -1362,7 +1365,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumCuePlayingCountByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumCuePlayingCountByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumCuePlayingCountById"/>
 		/// <seealso cref="CriAtomExAcb.GetNumCuePlayingCountByIndex"/>
@@ -1387,7 +1390,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumCuePlayingCountById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumCuePlayingCountById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumCuePlayingCountByName"/>
 		/// <seealso cref="CriAtomExAcb.GetNumCuePlayingCountByIndex"/>
@@ -1412,7 +1415,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumCuePlayingCountByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumCuePlayingCountByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.GetNumCuePlayingCountByName"/>
 		/// <seealso cref="CriAtomExAcb.GetNumCuePlayingCountById"/>
@@ -1438,7 +1441,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExBlockIndex CRIAPI criAtomExAcb_GetBlockIndexByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index, const CriChar8 *block_name)"/>
+		/// <nativeinfo declaration="CriAtomExBlockIndex criAtomExAcb_GetBlockIndexByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index, const CriChar8 *block_name)"/>
 		/// </remarks>
 		public Int32 GetBlockIndexByIndex(Int32 index, ArgString blockName)
 		{
@@ -1462,7 +1465,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExBlockIndex CRIAPI criAtomExAcb_GetBlockIndexById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, const CriChar8 *block_name)"/>
+		/// <nativeinfo declaration="CriAtomExBlockIndex criAtomExAcb_GetBlockIndexById(CriAtomExAcbHn acb_hn, CriAtomExCueId id, const CriChar8 *block_name)"/>
 		/// </remarks>
 		public Int32 GetBlockIndexById(Int32 id, ArgString blockName)
 		{
@@ -1486,7 +1489,7 @@ namespace CriWare
 		///  この際、検索の順序は、ACBデータのロード順とは逆順で行われます。
 		///  （後からロードされたデータから優先的に検索が行われます。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExBlockIndex CRIAPI criAtomExAcb_GetBlockIndexByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, const CriChar8 *block_name)"/>
+		/// <nativeinfo declaration="CriAtomExBlockIndex criAtomExAcb_GetBlockIndexByName(CriAtomExAcbHn acb_hn, const CriChar8 *name, const CriChar8 *block_name)"/>
 		/// </remarks>
 		public Int32 GetBlockIndexByName(ArgString name, ArgString blockName)
 		{
@@ -1510,7 +1513,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_SetDetectionInGamePreviewDataCallback(CriAtomExAcbDetectionInGamePreviewDataCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_SetDetectionInGamePreviewDataCallback(CriAtomExAcbDetectionInGamePreviewDataCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.DetectionInGamePreviewDataCbFunc"/>
 		public static unsafe void SetDetectionInGamePreviewDataCallback(delegate* unmanaged[Cdecl]<IntPtr, NativeString, void> func, IntPtr obj)
@@ -1561,17 +1564,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc(IntPtr obj, IntPtr acbName) =>
+			static void CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc(IntPtr obj, NativeString acbName) =>
 				InvokeCallbackInternal(obj, new(acbName));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate void NativeDelegate(IntPtr obj, IntPtr acbName);
+			delegate void NativeDelegate(IntPtr obj, NativeString acbName);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal DetectionInGamePreviewDataCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, void>)&CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, NativeString, void>)&CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExAcbDetectionInGamePreviewDataCbFuncCallbackFunc)
 #endif
@@ -1590,7 +1593,7 @@ namespace CriWare
 		/// 備考:
 		/// 引数（ acb_hn ）に null を指定した場合、最後にロードしたACBデータを処理対象とします。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_GetAcbInfo(CriAtomExAcbHn acb_hn, CriAtomExAcbInfo *acb_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_GetAcbInfo(CriAtomExAcbHn acb_hn, CriAtomExAcbInfo *acb_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.Info"/>
 		public unsafe bool GetAcbInfo(out CriAtomExAcb.Info acbInfo)
@@ -1629,6 +1632,18 @@ namespace CriWare
 
 			/// <summary></summary>
 			/// <remarks>
+			/// <para>ユーザーデータ </para>
+			/// </remarks>
+			public NativeString userData;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>出力言語 </para>
+			/// </remarks>
+			public NativeString language;
+
+			/// <summary></summary>
+			/// <remarks>
 			/// <para>文字コード </para>
 			/// </remarks>
 			public CriAtomEx.CharacterEncoding characterEncoding;
@@ -1662,7 +1677,7 @@ namespace CriWare
 		/// キュータイプステートは、ポリフォニックタイプキュー以外のキュー再生時の前回再生トラックを ステートとして管理する仕組みです。
 		///  本関数は、ステート管理領域をリセットしACBロード直後の状態に戻します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_ResetCueTypeStateByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_ResetCueTypeStateByName(CriAtomExAcbHn acb_hn, const CriChar8 *name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.ResetCueTypeStateById"/>
 		/// <seealso cref="CriAtomExAcb.ResetCueTypeStateByIndex"/>
@@ -1687,7 +1702,7 @@ namespace CriWare
 		/// キュータイプステートは、ポリフォニックタイプキュー以外のキュー再生時の前回再生トラックを ステートとして管理する仕組みです。
 		///  本関数は、ステート管理領域をリセットしACBロード直後の状態に戻します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_ResetCueTypeStateById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_ResetCueTypeStateById(CriAtomExAcbHn acb_hn, CriAtomExCueId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.ResetCueTypeStateByName"/>
 		/// <seealso cref="CriAtomExAcb.ResetCueTypeStateByIndex"/>
@@ -1712,7 +1727,7 @@ namespace CriWare
 		/// キュータイプステートは、ポリフォニックタイプキュー以外のキュー再生時の前回再生トラックを ステートとして管理する仕組みです。
 		///  本関数は、ステート管理領域をリセットしACBロード直後の状態に戻します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_ResetCueTypeStateByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_ResetCueTypeStateByIndex(CriAtomExAcbHn acb_hn, CriAtomExCueIndex index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.ResetCueTypeStateByName"/>
 		/// <seealso cref="CriAtomExAcb.ResetCueTypeStateById"/>
@@ -1746,14 +1761,12 @@ namespace CriWare
 		///  ワーク領域のサイズは <see cref="CriAtomExAcb.CalculateWorkSizeForAttachAwbFile"/> 関数で取得可能です。
 		///  本関数呼び出し時に <see cref="CriAtomExAcb.CalculateWorkSizeForAttachAwbFile"/> 関数で取得した サイズ分のメモリを予め確保しておき、本関数に設定してください。
 		///  尚、Fixed Memory方式を用いた場合、ワーク領域はデタッチ処理（ <see cref="CriAtomExAcb.DetachAwbFile"/> 関数実行時）か、ACBオブジェクトリリース処理（ <see cref="CriAtomExAcb.Dispose"/> 関数実行時）を行うまでの間、 ライブラリ内で利用され続けます。
-		///  AWBファイルをアタッチするとライブラリ内部的にバインダー（ <see cref="CriFsBinder"/> ）とローダー（ <see cref="CriFsLoader"/> ） を確保します。
-		///  追加でAWBファイルをアタッチする場合、追加数分のバインダーとローダーが確保できる設定で Atomライブラリ（またはCRI File Systemライブラリ）を初期化する必要があります。
 		/// </para>
 		/// <para>
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_AttachAwbFile(CriAtomExAcbHn acb_hn, CriFsBinderHn awb_binder, const CriChar8 *awb_path, const CriChar8 *awb_name, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_AttachAwbFile(CriAtomExAcbHn acb_hn, CriFsBinderHn awb_binder, const CriChar8 *awb_path, const CriChar8 *awb_name, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.DetachAwbFile"/>
 		/// <seealso cref="CriAtomExAcb.Dispose"/>
@@ -1771,7 +1784,7 @@ namespace CriWare
 		/// ACBオブジェクトにアタッチされているストリーム用のAWBファイルをデタッチします。 第2引数の awb_name はAWBをアタッチ時に指定したものと同じAWB名を指定指定ください。
 		///  アタッチ時のワーク領域確保にUser Allocator方式を用いた場合は、アタッチ時に確保したメモリ領域が 本関数処理時に開放されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcb_DetachAwbFile(CriAtomExAcbHn acb_hn, const CriChar8 *awb_name)"/>
+		/// <nativeinfo declaration="void criAtomExAcb_DetachAwbFile(CriAtomExAcbHn acb_hn, const CriChar8 *awb_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.AttachAwbFile"/>
 		public void DetachAwbFile(ArgString awbName)
@@ -1792,7 +1805,7 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_CalculateWorkSizeForAttachAwbFile(CriFsBinderHn awb_binder, const CriChar8 *awb_path)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_CalculateWorkSizeForAttachAwbFile(CriFsBinderHn awb_binder, const CriChar8 *awb_path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcb.AttachAwbFile"/>
 		public static Int32 CalculateWorkSizeForAttachAwbFile(CriFsBinder awbBinder, ArgString awbPath)
@@ -1807,7 +1820,7 @@ namespace CriWare
 		/// 説明:
 		/// ACBオブジェクトが必要とするストリームAWBの数を取得します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcb_GetNumAwbFileSlots(CriAtomExAcbHn acb_hn)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcb_GetNumAwbFileSlots(CriAtomExAcbHn acb_hn)"/>
 		/// </remarks>
 		public Int32 GetNumAwbFileSlots()
 		{
@@ -1823,7 +1836,7 @@ namespace CriWare
 		/// インデックスを指定してACBオブジェクト内のストリームAWBスロット名を取得します。
 		///  取得したスロット名は <see cref="CriAtomExAcb.AttachAwbFile"/> 関数の第4引数や、 <see cref="CriAtomExAcb.DetachAwbFile"/> 関数の第2引数のスロット指定に使用します。
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcb_GetAwbFileSlotName(CriAtomExAcbHn acb_hn, CriUint16 index)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcb_GetAwbFileSlotName(CriAtomExAcbHn acb_hn, CriUint16 index)"/>
 		/// </remarks>
 		public NativeString GetAwbFileSlotName(UInt16 index)
 		{
@@ -1837,7 +1850,7 @@ namespace CriWare
 		/// 説明:
 		/// ACBオブジェクトにAWBファイルがアタッチされているかを取得します。 第2引数の awb_name はAWBをアタッチするスロット名です。状態を取得したいスロットのAWB名を指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcb_IsAttachedAwbFile(CriAtomExAcbHn acb_hn, const CriChar8 *awb_name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcb_IsAttachedAwbFile(CriAtomExAcbHn acb_hn, const CriChar8 *awb_name)"/>
 		/// </remarks>
 		public bool IsAttachedAwbFile(ArgString awbName)
 		{

@@ -57,7 +57,7 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx3dSourceList_CalculateWorkSize(const CriAtomEx3dSourceListConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx3dSourceList_CalculateWorkSize(const CriAtomEx3dSourceListConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList.CriAtomEx3dSourceList"/>
 		/// <seealso cref="CriAtomEx3dSourceList.Config"/>
@@ -101,7 +101,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomEx3dSourceListHn CRIAPI criAtomEx3dSourceList_Create(const CriAtomEx3dSourceListConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomEx3dSourceListHn criAtomEx3dSourceList_Create(const CriAtomEx3dSourceListConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dSourceList.Dispose"/>
@@ -131,7 +131,7 @@ namespace CriWare
 		/// 備考:
 		/// 3D音源オブジェクトリストに3D音源オブジェクトが追加されている状態で本関数を実行した場合、 追加されていた3D音源オブジェクトは自動的に3D音源オブジェクトリストから削除されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSourceList_Destroy(CriAtomEx3dSourceListHn ex_3d_source_list)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSourceList_Destroy(CriAtomEx3dSourceListHn ex_3d_source_list)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList.CriAtomEx3dSourceList"/>
 		public void Dispose()
@@ -169,7 +169,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSourceList_Add(CriAtomEx3dSourceListHn ex_3d_source_list, CriAtomEx3dSourceHn ex_3d_source)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSourceList_Add(CriAtomEx3dSourceListHn ex_3d_source_list, CriAtomEx3dSourceHn ex_3d_source)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList.Remove"/>
 		/// <seealso cref="CriAtomEx3dSourceList.RemoveAll"/>
@@ -197,7 +197,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSourceList_Remove(CriAtomEx3dSourceListHn ex_3d_source_list, CriAtomEx3dSourceHn ex_3d_source)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSourceList_Remove(CriAtomEx3dSourceListHn ex_3d_source_list, CriAtomEx3dSourceHn ex_3d_source)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList.RemoveAll"/>
 		public void Remove(CriAtomEx3dSource ex3dSource)
@@ -223,7 +223,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSourceList_RemoveAll(CriAtomEx3dSourceListHn ex_3d_source_list)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSourceList_RemoveAll(CriAtomEx3dSourceListHn ex_3d_source_list)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSourceList.Remove"/>
 		public void RemoveAll()

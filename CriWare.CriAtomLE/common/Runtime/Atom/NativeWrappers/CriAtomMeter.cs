@@ -76,7 +76,7 @@ namespace CriWare
 		/// レベルメーター追加に必要なワーク領域サイズを計算します。
 		///  config にnullを指定するとデフォルト設定で計算されます。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomMeter_CalculateWorkSizeForLevelMeter(const CriAtomLevelMeterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomMeter_CalculateWorkSizeForLevelMeter(const CriAtomLevelMeterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLevelMeter"/>
 		public static unsafe Int32 CalculateWorkSizeForLevelMeter(in CriAtom.LevelMeterConfig config)
@@ -94,7 +94,7 @@ namespace CriWare
 		///  config にnullを指定するとデフォルト設定でレベルメーターが追加されます。
 		///  work にnull、work_size に0を指定すると、登録されたユーザアロケーターによって ワーク領域が確保されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_AttachLevelMeter(const CriAtomLevelMeterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomMeter_AttachLevelMeter(const CriAtomLevelMeterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.GetLevelInfo"/>
 		public static unsafe void AttachLevelMeter(in CriAtom.LevelMeterConfig config)
@@ -109,7 +109,7 @@ namespace CriWare
 		/// 説明:
 		/// ライブラリのレベルメーター機能を解除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_DetachLevelMeter(void)"/>
+		/// <nativeinfo declaration="void criAtomMeter_DetachLevelMeter(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLevelMeter"/>
 		public static void DetachLevelMeter()
@@ -125,7 +125,7 @@ namespace CriWare
 		/// レベルメーターの結果を取得します。
 		///  指定するバスには <see cref="CriAtomMeter.AttachLevelMeter"/> 関数であらかじめ レベルメーター機能を追加しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_GetLevelInfo(CriAtomLevelInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomMeter_GetLevelInfo(CriAtomLevelInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLevelMeter"/>
 		public static unsafe void GetLevelInfo(out CriAtom.LevelInfo info)
@@ -143,7 +143,7 @@ namespace CriWare
 		/// ITU-R BS.1770-3規格のラウドネスメーター追加に必要なワーク領域サイズを計算します。
 		///  config にnullを指定するとデフォルト設定で計算されます。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomMeter_CalculateWorkSizeForLoudnessMeter(const CriAtomLoudnessMeterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomMeter_CalculateWorkSizeForLoudnessMeter(const CriAtomLoudnessMeterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLoudnessMeter"/>
 		public static unsafe Int32 CalculateWorkSizeForLoudnessMeter(in CriAtom.LoudnessMeterConfig config)
@@ -161,7 +161,7 @@ namespace CriWare
 		///  config にnullを指定するとデフォルト設定でラウドネスメーターが追加されます。
 		///  work にnull、work_size に0を指定すると、登録されたユーザアロケーターによって ワーク領域が確保されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_AttachLoudnessMeter(const CriAtomLoudnessMeterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomMeter_AttachLoudnessMeter(const CriAtomLoudnessMeterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.GetLoudnessInfo"/>
 		public static unsafe void AttachLoudnessMeter(in CriAtom.LoudnessMeterConfig config)
@@ -176,7 +176,7 @@ namespace CriWare
 		/// 説明:
 		/// ライブラリのラウドネスメーター機能を解除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_DetachLoudnessMeter(void)"/>
+		/// <nativeinfo declaration="void criAtomMeter_DetachLoudnessMeter(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLoudnessMeter"/>
 		public static void DetachLoudnessMeter()
@@ -191,7 +191,7 @@ namespace CriWare
 		/// 説明:
 		/// ラウドネスメーターの測定結果を取得します。 本関数を呼び出す前にライブラリへラウドネスメーターを追加しておく必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_GetLoudnessInfo(CriAtomLoudnessInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomMeter_GetLoudnessInfo(CriAtomLoudnessInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLoudnessMeter"/>
 		public static unsafe void GetLoudnessInfo(out CriAtom.LoudnessInfo info)
@@ -206,7 +206,7 @@ namespace CriWare
 		/// 説明:
 		/// ラウドネスメーターの蓄積データをリセットします。 本関数を呼び出す前にライブラリへラウドネスメーターを追加しておく必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_ResetLoudnessMeter(void)"/>
+		/// <nativeinfo declaration="void criAtomMeter_ResetLoudnessMeter(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLoudnessMeter"/>
 		public static void ResetLoudnessMeter()
@@ -223,7 +223,7 @@ namespace CriWare
 		/// ITU-R BS.1770-3規格のトゥルーピークメーター追加に必要なワーク領域サイズを計算します。
 		///  config にnullを指定するとデフォルト設定で計算されます。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomMeter_CalculateWorkSizeForTruePeakMeter(const CriAtomTruePeakMeterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomMeter_CalculateWorkSizeForTruePeakMeter(const CriAtomTruePeakMeterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachTruePeakMeter"/>
 		public static unsafe Int32 CalculateWorkSizeForTruePeakMeter(in CriAtom.TruePeakMeterConfig config)
@@ -241,7 +241,7 @@ namespace CriWare
 		///  config にnullを指定するとデフォルト設定でトゥルーピークメーターが追加されます。
 		///  work にnull、work_size に0を指定すると、登録されたユーザアロケーターによって ワーク領域が確保されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_AttachTruePeakMeter(const CriAtomTruePeakMeterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomMeter_AttachTruePeakMeter(const CriAtomTruePeakMeterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.GetTruePeakInfo"/>
 		public static unsafe void AttachTruePeakMeter(in CriAtom.TruePeakMeterConfig config)
@@ -256,7 +256,7 @@ namespace CriWare
 		/// 説明:
 		/// ライブラリのトゥルーピークメーター機能を解除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_DetachTruePeakMeter(void)"/>
+		/// <nativeinfo declaration="void criAtomMeter_DetachTruePeakMeter(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachLoudnessMeter"/>
 		public static void DetachTruePeakMeter()
@@ -271,7 +271,7 @@ namespace CriWare
 		/// 説明:
 		/// トゥルーピークメーターの測定結果を取得します。 本関数を呼び出す前にライブラリへトゥルーピークメーターを追加しておく必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomMeter_GetTruePeakInfo(CriAtomTruePeakInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomMeter_GetTruePeakInfo(CriAtomTruePeakInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomMeter.AttachTruePeakMeter"/>
 		public static unsafe void GetTruePeakInfo(out CriAtom.TruePeakInfo info)

@@ -47,7 +47,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExHcaMx.Initialize"/>
 		/// <seealso cref="CriAtomExHcaMx.SetDefaultConfig"/>
-		[System.Xml.Serialization.XmlType(Namespace = "CriAtomExHcaMx")]
+		[System.Xml.Serialization.XmlType(TypeName = "CriAtomExHcaMxConfig")]
 		[Serializable]
 		public unsafe partial struct Config
 		{
@@ -187,7 +187,7 @@ namespace CriWare
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExHcaMx_CalculateWorkSize(const CriAtomExHcaMxConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExHcaMx_CalculateWorkSize(const CriAtomExHcaMxConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomExHcaMx.Initialize"/>
@@ -219,7 +219,7 @@ namespace CriWare
 		///  HCA-MX初期化後には本関数に設定したパラメーターではなく、 初期化時に指定されたパラメーターがワーク領域サイズの計算に使用されます。
 		///  （本関数で登録する構造体のパラメーターと、 HCA-MX初期化時に使用する構造体のパラメーターが異なる場合、 ワーク領域サイズが不足し、オブジェクトの作成に失敗する恐れがあります。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExHcaMx_SetConfigForWorkSizeCalculation(const CriAtomExHcaMxConfig *config)"/>
+		/// <nativeinfo declaration="void criAtomExHcaMx_SetConfigForWorkSizeCalculation(const CriAtomExHcaMxConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForHcaMxVoicePool"/>
 		/// <seealso cref="CriAtomExVoicePool.SetDefaultConfigForHcaMxVoicePool"/>
@@ -253,7 +253,7 @@ namespace CriWare
 		///  本関数を実行後、必ず対になる <see cref="CriAtomExHcaMx.Finalize"/> 関数を実行してください。
 		///  また、 <see cref="CriAtomExHcaMx.Finalize"/> 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExHcaMx_Initialize(const CriAtomExHcaMxConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExHcaMx_Initialize(const CriAtomExHcaMxConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomExHcaMx.CalculateWorkSize"/>
@@ -278,7 +278,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExHcaMx_Finalize(void)"/>
+		/// <nativeinfo declaration="void criAtomExHcaMx_Finalize(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomExHcaMx.Initialize"/>
@@ -287,37 +287,37 @@ namespace CriWare
 			NativeMethods.criAtomExHcaMx_Finalize();
 		}
 
-		/// <summary>ミキサのバスセンドレベル設定 </summary>
-		/// <param name="mixerId">ミキサID </param>
+		/// <summary>ミキサーのバスセンドレベル設定 </summary>
+		/// <param name="mixerId">ミキサーID </param>
 		/// <param name="busName">バス名 </param>
 		/// <param name="level">センドレベル値（0.0f～1.0f） </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ミキサのバスセンドレベルを設定します。
-		///  デフォルト状態では、HCA-MXのデコード結果はミキサに格納された後、 バス0へ1.0fのレベルで送信されます。
+		/// ミキサーのバスセンドレベルを設定します。
+		///  デフォルト状態では、HCA-MXのデコード結果はミキサーに格納された後、 バス0へ1.0fのレベルで送信されます。
 		///  本関数を使用することで、デコード結果を他のバスへもセンドすることが可能になります。
-		///  （ミキサごとに異なるバスエフェクトを適用可能になります。）
+		///  （ミキサーごとに異なるバスエフェクトを適用可能になります。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExHcaMx_SetBusSendLevelByName(CriSint32 mixer_id, const CriChar8 *bus_name, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomExHcaMx_SetBusSendLevelByName(CriSint32 mixer_id, const CriChar8 *bus_name, CriFloat32 level)"/>
 		/// </remarks>
 		public static void SetBusSendLevelByName(Int32 mixerId, ArgString busName, Single level)
 		{
 			NativeMethods.criAtomExHcaMx_SetBusSendLevelByName(mixerId, busName.GetPointer(stackalloc byte[busName.BufferSize]), level);
 		}
 
-		/// <summary>ミキサの出力周波数調整比の設定 </summary>
-		/// <param name="mixerId">ミキサID </param>
+		/// <summary>ミキサーの出力周波数調整比の設定 </summary>
+		/// <param name="mixerId">ミキサーID </param>
 		/// <param name="ratio">センドレベル値（0.25f～4.0f） </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ミキサの出力周波数調整比を設定します。
+		/// ミキサーの出力周波数調整比を設定します。
 		///  周波数調整比は、音声データの周波数と再生周波数の比率で、再生速度の倍率と等価です。
 		///  周波数比が1.0fを超える場合、音声データは原音より高速に再生され、 1.0f未満の場合は、音声データは原音より低速で再生されます。
-		///  本関数を使用することで、対象のミキサを使用するプレーヤーで再生される全てのHCA-MXボイス （HCA-MX用にエンコードされた音声データの再生）について、再生速度が変更されます （HCA-MXボイスを再生する場合、個々のプレーヤーでの再生速度の設定は無視されます）。
+		///  本関数を使用することで、対象のミキサーを使用するプレーヤーで再生される全てのHCA-MXボイス （HCA-MX用にエンコードされた音声データの再生）について、再生速度が変更されます （HCA-MXボイスを再生する場合、個々のプレーヤーでの再生速度の設定は無視されます）。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExHcaMx_SetFrequencyRatio(CriSint32 mixer_id, CriFloat32 ratio)"/>
+		/// <nativeinfo declaration="void criAtomExHcaMx_SetFrequencyRatio(CriSint32 mixer_id, CriFloat32 ratio)"/>
 		/// </remarks>
 		public static void SetFrequencyRatio(Int32 mixerId, Single ratio)
 		{
@@ -325,20 +325,20 @@ namespace CriWare
 		}
 
 		/// <summary>ASRラックIDの指定 </summary>
-		/// <param name="mixerId">ミキサID </param>
+		/// <param name="mixerId">ミキサーID </param>
 		/// <param name="rackId">ASRラックID </param>
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// ミキサの出力先ASRラックIDを指定します。
-		///  本関数を使用することで、対象のミキサを使用するプレーヤーで再生される全てのHCA-MXボイス （HCA-MX用にエンコードされた音声データの再生）について、出力先ASRラックIDが変更されます （HCA-MXボイスを再生する場合、個々のプレーヤーでのASRラックIDの設定は無視されます）。
+		/// ミキサーの出力先ASRラックIDを指定します。
+		///  本関数を使用することで、対象のミキサーを使用するプレーヤーで再生される全てのHCA-MXボイス （HCA-MX用にエンコードされた音声データの再生）について、出力先ASRラックIDが変更されます （HCA-MXボイスを再生する場合、個々のプレーヤーでのASRラックIDの設定は無視されます）。
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// 本関数は ミキサのサウンドレンダラタイプにASRを使用する場合にのみ効果があります。
+		/// 本関数は ミキサーのサウンドレンダラタイプにASRを使用する場合にのみ効果があります。
 		///  （他のサウンドレンダラタイプの場合、本関数の設定値は無視されます。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExHcaMx_SetAsrRackId(CriSint32 mixer_id, CriSint32 rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExHcaMx_SetAsrRackId(CriSint32 mixer_id, CriSint32 rack_id)"/>
 		/// </remarks>
 		public static void SetAsrRackId(Int32 mixerId, Int32 rackId)
 		{

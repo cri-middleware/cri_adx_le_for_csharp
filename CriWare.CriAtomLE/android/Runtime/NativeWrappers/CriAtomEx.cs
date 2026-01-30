@@ -35,7 +35,7 @@ namespace CriWare
 		/// <see cref="CriAtomEx.ConfigANDROID"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
 		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケータを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_ANDROID(const CriAtomExConfig_ANDROID *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_ANDROID(const CriAtomExConfig_ANDROID *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigANDROID"/>
 		/// <seealso cref="CriAtomEx.InitializeANDROID"/>
@@ -76,7 +76,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_ANDROID(const CriAtomExConfig_ANDROID *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_ANDROID(const CriAtomExConfig_ANDROID *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigANDROID"/>
 		/// <seealso cref="CriAtomEx.FinalizeANDROID"/>
@@ -105,7 +105,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_ANDROID(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_ANDROID(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeANDROID"/>
 		public static void FinalizeANDROID()
@@ -122,7 +122,7 @@ namespace CriWare
 		///  本関数の動作保証のため、呼び出しの前には必ずcriAtom_StopSound_ANDROID関数が
 		///  呼ばれることを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_StartSound_ANDROID(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_StartSound_ANDROID(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StartSoundANDROID"/>
 		public static void StartSoundANDROID()
@@ -139,7 +139,7 @@ namespace CriWare
 		///  本関数の動作保証のため、呼び出しの後には必ずcriAtom_StartSound_ANDROID関数が
 		///  呼ばれることを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_StopSound_ANDROID(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_StopSound_ANDROID(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StopSoundANDROID"/>
 		public static void StopSoundANDROID()

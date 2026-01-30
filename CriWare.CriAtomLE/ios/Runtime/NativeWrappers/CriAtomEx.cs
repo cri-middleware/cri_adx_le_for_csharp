@@ -35,7 +35,7 @@ namespace CriWare
 		/// <see cref="CriAtomEx.ConfigIOS"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
 		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケータを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_IOS(const CriAtomExConfig_IOS *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_IOS(const CriAtomExConfig_IOS *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigIOS"/>
 		/// <seealso cref="CriAtomEx.InitializeIOS"/>
@@ -76,7 +76,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_IOS(const CriAtomExConfig_IOS *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_IOS(const CriAtomExConfig_IOS *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigIOS"/>
 		/// <seealso cref="CriAtomEx.FinalizeIOS"/>
@@ -105,7 +105,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_IOS(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeIOS"/>
 		public static void FinalizeIOS()
@@ -130,7 +130,7 @@ namespace CriWare
 		///  サーバ処理スレッドは、CRI File Systemライブラリでも利用されています。
 		///  すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合 本関数により設定が上書きされますのでご注意ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetServerThreadPriority_IOS(int prio)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetServerThreadPriority_IOS(CriSint32 prio)"/>
 		/// </remarks>
 		public static void SetServerThreadPriorityIOS(Int32 prio)
 		{
@@ -146,10 +146,14 @@ namespace CriWare
 		///  本関数を呼び出す前に、AudioSessionのパメラータ設定とアクティベイトを行ってください。
 		/// </para>
 		/// <para>
+		/// 例:
+		/// <NOT SUPPORTED TAG : programlisting/>
+		/// </para>
+		/// <para>
 		/// 注意:
 		/// <see cref="CriAtomEx.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_StartSound_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_StartSound_IOS(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StopSoundIOS"/>
 		public static void StartSoundIOS()
@@ -168,7 +172,7 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtomEx.InitializeIOS"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_StopSound_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_StopSound_IOS(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.StartSoundIOS"/>
 		public static void StopSoundIOS()
@@ -185,7 +189,7 @@ namespace CriWare
 		///  iOSのデーモンであるmediaserverdが死亡した際には、ライブラリ内のボイスが無効なボイスになり、 再生成が必要になります。
 		///  このように、ボイスの復旧が必要な際に呼び出してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_RecoverSound_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_RecoverSound_IOS(void)"/>
 		/// </remarks>
 		public static void RecoverSoundIOS()
 		{
@@ -200,7 +204,7 @@ namespace CriWare
 		///  iOSでは、アプリがバックグラウンドにある状態でサウンドライブラリの初期化を行った場合に 内部的にAudioSessionの初期化等に失敗している場合があります。
 		///  本関数で初期化が失敗していることを確認した場合は、アプリがフォアグラウンドにある状態で 再度ライブラリの初期化を行うか、 <see cref="CriAtomEx.RecoverSoundIOS"/> を用いて サウンドの復旧を行う必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_IsInitializationSucceeded_IOS(void)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsInitializationSucceeded_IOS(void)"/>
 		/// </remarks>
 		public static bool IsInitializationSucceededIOS()
 		{
@@ -213,7 +217,7 @@ namespace CriWare
 		/// 説明:
 		/// バックグラウンド再生の開始をAtomライブラリに通知します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_EnableBackgroundPlayback_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_EnableBackgroundPlayback_IOS(void)"/>
 		/// </remarks>
 		public static void EnableBackgroundPlaybackIOS()
 		{
@@ -226,7 +230,7 @@ namespace CriWare
 		/// 説明:
 		/// バックグラウンド再生の終了をAtomライブラリに通知します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_DisableBackgroundPlayback_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_DisableBackgroundPlayback_IOS(void)"/>
 		/// </remarks>
 		public static void DisableBackgroundPlaybackIOS()
 		{
@@ -241,7 +245,7 @@ namespace CriWare
 		///  <see cref="CriAtomEx.ConfigIOS"/>::use_handling_os_notificationsがtrueで初期化されている場合、 Atomライブラリの音声を自動復帰します。自動復帰が完了するとfalseが返ります。
 		/// <see cref="CriAtomEx.EnableBackgroundPlaybackIOS"/> でバックグラウンド再生を有効にしている場合、 自動復帰は無効になります。音声を復帰させる場合は<see cref="CriAtomEx.ResumeAudioIOS"/>を呼び出して音声を再開してください。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_IsInterruptedOtherAudio_IOS(void)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsInterruptedOtherAudio_IOS(void)"/>
 		/// </remarks>
 		public static bool IsInterruptedOtherAudioIOS()
 		{
@@ -254,7 +258,7 @@ namespace CriWare
 		/// 説明:
 		/// バックグラウンド再生有効時に音声が停止した際、音声を復帰させます。 <see cref="CriAtomEx.IsInterruptedOtherAudioIOS"/> がtrueを返すタイミングのみ効果があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ResumeAudio_IOS(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_ResumeAudio_IOS(void)"/>
 		/// </remarks>
 		public static void ResumeAudioIOS()
 		{
@@ -266,52 +270,10 @@ namespace CriWare
 		[Serializable]
 		public unsafe partial struct ConfigIOS
 		{
-			/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 <see cref="CriAtomEx.Initialize"/> 関数に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドを使用しない 場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomEx.Initialize"/>
-			/// <seealso cref="CriAtomEx.SetDefaultConfig"/>
 			public CriAtomEx.Config atomEx;
 
-			/// <summary>ASR初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExAsr.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomExAsr.Initialize"/>
-			/// <seealso cref="CriAtomExAsr.SetDefaultConfig"/>
 			public CriAtomExAsr.Config asr;
 
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExHcaMx.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomExHcaMx.Initialize"/>
-			/// <seealso cref="CriAtomExHcaMx.SetDefaultConfig"/>
 			public CriAtomExHcaMx.Config hcaMx;
 
 			public UInt32 bufferingTime;

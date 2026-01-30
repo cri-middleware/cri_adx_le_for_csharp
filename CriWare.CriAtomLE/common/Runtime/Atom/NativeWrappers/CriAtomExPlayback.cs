@@ -43,7 +43,7 @@ namespace CriWare
 		/// 本関数で再生音の停止を行うと、再生中の音声のステータスは <see cref="CriAtomExPlayback.Status.Removed"/> に遷移します。
 		///  停止時にボイスリソースも破棄されるため、一旦 <see cref="CriAtomExPlayback.Status.Removed"/> 状態に遷移した再生 ID からは、以降情報を取得できなくなります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayback_Stop(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayback_Stop(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Stop"/>
 		/// <seealso cref="CriAtomExPlayback.GetStatus"/>
@@ -69,7 +69,7 @@ namespace CriWare
 		/// 本関数で再生音の停止を行うと、再生中の音声のステータスは <see cref="CriAtomExPlayback.Status.Removed"/> に遷移します。
 		///  停止時にボイスリソースも破棄されるため、一旦 <see cref="CriAtomExPlayback.Status.Removed"/> 状態に遷移した再生 ID からは、以降情報を取得できなくなります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayback_StopWithoutReleaseTime(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="void criAtomExPlayback_StopWithoutReleaseTime(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.StopWithoutReleaseTime"/>
 		public void StopWithoutReleaseTime()
@@ -101,7 +101,7 @@ namespace CriWare
 		///  フェーダーをアタッチしたプレーヤーに対し再生ID指定でポーズの解除を行うと、 フェードインする音声の発音リソースが確保できない場合や、 フェードインする音声の発音リソースが奪い取られた場合にポーズ解除が行えず、 フェードアウト側の音声がいつまで経ってもフェードアウトしない状態となります。
 		///  フェーダーをアタッチしたプレーヤーで再生した音声に対しては、本関数ではなく、 <see cref="CriAtomExPlayer.Pause"/> 関数でポーズの解除を行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayback_Pause(CriAtomExPlaybackId id, CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomExPlayback_Pause(CriAtomExPlaybackId id, CriBool sw)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.IsPaused"/>
 		/// <seealso cref="CriAtomExPlayer.Pause"/>
@@ -132,7 +132,7 @@ namespace CriWare
 		/// フェーダーをアタッチしたプレーヤーに対し再生ID指定でポーズの解除を行うと、 フェードインする音声の発音リソースが確保できない場合や、 フェードインする音声の発音リソースが奪い取られた場合にポーズ解除が行えず、 フェードアウト側の音声がいつまで経ってもフェードアウトしない状態となります。
 		///  フェーダーをアタッチしたプレーヤーで再生した音声に対しては、本関数ではなく、 <see cref="CriAtomExPlayer.Pause"/> 関数でポーズの解除を行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayback_Resume(CriAtomExPlaybackId id, CriAtomExResumeMode mode)"/>
+		/// <nativeinfo declaration="void criAtomExPlayback_Resume(CriAtomExPlaybackId id, CriAtomExResumeMode mode)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.IsPaused"/>
 		/// <seealso cref="CriAtomExPlayer.Resume"/>
@@ -149,7 +149,7 @@ namespace CriWare
 		/// 説明:
 		/// 再生中の音声がポーズ中かどうかを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_IsPaused(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_IsPaused(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.Pause"/>
 		public bool IsPaused()
@@ -183,7 +183,7 @@ namespace CriWare
 		///  に遷移します。
 		///  （エラーの発生を検知する必要がある場合には、本関数ではなく、<see cref="CriAtomExPlayer.GetStatus"/> 関数で AtomEx プレーヤーのステータスをチェックする必要があります。）
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExPlaybackStatus CRIAPI criAtomExPlayback_GetStatus(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriAtomExPlaybackStatus criAtomExPlayback_GetStatus(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -213,7 +213,7 @@ namespace CriWare
 		///  再生準備中や再生終了後、発音数制御によりボイスが消去された場合には、 フォーマット情報の取得に失敗します。
 		///  ボイスの再生状態は <see cref="CriAtomExPlayback.GetStatus"/> 関数で取得することはできないためご注意ください。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetFormatInfo(CriAtomExPlaybackId id, CriAtomExFormatInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetFormatInfo(CriAtomExPlaybackId id, CriAtomExFormatInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -243,7 +243,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみ再生元情報を取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 再生元情報の取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetSource(CriAtomExPlaybackId id, CriAtomExSourceInfo *source)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetSource(CriAtomExPlaybackId id, CriAtomExSourceInfo *source)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetStatus"/>
@@ -264,12 +264,12 @@ namespace CriWare
 		/// 複数の波形データを含むキューを再生している場合、 本関数は最初に見つかったボイスに対応するAtomプレーヤーオブジェクトを返します。
 		///  波形データが再生されていない場合、本関数はnullを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomExPlayback_GetAtomPlayer(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomExPlayback_GetAtomPlayer(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		public CriAtomPlayer GetAtomPlayer()
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExPlayback_GetAtomPlayer(NativeHandle)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+			return ((handle = NativeMethods.criAtomExPlayback_GetAtomPlayer(NativeHandle)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>再生時刻の取得 </summary>
@@ -305,7 +305,7 @@ namespace CriWare
 		///  そのため、本関数で取得した時刻を元に映像との同期を行った場合、 リードリトライ発生毎に同期が大きくズレる可能性があります。
 		///  波形データと映像の同期を厳密に取る必要がある場合は、本関数の代わりに <see cref="CriAtomExPlayback.GetNumPlayedSamples"/> 関数を使用し、 再生済みサンプル数との同期を取ってください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExPlayback_GetTime(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExPlayback_GetTime(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.GetTime"/>
@@ -345,7 +345,7 @@ namespace CriWare
 		///  本関数は内部で時刻計算を行っており、プラットフォームによっては処理負荷が 問題になる可能性があります。また、アプリケーションの同じフレーム内であっても、 呼び出し毎に更新された時刻を返します。
 		///  アプリケーションによる再生時刻の利用方法にもよりますが、基本的に本関数を用いた 時刻取得は1フレームにつき一度のみ行うようにしてください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExPlayback_GetTimeSyncedWithAudio(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExPlayback_GetTimeSyncedWithAudio(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
@@ -382,7 +382,7 @@ namespace CriWare
 		///  本関数は内部で時刻計算を行っており、プラットフォームによっては処理負荷が 問題になる可能性があります。また、アプリケーションの同じフレーム内であっても、 呼び出し毎に更新された時刻を返します。
 		///  アプリケーションによる再生時刻の利用方法にもよりますが、基本的に本関数を用いた 時刻取得は1フレームにつき一度のみ行うようにしてください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExPlayback_GetTimeSyncedWithAudioMicro(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExPlayback_GetTimeSyncedWithAudioMicro(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.CriAtomExPlayer"/>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
@@ -420,7 +420,7 @@ namespace CriWare
 		///  再生終了後や、発音数制御によりシーケンスが消去された場合には、 再生位置の取得に失敗します。
 		///  （負値が返ります。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomExPlayback_GetSequencePosition(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomExPlayback_GetSequencePosition(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		public Int64 GetSequencePosition()
 		{
@@ -452,7 +452,7 @@ namespace CriWare
 		///  本関数は、音声再生中のみ再生サンプル数を取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 再生サンプル数の取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetNumPlayedSamples(CriAtomExPlaybackId id, CriSint64 *num_samples, CriSint32 *sampling_rate)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetNumPlayedSamples(CriAtomExPlaybackId id, CriSint64 *num_samples, CriSint32 *sampling_rate)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		public unsafe bool GetNumPlayedSamples(out Int64 numSamples, out Int32 samplingRate)
@@ -488,7 +488,7 @@ namespace CriWare
 		///  本関数は、音声再生中のみ書き込み済みサンプル数を取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 書き込み済みサンプル数の取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetNumRenderedSamples(CriAtomExPlaybackId id, CriSint64 *num_samples, CriSint32 *sampling_rate)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetNumRenderedSamples(CriAtomExPlaybackId id, CriSint64 *num_samples, CriSint32 *sampling_rate)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.GetNumPlayedSamples"/>
 		public unsafe bool GetNumRenderedSamples(out Int64 numSamples, out Int32 samplingRate)
@@ -515,7 +515,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみパラメーターを取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 パラメーターの取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetParameterFloat32(CriAtomExPlaybackId playback_id, CriAtomExParameterId parameter_id, CriFloat32 *value_float32)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetParameterFloat32(CriAtomExPlaybackId playback_id, CriAtomExParameterId parameter_id, CriFloat32 *value_float32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ParameterId"/>
 		/// <seealso cref="CriAtomExPlayback.GetParameterUint32"/>
@@ -543,7 +543,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみパラメーターを取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 パラメーターの取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetParameterUint32(CriAtomExPlaybackId playback_id, CriAtomExParameterId parameter_id, CriUint32 *value_uint32)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetParameterUint32(CriAtomExPlaybackId playback_id, CriAtomExParameterId parameter_id, CriUint32 *value_uint32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ParameterId"/>
 		/// <seealso cref="CriAtomExPlayback.GetParameterFloat32"/>
@@ -571,7 +571,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみパラメーターを取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 パラメーターの取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetParameterSint32(CriAtomExPlaybackId playback_id, CriAtomExParameterId parameter_id, CriSint32 *value_sint32)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetParameterSint32(CriAtomExPlaybackId playback_id, CriAtomExParameterId parameter_id, CriSint32 *value_sint32)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ParameterId"/>
 		/// <seealso cref="CriAtomExPlayback.GetParameterFloat32"/>
@@ -598,7 +598,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみAISACコントロール値を取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 AISACコントロール値の取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetAisacControlById(CriAtomExPlaybackId playback_id, CriAtomExAisacControlId control_id, CriFloat32 *control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetAisacControlById(CriAtomExPlaybackId playback_id, CriAtomExAisacControlId control_id, CriFloat32 *control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAisacControlById"/>
 		/// <seealso cref="CriAtomExPlayback.GetAisacControlByName"/>
@@ -624,7 +624,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみAISACコントロール値を取得可能です。
 		///  再生終了後や、発音数制御によりボイスが消去された場合には、 AISACコントロール値の取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetAisacControlByName(CriAtomExPlaybackId playback_id, const CriChar8 *control_name, CriFloat32 *control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetAisacControlByName(CriAtomExPlaybackId playback_id, const CriChar8 *control_name, CriFloat32 *control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetAisacControlById"/>
 		/// <seealso cref="CriAtomExPlayback.GetAisacControlByName"/>
@@ -646,7 +646,7 @@ namespace CriWare
 		/// 備考:
 		/// 再生開始ブロックの指定は <see cref="CriAtomExPlayer.SetFirstBlockIndex"/> 関数を使用して行い、 再生中のブロックインデックス取得は <see cref="CriAtomExPlayback.GetCurrentBlockIndex"/> 関数を使用します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExPlayback_SetNextBlockIndex(CriAtomExPlaybackId id, CriAtomExBlockIndex index)"/>
+		/// <nativeinfo declaration="void criAtomExPlayback_SetNextBlockIndex(CriAtomExPlaybackId id, CriAtomExBlockIndex index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetFirstBlockIndex"/>
 		/// <seealso cref="CriAtomExPlayback.GetCurrentBlockIndex"/>
@@ -666,7 +666,7 @@ namespace CriWare
 		/// 備考:
 		/// 再生IDにより再生しているデータがブロックシーケンスではない場合は、 <see cref="CriAtomEx.InvalidBlockIndex"/> が返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExBlockIndex CRIAPI criAtomExPlayback_GetCurrentBlockIndex(CriAtomExPlaybackId id)"/>
+		/// <nativeinfo declaration="CriAtomExBlockIndex criAtomExPlayback_GetCurrentBlockIndex(CriAtomExPlaybackId id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.Start"/>
 		/// <seealso cref="CriAtomExPlayer.SetFirstBlockIndex"/>
@@ -697,7 +697,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetPlaybackTrackInfo(CriAtomExPlaybackId id, CriAtomExPlaybackTrackInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetPlaybackTrackInfo(CriAtomExPlaybackId id, CriAtomExPlaybackTrackInfo *info)"/>
 		/// </remarks>
 		public unsafe bool GetPlaybackTrackInfo(out CriAtomExPlayback.TrackInfo info)
 		{
@@ -728,7 +728,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_GetBeatSyncInfo(CriAtomExPlaybackId id, CriAtomExBeatSyncInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_GetBeatSyncInfo(CriAtomExPlaybackId id, CriAtomExBeatSyncInfo *info)"/>
 		/// </remarks>
 		public unsafe bool GetBeatSyncInfo(out CriAtomExBeatSync.Info info)
 		{
@@ -758,7 +758,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExPlayback_SetBeatSyncOffset(CriAtomExPlaybackId id, CriSint16 time_ms)"/>
+		/// <nativeinfo declaration="CriBool criAtomExPlayback_SetBeatSyncOffset(CriAtomExPlaybackId id, CriSint16 time_ms)"/>
 		/// </remarks>
 		public bool SetBeatSyncOffset(Int16 timeMs)
 		{
@@ -952,17 +952,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static Int32 CriAtomExPlaybackCbFuncCallbackFunc(IntPtr obj, UInt32 playbackId) =>
-				InvokeCallbackInternal(obj, new(new(playbackId))).value;
+			static NativeBool CriAtomExPlaybackCbFuncCallbackFunc(IntPtr obj, CriAtomExPlayback playbackId) =>
+				InvokeCallbackInternal(obj, new(playbackId));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate Int32 NativeDelegate(IntPtr obj, UInt32 playbackId);
+			delegate NativeBool NativeDelegate(IntPtr obj, CriAtomExPlayback playbackId);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal CbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, UInt32, Int32>)&CriAtomExPlaybackCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, CriAtomExPlayback, NativeBool>)&CriAtomExPlaybackCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomExPlaybackCbFuncCallbackFunc)
 #endif

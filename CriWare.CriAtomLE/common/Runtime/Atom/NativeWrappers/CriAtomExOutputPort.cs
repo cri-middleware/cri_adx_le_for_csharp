@@ -49,7 +49,7 @@ namespace CriWare
 		/// <see cref="CriAtomExPlayer.RemoveOutputPort"/> 関数または <see cref="CriAtomExPlayer.RemovePreferredOutputPort"/> 関数を使用して プレーヤーから取り外してから破棄してください。
 		///  また、ACFファイルの情報から作成されたACF内の出力ポートオブジェクトは破棄することができません。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExOutputPort_IsDestroyable(CriAtomExOutputPortHn output_port)"/>
+		/// <nativeinfo declaration="CriBool criAtomExOutputPort_IsDestroyable(CriAtomExOutputPortHn output_port)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.Dispose"/>
 		public bool IsDestroyable()
@@ -95,7 +95,7 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtomExOutputPort.Config"/>::name に指定する出力ポート名の長さは、 <see cref="CriAtomEx.OutputPortMaxNameLength"/> 以下である必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExOutputPort_CalculateWorkSize(const CriAtomExOutputPortConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExOutputPort_CalculateWorkSize(const CriAtomExOutputPortConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		public static unsafe Int32 CalculateWorkSize(in CriAtomExOutputPort.Config config)
@@ -219,7 +219,7 @@ namespace CriWare
 		/// </list>
 		/// </para>
 		/// <para>出力ポートオブジェクトを使用する前に、必ず <see cref="CriAtomExOutputPort.SetAsrRackId"/> 関数で適切なASRラックを設定してください。</para>
-		/// <nativeinfo declaration="CriAtomExOutputPortHn CRIAPI criAtomExOutputPort_Create(const CriAtomExOutputPortConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExOutputPortHn criAtomExOutputPort_Create(const CriAtomExOutputPortConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.Dispose"/>
 		/// <seealso cref="CriAtomExAcf.GetOutputPortHnByName"/>
@@ -242,7 +242,7 @@ namespace CriWare
 		/// 備考:
 		/// <see cref="CriAtomExOutputPort.IsDestroyable"/> 関数を使用することでオブジェクトが破棄できるか調べることができます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExOutputPort_Destroy(CriAtomExOutputPortHn output_port)"/>
+		/// <nativeinfo declaration="void criAtomExOutputPort_Destroy(CriAtomExOutputPortHn output_port)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExOutputPort.IsDestroyable"/>
@@ -273,7 +273,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数で出力ポートのASRラックIDを変更しても、既に再生されている音声には影響しません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExOutputPort_SetAsrRackId(CriAtomExOutputPortHn output_port, CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExOutputPort_SetAsrRackId(CriAtomExOutputPortHn output_port, CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExAcf.GetOutputPortHnByName"/>
@@ -294,7 +294,7 @@ namespace CriWare
 		/// 備考:
 		/// 振動タイプの出力ポートは２チャンネルで動作しており、最終出力デバイスがモノラルの場合-3dBのダウンミックスが適用されます。 この関数で設定した値は、音が再生中でも即時反映されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExOutputPort_SetVibrationChannelLevel(CriAtomExOutputPortHn output_port, CriSint32 channel, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomExOutputPort_SetVibrationChannelLevel(CriAtomExOutputPortHn output_port, CriSint32 channel, CriFloat32 level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.SetMonauralMix"/>
 		public void SetVibrationChannelLevel(Int32 channel, Single level)
@@ -313,7 +313,7 @@ namespace CriWare
 		/// 備考:
 		/// この関数で設定した値は、音が再生中でも即時反映されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExOutputPort_SetMonauralMix(CriAtomExOutputPortHn output_port, CriBool monaural_mix)"/>
+		/// <nativeinfo declaration="void criAtomExOutputPort_SetMonauralMix(CriAtomExOutputPortHn output_port, CriBool monaural_mix)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.SetVibrationChannelLevel"/>
 		public void SetMonauralMix(NativeBool monauralMix)
@@ -338,7 +338,7 @@ namespace CriWare
 		/// 備考:
 		/// この関数で設定は再生時に反映されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExOutputPort_IgnoreCategoryParametersById(CriAtomExOutputPortHn output_port_hn, CriAtomExCategoryId category_id, CriBool ignore_parameters)"/>
+		/// <nativeinfo declaration="void criAtomExOutputPort_IgnoreCategoryParametersById(CriAtomExOutputPortHn output_port_hn, CriAtomExCategoryId category_id, CriBool ignore_parameters)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExAcf.GetOutputPortHnByName"/>
@@ -362,7 +362,7 @@ namespace CriWare
 		/// 備考:
 		/// この関数で設定は再生時に反映されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExOutputPort_ResetIgnoreCategory(CriAtomExOutputPortHn output_port_hn)"/>
+		/// <nativeinfo declaration="void criAtomExOutputPort_ResetIgnoreCategory(CriAtomExOutputPortHn output_port_hn)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.CriAtomExOutputPort"/>
 		/// <seealso cref="CriAtomExOutputPort.IgnoreCategoryParametersById"/>

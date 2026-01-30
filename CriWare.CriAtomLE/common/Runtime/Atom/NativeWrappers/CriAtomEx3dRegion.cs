@@ -57,7 +57,7 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx3dRegion_CalculateWorkSize(const CriAtomEx3dRegionConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx3dRegion_CalculateWorkSize(const CriAtomEx3dRegionConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dRegion.CriAtomEx3dRegion"/>
 		/// <seealso cref="CriAtomEx3dRegion.Config"/>
@@ -104,7 +104,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomEx3dRegionHn CRIAPI criAtomEx3dRegion_Create(const CriAtomEx3dRegionConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomEx3dRegionHn criAtomEx3dRegion_Create(const CriAtomEx3dRegionConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dRegion.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dRegion.Dispose"/>
@@ -130,7 +130,7 @@ namespace CriWare
 		///  また、引数に指定した3Dリージョンオブジェクトも無効になります。
 		///  3Dリージョンオブジェクトをセットした3D音源、3Dリスナー、3Dトランシーバーがある場合、 本関数を実行する前に、当該3Dリージョンを設定している全てのオブジェクトを破棄するか、 設定を外すようにしてください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dRegion_Destroy(CriAtomEx3dRegionHn ex_3d_region)"/>
+		/// <nativeinfo declaration="void criAtomEx3dRegion_Destroy(CriAtomEx3dRegionHn ex_3d_region)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dRegion.CriAtomEx3dRegion"/>
 		public void Dispose()

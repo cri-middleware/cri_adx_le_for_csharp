@@ -45,11 +45,12 @@ namespace CriWare
 		///  （サーバー処理のタイミングで、プレーヤー数が変わる可能性があります。）
 		///  配列要素数がストリーム再生中のプレーヤー数に満たない場合、 本関数はエラー値（-1）を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomDbas_GetStreamingPlayerHandles(CriAtomDbasId dbas_id, CriAtomPlayerHn *players, CriSint32 length)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomDbas_GetStreamingPlayerHandles(CriAtomDbasId dbas_id, CriAtomPlayerHn *players, CriSint32 length)"/>
 		/// </remarks>
 		public unsafe Int32 GetStreamingPlayerHandles(IntPtr[] players, Int32 length)
 		{
-			fixed (IntPtr* ptrs = players){
+			fixed (IntPtr* ptrs = players)
+			{
 				var result = NativeMethods.criAtomDbas_GetStreamingPlayerHandles(NativeHandle, ptrs, Math.Min(length, players.Length));
 				return result;
 			}
@@ -90,7 +91,7 @@ namespace CriWare
 		///  その際はエラーになり、 -1 を返します。
 		///  エラーが発生した場合は、max_streamsかmax_bpsの値を低く設定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomDbas_CalculateWorkSize(const CriAtomDbasConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomDbas_CalculateWorkSize(const CriAtomDbasConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomDbas.CriAtomDbas"/>
 		public static unsafe Int32 CalculateWorkSize(in CriAtomDbas.Config config)
@@ -212,7 +213,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomDbasId CRIAPI criAtomDbas_Create(const CriAtomDbasConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomDbasId criAtomDbas_Create(const CriAtomDbasConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomDbas.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomDbas.Dispose"/>
@@ -235,7 +236,7 @@ namespace CriWare
 		/// 説明:
 		/// <see cref="CriAtomDbas.CriAtomDbas"/> 関数で取得した管理用IDを指定して、D-BASを破棄します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomDbas_Destroy(CriAtomDbasId atom_dbas_id)"/>
+		/// <nativeinfo declaration="void criAtomDbas_Destroy(CriAtomDbasId atom_dbas_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomDbas.CriAtomDbas"/>
 		public void Dispose()

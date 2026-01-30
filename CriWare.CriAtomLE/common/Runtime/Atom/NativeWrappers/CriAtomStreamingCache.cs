@@ -48,7 +48,7 @@ namespace CriWare
 		/// ストリーミングキャッシュ作成に必要なワークサイズを計算します。
 		///  configで与えられるパラメーターに依存し、必要なワークサイズは増加します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomStreamingCache_CalculateWorkSize(const CriAtomStreamingCacheConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomStreamingCache_CalculateWorkSize(const CriAtomStreamingCacheConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		public static unsafe Int32 CalculateWorkSize(in CriAtomStreamingCache.Config config)
@@ -121,7 +121,7 @@ namespace CriWare
 		/// 注意:
 		/// ファイル全体をキャッシュする事が前提です。よって、キャッシュ用に割り当てられた メモリサイズがストリーミング再生対象とするどのファイルサイズよりも小さい場合、 一切キャッシュされません。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomStreamingCacheId CRIAPI criAtomStreamingCache_Create(const CriAtomStreamingCacheConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomStreamingCacheId criAtomStreamingCache_Create(const CriAtomStreamingCacheConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomStreamingCache.Dispose"/>
@@ -148,7 +148,7 @@ namespace CriWare
 		/// 注意:
 		/// 指定したストリーミングキャッシュを利用しているプレーヤーが存在しない状態で、 本関数を実行してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomStreamingCache_Destroy(CriAtomStreamingCacheId stm_cache_id)"/>
+		/// <nativeinfo declaration="void criAtomStreamingCache_Destroy(CriAtomStreamingCacheId stm_cache_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		public void Dispose()
@@ -173,7 +173,7 @@ namespace CriWare
 		/// 注意:
 		/// 一番古いキャッシュを使用中のプレーヤーが存在する場合、本関数を実行しても キャッシュは一切クリアされません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomStreamingCache_Clear(CriAtomStreamingCacheId cache_id)"/>
+		/// <nativeinfo declaration="void criAtomStreamingCache_Clear(CriAtomStreamingCacheId cache_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		public void Clear()
@@ -195,7 +195,7 @@ namespace CriWare
 		/// 注意:
 		/// AWBオブジェクトがメモリ再生用の場合、本関数は音声データの有無にかかわらずtrueを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomStreamingCache_IsCachedWaveId(CriAtomStreamingCacheId stm_cache_id, CriAtomAwbHn awb, CriSint32 id)"/>
+		/// <nativeinfo declaration="CriBool criAtomStreamingCache_IsCachedWaveId(CriAtomStreamingCacheId stm_cache_id, CriAtomAwbHn awb, CriSint32 id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		public bool IsCachedWaveId(CriAtomAwb awb, Int32 id)
@@ -213,7 +213,7 @@ namespace CriWare
 		/// 指定したストリーミングキャッシュ中に、指定の音声データがキャッシュされているかを検索します。
 		///  指定の音声データがキャッシュされている状態であればtrueを、 キャッシュされていない状態であればfalseを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomStreamingCache_IsCachedFile(CriAtomStreamingCacheId stm_cache_id, CriFsBinderHn src_binder, const CriChar8 *path)"/>
+		/// <nativeinfo declaration="CriBool criAtomStreamingCache_IsCachedFile(CriAtomStreamingCacheId stm_cache_id, CriFsBinderHn src_binder, const CriChar8 *path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomStreamingCache.CriAtomStreamingCache"/>
 		public bool IsCachedFile(CriFsBinder srcBinder, ArgString path)
