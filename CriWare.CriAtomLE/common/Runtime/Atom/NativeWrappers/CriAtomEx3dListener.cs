@@ -58,7 +58,7 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx3dListener_CalculateWorkSize(const CriAtomEx3dListenerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx3dListener_CalculateWorkSize(const CriAtomEx3dListenerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.CriAtomEx3dListener"/>
 		/// <seealso cref="CriAtomEx3dListener.Config"/>
@@ -102,7 +102,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomEx3dListenerHn CRIAPI criAtomEx3dListener_Create(const CriAtomEx3dListenerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomEx3dListenerHn criAtomEx3dListener_Create(const CriAtomEx3dListenerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dListener.Dispose"/>
@@ -128,7 +128,7 @@ namespace CriWare
 		///  また、引数に指定した3Dリスナーオブジェクトも無効になります。
 		///  3DリスナーオブジェクトをセットしたAtomExプレーヤーで再生している音声がある場合、 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_Destroy(CriAtomEx3dListenerHn ex_3d_listener)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_Destroy(CriAtomEx3dListenerHn ex_3d_listener)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.CriAtomEx3dListener"/>
 		public void Dispose()
@@ -156,7 +156,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetPosition(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *position)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetPosition(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *position)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		public unsafe void SetPosition(in CriAtomEx.Vector position)
@@ -179,7 +179,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetVelocity(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *velocity)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetVelocity(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *velocity)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		public unsafe void SetVelocity(in CriAtomEx.Vector velocity)
@@ -199,7 +199,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数はAtomExプレーヤーのパラメーター更新（<see cref="CriAtomExPlayer.UpdateAll"/>, <see cref="CriAtomExPlayer.Update"/>） とは独立して動作します。3Dリスナーのパラメーターを変更した際は、本関数にて更新処理を行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_Update(CriAtomEx3dListenerHn ex_3d_listener)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_Update(CriAtomEx3dListenerHn ex_3d_listener)"/>
 		/// </remarks>
 		public void Update()
 		{
@@ -216,7 +216,7 @@ namespace CriWare
 		/// 注意:
 		/// クリアしたパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_ResetParameters(CriAtomEx3dListenerHn ex_3d_listener)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_ResetParameters(CriAtomEx3dListenerHn ex_3d_listener)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		public void ResetParameters()
@@ -231,7 +231,7 @@ namespace CriWare
 		/// 3Dリスナーの位置を取得します。
 		///  位置は、3次元ベクトルで取得します。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVector CRIAPI criAtomEx3dListener_GetPosition(CriAtomEx3dListenerHn ex_3d_listener)"/>
+		/// <nativeinfo declaration="CriAtomExVector criAtomEx3dListener_GetPosition(CriAtomEx3dListenerHn ex_3d_listener)"/>
 		/// </remarks>
 		public CriAtomEx.Vector GetPosition()
 		{
@@ -257,7 +257,7 @@ namespace CriWare
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
 		/// <para>データ側にはリスナーの向きは設定できないため、常に本関数での設定値が使用されます。</para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetOrientation(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *front, const CriAtomExVector *top)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetOrientation(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *front, const CriAtomExVector *top)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		public unsafe void SetOrientation(in CriAtomEx.Vector front, in CriAtomEx.Vector top)
@@ -281,7 +281,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetDopplerMultiplier(CriAtomEx3dListenerHn ex_3d_listener, CriFloat32 doppler_multiplier)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetDopplerMultiplier(CriAtomEx3dListenerHn ex_3d_listener, CriFloat32 doppler_multiplier)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		public void SetDopplerMultiplier(Single dopplerMultiplier)
@@ -305,7 +305,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetFocusPoint(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *focus_point)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetFocusPoint(CriAtomEx3dListenerHn ex_3d_listener, const CriAtomExVector *focus_point)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		/// <seealso cref="CriAtomEx3dListener.SetDistanceFocusLevel"/>
@@ -331,7 +331,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetDistanceFocusLevel(CriAtomEx3dListenerHn ex_3d_listener, CriFloat32 distance_focus_level)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetDistanceFocusLevel(CriAtomEx3dListenerHn ex_3d_listener, CriFloat32 distance_focus_level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		/// <seealso cref="CriAtomEx3dListener.SetFocusPoint"/>
@@ -357,7 +357,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_SetDirectionFocusLevel(CriAtomEx3dListenerHn ex_3d_listener, CriFloat32 direction_focus_level)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_SetDirectionFocusLevel(CriAtomEx3dListenerHn ex_3d_listener, CriFloat32 direction_focus_level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>
 		/// <seealso cref="CriAtomEx3dListener.SetFocusPoint"/>
@@ -375,7 +375,7 @@ namespace CriWare
 		/// 3Dリスナーの注目点を取得します。
 		///  デフォルト値は(0.0f, 0.0f, 0.0f)です。3Dリスナーの注目点を設定していない場合、デフォルト値が返却されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_GetFocusPoint(CriAtomEx3dListenerHn ex_3d_listener, CriAtomExVector *focus_point)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_GetFocusPoint(CriAtomEx3dListenerHn ex_3d_listener, CriAtomExVector *focus_point)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.GetDistanceFocusLevel"/>
 		/// <seealso cref="CriAtomEx3dListener.GetDirectionFocusLevel"/>
@@ -392,7 +392,7 @@ namespace CriWare
 		/// 距離センサのフォーカスレベルを設定します。
 		///  デフォルト値は0.0fです。距離センサのフォーカスレベルを設定していない場合、デフォルト値が返却されます。
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomEx3dListener_GetDistanceFocusLevel(CriAtomEx3dListenerHn ex_3d_listener)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomEx3dListener_GetDistanceFocusLevel(CriAtomEx3dListenerHn ex_3d_listener)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.GetDistanceFocusLevel"/>
 		/// <seealso cref="CriAtomEx3dListener.GetDirectionFocusLevel"/>
@@ -408,7 +408,7 @@ namespace CriWare
 		/// 方向センサのフォーカスレベルを取得します。
 		///  デフォルト値は0.0fです。方向センサのフォーカスレベルを設定していない場合、デフォルト値が返却されます。
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomEx3dListener_GetDirectionFocusLevel(CriAtomEx3dListenerHn ex_3d_listener)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomEx3dListener_GetDirectionFocusLevel(CriAtomEx3dListenerHn ex_3d_listener)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dListener.GetFocusPoint"/>
 		/// <seealso cref="CriAtomEx3dListener.GetDistanceFocusLevel"/>
@@ -428,7 +428,7 @@ namespace CriWare
 		/// 同一のExPlayerに設定されている3D音源と3Dリスナーに設定されているリージョンが異なり、 かつ3D音源と同じリージョンが設定されている3Dトランシーバーがない場合、音声はミュートされます。
 		///  設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dListener.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dListener_Set3dRegionHn(CriAtomEx3dListenerHn ex_3d_listener, CriAtomEx3dRegionHn ex_3d_region)"/>
+		/// <nativeinfo declaration="void criAtomEx3dListener_Set3dRegionHn(CriAtomEx3dListenerHn ex_3d_listener, CriAtomEx3dRegionHn ex_3d_region)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dRegion.CriAtomEx3dRegion"/>
 		/// <seealso cref="CriAtomEx3dListener.Update"/>

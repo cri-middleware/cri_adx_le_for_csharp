@@ -5,7 +5,8 @@
  ****************************************************************************/
 using System;
 
-namespace CriWare.InteropHelpers {
+namespace CriWare.InteropHelpers
+{
 	/// <summary>
 	/// ネイティブハンドル型
 	/// </summary>
@@ -13,7 +14,8 @@ namespace CriWare.InteropHelpers {
 	/// CRIWAREのオブジェクトインスタンスを取り扱うハンドルを表現する構造体です。
 	/// 各ネイティブラッパーオブジェクト内で利用されます。
 	/// </remarks>
-	public struct NativeHandleIntPtr : IEquatable<NativeHandleIntPtr> {
+	public struct NativeHandleIntPtr : IEquatable<NativeHandleIntPtr>
+	{
 		IntPtr handle;
 		IntPtr memory;
 		int memoryId;
@@ -46,6 +48,14 @@ namespace CriWare.InteropHelpers {
 		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		public unsafe nint Memory => memory + sizeof(NativeAllocator.MemoryInfo);
 
+		/// <exclude/>
+		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+		public unsafe void BindDataSection(nint buffer, Int64 size)
+		{
+			((NativeAllocator.MemoryInfo*)memory)->data = buffer;
+			((NativeAllocator.MemoryInfo*)memory)->data_size = size;
+		}
+
 		/// <inheritdoc/>
 		public bool Equals(NativeHandleIntPtr other) =>
 			handle == other.handle && memory == other.memory && memoryId == other.memoryId;
@@ -57,22 +67,35 @@ namespace CriWare.InteropHelpers {
 			HashCode.Combine(handle, memory, memoryId);
 
 		/// <exclude/>
-		public static implicit operator NativeHandleIntPtr(IntPtr pointer){
-			if(pointer == IntPtr.Zero)
+		public static implicit operator NativeHandleIntPtr(IntPtr pointer)
+		{
+			if (pointer == IntPtr.Zero)
 				throw new Exception("[CRIWARE] Returned NativeHandle is NULL.");
 			var mem = NativeAllocator.GetContainingMemory(pointer);
-			return new NativeHandleIntPtr(){
+			return new NativeHandleIntPtr()
+			{
 				handle = pointer,
 				memory = mem,
 				memoryId = NativeAllocator.GetId(mem),
 			};
 		}
 		/// <exclude/>
-		public static implicit operator IntPtr(NativeHandleIntPtr handle){
-			if(handle.handle == IntPtr.Zero) return IntPtr.Zero;
-			if(!handle.IsAvailable)
+		public static implicit operator IntPtr(NativeHandleIntPtr handle)
+		{
+			if (handle.handle == IntPtr.Zero) return IntPtr.Zero;
+			if (!handle.IsAvailable)
 				throw new Exception($"[CRIWARE] Native object already disposed.");
 			return handle.handle;
 		}
+	}
+
+	public struct NativeHandleId
+	{
+		IntPtr id;
+
+		public static implicit operator IntPtr(NativeHandleId id) => id.id;
+		public static implicit operator NativeHandleId(IntPtr ptr) => new NativeHandleId() { id = ptr };
+		public bool IsDestroyable => true;
+		public void BindDataSection(nint buffer, Int64 size) { }
 	}
 }

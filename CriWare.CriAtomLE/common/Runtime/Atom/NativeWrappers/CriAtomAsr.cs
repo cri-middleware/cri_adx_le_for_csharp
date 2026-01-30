@@ -49,7 +49,7 @@ namespace CriWare
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomAsr_CalculateWorkSize(const CriAtomAsrConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomAsr_CalculateWorkSize(const CriAtomAsrConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetUserAllocator"/>
 		/// <seealso cref="CriAtomAsr.Initialize"/>
@@ -96,8 +96,15 @@ namespace CriWare
 			/// 説明:
 			/// ASRが作成するバスの数を指定します。
 			///  バスはサウンドのミックスや、エフェクトの管理等を行います。
+			///  マスターバスの領域を1つ分含めるため、必ず1以上の値を設定して下さい。
+			/// </para>
+			/// <para>
+			/// 注意:
+			/// ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			///  当該項目はCRI Atom Craft 3.55.00より古いデータ(ミキサーVersion1のデータ)を使用する場合や、ACFを使用しないでASRを使用する為に残されています。
 			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 			public Int32 numBuses;
 
 			/// <summary>出力チャンネル数 </summary>
@@ -107,7 +114,21 @@ namespace CriWare
 			/// ASRの出力チャンネル数を指定します。
 			///  パン3Dもしくは3Dポジショニング機能を使用する場合は6ch以上を指定します。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 			public Int32 outputChannels;
 
 			/// <summary>ミキサーのスピーカーマッピング </summary>
@@ -116,7 +137,21 @@ namespace CriWare
 			/// 説明:
 			/// ASRラックのスピーカーマッピングを指定します。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 			public CriAtom.SpeakerMapping speakerMapping;
 
 			/// <summary>出力サンプリングレート </summary>
@@ -130,7 +165,21 @@ namespace CriWare
 			/// 備考:
 			/// 低くすると処理負荷を下げることができますが音質が悪くなります。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 			public Int32 outputSamplingRate;
 
 			/// <summary>サウンドレンダラタイプ </summary>
@@ -142,9 +191,20 @@ namespace CriWare
 			/// </para>
 			/// <para>
 			/// 注意:
-			/// <see cref="CriAtom.SoundRendererType.Asr"/>および<see cref="CriAtom.SoundRendererDefault"/>は指定しないでください。 
+			/// <see cref="CriAtom.SoundRendererType.Asr"/>および<see cref="CriAtom.SoundRendererDefault"/>は指定しないでください。
+			///  当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
 			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 			public CriAtom.SoundRendererType soundRendererType;
 
 			/// <summary>プラットフォーム固有のパラメーターへのポインタ </summary>
@@ -154,7 +214,21 @@ namespace CriWare
 			/// プラットフォーム固有のパラメーターへのポインタを指定します。 nullを指定した場合、プラットフォーム毎のデフォルトパラメーターでASRラックを作成します。
 			///  パラメーター構造体は各プラットフォーム固有ヘッダーに定義されています。 パラメーター構造体が定義されていないプラットフォームでは、常にnullを指定してください。 
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 			public IntPtr context;
 
 			/// <summary>ASRラックの最大数 </summary>
@@ -206,7 +280,7 @@ namespace CriWare
 		///  本関数を実行後、必ず対になる <see cref="CriAtomAsr.Finalize"/> 関数を実行してください。
 		///  また、 <see cref="CriAtomAsr.Finalize"/> 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomAsr_Initialize(const CriAtomAsrConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomAsr_Initialize(const CriAtomAsrConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetUserAllocator"/>
 		/// <seealso cref="CriAtomAsr.Finalize"/>
@@ -232,7 +306,7 @@ namespace CriWare
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、
 		///  本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomAsr_Finalize(void)"/>
+		/// <nativeinfo declaration="void criAtomAsr_Finalize(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetUserAllocator"/>
 		/// <seealso cref="CriAtomAsr.Initialize"/>

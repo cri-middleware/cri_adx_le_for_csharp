@@ -35,7 +35,7 @@ namespace CriWare
 		/// <see cref="CriAtomEx.ConfigMACOSX"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
 		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケータを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_MACOSX(const CriAtomExConfig_MACOSX *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_MACOSX(const CriAtomExConfig_MACOSX *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigMACOSX"/>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
@@ -82,7 +82,7 @@ namespace CriWare
 		///  また、 
 		///  関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_MACOSX(const CriAtomExConfig_MACOSX *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_MACOSX(const CriAtomExConfig_MACOSX *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigMACOSX"/>
 		/// <seealso cref="CriAtomEx.FinalizeMACOSX"/>
@@ -114,7 +114,7 @@ namespace CriWare
 		/// 本関数を実行する場合、上記関数を実行しないでください。
 		///  関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_MACOSX(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_MACOSX(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeMACOSX"/>
 		public static void FinalizeMACOSX()
@@ -139,7 +139,7 @@ namespace CriWare
 		///  サーバ処理スレッドは、CRI File Systemライブラリでも利用されています。
 		///  すでにCRI File SystemライブラリのAPIでサーバ処理スレッドの設定を変更している場合 本関数により設定が上書きされますのでご注意ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetServerThreadPriority_MACOSX(int prio)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetServerThreadPriority_MACOSX(CriSint32 prio)"/>
 		/// </remarks>
 		public static void SetServerThreadPriorityMACOSX(Int32 prio)
 		{
@@ -151,52 +151,10 @@ namespace CriWare
 		[Serializable]
 		public unsafe partial struct ConfigMACOSX
 		{
-			/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 <see cref="CriAtomEx.Initialize"/> 関数に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドを使用しない 場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomEx.Initialize"/>
-			/// <seealso cref="CriAtomEx.SetDefaultConfig"/>
 			public CriAtomEx.Config atomEx;
 
-			/// <summary>ASR初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExAsr.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomExAsr.Initialize"/>
-			/// <seealso cref="CriAtomExAsr.SetDefaultConfig"/>
 			public CriAtomExAsr.Config asr;
 
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExHcaMx.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomExHcaMx.Initialize"/>
-			/// <seealso cref="CriAtomExHcaMx.SetDefaultConfig"/>
 			public CriAtomExHcaMx.Config hcaMx;
 
 		}

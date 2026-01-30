@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 using System.Threading;
 using CriWare.InteropHelpers;
+using System.Xml.Serialization;
 
 namespace CriWare
 {
@@ -16,118 +17,6 @@ namespace CriWare
 	/// <summary>CriAtom API</summary>
 	public static partial class CriAtom
 	{
-		/// <summary>ライブラリ初期化用ワーク領域サイズの計算 </summary>
-		/// <param name="config">初期化用コンフィグ構造体 </param>
-		/// <returns>CriSint32 ワーク領域サイズ </returns>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// CRI Atomライブラリを使用するために必要な、ワーク領域のサイズを取得します。
-		///  ワーク領域サイズの計算に失敗すると、本関数は -1 を返します。
-		///  ワーク領域サイズの計算に失敗した理由については、エラーコールバックのメッセージで確認可能です。
-		/// </para>
-		/// <para>
-		/// 備考:
-		/// CRI Atomライブラリが必要とするワーク領域のサイズは、ライブラリ初期化用コンフィグ 構造体（ <see cref="CriAtom.Config"/> ）の内容によって変化します。
-		///  引数にnullを指定した場合、デフォルト設定 （ <see cref="CriAtom.SetDefaultConfig"/> 適用時と同じパラメーター）で ワーク領域サイズを計算します。 
-		///  引数 config の情報は、関数内でのみ参照されます。
-		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
-		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtom_CalculateWorkSize(const CriAtomConfig *config)"/>
-		/// </remarks>
-		/// <seealso cref="CriAtom.Config"/>
-		/// <seealso cref="CriAtom.Initialize"/>
-		public static unsafe Int32 CalculateWorkSize(in CriAtom.Config config)
-		{
-			fixed (CriAtom.Config* configPtr = &config)
-				return NativeMethods.criAtom_CalculateWorkSize(configPtr);
-		}
-
-		/// <summary>ライブラリの初期化 </summary>
-		/// <param name="config">初期化用コンフィグ構造体 </param>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// CRI Atomライブラリを初期化します。
-		///  ライブラリの機能を利用するには、必ずこの関数を実行する必要があります。
-		///  （ライブラリの機能は、本関数を実行後、 <see cref="CriAtom.Finalize"/> 関数を実行するまでの間、 利用可能です。）
-		///  ライブラリを初期化する際には、ライブラリが内部で利用するためのメモリ領域（ワーク領域） を確保する必要があります。
-		///  ワーク領域を確保する方法には、以下の2通りの方法があります。
-		/// <b>(a) User Allocator方式</b>：メモリの確保／解放に、ユーザが用意した関数を使用する方法。
-		/// <b>(b) Fixed Memory方式</b>：必要なメモリ領域を直接ライブラリに渡す方法。
-		///  User Allocator方式を用いる場合、ユーザはCRI Atomライブラリにメモリ確保関数を登録しておきます。
-		///  workにnull、work_sizeに0を指定して本関数を呼び出すことで、 ライブラリは登録済みのメモリ確保関数を使用して必要なメモリを自動的に確保します。
-		///  ユーザがワーク領域を用意する必要はありません。
-		///  初期化時に確保されたメモリは、終了処理時（ <see cref="CriAtom.Finalize"/> 関数実行時）に解放されます。
-		///  Fixed Memory方式を用いる場合、ワーク領域として別途確保済みのメモリ領域を本関数に 設定する必要があります。
-		///  ワーク領域のサイズは <see cref="CriAtom.CalculateWorkSize"/> 関数で取得可能です。
-		///  初期化処理の前に <see cref="CriAtom.CalculateWorkSize"/> 関数で取得したサイズ分のメモリを予め 確保しておき、本関数に設定してください。
-		///  尚、Fixed Memory方式を用いた場合、ワーク領域はライブラリの終了処理（ <see cref="CriAtom.Finalize"/> 関数） を行うまでの間、ライブラリ内で利用され続けます。
-		///  ライブラリの終了処理を行う前に、ワーク領域のメモリを解放しないでください。
-		/// </para>
-		/// <para>
-		/// 例:
-		/// 【User Allocator方式によるライブラリの初期化】
-		///  User Allocator方式を用いる場合、ライブラリの初期化／終了の手順は以下の通りです。
-		/// <list type="number">
-		/// <item><description>初期化処理実行前に、 <see cref="CriAtom.SetUserMallocFunction"/> 関数と <see cref="CriAtom.SetUserFreeFunction"/> 関数を用いてメモリ確保／解放関数を登録する。
-		/// </description></item>
-		/// <item><description>初期化用コンフィグ構造体にパラメーターをセットする。
-		/// </description></item>
-		/// <item><description><see cref="CriAtom.Initialize"/> 関数で初期化処理を行う。
-		///  （workにはnull、work_sizeには0を指定する。）
-		/// </description></item>
-		/// <item><description>アプリケーション終了時に <see cref="CriAtom.Finalize"/> 関数で終了処理を行う。
-		/// </description></item>
-		/// </list>
-		/// </para>
-		/// <list>
-		/// <list type="number">
-		/// <item><description>初期化用コンフィグ構造体にパラメーターをセットする。
-		/// </description></item>
-		/// <item><description>ライブラリの初期化に必要なワーク領域のサイズを、 <see cref="CriAtom.CalculateWorkSize"/> 関数を使って計算する。
-		/// </description></item>
-		/// <item><description>ワーク領域サイズ分のメモリを確保する。
-		/// </description></item>
-		/// <item><description><see cref="CriAtom.Initialize"/> 関数で初期化処理を行う。
-		///  （workには確保したメモリのアドレスを、work_sizeにはワーク領域のサイズを指定する。）
-		/// </description></item>
-		/// <item><description>アプリケーション終了時に <see cref="CriAtom.Finalize"/> 関数で終了処理を行う。
-		/// </description></item>
-		/// <item><description>ワーク領域のメモリを解放する。
-		/// </description></item>
-		/// </list>
-		/// </list>
-		/// <para>
-		/// 具体的なコードは以下のとおりです。
-		///  【Fixed Memory方式によるライブラリの初期化】
-		///  Fixed Memory方式を用いる場合、ライブラリの初期化／終了の手順は以下の通りです。
-		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_Initialize(const CriAtomConfig *config, void *work, CriSint32 work_size)"/>
-		/// </remarks>
-		public static unsafe void Initialize(in CriAtom.Config config)
-		{
-			fixed (CriAtom.Config* configPtr = &config)
-				NativeMethods.criAtom_Initialize(configPtr, default, default);
-		}
-
-		/// <summary>ライブラリの終了 </summary>
-		/// <remarks>
-		/// <para>
-		/// 説明:
-		/// CRI Atomライブラリを終了します。
-		/// </para>
-		/// <para>
-		/// 注意:
-		/// <see cref="CriAtom.Initialize"/> 関数実行前に本関数を実行することはできません。
-		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_Finalize(void)"/>
-		/// </remarks>
-		/// <seealso cref="CriAtom.Initialize"/>
-		public static void Finalize()
-		{
-			NativeMethods.criAtom_Finalize();
-		}
 
 		/// <summary>ユーザアロケーターの登録 </summary>
 		/// <param name="pMallocFunc">メモリ確保関数 </param>
@@ -163,7 +52,7 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// <see cref="CriAtom.Initialize"/> 関数に設定するコンフィグ構造体（ <see cref="CriAtom.Config"/> ）に、 デフォルトの値をセットします。
+		/// criAtom_Initialize 関数に設定するコンフィグ構造体（ <see cref="CriAtom.Config"/> ）に、 デフォルトの値をセットします。
 		/// </para>
 		/// <nativeinfo declaration="void criAtom_SetDefaultConfig_(CriAtomConfig *p_config)"/>
 		/// </remarks>
@@ -181,7 +70,7 @@ namespace CriWare
 		/// 説明:
 		/// ライブラリのバージョン、ビルドした日時、プラットフォームの情報が表示されます。 
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtom_GetVersionString(void)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtom_GetVersionString(void)"/>
 		/// </remarks>
 		public static NativeString GetVersionString()
 		{
@@ -193,13 +82,13 @@ namespace CriWare
 		/// <para>
 		/// 説明:
 		/// CRI Atomライブラリの動作仕様を指定するための構造体です。
-		/// <see cref="CriAtom.Initialize"/> 関数の引数に指定します。
+		/// criAtom_Initialize 関数の引数に指定します。
 		///  CRI Atomライブラリは、初期化時に本構造体で指定された設定に応じて、内部リソースを 必要なだけ確保します。
 		///  ライブラリが必要とするワーク領域のサイズは、本構造体で指定されたパラメーターに応じて 変化します。 
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// デフォルト設定を使用する場合、 <see cref="CriAtom.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 <see cref="CriAtom.Initialize"/> 関数に構造体を指定してください。
+		/// デフォルト設定を使用する場合、 <see cref="CriAtom.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 criAtom_Initialize 関数に構造体を指定してください。
 		/// </para>
 		/// <para>
 		/// 注意:
@@ -207,7 +96,6 @@ namespace CriWare
 		///  （構造体のメンバに不定値が入らないようご注意ください。） 
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="CriAtom.Initialize"/>
 		/// <seealso cref="CriAtom.SetDefaultConfig"/>
 		[Serializable]
 		public unsafe partial struct Config
@@ -259,7 +147,6 @@ namespace CriWare
 			/// CRI File Systemの初期化パラメーターへのポインタを指定します。 nullを指定した場合、デフォルトパラメーターでCRI File Systemを初期化します。 
 			/// </para>
 			/// </remarks>
-			/// <seealso cref="CriAtom.Initialize"/>
 			public NativeReference<CriFs.Config> fsConfig;
 
 			/// <summary>プラットフォーム固有の初期化パラメーターへのポインタ </summary>
@@ -270,7 +157,6 @@ namespace CriWare
 			///  パラメーター構造体は各プラットフォーム固有ヘッダーに定義されています。 パラメーター構造体が定義されていないプラットフォームでは、常にnullを指定してください。 
 			/// </para>
 			/// </remarks>
-			/// <seealso cref="CriAtom.Initialize"/>
 			public IntPtr context;
 
 			/// <summary>ライブラリバージョン番号 </summary>
@@ -322,10 +208,9 @@ namespace CriWare
 		/// <para>
 		/// 説明:
 		/// CRI Atomライブラリがどのようなスレッドモデルで動作するかを表します。
-		///  ライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数 ）に <see cref="CriAtom.Config"/> 構造体にて 指定します。 
+		///  ライブラリ初期化時（ criAtom_Initialize 関数 ）に <see cref="CriAtom.Config"/> 構造体にて 指定します。 
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="CriAtom.Initialize"/>
 		/// <seealso cref="CriAtom.Config"/>
 		public enum ThreadModel
 		{
@@ -334,7 +219,7 @@ namespace CriWare
 			/// <para>
 			/// 説明:
 			/// ライブラリは内部でスレッドを作成し、マルチスレッドにて動作します。
-			///  スレッドは <see cref="CriAtom.Initialize"/> 関数呼び出し時に作成されます。
+			///  スレッドは criAtom_Initialize 関数呼び出し時に作成されます。
 			///  ライブラリのサーバー処理は、作成されたスレッド上で定期的に実行されます。
 			/// </para>
 			/// </remarks>
@@ -345,7 +230,7 @@ namespace CriWare
 			/// <para>
 			/// 説明:
 			/// ライブラリは内部でスレッドを作成し、マルチスレッドにて動作します。
-			///  スレッドは <see cref="CriAtom.Initialize"/> 関数呼び出し時に作成されます。
+			///  スレッドは criAtom_Initialize 関数呼び出し時に作成されます。
 			///  サーバー処理自体は作成されたスレッド上で実行されますが、 <see cref="CriAtom.ThreadModel.Multi"/> とは異なり、自動的には実行されません。
 			///  ユーザは <see cref="CriAtom.ExecuteMain"/> 関数で明示的にサーバー処理を駆動する必要があります。
 			///  （ <see cref="CriAtom.ExecuteMain"/> 関数を実行すると、スレッドが起動し、サーバー処理が実行されます。）
@@ -396,7 +281,7 @@ namespace CriWare
 		/// 注意:
 		/// メモリ確保関数を登録する際には、合わせてメモリ解放関数（ <see cref="CriAtom.FreeFunc"/> ）を 登録する必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetUserMallocFunction(CriAtomMallocFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtom_SetUserMallocFunction(CriAtomMallocFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.MallocFunc"/>
 		/// <seealso cref="CriAtom.SetUserFreeFunction"/>
@@ -426,7 +311,7 @@ namespace CriWare
 		/// 注意:
 		/// メモリ解放関数を登録する際には、合わせてメモリ確保関数（ <see cref="CriAtom.MallocFunc"/> ）を 登録する必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetUserFreeFunction(CriAtomFreeFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtom_SetUserFreeFunction(CriAtomFreeFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.FreeFunc"/>
 		/// <seealso cref="CriAtom.SetUserMallocFunction"/>
@@ -442,10 +327,8 @@ namespace CriWare
 		/// 説明:
 		/// CRI Atomライブラリが既に初期化されているかどうかをチェックします。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtom_IsInitialized(void)"/>
+		/// <nativeinfo declaration="CriBool criAtom_IsInitialized(void)"/>
 		/// </remarks>
-		/// <seealso cref="CriAtom.Initialize"/>
-		/// <seealso cref="CriAtom.Finalize"/>
 		public static bool IsInitialized()
 		{
 			return NativeMethods.criAtom_IsInitialized();
@@ -476,9 +359,8 @@ namespace CriWare
 		///  （オーディオデバイスが接続されたことをAtomライブラリが自動で検出することはありません。）
 		///  アプリケーション実行中にオーディオデバイスを有効化したい場合には、 Atomライブラリの初期化処理をやり直す必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtom_IsAudioOutputActive(void)"/>
+		/// <nativeinfo declaration="CriBool criAtom_IsAudioOutputActive(void)"/>
 		/// </remarks>
-		/// <seealso cref="CriAtom.Initialize"/>
 		public static bool IsAudioOutputActive()
 		{
 			return NativeMethods.criAtom_IsAudioOutputActive();
@@ -507,7 +389,7 @@ namespace CriWare
 		///  CRI File Systemライブラリのサーバー処理は、CRI Atomライブラリ内部で実行されます。
 		///  そのため、本関数を実行している場合、アプリケーション側で別途CRI File Systemライブラリ のサーバー処理を呼び出す必要はありません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_ExecuteMain(void)"/>
+		/// <nativeinfo declaration="void criAtom_ExecuteMain(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.ExecuteAudioProcess"/>
 		public static void ExecuteMain()
@@ -534,7 +416,7 @@ namespace CriWare
 		///  また、本関数は<see cref="CriAtom.ExecuteMain"/> 関数と異なり、CRI File Systemライブラリのサーバー処理を実行しません。
 		///  アプリケーションが必要なサーバー処理を正しい順序で実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_ExecuteAudioProcess(void)"/>
+		/// <nativeinfo declaration="void criAtom_ExecuteAudioProcess(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.ExecuteMain"/>
 		public static void ExecuteAudioProcess()
@@ -677,7 +559,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetAudioFrameStartCallback(CriAtomAudioFrameStartCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtom_SetAudioFrameStartCallback(CriAtomAudioFrameStartCbFunc func, void *obj)"/>
 		/// </remarks>
 		public static unsafe void SetAudioFrameStartCallback(delegate* unmanaged[Cdecl]<IntPtr, void> func, IntPtr obj)
 		{
@@ -760,7 +642,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetAudioFrameEndCallback(CriAtomAudioFrameEndCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtom_SetAudioFrameEndCallback(CriAtomAudioFrameEndCbFunc func, void *obj)"/>
 		/// </remarks>
 		public static unsafe void SetAudioFrameEndCallback(delegate* unmanaged[Cdecl]<IntPtr, void> func, IntPtr obj)
 		{
@@ -828,13 +710,13 @@ namespace CriWare
 		/// <para>
 		/// 説明:
 		/// デバイスの更新通知を受け取るためのコールバックを設定します。
-		///  本関数を実行すると、デバイスが更新された際、第 1 引数（ func ） でセットされたコールバック関数が呼び出されます。
+		///  本関数を実行すると、デバイスが更新された際、第 1 引数（ callback ） でセットされたコールバック関数が呼び出されます。
 		/// </para>
 		/// <para>
 		/// 備考:
-		/// 第 2 引数（ obj ）にセットした値は、コールバック関数の引数として渡されます。
+		/// 第 2 引数（ object ）にセットした値は、コールバック関数の引数として渡されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetDeviceUpdateCallback(CriAtomDeviceUpdateCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtom_SetDeviceUpdateCallback(CriAtomDeviceUpdateCbFunc func, void *obj)"/>
 		/// </remarks>
 		public static unsafe void SetDeviceUpdateCallback(delegate* unmanaged[Cdecl]<IntPtr, void> func, IntPtr obj)
 		{
@@ -901,7 +783,7 @@ namespace CriWare
 		///  本関数実行後、長時間<see cref="CriAtom.Unlock"/> 関数を呼ばない場合、音声再生が途切れる恐れがあります。
 		///  サーバー処理の割り込みを防止する区間は、最小限に抑える必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_Lock(void)"/>
+		/// <nativeinfo declaration="void criAtom_Lock(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.Unlock"/>
 		public static void Lock()
@@ -915,7 +797,7 @@ namespace CriWare
 		/// 説明:
 		/// <see cref="CriAtom.Lock"/> 関数による、サーバー処理の割り込み防止を解除します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_Unlock(void)"/>
+		/// <nativeinfo declaration="void criAtom_Unlock(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.Lock"/>
 		public static void Unlock()
@@ -944,9 +826,17 @@ namespace CriWare
 		/// <item><description>9   </description><description><see cref="CriAtom.ChannelConfig.Ambisonics2p"/>    </description></item>
 		/// <item><description>10   </description><description><see cref="CriAtom.ChannelConfig._7_1_2"/>    </description></item>
 		/// <item><description>12   </description><description><see cref="CriAtom.ChannelConfig._7_1_4"/>    </description></item>
-		/// <item><description>16   </description><description><see cref="CriAtom.ChannelConfig.Ambisonics3p"/>   </description></item>
+		/// <item><description>16   </description><description><see cref="CriAtom.ChannelConfig._7_1_4_4"/>    </description></item>
+		/// <item><description>25   </description><description><see cref="CriAtom.ChannelConfig.Ambisonics4p"/>    </description></item>
+		/// <item><description>36   </description><description><see cref="CriAtom.ChannelConfig.Ambisonics5p"/>    </description></item>
+		/// <item><description>49   </description><description><see cref="CriAtom.ChannelConfig.Ambisonics6p"/>    </description></item>
+		/// <item><description>64   </description><description><see cref="CriAtom.ChannelConfig.Ambisonics7p"/>   </description></item>
 		/// </list>
 		/// 再生する音声データのチャンネル構成が上記と異なる場合には、本関数を使用してチャンネル構成を変更する必要があります。
+		/// </para>
+		/// <para>
+		/// 備考:
+		/// 本関数では現状16ch以下のチャンネル構成のみが変更可能です。 
 		/// </para>
 		/// <para>
 		/// 注意:
@@ -957,7 +847,11 @@ namespace CriWare
 		///  そのため、再生中にデフォルト値を変更した場合、意図したタイミングで変更が反映されるとは限りません。
 		///  本関数を使用する場合、初期化時など音声を再生する前に実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_ChangeDefaultChannelConfig(CriSint32 num_channels, CriAtomChannelConfig channel_config)"/>
+		/// <para>
+		/// 注意:
+		/// 16chを超えるチャンネル数に対しては現状チャンネルコンフィグを変更することができません。 
+		/// </para>
+		/// <nativeinfo declaration="void criAtom_ChangeDefaultChannelConfig(CriSint32 num_channels, CriAtomChannelConfig channel_config)"/>
 		/// </remarks>
 		public static void ChangeDefaultChannelConfig(Int32 numChannels, CriAtom.ChannelConfig channelConfig)
 		{
@@ -977,92 +871,112 @@ namespace CriWare
 			/// <remarks>
 			/// <para>不明 </para>
 			/// </remarks>
-			Unknown = 0,
+			Unknown = 0x00000000,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>モノラル </para>
 			/// </remarks>
-			Mono = 4,
+			Mono = 0x00000004,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>ステレオ </para>
 			/// </remarks>
-			Stereo = 3,
+			Stereo = 0x00000003,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>3ch（L, R, C） </para>
 			/// </remarks>
-			_3Lrc = 7,
+			_3Lrc = 0x00000007,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>3ch（L, R, Cs） </para>
 			/// </remarks>
-			_3Lrs = 259,
+			_3Lrs = 0x00000103,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>4ch（L, R, Ls, Rs） </para>
 			/// </remarks>
-			Quad = 3075,
+			Quad = 0x00000C03,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>5ch </para>
 			/// </remarks>
-			_5 = 3079,
+			_5 = 0x00000C07,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>4.1ch </para>
 			/// </remarks>
-			_4_1 = 3083,
+			_4_1 = 0x00000C0B,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>5.1ch </para>
 			/// </remarks>
-			_5_1 = 3087,
+			_5_1 = 0x00000C0F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>6.1ch </para>
 			/// </remarks>
-			_6_1 = 3343,
+			_6_1 = 0x00000D0F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>7.1ch </para>
 			/// </remarks>
-			_7_1 = 3135,
+			_7_1 = 0x00000C3F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>5.1.2ch </para>
 			/// </remarks>
-			_5_1_2 = 789519,
+			_5_1_2 = 0x000C0C0F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>7.1.2ch </para>
 			/// </remarks>
-			_7_1_2 = 789567,
+			_7_1_2 = 0x000C0C3F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>7.1.4ch </para>
 			/// </remarks>
-			_7_1_4 = 212031,
+			_7_1_4 = 0x00033C3F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>7.1.4.4ch </para>
 			/// </remarks>
-			_7_1_4_4 = 63126591,
+			_7_1_4_4 = 0x03C33C3F,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>1st Order Ambisonics </para>
 			/// </remarks>
-			Ambisonics1p = 2130706433,
+			Ambisonics1p = 0x7F000001,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>2nd Order Ambisonics </para>
 			/// </remarks>
-			Ambisonics2p = 2130706434,
+			Ambisonics2p = 0x7F000002,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>3rd Order Ambisonics </para>
 			/// </remarks>
-			Ambisonics3p = 2130706435,
+			Ambisonics3p = 0x7F000003,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>4th Order Ambisonics </para>
+			/// </remarks>
+			Ambisonics4p = 0x7F000004,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>5th Order Ambisonics </para>
+			/// </remarks>
+			Ambisonics5p = 0x7F000005,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>6th Order Ambisonics </para>
+			/// </remarks>
+			Ambisonics6p = 0x7F000006,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>7th Order Ambisonics </para>
+			/// </remarks>
+			Ambisonics7p = 0x7F000007,
 		}
 		/// <summary>チャンネル順序のデフォルト値変更 </summary>
 		/// <param name="numChannels">チャンネル数 </param>
@@ -1117,7 +1031,7 @@ namespace CriWare
 		///  そのため、再生中にデフォルト値を変更した場合、意図したタイミングで変更が反映されるとは限りません。
 		///  本関数を使用する場合、初期化時など音声を再生する前に実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_ChangeDefaultChannelOrder(CriSint32 num_channels, const CriSint32 *channel_order)"/>
+		/// <nativeinfo declaration="void criAtom_ChangeDefaultChannelOrder(CriSint32 num_channels, const CriSint32 *channel_order)"/>
 		/// </remarks>
 		public static unsafe void ChangeDefaultChannelOrder(Int32 numChannels, in Int32 channelOrder)
 		{
@@ -1133,7 +1047,7 @@ namespace CriWare
 		/// Ambisonics音声データのチャンネル並び順と正規化方式を指定します。
 		///  デフォルトのフォーマットは CRIATOM_AMBISONICS_ACN_SN3D です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_SetAmbisonicsInputFormat(CriAtomAmbisonicsFormat format)"/>
+		/// <nativeinfo declaration="void criAtom_SetAmbisonicsInputFormat(CriAtomAmbisonicsFormat format)"/>
 		/// </remarks>
 		public static void SetAmbisonicsInputFormat(CriAtom.AmbisonicsFormat format)
 		{
@@ -1172,7 +1086,7 @@ namespace CriWare
 		/// パフォーマンス計測機能を追加し、パフォーマンス計測処理を開始します。
 		///  本関数を実行後、 <see cref="CriAtom.GetPerformanceInfo"/> 関数を実行することで、 サーバー処理の負荷や、サーバー処理の実行間隔等、ライブラリのパフォーマンス情報を 取得することが可能です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_AttachPerformanceMonitor(void)"/>
+		/// <nativeinfo declaration="void criAtom_AttachPerformanceMonitor(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.GetPerformanceInfo"/>
 		/// <seealso cref="CriAtom.DetachPerformanceMonitor"/>
@@ -1189,7 +1103,7 @@ namespace CriWare
 		///  パフォーマンスモニターは、 <see cref="CriAtom.AttachPerformanceMonitor"/> 関数実行直後 からパフォーマンス情報の取得を開始し、計測結果を累積します。
 		///  これから計測する区間に対し、以前の計測結果を以降の計測結果に含めたくない場合には、 本関数を実行し、累積された計測結果を一旦破棄する必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_ResetPerformanceMonitor(void)"/>
+		/// <nativeinfo declaration="void criAtom_ResetPerformanceMonitor(void)"/>
 		/// </remarks>
 		public static void ResetPerformanceMonitor()
 		{
@@ -1204,7 +1118,7 @@ namespace CriWare
 		/// パフォーマンス情報を取得します。
 		///  本関数は、 <see cref="CriAtom.AttachPerformanceMonitor"/> 関数実行後から <see cref="CriAtom.DetachPerformanceMonitor"/> 関数を実行するまでの間、利用可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_GetPerformanceInfo(CriAtomPerformanceInfo *info)"/>
+		/// <nativeinfo declaration="void criAtom_GetPerformanceInfo(CriAtomPerformanceInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AttachPerformanceMonitor"/>
 		/// <seealso cref="CriAtom.DetachPerformanceMonitor"/>
@@ -1226,7 +1140,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtom_DetachPerformanceMonitor(void)"/>
+		/// <nativeinfo declaration="void criAtom_DetachPerformanceMonitor(void)"/>
 		/// </remarks>
 		public static void DetachPerformanceMonitor()
 		{
@@ -1298,7 +1212,7 @@ namespace CriWare
 		///  計算に失敗すると本関数は-1を返します。
 		///  計算に失敗した理由については、エラーコールバックのメッセージで確認可能です。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtom_CalculateAdxBitrate(CriSint32 num_channels, CriSint32 sampling_rate)"/>
+		/// <nativeinfo declaration="CriSint32 criAtom_CalculateAdxBitrate(CriSint32 num_channels, CriSint32 sampling_rate)"/>
 		/// </remarks>
 		public static Int32 CalculateAdxBitrate(Int32 numChannels, Int32 samplingRate)
 		{
@@ -1321,7 +1235,7 @@ namespace CriWare
 		/// 備考:
 		/// qualityにはCRI Atom CraftまたはCRI Atom Encoderで設定したエンコード品質を指定します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtom_CalculateHcaBitrate(CriSint32 num_channels, CriSint32 sampling_rate, CriAtomEncodeQuality quality)"/>
+		/// <nativeinfo declaration="CriSint32 criAtom_CalculateHcaBitrate(CriSint32 num_channels, CriSint32 sampling_rate, CriAtomEncodeQuality quality)"/>
 		/// </remarks>
 		public static Int32 CalculateHcaBitrate(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality)
 		{
@@ -1382,7 +1296,7 @@ namespace CriWare
 		/// 備考:
 		/// qualityにはCRI Atom CraftまたはCRI Atom Encoderで設定したエンコード品質を指定します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtom_CalculateHcaMxBitrate(CriSint32 num_channels, CriSint32 sampling_rate, CriAtomEncodeQuality quality)"/>
+		/// <nativeinfo declaration="CriSint32 criAtom_CalculateHcaMxBitrate(CriSint32 num_channels, CriSint32 sampling_rate, CriAtomEncodeQuality quality)"/>
 		/// </remarks>
 		public static Int32 CalculateHcaMxBitrate(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality)
 		{
@@ -1405,7 +1319,7 @@ namespace CriWare
 		///  エラーが原因でストリーミング情報を取得できなかった場合については、
 		///  エラーコールバックが発生していないかを確認してください。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtom_GetStreamingInfo(CriAtomStreamingInfo *streaming_info)"/>
+		/// <nativeinfo declaration="CriBool criAtom_GetStreamingInfo(CriAtomStreamingInfo *streaming_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.StreamingInfo"/>
 		public static unsafe bool GetStreamingInfo(out CriAtom.StreamingInfo streamingInfo)
@@ -1482,7 +1396,7 @@ namespace CriWare
 		/// 注意:
 		/// Atomサーバー内の処理と一部排他制御しているため、 優先度逆転によりAtomサーバーを止めてしまわないように注意してください。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtom_SetFreeTimeBufferingFlagForDefaultDevice(CriBool flag)"/>
+		/// <nativeinfo declaration="CriBool criAtom_SetFreeTimeBufferingFlagForDefaultDevice(CriBool flag)"/>
 		/// </remarks>
 		public static bool SetFreeTimeBufferingFlagForDefaultDevice(NativeBool flag)
 		{
@@ -1518,62 +1432,62 @@ namespace CriWare
 			/// </remarks>
 			Asr = 2,
 			Extended = 3,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>立体音響出力 </para>
+			/// </remarks>
 			Spatial = 4,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>機種固有定義1 </para>
 			/// </remarks>
-			Hw1 = 1,
+			Hw1 = (0 << 16) | CriAtom.SoundRendererType.Native,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>機種固有定義2 </para>
 			/// </remarks>
-			Hw2 = 65537,
+			Hw2 = (1 << 16) | CriAtom.SoundRendererType.Native,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>機種固有定義3 </para>
 			/// </remarks>
-			Hw3 = 131073,
+			Hw3 = (2 << 16) | CriAtom.SoundRendererType.Native,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>機種固有定義4 </para>
 			/// </remarks>
-			Hw4 = 196609,
-			/// <summary></summary>
-			/// <remarks>
-			/// <para>Platform Specific </para>
-			/// </remarks>
-			ForcedNative = 983041,
+			Hw4 = (3 << 16) | CriAtom.SoundRendererType.Native,
+			ForcedNative = (15 << 16) | CriAtom.SoundRendererType.Native,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>振動 </para>
 			/// </remarks>
-			Haptic = 3,
+			Haptic = (0 << 16) | CriAtom.SoundRendererType.Extended,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>無音 </para>
 			/// </remarks>
-			Pseudo = 65539,
+			Pseudo = (1 << 16) | CriAtom.SoundRendererType.Extended,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>スペシャライザ付きチャンネルベース再生 </para>
 			/// </remarks>
-			SpatialChannels = 4,
+			SpatialChannels = (0 << 16) | CriAtom.SoundRendererType.Spatial,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>Ambisonics再生 </para>
 			/// </remarks>
-			Ambisonics = 65540,
+			Ambisonics = (1 << 16) | CriAtom.SoundRendererType.Spatial,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>パススルー再生 </para>
 			/// </remarks>
-			Passthrough = 131076,
+			Passthrough = (2 << 16) | CriAtom.SoundRendererType.Spatial,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>オブジェクトベース再生 </para>
 			/// </remarks>
-			Object = 196612,
+			Object = (3 << 16) | CriAtom.SoundRendererType.Spatial,
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>出力方式を制限しない </para>
@@ -1704,6 +1618,7 @@ namespace CriWare
 			///  パラメーター構造体は各プラットフォーム固有ヘッダーに定義されています。 パラメーター構造体が定義されていないプラットフォームでは、常にnullを指定してください。 
 			/// </para>
 			/// </remarks>
+			[XmlIgnore]
 			public IntPtr context;
 
 		}
@@ -2442,6 +2357,26 @@ namespace CriWare
 			/// <para>トップバックライトスピーカー </para>
 			/// </remarks>
 			TopBackRight = 11,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムフロントレフトスピーカー </para>
+			/// </remarks>
+			BottomFrontLeft = 12,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムフロントライトスピーカー </para>
+			/// </remarks>
+			BottomFrontRight = 13,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムバックレフトスピーカー </para>
+			/// </remarks>
+			BottomBackLeft = 14,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムバックライトスピーカー </para>
+			/// </remarks>
+			BottomBackRight = 15,
 		}
 		/// <summary>パラメーターID </summary>
 		/// <remarks>
@@ -2743,6 +2678,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsr.Config"/>
 		/// <seealso cref="CriAtomExAsrRack.Config"/>
+		/// <seealso cref="CriAtomExAcf.DspBusInfo"/>
 		public enum SpeakerMapping
 		{
 			/// <summary></summary>
@@ -2807,10 +2743,45 @@ namespace CriWare
 			Ambisonics3p = 11,
 			/// <summary></summary>
 			/// <remarks>
+			/// <para>4th order Ambisonics </para>
+			/// </remarks>
+			Ambisonics4p = 12,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>5th order Ambisonics </para>
+			/// </remarks>
+			Ambisonics5p = 13,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>6th order Ambisonics </para>
+			/// </remarks>
+			Ambisonics6p = 14,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>7th order Ambisonics </para>
+			/// </remarks>
+			Ambisonics7p = 15,
+			/// <summary></summary>
+			/// <remarks>
 			/// <para>オブジェクトベース再生 </para>
 			/// </remarks>
-			Object = 12,
-			Custom = 13,
+			Object16 = 16,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>オブジェクトベース再生 </para>
+			/// </remarks>
+			Object32 = 17,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>オブジェクトベース再生 </para>
+			/// </remarks>
+			Object64 = 18,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>オブジェクトベース再生 </para>
+			/// </remarks>
+			Object128 = 19,
+			Custom = 20,
 		}
 		/// <summary>Ambisonicsオーダー（廃止済み） </summary>
 		/// <remarks>
@@ -2835,7 +2806,7 @@ namespace CriWare
 			/// <remarks>
 			/// <para>1 Periphonic(1st Orderと同義) </para>
 			/// </remarks>
-			_1p = 1,
+			_1p = CriAtom.AmbisonicsOrderType.First,
 		}
 		/// <summary>デバイスタイプ </summary>
 		/// <remarks>
@@ -3327,9 +3298,13 @@ namespace CriWare
 			/// <para>ボイスリミットによるキャンセル </para>
 			/// </remarks>
 			ReasonCancelVoiceLimit = 85,
-			ReasonNone = 2147483646,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ループマーカーの終端処理 </para>
+			/// </remarks>
+			ReasonRegionSynedLoopEnd = 86,
+			ReasonNone = 0x7FFFFFFE,
 		}
-
 		public const Int32 DefaultOutputSamplingRate = (48000);
 
 		public const CriAtom.SoundRendererType SoundRendererDefault = (CriAtom.SoundRendererType.Asr);
@@ -3402,6 +3377,11 @@ namespace CriWare
 		/// <para>ハードウェア固有 </para>
 		/// </remarks>
 		public const Int32 FormatHw2 = (0x00010002);
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>ハードウェア固有 </para>
+		/// </remarks>
+		public const Int32 FormatHw3 = (0x00010003);
 
 
 

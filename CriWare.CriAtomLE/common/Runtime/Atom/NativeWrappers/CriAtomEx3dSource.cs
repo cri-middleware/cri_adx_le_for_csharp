@@ -132,7 +132,7 @@ namespace CriWare
 		/// 引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx3dSource_CalculateWorkSize(const CriAtomEx3dSourceConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx3dSource_CalculateWorkSize(const CriAtomEx3dSourceConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.CriAtomEx3dSource"/>
 		/// <seealso cref="CriAtomEx3dSource.Config"/>
@@ -211,7 +211,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomEx3dSourceHn CRIAPI criAtomEx3dSource_Create(const CriAtomEx3dSourceConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomEx3dSourceHn criAtomEx3dSource_Create(const CriAtomEx3dSourceConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomEx3dSource.Dispose"/>
@@ -237,7 +237,7 @@ namespace CriWare
 		///  また、引数に指定した3D音源オブジェクトも無効になります。
 		///  3D音源オブジェクトをセットしたAtomExプレーヤーで再生している音声がある場合、 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_Destroy(CriAtomEx3dSourceHn ex_3d_source)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_Destroy(CriAtomEx3dSourceHn ex_3d_source)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.CriAtomEx3dSource"/>
 		public void Dispose()
@@ -265,7 +265,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetPosition(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *position)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetPosition(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *position)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public unsafe void SetPosition(in CriAtomEx.Vector position)
@@ -288,7 +288,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetVelocity(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *velocity)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetVelocity(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *velocity)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public unsafe void SetVelocity(in CriAtomEx.Vector velocity)
@@ -308,7 +308,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数はAtomExプレーヤーのパラメーター更新（<see cref="CriAtomExPlayer.UpdateAll"/>, <see cref="CriAtomExPlayer.Update"/>） とは独立して動作します。3D音源のパラメーターを変更した際は、本関数にて更新処理を行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_Update(CriAtomEx3dSourceHn ex_3d_source)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_Update(CriAtomEx3dSourceHn ex_3d_source)"/>
 		/// </remarks>
 		public void Update()
 		{
@@ -325,7 +325,7 @@ namespace CriWare
 		/// 注意:
 		/// クリアしたパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_ResetParameters(CriAtomEx3dSourceHn ex_3d_source)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_ResetParameters(CriAtomEx3dSourceHn ex_3d_source)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void ResetParameters()
@@ -340,7 +340,7 @@ namespace CriWare
 		/// 3D音源の位置を取得します。
 		///  位置は、3次元ベクトルで取得します。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExVector CRIAPI criAtomEx3dSource_GetPosition(CriAtomEx3dSourceHn ex_3d_source)"/>
+		/// <nativeinfo declaration="CriAtomExVector criAtomEx3dSource_GetPosition(CriAtomEx3dSourceHn ex_3d_source)"/>
 		/// </remarks>
 		public CriAtomEx.Vector GetPosition()
 		{
@@ -374,7 +374,7 @@ namespace CriWare
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。
 		///  また、Ambiosnicsに対してサウンドコーンを適用することは出来ません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetOrientation(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *front, const CriAtomExVector *top)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetOrientation(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *front, const CriAtomExVector *top)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetConeParameter"/>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
@@ -416,7 +416,7 @@ namespace CriWare
 		/// デフォルト値は、<see cref="CriAtomEx3dSource.ChangeDefaultConeParameter"/> 関数にて変更可能です。
 		///  データ側に当該パラメーターが設定されている場合に本関数を呼び出すと、以下のように適用されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetConeParameter(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 inside_angle, CriFloat32 outside_angle, CriFloat32 outside_volume)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetConeParameter(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 inside_angle, CriFloat32 outside_angle, CriFloat32 outside_volume)"/>
 		/// </remarks>
 		public void SetConeParameter(Single insideAngle, Single outsideAngle, Single outsideVolume)
 		{
@@ -440,7 +440,7 @@ namespace CriWare
 		///  そのため、本関数でデフォルト値を変更すると、ツールでの編集時に意図していたパラメーターと異なってしまう可能性があります。
 		///  但し、インゲームプレビュー用にビルドされたデータは本関数の影響を受けません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_ChangeDefaultConeParameter(CriFloat32 inside_angle, CriFloat32 outside_angle, CriFloat32 outside_volume)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_ChangeDefaultConeParameter(CriFloat32 inside_angle, CriFloat32 outside_angle, CriFloat32 outside_volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetConeParameter"/>
 		public static void ChangeDefaultConeParameter(Single insideAngle, Single outsideAngle, Single outsideVolume)
@@ -470,7 +470,7 @@ namespace CriWare
 		/// デフォルト値は、<see cref="CriAtomEx3dSource.ChangeDefaultMinMaxAttenuationDistance"/> 関数にて変更可能です。
 		///  データ側に当該パラメーターが設定されている場合に本関数を呼び出すと、データ側の値を上書き（無視）して適用されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetMinMaxAttenuationDistance(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 min_attenuation_distance, CriFloat32 max_attenuation_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetMinMaxAttenuationDistance(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 min_attenuation_distance, CriFloat32 max_attenuation_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		/// <seealso cref="CriAtomEx3dSource.ChangeDefaultMinMaxAttenuationDistance"/>
@@ -499,7 +499,7 @@ namespace CriWare
 		/// <item><description>インゲームプレビュー用にビルドしている</description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_ChangeDefaultMinMaxAttenuationDistance(CriFloat32 min_attenuation_distance, CriFloat32 max_attenuation_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_ChangeDefaultMinMaxAttenuationDistance(CriFloat32 min_attenuation_distance, CriFloat32 max_attenuation_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetMinMaxAttenuationDistance"/>
 		public static void ChangeDefaultMinMaxAttenuationDistance(Single minAttenuationDistance, Single maxAttenuationDistance)
@@ -535,7 +535,7 @@ namespace CriWare
 		///  関数にて変更可能です。
 		///  また、現在ツールにて当該パラメーターを設定できないため、常に本関数での設定値が使用されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetInteriorPanField(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 source_radius, CriFloat32 interior_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetInteriorPanField(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 source_radius, CriFloat32 interior_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		/// <seealso cref="CriAtomEx3dSource.ChangeDefaultInteriorPanField"/>
@@ -554,7 +554,7 @@ namespace CriWare
 		///  本関数によってデフォルト値を変更すると、以降に作成する3D音源オブジェクト（ <see cref="CriAtomEx3dSource"/> ）の インテリアパンニング境界距離の初期値が本関数で設定した値となります。
 		///  ライブラリ初期化時のデフォルト値については、 <see cref="CriAtomEx3dSource.SetInteriorPanField"/> 関数を参照して下さい。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_ChangeDefaultInteriorPanField(CriFloat32 source_radius, CriFloat32 interior_distance)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_ChangeDefaultInteriorPanField(CriFloat32 source_radius, CriFloat32 interior_distance)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetInteriorPanField"/>
 		public static void ChangeDefaultInteriorPanField(Single sourceRadius, Single interiorDistance)
@@ -578,7 +578,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetDopplerFactor(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 doppler_factor)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetDopplerFactor(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 doppler_factor)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		/// <seealso cref="CriAtomEx3dSource.ChangeDefaultDopplerFactor"/>
@@ -602,7 +602,7 @@ namespace CriWare
 		///  そのため、本関数でデフォルト値を変更すると、ツールでの編集時に意図していたパラメーターと異なってしまう可能性があります。
 		///  但し、インゲームプレビュー用にビルドされたデータは本関数の影響を受けません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_ChangeDefaultDopplerFactor(CriFloat32 doppler_factor)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_ChangeDefaultDopplerFactor(CriFloat32 doppler_factor)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetDopplerFactor"/>
 		public static void ChangeDefaultDopplerFactor(Single dopplerFactor)
@@ -630,7 +630,7 @@ namespace CriWare
 		/// 注意:
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetVolume(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetVolume(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		/// <seealso cref="CriAtomEx3dSource.ChangeDefaultVolume"/>
@@ -654,7 +654,7 @@ namespace CriWare
 		///  そのため、本関数でデフォルト値を変更すると、ツールでの編集時に意図していたパラメーターと異なってしまう可能性があります。
 		///  但し、インゲームプレビュー用にビルドされたデータは本関数の影響を受けません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_ChangeDefaultVolume(CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_ChangeDefaultVolume(CriFloat32 volume)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.SetVolume"/>
 		public static void ChangeDefaultVolume(Single volume)
@@ -677,7 +677,7 @@ namespace CriWare
 		/// 設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。
 		///  本関数で設定している最大変化量は、定位角度を元に計算されている、角度AISACコントロール値の変化にのみ適用されます。 定位角度自体には影響はありません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetMaxAngleAisacDelta(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 max_delta)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetMaxAngleAisacDelta(CriAtomEx3dSourceHn ex_3d_source, CriFloat32 max_delta)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void SetMaxAngleAisacDelta(Single maxDelta)
@@ -708,7 +708,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetDistanceAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetDistanceAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void SetDistanceAisacControlId(UInt32 aisacControlId)
@@ -738,7 +738,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetListenerBasedAzimuthAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetListenerBasedAzimuthAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void SetListenerBasedAzimuthAngleAisacControlId(UInt32 aisacControlId)
@@ -768,7 +768,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetListenerBasedElevationAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetListenerBasedElevationAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void SetListenerBasedElevationAngleAisacControlId(UInt32 aisacControlId)
@@ -798,7 +798,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetSourceBasedAzimuthAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetSourceBasedAzimuthAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void SetSourceBasedAzimuthAngleAisacControlId(UInt32 aisacControlId)
@@ -828,7 +828,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetSourceBasedElevationAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetSourceBasedElevationAngleAisacControlId(CriAtomEx3dSourceHn ex_3d_source, CriAtomExAisacControlId aisac_control_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
 		public void SetSourceBasedElevationAngleAisacControlId(UInt32 aisacControlId)
@@ -847,7 +847,7 @@ namespace CriWare
 		/// 同一のExPlayerに設定されている3D音源と3Dリスナーに設定されているリージョンが異なり、 かつ3D音源と同じリージョンが設定されている3Dトランシーバーがない場合、音声はミュートされます。
 		///  設定したパラメーターを実際に適用するには、<see cref="CriAtomEx3dSource.Update"/> 関数を呼び出す必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_Set3dRegionHn(CriAtomEx3dSourceHn ex_3d_source, CriAtomEx3dRegionHn ex_3d_region)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_Set3dRegionHn(CriAtomEx3dSourceHn ex_3d_source, CriAtomEx3dRegionHn ex_3d_region)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dRegion.CriAtomEx3dRegion"/>
 		/// <seealso cref="CriAtomEx3dSource.Update"/>
@@ -873,7 +873,7 @@ namespace CriWare
 		///  本関数は再生中の音声に対してパラメーターは適用されません。
 		///  次回再生の音声から適用されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetRandomPositionConfig(CriAtomEx3dSourceHn ex_3d_source, const CriAtomEx3dSourceRandomPositionConfig *config)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetRandomPositionConfig(CriAtomEx3dSourceHn ex_3d_source, const CriAtomEx3dSourceRandomPositionConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.RandomPositionConfig"/>
 		public unsafe void SetRandomPositionConfig(in CriAtomEx3dSource.RandomPositionConfig config)
@@ -1071,7 +1071,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetRandomPositionCalculationCallback(CriAtomEx3dSourceHn ex_3d_source, CriAtomEx3dSourceRandomPositionCalculationCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetRandomPositionCalculationCallback(CriAtomEx3dSourceHn ex_3d_source, CriAtomEx3dSourceRandomPositionCalculationCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.RandomPositionCalculationCbFunc"/>
 		/// <seealso cref="CriAtomEx3dSource.RandomPositionConfig"/>
@@ -1163,7 +1163,7 @@ namespace CriWare
 		///  代わりに内部で確保した位置座標リストに保存します。
 		///  そのため、 <see cref="CriAtomEx3dSource.Config"/>::random_position_list_max_length を 超える値を設定するとエラーが発生します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetRandomPositionList(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *position_list, CriUint32 length)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetRandomPositionList(CriAtomEx3dSourceHn ex_3d_source, const CriAtomExVector *position_list, CriUint32 length)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.RandomPositionConfig"/>
 		/// <seealso cref="CriAtomEx3dSource.Config"/>
@@ -1196,7 +1196,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx3dSource_SetRandomPositionResultCallback(CriAtomEx3dSourceHn ex_3d_source, CriAtomEx3dSourceRandomPositionResultCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx3dSource_SetRandomPositionResultCallback(CriAtomEx3dSourceHn ex_3d_source, CriAtomEx3dSourceRandomPositionResultCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx3dSource.RandomPositionResultCbFunc"/>
 		public unsafe void SetRandomPositionResultCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomEx3dSource.RandomPositionResultInfoDetail*, void> func, IntPtr obj)

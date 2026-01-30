@@ -12,7 +12,6 @@ using CriWare.InteropHelpers;
 
 namespace CriWare
 {
-
 	public partial class CriAtomDspSpectra : IDisposable
 	{
 		/// <summary>スペクトラムアナライザ作成に必要なワーク領域サイズを計算 </summary>
@@ -175,10 +174,15 @@ namespace CriWare
 			var arrayList = stackalloc float*[(int)numChannels];
 			FixAndCall(numChannels, numSamples, pcm, 0);
 
-			void FixAndCall(UInt32 outputChannels, UInt32 outputSamples, float[][] outputBuffer, int index){
-				if(index > outputChannels)
+			void FixAndCall(UInt32 outputChannels, UInt32 outputSamples, float[][] outputBuffer, int index)
+			{
+				if (index >= outputChannels)
+				{
 					NativeMethods.criAtomDspSpectra_Process(NativeHandle, outputChannels, outputSamples, arrayList);
-				fixed(float* ptr = outputBuffer[index]){
+					return;
+				}
+				fixed (float* ptr = outputBuffer[index])
+				{
 					arrayList[index] = ptr;
 					FixAndCall(outputChannels, outputSamples, outputBuffer, index + 1);
 				}
@@ -207,7 +211,7 @@ namespace CriWare
 		/// <nativeinfo declaration="const CriFloat32* criAtomDspSpectra_GetLevels(CriAtomDspSpectraHn spectra)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomDspSpectra.Process"/>
-		public IntPtr GetLevels()
+		public unsafe NativeReference<Single> GetLevels()
 		{
 			return NativeMethods.criAtomDspSpectra_GetLevels(NativeHandle);
 		}

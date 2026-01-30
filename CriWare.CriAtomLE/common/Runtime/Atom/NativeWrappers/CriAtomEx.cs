@@ -345,7 +345,7 @@ namespace CriWare
 		/// 本関数は <see cref="CriAtomEx.InitializeForUserPcmOutput"/> 関数を使用して ライブラリを初期化する場合に使用します。
 		/// <see cref="CriAtomEx.Initialize"/> 関数を使用する場合には、本関数ではなく <see cref="CriAtomEx.CalculateWorkSize"/> 関数を使用してワーク領域サイズを計算してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSizeForUserPcmOutput(const CriAtomExConfigForUserPcmOutput *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSizeForUserPcmOutput(const CriAtomExConfigForUserPcmOutput *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigForUserPcmOutput"/>
 		/// <seealso cref="CriAtomEx.InitializeForUserPcmOutput"/>
@@ -377,7 +377,7 @@ namespace CriWare
 		/// <see cref="CriAtomEx.Config"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
 		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケーターを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize(const CriAtomExConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize(const CriAtomExConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Config"/>
 		/// <seealso cref="CriAtomEx.Initialize"/>
@@ -425,7 +425,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Initialize"/>
 		/// <seealso cref="CriAtomEx.SetDefaultConfig"/>
-		[System.Xml.Serialization.XmlType(Namespace = "CriAtomEx")]
+		[System.Xml.Serialization.XmlType(TypeName = "CriAtomExConfig")]
 		[Serializable]
 		public unsafe partial struct Config
 		{
@@ -825,6 +825,7 @@ namespace CriWare
 			/// アプリケーションでは、この値を変更しないでください。
 			/// </para>
 			/// </remarks>
+			[NonSerialized, XmlIgnore]
 			public UInt32 version;
 
 			/// <summary>モジュールバージョン番号 </summary>
@@ -839,6 +840,7 @@ namespace CriWare
 			/// アプリケーションでは、この値を変更しないでください。
 			/// </para>
 			/// </remarks>
+			[NonSerialized, XmlIgnore]
 			public UInt32 versionEx;
 
 			/// <summary>ライブラリバージョン文字列 </summary>
@@ -853,6 +855,7 @@ namespace CriWare
 			/// アプリケーションでは、この値を変更しないでください。
 			/// </para>
 			/// </remarks>
+			[NonSerialized, XmlIgnore]
 			public NativeString versionString;
 
 			/// <summary>モジュールバージョン文字列 </summary>
@@ -867,6 +870,7 @@ namespace CriWare
 			/// アプリケーションでは、この値を変更しないでください。
 			/// </para>
 			/// </remarks>
+			[NonSerialized, XmlIgnore]
 			public NativeString versionExString;
 
 		}
@@ -928,8 +932,9 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </list>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_Initialize(const CriAtomExConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_Initialize(const CriAtomExConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
+		[Obsolete]
 		public static unsafe bool Initialize(in CriAtomEx.Config config)
 		{
 			fixed (CriAtomEx.Config* configPtr = &config)
@@ -946,9 +951,10 @@ namespace CriWare
 		/// 注意:
 		/// <see cref="CriAtomEx.Initialize"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Finalize(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Initialize"/>
+		[Obsolete]
 		public static void Finalize()
 		{
 			NativeMethods.criAtomEx_Finalize();
@@ -1138,7 +1144,7 @@ namespace CriWare
 		/// <item><description>各プラットフォームにおけるAtomライブラリ初期化関数 </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_InitializeForUserPcmOutput(const CriAtomExConfigForUserPcmOutput *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomEx_InitializeForUserPcmOutput(const CriAtomExConfigForUserPcmOutput *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigForUserPcmOutput"/>
 		/// <seealso cref="CriAtomEx.FinalizeForUserPcmOutput"/>
@@ -1161,7 +1167,7 @@ namespace CriWare
 		/// 本関数は <see cref="CriAtomEx.InitializeForUserPcmOutput"/> 関数を使用してライブラリを初期化した場合に使用します。
 		/// <see cref="CriAtomEx.Initialize"/> 関数を使用した場合には、本関数ではなく <see cref="CriAtomEx.Finalize"/> 関数を使用して終了処理を行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_FinalizeForUserPcmOutput(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_FinalizeForUserPcmOutput(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeForUserPcmOutput"/>
 		public static void FinalizeForUserPcmOutput()
@@ -1176,7 +1182,7 @@ namespace CriWare
 		/// 説明:
 		/// ライブラリが既に初期化されているかどうかをチェックします。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_IsInitialized(void)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsInitialized(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Initialize"/>
 		/// <seealso cref="CriAtomEx.Finalize"/>
@@ -1205,7 +1211,7 @@ namespace CriWare
 		///  CRI File Systemライブラリのサーバー処理は、CRI Atomライブラリ内部で実行されます。
 		///  そのため、本関数を実行している場合、アプリケーション側で別途CRI File Systemライブラリ のサーバー処理を呼び出す必要はありません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ExecuteMain(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_ExecuteMain(void)"/>
 		/// </remarks>
 		public static void ExecuteMain()
 		{
@@ -1227,7 +1233,7 @@ namespace CriWare
 		/// 備考:
 		/// <see cref="CriAtomEx.ThreadModel.Single"/> に設定した場合、サーバー処理の排他制御が行われないので、 複数のスレッドから呼び出さないようにしてください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ExecuteAudioProcess(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_ExecuteAudioProcess(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ExecuteMain"/>
 		public static void ExecuteAudioProcess()
@@ -1255,7 +1261,7 @@ namespace CriWare
 		///  サーバー処理の割り込みを防止する区間は、最小限に抑える必要があります。 </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Lock(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Lock(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Unlock"/>
 		public static void Lock()
@@ -1269,7 +1275,7 @@ namespace CriWare
 		/// 説明:
 		/// <see cref="CriAtomEx.Lock"/> 関数による、サーバー処理の割り込み防止を解除します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Unlock(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Unlock(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.Lock"/>
 		public static void Unlock()
@@ -1284,7 +1290,7 @@ namespace CriWare
 		/// 説明:
 		/// Atomライブラリ内のマスタタイマーから時刻を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriUint64 CRIAPI criAtomEx_GetTimeMicro(void)"/>
+		/// <nativeinfo declaration="CriUint64 criAtomEx_GetTimeMicro(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ResetTimer"/>
 		public static UInt64 GetTimeMicro()
@@ -1303,7 +1309,7 @@ namespace CriWare
 		/// 本関数は <see cref="CriAtomEx.GetTimeMicro"/> 関数が返す値に対してのみ影響します。
 		///  本関数を実行しても、AtomExプレーヤーの再生時刻がクリアされることはありません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ResetTimer(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_ResetTimer(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ResetTimer"/>
 		public static void ResetTimer()
@@ -1333,7 +1339,7 @@ namespace CriWare
 		///  即座に同期をとる必要がある場合は、<see cref="CriAtomEx.ExecuteAudioProcess"/> 関数を呼び出す事で同期をとることができます。
 		///  ただし、<see cref="CriAtomEx.ExecuteAudioProcess"/>を呼び出したスレッドでオーディオ処理が実行されるため、 そのCPU負荷を許容できるかに注意してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_PauseTimer(CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomEx_PauseTimer(CriBool sw)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ResetTimer"/>
 		public static void PauseTimer(NativeBool sw)
@@ -1371,7 +1377,7 @@ namespace CriWare
 		/// <see cref="CriAtomEx.RegisterAcfFile"/> 関数や <see cref="CriAtomExAcb.LoadAcbFile"/> 関数等、 ワーク領域計算時にファイルアクセスが必要になる API については、 本関数を実行した場合でもワーク領域サイズの計算が行えません。
 		///  （ワーク領域サイズを計算するためにはライブラリを初期化する必要が あります。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetConfigForWorkSizeCalculation(const CriAtomExConfig *config)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetConfigForWorkSizeCalculation(const CriAtomExConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.CalculateWorkSizeForRegisterAcfData"/>
 		/// <seealso cref="CriAtomExVoicePool.CalculateWorkSizeForStandardVoicePool"/>
@@ -1398,7 +1404,7 @@ namespace CriWare
 		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtomEx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSizeForRegisterAcfData(void *acf_data, CriSint32 acf_data_size)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSizeForRegisterAcfData(void *acf_data, CriSint32 acf_data_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.RegisterAcfData"/>
 		public static Int32 CalculateWorkSizeForRegisterAcfData(IntPtr acfData, Int32 acfDataSize)
@@ -1444,11 +1450,12 @@ namespace CriWare
 		///  （ 
 		///  関数実行前に、ワーク領域のメモリを解放しないでください。） また、データ領域の一部はワークとして使用されます。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_RegisterAcfData(void *acf_data, CriSint32 acf_data_size, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_RegisterAcfData(void *acf_data, CriSint32 acf_data_size, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.UnregisterAcf"/>
 		public static bool RegisterAcfData(IntPtr acfData, Int32 acfDataSize)
 		{
+			using var _ = new NativeAllocator.BindDataSectionScope(acfData, acfDataSize, true);
 			return NativeMethods.criAtomEx_RegisterAcfData(acfData, acfDataSize, default, default);
 		}
 
@@ -1477,7 +1484,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSizeForRegisterAcfFile(CriFsBinderHn binder, const CriChar8 *path)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSizeForRegisterAcfFile(CriFsBinderHn binder, const CriChar8 *path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.RegisterAcfFile"/>
 		public static Int32 CalculateWorkSizeForRegisterAcfFile(CriFsBinder binder, ArgString path)
@@ -1499,7 +1506,7 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSizeForRegisterAcfFileById(CriFsBinderHn binder, CriUint16 id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSizeForRegisterAcfFileById(CriFsBinderHn binder, CriUint16 id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.CalculateWorkSizeForRegisterAcfFile"/>
 		/// <seealso cref="CriAtomEx.RegisterAcfFileById"/>
@@ -1556,7 +1563,7 @@ namespace CriWare
 		///  ライブラリ初期化時に指定する 
 		///  構造体の以下のメンバの設定値 が適切であるか確認してください。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_RegisterAcfFile(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_RegisterAcfFile(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public static bool RegisterAcfFile(CriFsBinder binder, ArgString path)
 		{
@@ -1582,7 +1589,7 @@ namespace CriWare
 		/// 本関数は、関数実行時に再生中の音声をすべて停止します。
 		///  また、プレーヤーに設定したパラメーターを全てリセットします。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_RegisterAcfFileById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_RegisterAcfFileById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.RegisterAcfFile"/>
 		public static bool RegisterAcfFileById(CriFsBinder binder, UInt16 id)
@@ -1602,7 +1609,7 @@ namespace CriWare
 		///  また、プレーヤーに設定したパラメーターを全てリセットします。
 		///  （ACFファイルが登録されてない際に、音声再生中に本関数を実行した場合は音声は停止されません） <see cref="CriAtomEx.RegisterAcfFile"/> 関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_UnregisterAcf(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_UnregisterAcf(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.RegisterAcfData"/>
 		/// <seealso cref="CriAtomEx.RegisterAcfFile"/>
@@ -1623,7 +1630,7 @@ namespace CriWare
 		/// メモリ上に配置されたACFデータのフォーマットバージョンを取得します。
 		///  また、flag引数にレジスト可能なバージョンかどうかをBool値で返します。
 		/// </para>
-		/// <nativeinfo declaration="CriUint32 CRIAPI criAtomEx_GetAcfVersion(void *acf_data, CriSint32 acf_data_size, CriBool *flag)"/>
+		/// <nativeinfo declaration="CriUint32 criAtomEx_GetAcfVersion(void *acf_data, CriSint32 acf_data_size, CriBool *flag)"/>
 		/// </remarks>
 		public static unsafe UInt32 GetAcfVersion(IntPtr acfData, Int32 acfDataSize, out NativeBool flag)
 		{
@@ -1654,7 +1661,7 @@ namespace CriWare
 		/// 本関数にセットしたワーク領域は、 アプリケーションで保持する必要はありません。
 		///  （ロードしたデータは関数終了時に解放されます。） 
 		/// </para>
-		/// <nativeinfo declaration="CriUint32 CRIAPI criAtomEx_GetAcfVersionFromFile(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size, CriBool *flag)"/>
+		/// <nativeinfo declaration="CriUint32 criAtomEx_GetAcfVersionFromFile(CriFsBinderHn binder, const CriChar8 *path, void *work, CriSint32 work_size, CriBool *flag)"/>
 		/// </remarks>
 		public static unsafe UInt32 GetAcfVersionFromFile(CriFsBinder binder, ArgString path, out NativeBool flag)
 		{
@@ -1677,7 +1684,7 @@ namespace CriWare
 		/// 備考：
 		/// データがCPKにパックされていない場合、引数binderにはnullを指定してください。
 		/// </para>
-		/// <nativeinfo declaration="CriUint32 CRIAPI criAtomEx_GetAcfVersionFromFileById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size, CriBool *flag)"/>
+		/// <nativeinfo declaration="CriUint32 criAtomEx_GetAcfVersionFromFileById(CriFsBinderHn binder, CriUint16 id, void *work, CriSint32 work_size, CriBool *flag)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.GetAcfVersionFromFile"/>
 		public static unsafe UInt32 GetAcfVersionFromFileById(CriFsBinder binder, UInt16 id, out NativeBool flag)
@@ -1695,7 +1702,7 @@ namespace CriWare
 		/// レジスト可能なACFのバージョン情報を取得します。
 		///  上位バージョンはライブラリビルド時点での情報のため、この値より上位のACFでも レジスト可能な場合もあります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_GetSupportedAcfVersion(CriUint32 *version_low, CriUint32 *version_high)"/>
+		/// <nativeinfo declaration="void criAtomEx_GetSupportedAcfVersion(CriUint32 *version_low, CriUint32 *version_high)"/>
 		/// </remarks>
 		public static unsafe void GetSupportedAcfVersion(out UInt32 versionLow, out UInt32 versionHigh)
 		{
@@ -1727,7 +1734,7 @@ namespace CriWare
 		/// 現状、本関数はADXデータとHCAデータの解析にしか対応していません。
 		///  HCA-MXデータについては解析は可能ですが、ヘッダー情報からはHCAデータなのか HCA-MXデータなのかは区別できないため、フォーマット種別として <see cref="CriAtomEx.FormatHca"/> が返されます。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_AnalyzeAudioHeader(const void *buffer, CriSint32 buffer_size, CriAtomExFormatInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_AnalyzeAudioHeader(const void *buffer, CriSint32 buffer_size, CriAtomExFormatInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool AnalyzeAudioHeader(IntPtr buffer, Int32 bufferSize, out CriAtomEx.FormatInfo info)
 		{
@@ -1803,7 +1810,7 @@ namespace CriWare
 		///  乱数種を設定することにより、各種ランダム再生処理に再現性を持たせることができます。
 		///  AtomExプレーヤーごとに再現性を持たせたい場合は、<see cref="CriAtomExPlayer.SetRandomSeed"/> 関数を使用してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetRandomSeed(CriUint32 seed)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetRandomSeed(CriUint32 seed)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetRandomSeed"/>
 		public static void SetRandomSeed(UInt32 seed)
@@ -1833,7 +1840,7 @@ namespace CriWare
 		/// <see cref="CriAtomExPlayer.SetData"/> 関数でセットしたバッファーを解放する際には、 データをセットしたプレーヤーに対し停止処理を行った後、 本関数が false を返す状態になるまで待つ必要があります。
 		///  本関数が true を返すタイミングでバッファー領域を解放した場合、 アクセス違反等の致命的な問題が発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_IsDataPlaying(void *buffer, CriSint32 size)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsDataPlaying(void *buffer, CriSint32 size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.SetData"/>
 		public static bool IsDataPlaying(IntPtr buffer, Int32 size)
@@ -1856,7 +1863,7 @@ namespace CriWare
 		/// 備考:
 		/// DSPバス設定のアタッチに必要なワークメモリのサイズは、CRI Atom Craftで作成した DSPバス設定の内容によって変化します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSizeForDspBusSetting(const CriChar8 *setting)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSizeForDspBusSetting(const CriChar8 *setting)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		/// <seealso cref="CriAtomEx.RegisterAcfData"/>
@@ -1891,7 +1898,7 @@ namespace CriWare
 		///  （本関数実行時にエラーコールバックが発生したり、負値が返される可能性があります。）
 		///  本関数が動作しないプラットフォームについては、 ライブラリの初期化後に <see cref="CriAtomEx.CalculateWorkSizeForDspBusSetting"/> 関数を使用して必要なワーク領域サイズを計算してください。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSizeForDspBusSettingFromAcfData(void *acf_data, CriSint32 acf_buffer_size, const CriChar8 *setting_name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSizeForDspBusSettingFromAcfData(void *acf_data, CriSint32 acf_buffer_size, const CriChar8 *setting_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		/// <seealso cref="CriAtomEx.RegisterAcfData"/>
@@ -1929,7 +1936,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_AttachDspBusSetting(const CriChar8 *setting, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomEx_AttachDspBusSetting(const CriChar8 *setting, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.DetachDspBusSetting"/>
 		/// <seealso cref="CriAtomEx.RegisterAcfData"/>
@@ -1945,8 +1952,13 @@ namespace CriWare
 		/// <para>
 		/// 説明:
 		/// DSPバス設定をデタッチします。
+		///  ミキサーVersion2のACFを使用する場合、追加で以下の動作を行います。
+		/// <list type="bullet">
+		/// <item><description>ASRの状態はアタッチ前に戻します（上書きされたパラメーターはもとに戻ります）
 		/// <see cref="CriAtomEx.SetUserAllocator"/> メソッドを使用してアロケーターを登録済みの場合、 DSPバス設定アタッチ時に確保されたメモリ領域が解放されます。
 		///  （DSPバス設定アタッチ時にワーク領域を渡した場合、本関数実行後であれば ワーク領域を解放可能です。）
+		/// </description></item>
+		/// </list>
 		/// </para>
 		/// <para>
 		/// 注意:
@@ -1954,7 +1966,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_DetachDspBusSetting(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_DetachDspBusSetting(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		public static void DetachDspBusSetting()
@@ -1972,7 +1984,7 @@ namespace CriWare
 		///  本関数を呼び出すと、スナップショットで設定したパラメーターに time_ms 掛けて変化します。
 		///  引数 snapshot_name に CRI_NULL を指定すると、元のDSPバス設定の状態（スナップショットが適用されていない状態）に戻ります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ApplyDspBusSnapshot(const CriChar8 *snapshot_name, CriSint32 time_ms)"/>
+		/// <nativeinfo declaration="void criAtomEx_ApplyDspBusSnapshot(const CriChar8 *snapshot_name, CriSint32 time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		public static void ApplyDspBusSnapshot(ArgString snapshotName, Int32 timeMs)
@@ -1987,7 +1999,7 @@ namespace CriWare
 		/// 説明:
 		/// 適用中のDSPバススナップショット名を取得します。 スナップショットが適用されていない場合はCRI_NULLが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomEx_GetAppliedDspBusSnapshotName(void)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomEx_GetAppliedDspBusSnapshotName(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ApplyDspBusSnapshot"/>
 		public static NativeString GetAppliedDspBusSnapshotName()
@@ -2013,7 +2025,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetCueLinkCallback(CriAtomExCueLinkCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetCueLinkCallback(CriAtomExCueLinkCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.CueLinkCbFunc"/>
 		public static unsafe void SetCueLinkCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomEx.CueLinkInfo*, Int32> func, IntPtr obj)
@@ -2093,7 +2105,7 @@ namespace CriWare
 
 			/// <summary></summary>
 			/// <remarks>
-			/// <para>リンク元キュー </para>
+			/// <para>リンク元キュー。メンバ変数'type'の値は必ず<see cref="CriAtomEx.SourceType.CueId"/>となる。 </para>
 			/// </remarks>
 			public CriAtomEx.SourceInfo baseCue;
 
@@ -2105,7 +2117,7 @@ namespace CriWare
 
 			/// <summary></summary>
 			/// <remarks>
-			/// <para>リンク先キュー </para>
+			/// <para>リンク先キュー。メンバ変数'type'の値は必ず<see cref="CriAtomEx.SourceType.CueId"/>となる。 </para>
 			/// </remarks>
 			public CriAtomEx.SourceInfo targetCue;
 
@@ -2214,7 +2226,10 @@ namespace CriWare
 			/// </remarks>
 			InputPort = 11,
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>再生元情報共用体 </para>
+		/// </remarks>
 		[StructLayout(LayoutKind.Explicit)]
 		public unsafe partial struct SourceInfoInfoTag
 		{
@@ -2243,234 +2258,204 @@ namespace CriWare
 			[FieldOffset(0)] public CriAtomEx.SourceInfoInputPortTag inputPort;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>キューID情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoCueIdTag
 		{
-			/// <summary>ACBハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューシート情報を管理するオブジェクトです。
-			/// <see cref="CriAtomExAcb.LoadAcbFile"/> 関数等で読み込んだキューシートファイル内の 音声を再生する場合、本オブジェクトとキューIDをプレーヤーに対してセットします。
-			/// </para>
+			/// <para>ACBハンドル </para>
 			/// </remarks>
 			public IntPtr acb;
 
-			/// <summary>キューID </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューIDは、ユーザがオーサリングツール上でキューに対して割り当てた一意のIDです。
-			///  キューIDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
-			/// </para>
+			/// <para>キューID </para>
 			/// </remarks>
 			public Int32 id;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>キュー名情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoCueNameTag
 		{
-			/// <summary>ACBハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューシート情報を管理するオブジェクトです。
-			/// <see cref="CriAtomExAcb.LoadAcbFile"/> 関数等で読み込んだキューシートファイル内の 音声を再生する場合、本オブジェクトとキューIDをプレーヤーに対してセットします。
-			/// </para>
+			/// <para>ACBハンドル </para>
 			/// </remarks>
 			public IntPtr acb;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>キュー名 </para>
+			/// </remarks>
 			public NativeString name;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>キューインデックス情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoCueIndexTag
 		{
-			/// <summary>ACBハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューシート情報を管理するオブジェクトです。
-			/// <see cref="CriAtomExAcb.LoadAcbFile"/> 関数等で読み込んだキューシートファイル内の 音声を再生する場合、本オブジェクトとキューIDをプレーヤーに対してセットします。
-			/// </para>
+			/// <para>ACBハンドル </para>
 			/// </remarks>
 			public IntPtr acb;
 
-			/// <summary>キューインデックス </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// キューインデックスは、ACBファイル内のコンテンツのオフセットを示す番号です。
-			///  （先頭のコンテンツが0番、その次のコンテンツが1番…というふうに、コンテンツに 順番に割り当てられる番号です。）
-			///  キューインデックスをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
-			/// </para>
+			/// <para>キューインデックス </para>
 			/// </remarks>
 			public Int32 index;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>オンメモリデータ情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoDataTag
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>メモリアドレス </para>
+			/// </remarks>
 			public IntPtr buffer;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>サイズ </para>
+			/// </remarks>
 			public Int32 size;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>ファイル情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoFileTag
 		{
-			/// <summary>CriFsBinderハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明：
-			/// バインダーとは、ファイルを効率良く扱うためのデータベースです。
-			/// <list type="bullet">
-			/// <item><description><see cref="CriFsBinder"/> (バインダーオブジェクト)とバインド
-			///  バインダーを利用するには、バインダーオブジェクト( <see cref="CriFsBinder"/> )を作成し、 CPKファイル／ファイル／ディレクトリをバインダーに結びつけます。 このバインダーへの結び付けをバインドと呼びます。
-			///  バインダーを作成すると、バインダーオブジェクト( <see cref="CriFsBinder"/> )が取得されます。
-			/// </description></item>
-			/// <item><description><see cref="CriFsBind"/> （バインドID）
-			///  バインダーにバインドを行うと、バインドIDが作成されます。個々のバインドを識別するために使用します。
-			/// </description></item>
-			/// <item><description>ファイルのバインドとアンバインド
-			///  バインダーには、CPKファイルやファイル、ディレクトリをどのような組み合わせででもバインドできます。
-			///  バインドした項目のバインド状態を解除することをアンバインドと呼びます。
-			/// </description></item>
-			/// <item><description>利用できるバインド数
-			///  作成できるバインダー数や同時にバインドできる最大数は、 <see cref="CriFs.Config"/> の num_binders (バインダー数)や max_binds (同時バインド可能な最大数)で指定します。
-			/// </description></item>
-			/// <item><description>CPKファイルのバインド
-			///  CPKファイルに収納されている個々のファイル（コンテンツファイル）にアクセスするには、 CPKファイルをバインドする必要があります。
-			///  CPKファイルのコンテンツファイルもバインドできます。元のCPKファイルをアンバインドした場合、 バインドされているコンテンツファイルもアンバインドされます（暗黙的アンバインド）。
-			/// </description></item>
-			/// <item><description>バインダーのプライオリティ
-			///  バインダーは、目的のファイルがどのバインドIDにあるのかを検索します。
-			///  このバインドIDの検索順は、基本的にはバインドされた順番になりますが、バインドIDのプライオリティを 操作することで、検索順を変更することができます。
-			/// </description></item>
-			/// <item><description>バインダーとCriFsのAPI
-			///  CriFsLoader, CriFsGroupLoader, CriFsBinderには、バインダーを引数に持つAPIがあります。 その際には、 <see cref="CriFsBinder"/> と <see cref="CriFsBind"/> 、どちらを指定するのかに注意してください。 </description></item>
-			/// </list>
-			/// </para>
+			/// <para>バインダーハンドル </para>
 			/// </remarks>
 			public IntPtr binder;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ファイルパス </para>
+			/// </remarks>
 			public NativeString path;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>CPKコンテンツID情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoContentIdTag
 		{
-			/// <summary>CriFsBinderハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明：
-			/// バインダーとは、ファイルを効率良く扱うためのデータベースです。
-			/// <list type="bullet">
-			/// <item><description><see cref="CriFsBinder"/> (バインダーオブジェクト)とバインド
-			///  バインダーを利用するには、バインダーオブジェクト( <see cref="CriFsBinder"/> )を作成し、 CPKファイル／ファイル／ディレクトリをバインダーに結びつけます。 このバインダーへの結び付けをバインドと呼びます。
-			///  バインダーを作成すると、バインダーオブジェクト( <see cref="CriFsBinder"/> )が取得されます。
-			/// </description></item>
-			/// <item><description><see cref="CriFsBind"/> （バインドID）
-			///  バインダーにバインドを行うと、バインドIDが作成されます。個々のバインドを識別するために使用します。
-			/// </description></item>
-			/// <item><description>ファイルのバインドとアンバインド
-			///  バインダーには、CPKファイルやファイル、ディレクトリをどのような組み合わせででもバインドできます。
-			///  バインドした項目のバインド状態を解除することをアンバインドと呼びます。
-			/// </description></item>
-			/// <item><description>利用できるバインド数
-			///  作成できるバインダー数や同時にバインドできる最大数は、 <see cref="CriFs.Config"/> の num_binders (バインダー数)や max_binds (同時バインド可能な最大数)で指定します。
-			/// </description></item>
-			/// <item><description>CPKファイルのバインド
-			///  CPKファイルに収納されている個々のファイル（コンテンツファイル）にアクセスするには、 CPKファイルをバインドする必要があります。
-			///  CPKファイルのコンテンツファイルもバインドできます。元のCPKファイルをアンバインドした場合、 バインドされているコンテンツファイルもアンバインドされます（暗黙的アンバインド）。
-			/// </description></item>
-			/// <item><description>バインダーのプライオリティ
-			///  バインダーは、目的のファイルがどのバインドIDにあるのかを検索します。
-			///  このバインドIDの検索順は、基本的にはバインドされた順番になりますが、バインドIDのプライオリティを 操作することで、検索順を変更することができます。
-			/// </description></item>
-			/// <item><description>バインダーとCriFsのAPI
-			///  CriFsLoader, CriFsGroupLoader, CriFsBinderには、バインダーを引数に持つAPIがあります。 その際には、 <see cref="CriFsBinder"/> と <see cref="CriFsBind"/> 、どちらを指定するのかに注意してください。 </description></item>
-			/// </list>
-			/// </para>
+			/// <para>バインダーハンドル </para>
 			/// </remarks>
 			public IntPtr binder;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>コンテンツID </para>
+			/// </remarks>
 			public Int32 id;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>波形データID情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoWaveIdTag
 		{
-			/// <summary>AWBハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 再生データが含まれているAWBファイルのTOC情報を示すオブジェクトです。
-			/// <see cref="CriAtomAwb.LoadToc"/> 関数で取得します。
-			/// </para>
+			/// <para>AWBハンドル </para>
 			/// </remarks>
 			public IntPtr awb;
 
-			/// <summary>波形データID </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 波形データIDは、ユーザがオーサリングツール上でAWBコンテンツに対して割り当てた一意のIDです。
-			///  波形データIDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
-			/// </para>
+			/// <para>波形データID </para>
 			/// </remarks>
 			public Int32 id;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>振動ID情報 </para>
+		/// </remarks>
 		public unsafe partial struct SourceInfoVibrationIdTag
 		{
-			/// <summary>振動ID </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 振動IDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
-			/// </para>
+			/// <para>振動データID </para>
 			/// </remarks>
 			public Int32 id;
 
 		}
-
 		public unsafe partial struct SourceInfoVibrationNameTag
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>振動データ名 </para>
+			/// </remarks>
 			public NativeString name;
 
 		}
-
 		public unsafe partial struct SourceInfoSoundGeneratorParameterTag
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>周波数 </para>
+			/// </remarks>
 			public Single frequency;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>波形 </para>
+			/// </remarks>
 			public Int32 waveType;
 
 		}
-
 		public unsafe partial struct SourceInfoRawPcmFloatParameterTag
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>データアドレス </para>
+			/// </remarks>
 			public NativeReference<Single> data;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>総サンプル数 </para>
+			/// </remarks>
 			public UInt32 totalSamples;
 
 		}
-
 		public unsafe partial struct SourceInfoInputPortTag
 		{
-			/// <summary>入力ポート種別 </summary>
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>入力ポートタイプ </para>
+			/// </remarks>
 			public CriAtomExInputPort.Type type;
 
-			/// <summary>入力ポートハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// 入力ポートを操作するためのオブジェクトです。
-			/// </para>
+			/// <para>入力ポートハンドル </para>
 			/// </remarks>
-			public IntPtr port;
+			public CriAtomExInputPort port;
 
 		}
 		/// <summary>キューリンクコールバックタイプ </summary>
@@ -2504,7 +2489,7 @@ namespace CriWare
 		///  7.1ch向けのパンスピーカータイプ (6CH または 7CH) のスピーカー角度を変更する場合は、<see cref="CriAtomEx.SetSpeakerAngleArray"/> 関数を使用してください。
 		///  設定するスピーカー角度は、angle_sl &lt; angle_l &lt; angle_r &lt; angle_sr の順となるような配置にする必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetSpeakerAngles(CriFloat32 angle_l, CriFloat32 angle_r, CriFloat32 angle_sl, CriFloat32 angle_sr)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetSpeakerAngles(CriFloat32 angle_l, CriFloat32 angle_r, CriFloat32 angle_sl, CriFloat32 angle_sr)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetSpeakerAngleArray"/>
 		public static void SetSpeakerAngles(Single angleL, Single angleR, Single angleSl, Single angleSr)
@@ -2532,7 +2517,7 @@ namespace CriWare
 		/// LOW FREQUENCYの角度を変更しても、パン3Dや3Dポジショニングの計算結果は変化しません。
 		///  設定した角度は、各スピーカーシステムごとに独立して設定されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetSpeakerAngleArray(CriAtomExSpeakerSystem speaker_system, const CriFloat32 *angle_array)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetSpeakerAngleArray(CriAtomExSpeakerSystem speaker_system, const CriFloat32 *angle_array)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetSpeakerAngles"/>
 		public static unsafe void SetSpeakerAngleArray(UInt32 speakerSystem, in Single angleArray)
@@ -2554,7 +2539,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数での設定は <see cref="CriAtomEx.ControlVirtualSpeakerSetting"/> 関数にてバーチャルスピーカー設定を有効にしない限り、 設定したバーチャルスピーカー角度はパン3Dや3Dポジショニングの計算に反映されません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetVirtualSpeakerAngleArray(CriAtomExSpeakerSystem speaker_system, const CriFloat32 *angle_array)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetVirtualSpeakerAngleArray(CriAtomExSpeakerSystem speaker_system, const CriFloat32 *angle_array)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetSpeakerAngleArray"/>
 		/// <seealso cref="CriAtomEx.ControlVirtualSpeakerSetting"/>
@@ -2577,7 +2562,7 @@ namespace CriWare
 		/// デフォルトの状態は「無効」になっています。
 		///  また、何かボイスを再生中に「有効」にした場合、パン3Dや3Dポジショニングの計算には即時反映されません。 次回ボイス再生時から反映されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ControlVirtualSpeakerSetting(CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomEx_ControlVirtualSpeakerSetting(CriBool sw)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetVirtualSpeakerAngleArray"/>
 		public static void ControlVirtualSpeakerSetting(NativeBool sw)
@@ -2597,7 +2582,7 @@ namespace CriWare
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		///  ACFファイルが登録されていない場合、-1が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_GetNumGameVariables(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_GetNumGameVariables(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.GetGameVariableInfo"/>
 		public static Int32 GetNumGameVariables()
@@ -2615,7 +2600,7 @@ namespace CriWare
 		/// ゲーム変数インデックスからゲーム変数情報を取得します。
 		///  指定したインデックスのゲーム変数が存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_GetGameVariableInfo(CriUint16 index, CriAtomExGameVariableInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_GetGameVariableInfo(CriUint16 index, CriAtomExGameVariableInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.GameVariableInfo"/>
 		public static unsafe bool GetGameVariableInfo(UInt16 index, out CriAtomEx.GameVariableInfo info)
@@ -2667,7 +2652,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomEx_GetGameVariableById(CriAtomExGameVariableId id)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomEx_GetGameVariableById(CriAtomExGameVariableId id)"/>
 		/// </remarks>
 		public static Single GetGameVariableById(UInt32 id)
 		{
@@ -2687,7 +2672,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomEx_GetGameVariableByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomEx_GetGameVariableByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static Single GetGameVariableByName(ArgString name)
 		{
@@ -2715,7 +2700,7 @@ namespace CriWare
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		///  ゲーム変数の値に同じ値を設定した際は AISAC のパラメーター更新の処理は発生しません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetGameVariableById(CriAtomExGameVariableId id, CriFloat32 value)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetGameVariableById(CriAtomExGameVariableId id, CriFloat32 value)"/>
 		/// </remarks>
 		public static void SetGameVariableById(UInt32 id, Single value)
 		{
@@ -2743,7 +2728,7 @@ namespace CriWare
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		///  ゲーム変数の値に同じ値を設定した際は AISAC のパラメーター更新の処理は発生しません。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetGameVariableByName(const CriChar8 *name, CriFloat32 value)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetGameVariableByName(const CriChar8 *name, CriFloat32 value)"/>
 		/// </remarks>
 		public static void SetGameVariableByName(ArgString name, Single value)
 		{
@@ -2768,7 +2753,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetPlaybackCancelCallback(CriAtomExPlaybackCancelCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetPlaybackCancelCallback(CriAtomExPlaybackCancelCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayback.CancelCbFunc"/>
 		public static unsafe void SetPlaybackCancelCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExPlayback.CancelInfo*, void> func, IntPtr obj)
@@ -2793,7 +2778,7 @@ namespace CriWare
 		/// デフォルトの状態は「チェック有効」になっています。「チェック無効」に設定した場合に、 整合性がない組み合わせのデータを使用すると、本来目的とする効果が得られません。
 		///  また、「チェック無効」にした場合でも、音声処理実行時にACBから参照しているACF項目が 見つからないときには別途エラーコールバックが発生します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_ControlAcfConsistencyCheck(CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomEx_ControlAcfConsistencyCheck(CriBool sw)"/>
 		/// </remarks>
 		public static void ControlAcfConsistencyCheck(NativeBool sw)
 		{
@@ -2808,7 +2793,7 @@ namespace CriWare
 		/// ACBロード時のACFとの整合性チェックで発生するエラーの通知レベルを設定します。
 		///  デフォルト状態での通知レベルは <see cref="CriErr.Level.Warning"/> です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetAcfConsistencyCheckErrorLevel(CriErrorLevel level)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetAcfConsistencyCheckErrorLevel(CriErrorLevel level)"/>
 		/// </remarks>
 		public static void SetAcfConsistencyCheckErrorLevel(CriErr.Level level)
 		{
@@ -2833,7 +2818,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetTrackTransitionBySelectorCallback(CriAtomExTrackTransitionBySelectorCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetTrackTransitionBySelectorCallback(CriAtomExTrackTransitionBySelectorCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.TrackTransitionBySelectorCbFunc"/>
 		public static unsafe void SetTrackTransitionBySelectorCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomEx.TrackTransitionBySelectorInfo*, void> func, IntPtr obj)
@@ -3620,7 +3605,7 @@ namespace CriWare
 			/// <remarks>
 			/// <para>予約領域 </para>
 			/// </remarks>
-			public InlineArray1<UInt16> reserved;
+			public InlineArray3<UInt16> reserved;
 
 		}
 		/// <summary>パンタイプ </summary>
@@ -3695,6 +3680,12 @@ namespace CriWare
 
 			/// <summary></summary>
 			/// <remarks>
+			/// <para>コーン外部音量 </para>
+			/// </remarks>
+			public Single coneOutsideVolume;
+
+			/// <summary></summary>
+			/// <remarks>
 			/// <para>最小減衰距離 </para>
 			/// </remarks>
 			public Single minDistance;
@@ -3723,54 +3714,57 @@ namespace CriWare
 			/// </remarks>
 			public Single dopplerFactor;
 
-			/// <summary></summary>
-			/// <remarks>
-			/// <para>元の3D音源に追従するかどうか </para>
-			/// </remarks>
 			public CriAtomEx.CuePos3dInfoTagRandomPosition randomPosition;
-
-			/// <summary></summary>
-			/// <remarks>
-			/// <para>位置座標の算出方法 </para>
-			/// </remarks>
-			public UInt32 distanceAisacControl;
-
-			/// <summary></summary>
-			/// <remarks>
-			/// <para>位置座標の算出方法に関する各種パラメーター配列 </para>
-			/// </remarks>
-			public UInt32 listenerBaseAngleAisacControl;
-
-			/// <summary>AISACコントロールID. </summary>
-			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// AISACコントロールIDは、AISACコントロールに対して割り当てられている一意のIDです。
-			///  AISACコントロールIDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
-			/// </para>
-			/// </remarks>
-			public UInt32 sourceBaseAngleAisacControl;
 
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>距離減衰AISACコントロール </para>
 			/// </remarks>
-			public UInt32 listenerBaseElevationAisacControl;
+			public UInt32 distanceAisacControl;
 
 			/// <summary></summary>
 			/// <remarks>
 			/// <para>リスナー基準方位角AISACコントロール </para>
 			/// </remarks>
+			public UInt32 listenerBaseAngleAisacControl;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>音源基準方位角AISACコントロール </para>
+			/// </remarks>
+			public UInt32 sourceBaseAngleAisacControl;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>リスナー基準仰俯角AISACコントロール </para>
+			/// </remarks>
+			public UInt32 listenerBaseElevationAisacControl;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>音源基準仰俯角AISACコントロール </para>
+			/// </remarks>
 			public UInt32 sourceBaseElevationAisacControl;
 
 		}
-
 		public unsafe partial struct CuePos3dInfoTagRandomPosition
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>元の3D音源に追従するかどうか </para>
+			/// </remarks>
 			public NativeBool followsOriginalSource;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>位置座標の算出方法 </para>
+			/// </remarks>
 			public Int32 calculationType;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>位置座標の算出方法に関する各種パラメーター配列 </para>
+			/// </remarks>
 			public InlineArray3<Single> calculationParameters;
 
 		}
@@ -4216,40 +4210,33 @@ namespace CriWare
 		/// <seealso cref="CriAtomExCategory.GetReactParameter"/>
 		public unsafe partial struct ReactParameter
 		{
-			/// <summary></summary>
-			/// <remarks>
-			/// <para>ダッカーパラメーター </para>
-			/// </remarks>
 			public CriAtomEx.ReactParameterTagParameter parameter;
 
 			/// <summary></summary>
 			/// <remarks>
-			/// <para>AISACモジュレーショントリガーパラメーター </para>
+			/// <para>REACTタイプ </para>
 			/// </remarks>
 			public CriAtomEx.ReactType type;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ポーズ中のキューは適用するか </para>
+			/// </remarks>
 			public NativeBool enablePausingCue;
 
 		}
-
 		[StructLayout(LayoutKind.Explicit)]
 		public unsafe partial struct ReactParameterTagParameter
 		{
-			/// <summary>REACTによるダッカーパラメーター構造体 </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// REACTによるダッカーの駆動パラメーター情報を設定取得するための構造体です。 
-			/// </para>
+			/// <para>ダッカーパラメーター </para>
 			/// </remarks>
 			[FieldOffset(0)] public CriAtomEx.ReactDuckerParameter ducker;
 
-			/// <summary>AISACモジュレーショントリガーパラメーター構造体 </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// AISACモジュレーショントリガーの駆動パラメーター情報を設定取得するための構造体です。 
-			/// </para>
+			/// <para>AISACモジュレーショントリガーパラメーター </para>
 			/// </remarks>
 			[FieldOffset(0)] public CriAtomEx.ReactAisacModulationParameter aisacModulation;
 
@@ -4261,48 +4248,44 @@ namespace CriWare
 		/// REACTによるダッカーの駆動パラメーター情報を設定取得するための構造体です。 
 		/// </para>
 		/// </remarks>
+		/// <seealso cref="CriAtomEx.ReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.SetReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.GetReactParameter"/>
 		public unsafe partial struct ReactDuckerParameter
 		{
-			/// <summary></summary>
-			/// <remarks>
-			/// <para>減衰ボリュームレベル </para>
-			/// </remarks>
 			public CriAtomEx.ReactDuckerParameterTagTarget target;
 
-			/// <summary>REACTによるダッキングのターゲット </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// REACTによるダッキング対象のタイプです。 
-			/// </para>
+			/// <para>ダッカーの操作対象 </para>
 			/// </remarks>
 			public CriAtomEx.ReactDuckerTargetType targetType;
 
 			/// <summary></summary>
 			/// <remarks>
-			/// <para>AISACコントロールid </para>
+			/// <para>変化開始フェードパラメーター </para>
 			/// </remarks>
 			public CriAtomEx.ReactFadeParameter entry;
 
 			/// <summary></summary>
 			/// <remarks>
-			/// <para>AISACコントロール値 </para>
+			/// <para>変化終了フェードパラメーター </para>
 			/// </remarks>
 			public CriAtomEx.ReactFadeParameter exit;
 
-			/// <summary>REACTホールドタイプ </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// REACTホールド（減衰時間の維持）タイプです。
-			/// </para>
+			/// <para>ホールドタイプ </para>
 			/// </remarks>
 			public CriAtomEx.ReactHoldType holdType;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ホールド時間（ミリ秒） </para>
+			/// </remarks>
 			public UInt16 holdTimeMs;
 
 		}
-
 		[StructLayout(LayoutKind.Explicit)]
 		public unsafe partial struct ReactDuckerParameterTagTarget
 		{
@@ -4311,9 +4294,12 @@ namespace CriWare
 			[FieldOffset(0)] public CriAtomEx.ReactDuckerParameterTagAisacControlValue aisacControlValue;
 
 		}
-
 		public unsafe partial struct ReactDuckerParameterTagVolume
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>減衰ボリュームレベル </para>
+			/// </remarks>
 			public Single level;
 
 		}
@@ -4322,14 +4308,14 @@ namespace CriWare
 		{
 			/// <summary>AISACコントロールID. </summary>
 			/// <remarks>
-			/// <para>
-			/// 説明:
-			/// AISACコントロールIDは、AISACコントロールに対して割り当てられている一意のIDです。
-			///  AISACコントロールIDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
-			/// </para>
+			/// <para>AISACコントロールid </para>
 			/// </remarks>
 			public UInt32 controlId;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>AISACコントロール値 </para>
+			/// </remarks>
 			public Single controlValue;
 
 		}
@@ -4340,6 +4326,9 @@ namespace CriWare
 		/// REACTによるダッキング対象のタイプです。 
 		/// </para>
 		/// </remarks>
+		/// <seealso cref="CriAtomEx.ReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.SetReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.GetReactParameter"/>
 		public enum ReactDuckerTargetType
 		{
 			/// <summary></summary>
@@ -4427,6 +4416,9 @@ namespace CriWare
 		/// REACTホールド（減衰時間の維持）タイプです。
 		/// </para>
 		/// </remarks>
+		/// <seealso cref="CriAtomEx.ReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.SetReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.GetReactParameter"/>
 		public enum ReactHoldType
 		{
 			/// <summary></summary>
@@ -4447,6 +4439,9 @@ namespace CriWare
 		/// AISACモジュレーショントリガーの駆動パラメーター情報を設定取得するための構造体です。 
 		/// </para>
 		/// </remarks>
+		/// <seealso cref="CriAtomEx.ReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.SetReactParameter"/>
+		/// <seealso cref="CriAtomExCategory.GetReactParameter"/>
 		public unsafe partial struct ReactAisacModulationParameter
 		{
 			/// <summary></summary>
@@ -5056,6 +5051,46 @@ namespace CriWare
 			/// <para>サラウンドバックライトスピーカー </para>
 			/// </remarks>
 			SurroundBackRight = 7,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>トップフロントレフトスピーカー </para>
+			/// </remarks>
+			TopFrontLeft = 8,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>トップフロントライトスピーカー </para>
+			/// </remarks>
+			TopFrontRight = 9,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>トップバックレフトスピーカー </para>
+			/// </remarks>
+			TopBackLeft = 10,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>トップバックライトスピーカー </para>
+			/// </remarks>
+			TopBackRight = 11,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムフロントレフトスピーカー </para>
+			/// </remarks>
+			BottomFrontLeft = 12,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムフロントライトスピーカー </para>
+			/// </remarks>
+			BottomFrontRight = 13,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムバックレフトスピーカー </para>
+			/// </remarks>
+			BottomBackLeft = 14,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ボトムバックライトスピーカー </para>
+			/// </remarks>
+			BottomBackRight = 15,
 		}
 		/// <summary>バイクアッドフィルターのタイプ </summary>
 		/// <remarks>
@@ -5210,7 +5245,7 @@ namespace CriWare
 		/// Atomライブラリのデフォルトでは、パン3D音源に対して距離減衰AISACと角度AISACの計算結果は適用されません。
 		///  本関数はCRI Atomライブラリ Ver.2.17.19 以前の動作との互換の為に追加されました。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_EnableCalculationAisacControlFrom3dPosition(CriBool flag)"/>
+		/// <nativeinfo declaration="void criAtomEx_EnableCalculationAisacControlFrom3dPosition(CriBool flag)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.IsEnableCalculationAisacControlFrom3dPosition"/>
 		public static void EnableCalculationAisacControlFrom3dPosition(NativeBool flag)
@@ -5230,7 +5265,7 @@ namespace CriWare
 		/// Atomライブラリのデフォルトでは、パン3D音源に対して距離減衰AISACと角度AISACの計算結果は適用されません。
 		///  本関数はCRI Atomライブラリ Ver.2.17.19 以前の動作との互換の為に追加されました。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomEx_IsEnableCalculationAisacControlFrom3dPosition(void)"/>
+		/// <nativeinfo declaration="CriBool criAtomEx_IsEnableCalculationAisacControlFrom3dPosition(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.EnableCalculationAisacControlFrom3dPosition"/>
 		public static bool IsEnableCalculationAisacControlFrom3dPosition()
@@ -5428,7 +5463,7 @@ namespace CriWare
 		///  コールバック関数は1つしか登録できません。
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetVoiceEventCallback(CriAtomExVoiceEventCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetVoiceEventCallback(CriAtomExVoiceEventCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.VoiceEventCbFunc"/>
 		public static unsafe void SetVoiceEventCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomEx.VoiceEvent, CriAtomEx.VoiceInfoDetail*, CriAtomEx.VoiceInfoDetail*, CriAtomEx.VoiceInfoDetail*, void> func, IntPtr obj)
@@ -5727,7 +5762,7 @@ namespace CriWare
 		/// 本関数で登録したコールバックには、 発音可能なボイスリソースを持つボイスの情報だけが返されます。
 		///  （バーチャル化されたボイスの情報は返されません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_EnumerateVoiceInfos(CriAtomExVoiceInfoCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx_EnumerateVoiceInfos(CriAtomExVoiceInfoCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.VoiceInfoCbFunc"/>
 		public static unsafe void EnumerateVoiceInfos(delegate* unmanaged[Cdecl]<IntPtr, CriAtomEx.VoiceInfoDetail*, void> func, IntPtr obj)
@@ -5809,7 +5844,7 @@ namespace CriWare
 		/// </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetMonitoringVoiceStopCallback(CriAtomExMonitoringVoiceStopCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetMonitoringVoiceStopCallback(CriAtomExMonitoringVoiceStopCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.MonitoringVoiceStopCbFunc"/>
 		/// <seealso cref="CriAtomEx.SetMonitoringVoiceStopPlaybackId"/>
@@ -5920,7 +5955,7 @@ namespace CriWare
 		///  このため、アクションの呼び出し元キューと呼び出し先キューの両方より発音しているボイスの停止を同時に監視することは出来ません。
 		///  アクションにて再生を開始したキュー再生IDは <see cref="CriAtomExPlayer.SetPlaybackEventCallback"/> 関数でコールバック関数を 登録して取得出来ます。適宜、取得・設定を行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetMonitoringVoiceStopPlaybackId(CriAtomExPlaybackId playback_id)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetMonitoringVoiceStopPlaybackId(CriAtomExPlaybackId playback_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetMonitoringVoiceStopCallback"/>
 		public static void SetMonitoringVoiceStopPlaybackId(CriAtomExPlayback playbackId)
@@ -6009,7 +6044,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExStreamingCache.CriAtomExStreamingCache"/>
 		/// <seealso cref="CriAtomExStreamingCache.Dispose"/>
-		public const Int32 StreamingCacheIllegalId = (CriAtom.StreamingCacheIllegalId);
+		public const Int32 StreamingCacheIllegalId = CriAtom.StreamingCacheIllegalId;
 		/// <summary>出力ポートの名前の長さの最大値 </summary>
 		/// <remarks>
 		/// <para>
@@ -6023,7 +6058,57 @@ namespace CriWare
 		/// <remarks>
 		/// <para>HCA </para>
 		/// </remarks>
-		public const Int32 FormatHca = (CriAtom.FormatHca);
+		public const Int32 FormatHca = CriAtom.FormatHca;
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>ADX </para>
+		/// </remarks>
+		public const Int32 FormatAdx = CriAtom.FormatAdx;
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>HCA-MX </para>
+		/// </remarks>
+		public const Int32 FormatHcaMx = CriAtom.FormatHcaMx;
+		/// <summary>5.1chサラウンド </summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 出力スピーカーの並び順は以下のとおりです。 
+		/// </para>
+		/// <para>
+		/// <list type="number">
+		/// <item><description>FRONT LEFT</description></item>
+		/// <item><description>FRONT RIGHT</description></item>
+		/// <item><description>FRONT CENTER</description></item>
+		/// <item><description>LOW FREQUENCY</description></item>
+		/// <item><description>SURROUND LEFT</description></item>
+		/// <item><description>SURROUND RIGHT</description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="UInt32"/>
+		public const Int32 SpeakerSystemSurround5_1 = (0);
+		/// <summary>7.1chサラウンド </summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 出力スピーカーの並び順は以下のとおりです。 
+		/// </para>
+		/// <para>
+		/// <list type="number">
+		/// <item><description>FRONT LEFT</description></item>
+		/// <item><description>FRONT RIGHT</description></item>
+		/// <item><description>FRONT CENTER</description></item>
+		/// <item><description>LOW FREQUENCY</description></item>
+		/// <item><description>SURROUND LEFT</description></item>
+		/// <item><description>SURROUND RIGHT</description></item>
+		/// <item><description>SURROUND BACK LEFT</description></item>
+		/// <item><description>SURROUND BACK RIGHT</description></item>
+		/// </list>
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="UInt32"/>
+		public const Int32 SpeakerSystemSurround7_1 = (1);
 
 
 

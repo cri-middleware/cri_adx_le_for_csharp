@@ -32,7 +32,7 @@ namespace CriWare
 		/// 説明:
 		/// バスのチャンネル数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_GetNumBusChannelsByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_GetNumBusChannelsByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name)"/>
 		/// </remarks>
 		public Int32 GetNumBusChannelsByName(ArgString busName)
 		{
@@ -52,7 +52,7 @@ namespace CriWare
 		///  一部のチャンネルについてのみレベルを取得したい等の事情がない限り、 第4引数（max_channels）にはバスのチャンネル数以上の値を指定してください。
 		///  （バスのチャンネル数は <see cref="CriAtomExAsrRack.GetNumBusChannelsByName"/> 関数で取得可能です。） 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetBusRmsLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *level, CriSint32 max_channels)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetBusRmsLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *level, CriSint32 max_channels)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachBusAnalyzerByName"/>
 		/// <seealso cref="CriAtomExAsrRack.GetNumBusChannelsByName"/>
@@ -75,7 +75,7 @@ namespace CriWare
 		///  一部のチャンネルについてのみレベルを取得したい等の事情がない限り、 第4引数（max_channels）にはバスのチャンネル数以上の値を指定してください。
 		///  （バスのチャンネル数は <see cref="CriAtomExAsrRack.GetNumBusChannelsByName"/> 関数で取得可能です。） 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetBusPeakLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *level, CriSint32 max_channels)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetBusPeakLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *level, CriSint32 max_channels)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachBusAnalyzerByName"/>
 		/// <seealso cref="CriAtomExAsrRack.GetNumBusChannelsByName"/>
@@ -98,7 +98,7 @@ namespace CriWare
 		///  一部のチャンネルについてのみレベルを取得したい等の事情がない限り、 第4引数（max_channels）にはバスのチャンネル数以上の値を指定してください。
 		///  （バスのチャンネル数は <see cref="CriAtomExAsrRack.GetNumBusChannelsByName"/> 関数で取得可能です。） 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetBusPeakHoldLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *level, CriSint32 max_channels)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetBusPeakHoldLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *level, CriSint32 max_channels)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachBusAnalyzerByName"/>
 		/// <seealso cref="CriAtomExAsrRack.GetNumBusChannelsByName"/>
@@ -117,7 +117,7 @@ namespace CriWare
 		/// バスのミュート状態を設定します。
 		///  ミュート状態のデフォルト値はCRI Atom Craftで設定した値です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetBusMuteByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriBool mute)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetBusMuteByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriBool mute)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.IsBusMutedByName"/>
 		public void SetBusMuteByName(ArgString busName, NativeBool mute)
@@ -134,7 +134,7 @@ namespace CriWare
 		/// バスのミュート状態を取得します。
 		///  ミュート状態のデフォルト値はCRI Atom Craftで設定した値です。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_IsBusMutedByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_IsBusMutedByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.SetBusMuteByName"/>
 		public bool IsBusMutedByName(ArgString busName)
@@ -143,13 +143,14 @@ namespace CriWare
 		}
 
 		/// <summary>アタッチ済みのDSPバス設定の名前取得 </summary>
+		/// <returns>アタッチ済み DSP バス設定の名前 </returns>
 		/// <remarks>
 		/// <para>
 		/// 説明:
 		/// ASRラックにアタッチされている DSP バス設定の名前が取得できます。
 		///  本関数を実行するには、あらかじめ::criAtomEx_RegisterAcfConfig 関数でACF情報を 登録しておく必要があります
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAsrRack_GetAttachedDspBusSettingName(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAsrRack_GetAttachedDspBusSettingName(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 		/// <seealso cref="CriAtomExAsrRack.DetachDspBusSetting"/>
@@ -169,7 +170,7 @@ namespace CriWare
 		///  ACFの登録を解除すると、パススルー再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
 		///  パススルー再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAsrRackId CRIAPI criAtomExAsrRack_GetPassThroughRackId(void)"/>
+		/// <nativeinfo declaration="CriAtomExAsrRackId criAtomExAsrRack_GetPassThroughRackId(void)"/>
 		/// </remarks>
 		public static CriAtomExAsrRack GetPassThroughRackId()
 		{
@@ -195,7 +196,7 @@ namespace CriWare
 		///  そのため、サーバー処理への割り込みを考慮しないAPIを実行した場合、 エラーが発生したり、デッドロックが発生する可能性があります。
 		///  波形フィルターコールバック関数内で長時間処理をブロックすると、音切れ等の問題 が発生しますので、ご注意ください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetBusFilterCallbackByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriAtomExAsrBusFilterCbFunc pre_func, CriAtomExAsrBusFilterCbFunc post_func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetBusFilterCallbackByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriAtomExAsrBusFilterCbFunc pre_func, CriAtomExAsrBusFilterCbFunc post_func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExPlayer.FilterCbFunc"/>
 		public unsafe void SetBusFilterCallbackByName(ArgString busName, delegate* unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void> preFunc, delegate* unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void> postFunc, IntPtr obj)
@@ -214,7 +215,7 @@ namespace CriWare
 		///  ACFの登録を解除すると、チャンネルベース再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
 		///  チャンネルベース再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAsrRackId CRIAPI criAtomExAsrRack_GetChannelBasedAudioRackId(void)"/>
+		/// <nativeinfo declaration="CriAtomExAsrRackId criAtomExAsrRack_GetChannelBasedAudioRackId(void)"/>
 		/// </remarks>
 		public static CriAtomExAsrRack GetChannelBasedAudioRackId()
 		{
@@ -232,7 +233,7 @@ namespace CriWare
 		///  ACFの登録を解除すると、ObjectBasedAudio再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
 		///  ObjectBasedAudio再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAsrRackId CRIAPI criAtomExAsrRack_GetObjectBasedAudioRackId(void)"/>
+		/// <nativeinfo declaration="CriAtomExAsrRackId criAtomExAsrRack_GetObjectBasedAudioRackId(void)"/>
 		/// </remarks>
 		public static CriAtomExAsrRack GetObjectBasedAudioRackId()
 		{
@@ -257,7 +258,7 @@ namespace CriWare
 		///  （ボイスプールの破棄処理等。）
 		///  こういった関数と本関数とを同一スレッド上で順番に呼び出すと、 当該APIがPCMデータの出力を永遠に待ち続ける形になり、 処理が復帰しなくなる可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_GetPcmDataFloat32(CriAtomExAsrRackId rack_id, CriSint32 output_channels, CriSint32 output_samples, CriFloat32 *output_buffer[])"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_GetPcmDataFloat32(CriAtomExAsrRackId rack_id, CriSint32 output_channels, CriSint32 output_samples, CriFloat32 *output_buffer[])"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeForUserPcmOutput"/>
 		public unsafe Int32 GetPcmDataFloat32(Int32 outputChannels, Int32 outputSamples, Single[][] outputBuffer)
@@ -265,10 +266,12 @@ namespace CriWare
 			var arrayList = stackalloc float*[outputChannels];
 			return FixAndCall(outputChannels, outputSamples, outputBuffer, 0);
 
-			Int32 FixAndCall(Int32 outputChannels, Int32 outputSamples, float[][] outputBuffer, int index){
-				if(index > outputChannels)
+			Int32 FixAndCall(Int32 outputChannels, Int32 outputSamples, float[][] outputBuffer, int index)
+			{
+				if (index >= outputChannels)
 					return NativeMethods.criAtomExAsrRack_GetPcmDataFloat32(NativeHandle, outputChannels, outputSamples, arrayList);
-				fixed(float* ptr = outputBuffer[index]){
+				fixed (float* ptr = outputBuffer[index])
+				{
 					arrayList[index] = ptr;
 					return FixAndCall(outputChannels, outputSamples, outputBuffer, index + 1);
 				}
@@ -308,7 +311,7 @@ namespace CriWare
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSize(const CriAtomExAsrRackConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSize(const CriAtomExAsrRackConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomExAsrRack.CriAtomExAsrRack"/>
@@ -356,7 +359,13 @@ namespace CriWare
 			/// ASRが作成するバスの数を指定します。
 			///  バスはサウンドのミックスや、エフェクトの管理等を行います。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			///  当該項目はCRI Atom Craft 3.55.00より古いデータ(ミキサーVersion1のデータ)を使用する場合や、ACFを使用しないでASRを使用する為に残されています。
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public Int32 numBuses;
 
 			/// <summary>出力チャンネル数 </summary>
@@ -366,7 +375,21 @@ namespace CriWare
 			/// ASRラックの出力チャンネル数を指定します。
 			///  パン3Dもしくは3Dポジショニング機能を使用する場合は6ch以上を指定します。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public Int32 outputChannels;
 
 			/// <summary>ミキサーのスピーカーマッピング </summary>
@@ -375,7 +398,21 @@ namespace CriWare
 			/// 説明:
 			/// ASRラックのスピーカーマッピングを指定します。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public CriAtom.SpeakerMapping speakerMapping;
 
 			/// <summary>出力サンプリングレート </summary>
@@ -389,7 +426,21 @@ namespace CriWare
 			/// 備考:
 			/// 低くすると処理負荷を下げることができますが音質が落ちます。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public Int32 outputSamplingRate;
 
 			/// <summary>サウンドレンダラタイプ </summary>
@@ -399,7 +450,21 @@ namespace CriWare
 			/// ASRラックの出力先サウンドレンダラの種別を指定します。
 			///  sound_renderer_type に <see cref="CriAtom.SoundRendererType.Native"/> を指定した場合、 音声データはデフォルト設定の各プラットフォームのサウンド出力に転送されます。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public CriAtom.SoundRendererType soundRendererType;
 
 			/// <summary>出力先ASRラックID </summary>
@@ -409,7 +474,21 @@ namespace CriWare
 			/// ASRラックの出力先ASRラックIDを指定します。
 			///  sound_renderer_type に <see cref="CriAtom.SoundRendererType.Asr"/> を指定した場合のみ有効です。
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public Int32 outputRackId;
 
 			/// <summary>プラットフォーム固有のパラメーターへのポインタ </summary>
@@ -419,7 +498,21 @@ namespace CriWare
 			/// プラットフォーム固有のパラメーターへのポインタを指定します。 nullを指定した場合、プラットフォーム毎のデフォルトパラメーターでASRラックを作成します。
 			///  パラメーター構造体は各プラットフォーム固有ヘッダーに定義されています。 パラメーター構造体が定義されていないプラットフォームでは、常にnullを指定してください。 
 			/// </para>
+			/// <para>
+			/// 注意:
+			/// 当該項目は下記の互換性動作のために残されています。
+			/// <list type="bullet">
+			/// <item><description>Ver.3.55.00 より古い CRI Atom Craft で出力した ACF を使用する場合
+			/// </description></item>
+			/// <item><description>Ver.3.55.00 以降の CRI Atom Craft で、ミキサー Version1 の DSPバス設定を使用している場合
+			/// </description></item>
+			/// <item><description>ACF を使用しないで ASR を使用する場合
+			///  ミキサーVersion2のDSPバス設定がアタッチされる場合、この値を無視してアタッチされます。
+			/// </description></item>
+			/// </list>
+			/// </para>
 			/// </remarks>
+			/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 			public IntPtr context;
 
 		}
@@ -440,7 +533,7 @@ namespace CriWare
 		/// 備考:
 		/// DSPバス設定のアタッチに必要なワークメモリのサイズは、CRI Atom Craftで作成した DSPバス設定の内容によって変化します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromConfig(const CriAtomExAsrRackConfig *config, const CriChar8 *setting)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromConfig(const CriAtomExAsrRackConfig *config, const CriChar8 *setting)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 		public static unsafe Int32 CalculateWorkSizeForDspBusSettingFromConfig(in CriAtomExAsrRack.Config config, ArgString setting)
@@ -464,7 +557,7 @@ namespace CriWare
 		/// 備考:
 		/// DSPバス設定のアタッチに必要なワークメモリのサイズは、CRI Atom Craftで作成した DSPバス設定の内容によって変化します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSizeForDspBusSetting(CriAtomExAsrRackId rack_id, const CriChar8 *setting)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSizeForDspBusSetting(CriAtomExAsrRackId rack_id, const CriChar8 *setting)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 		public Int32 CalculateWorkSizeForDspBusSetting(ArgString setting)
@@ -490,7 +583,7 @@ namespace CriWare
 		/// 備考:
 		/// DSPバス設定のアタッチに必要なワークメモリのサイズは、CRI Atom Craftで作成した DSPバス設定の内容によって変化します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromAcfDataAndConfig(void *acf_data, CriSint32 acf_data_size, const CriAtomExAsrRackConfig *rack_config, const CriChar8 *setting)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromAcfDataAndConfig(void *acf_data, CriSint32 acf_data_size, const CriAtomExAsrRackConfig *rack_config, const CriChar8 *setting)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 		public static unsafe Int32 CalculateWorkSizeForDspBusSettingFromAcfDataAndConfig(IntPtr acfData, Int32 acfDataSize, in CriAtomExAsrRack.Config rackConfig, ArgString setting)
@@ -527,7 +620,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAsrRackId CRIAPI criAtomExAsrRack_Create(const CriAtomExAsrRackConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExAsrRackId criAtomExAsrRack_Create(const CriAtomExAsrRackConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomExAsrRack.Dispose"/>
@@ -561,14 +654,14 @@ namespace CriWare
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、
 		///  本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_Destroy(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_Destroy(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.SetUserAllocator"/>
 		/// <seealso cref="CriAtomExAsrRack.CriAtomExAsrRack"/>
 		public void Dispose()
 		{
-			if(NativeHandle == CriAtomExAsr.RackDefaultId) return;
-			if(NativeHandle == CriAtomExAsr.RackIllegalId) return;
+			if (NativeHandle == CriAtomExAsr.RackDefaultId) return;
+			if (NativeHandle == CriAtomExAsr.RackIllegalId) return;
 			NativeMethods.criAtomExAsrRack_Destroy(NativeHandle);
 		}
 #pragma warning disable 1591
@@ -588,7 +681,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数のレンダリング済みサンプル数の増加パターンは実行中のプラットフォームや出力デバイスによって変化する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetNumRenderedSamples(CriAtomExAsrRackId rack_id, CriSint64 *num_samples, CriSint32 *sampling_rate)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetNumRenderedSamples(CriAtomExAsrRackId rack_id, CriSint64 *num_samples, CriSint32 *sampling_rate)"/>
 		/// </remarks>
 		public unsafe void GetNumRenderedSamples(out Int64 numSamples, out Int32 samplingRate)
 		{
@@ -605,7 +698,7 @@ namespace CriWare
 		///  パフォーマンスモニターは、 ASRラック作成直後からパフォーマンス情報の取得を開始し、計測結果を累積します。
 		///  以前の計測結果を以降の計測結果に含めたくない場合には、 本関数を実行し、累積された計測結果を一旦破棄する必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_ResetPerformanceMonitor(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_ResetPerformanceMonitor(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		public void ResetPerformanceMonitor()
 		{
@@ -625,7 +718,7 @@ namespace CriWare
 		/// スレッドモデルに<see cref="CriAtomEx.ThreadModel.MultiWithSonicsync"/>を指定しない場合、 本関数を使用する必要はありません。
 		///  （<see cref="CriAtomEx.ThreadModel.MultiWithSonicsync"/>以外のスレッドモデルを使用している場合、 本関数の処理負荷は、 CriAtomExPerformanceInfo に包含されています。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetPerformanceInfo(CriAtomExAsrRackId rack_id, CriAtomExAsrRackPerformanceInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetPerformanceInfo(CriAtomExAsrRackId rack_id, CriAtomExAsrRackPerformanceInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.PerformanceInfo"/>
 		public unsafe void GetPerformanceInfo(out CriAtomExAsrRack.PerformanceInfo info)
@@ -724,7 +817,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_AttachDspBusSetting(CriAtomExAsrRackId rack_id, const CriChar8 *setting, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_AttachDspBusSetting(CriAtomExAsrRackId rack_id, const CriChar8 *setting, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.DetachDspBusSetting"/>
 		public void AttachDspBusSetting(ArgString setting)
@@ -746,7 +839,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_DetachDspBusSetting(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_DetachDspBusSetting(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 		public void DetachDspBusSetting()
@@ -764,7 +857,7 @@ namespace CriWare
 		///  本関数を呼び出すと、スナップショットで設定したパラメーターに time_ms 掛けて変化します。
 		///  引数 snapshot_name に CRI_NULL を指定すると、元のDSPバス設定の状態（スナップショットが適用されていない状態）に戻ります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_ApplyDspBusSnapshot(CriAtomExAsrRackId rack_id, const CriChar8 *snapshot_name, CriSint32 time_ms)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_ApplyDspBusSnapshot(CriAtomExAsrRackId rack_id, const CriChar8 *snapshot_name, CriSint32 time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachDspBusSetting"/>
 		public void ApplyDspBusSnapshot(ArgString snapshotName, Int32 timeMs)
@@ -778,7 +871,7 @@ namespace CriWare
 		/// 説明:
 		/// ASRラックIDを指定して適用中のDSPバススナップショット名を取得します。 スナップショットが適用されていない場合はCRI_NULLが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAsrRack_GetAppliedDspBusSnapshotName(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAsrRack_GetAppliedDspBusSnapshotName(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.ApplyDspBusSnapshot"/>
 		public NativeString GetAppliedDspBusSnapshotName()
@@ -801,7 +894,7 @@ namespace CriWare
 		///  0.0fを指定した場合、音声はミュートされます（無音になります）。
 		///  ボリュームのデフォルト値はCRI Atom Craftで設定した値です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetBusVolumeByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetBusVolumeByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 volume)"/>
 		/// </remarks>
 		public void SetBusVolumeByName(ArgString busName, Single volume)
 		{
@@ -819,7 +912,7 @@ namespace CriWare
 		///  ボリューム値は実数値で得られます。
 		///  ボリュームのデフォルト値はCRI Atom Craftで設定した値です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetBusVolumeByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *volume)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetBusVolumeByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *volume)"/>
 		/// </remarks>
 		public unsafe void GetBusVolumeByName(ArgString busName, in Single volume)
 		{
@@ -837,7 +930,7 @@ namespace CriWare
 		///  センドタイプがポストパンのセンド先に有効です。
 		///  パン情報のデフォルト値は CRI Atom Craft で設定した値です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetBusPanInfoByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriAtomExAsrBusPanInfo *pan_info)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetBusPanInfoByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriAtomExAsrBusPanInfo *pan_info)"/>
 		/// </remarks>
 		public unsafe void SetBusPanInfoByName(ArgString busName, in CriAtomExAsr.BusPanInfo panInfo)
 		{
@@ -853,7 +946,7 @@ namespace CriWare
 		/// 説明:
 		/// バスのパン情報を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetBusPanInfoByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriAtomExAsrBusPanInfo *pan_info)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetBusPanInfoByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriAtomExAsrBusPanInfo *pan_info)"/>
 		/// </remarks>
 		public unsafe void GetBusPanInfoByName(ArgString busName, out CriAtomExAsr.BusPanInfo panInfo)
 		{
@@ -881,7 +974,7 @@ namespace CriWare
 		///  0.5fを指定した場合、原音波形の振幅を半分にしたデータと同じ音量（-6dB）で 音声が出力されます。
 		///  0.0fを指定した場合、音声はミュートされます（無音になります）。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetBusMatrixByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriSint32 input_channels, CriSint32 output_channels, const CriFloat32 matrix[])"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetBusMatrixByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriSint32 input_channels, CriSint32 output_channels, const CriFloat32 matrix[])"/>
 		/// </remarks>
 		public unsafe void SetBusMatrixByName(ArgString busName, Int32 inputChannels, Int32 outputChannels, Span<Single> matrix)
 		{
@@ -904,7 +997,7 @@ namespace CriWare
 		///  0.0fを指定した場合、音声はミュートされます（無音になります）。
 		///  レベルのデフォルト値はCRI Atom Craftで設定した値です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetBusSendLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *sendto_bus_name, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetBusSendLevelByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *sendto_bus_name, CriFloat32 level)"/>
 		/// </remarks>
 		public void SetBusSendLevelByName(ArgString busName, ArgString sendtoBusName, Single level)
 		{
@@ -924,7 +1017,7 @@ namespace CriWare
 		///  どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。指定したバスに指定した名前のエフェクトが存在しない場合、関数は失敗します。
 		///  また、 エフェクトのパラメーターは、各エフェクトのパラメーターインデックス（ ASRバスエフェクトのパラメーター ）をご参照下さい。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetEffectParameter(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name, const CriUint32 parameter_index, const CriFloat32 parameter_value)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetEffectParameter(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name, const CriUint32 parameter_index, const CriFloat32 parameter_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		/// <seealso cref="CriAtomExAsrRack.UpdateEffectParameters"/>
@@ -942,7 +1035,7 @@ namespace CriWare
 		/// エフェクトの動作時パラメーターを反映します。
 		///  動作時パラメーターを実際に反映するには、<see cref="CriAtomExAsrRack.SetEffectParameter"/> の他にも本関数を呼び出して下さい。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_UpdateEffectParameters(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_UpdateEffectParameters(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		/// <seealso cref="CriAtomExAsrRack.SetEffectParameter"/>
@@ -964,7 +1057,7 @@ namespace CriWare
 		///  どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。指定したバスに指定した名前のエフェクトが存在しない場合、関数は失敗します。
 		///  エフェクトの動作時パラメーターの詳細は、各エフェクトのパラメーターインデックス（ ASRバスエフェクトのパラメーター ）をご参照下さい。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExAsrRack_GetEffectParameter(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name, const CriUint32 parameter_index)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExAsrRack_GetEffectParameter(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name, const CriUint32 parameter_index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		public Single GetEffectParameter(ArgString busName, ArgString effectName, UInt32 parameterIndex)
@@ -988,7 +1081,7 @@ namespace CriWare
 		/// 注意:
 		/// 音声再生中にバイパス設定を行うとノイズが発生することがあります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetEffectBypass(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name, const CriBool bypass)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetEffectBypass(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name, const CriBool bypass)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.AttachDspBusSetting"/>
 		public void SetEffectBypass(ArgString busName, ArgString effectName, NativeBool bypass)
@@ -1008,7 +1101,7 @@ namespace CriWare
 		///  エフェクトのバイパス設定をする際は、本関数呼び出し前にあらかじめ <see cref="CriAtomEx.AttachDspBusSetting"/> 関数でバスが構築されている必要があります。
 		///  どのバスにどのエフェクトが存在するかは、アタッチしたDSPバス設定に依存します。指定したバスに指定した名前のエフェクトが存在しない場合、関数はfalseを返却します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetEffectBypass(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetEffectBypass(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriChar8 *effect_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.SetEffectBypass"/>
 		public bool GetEffectBypass(ArgString busName, ArgString effectName)
@@ -1031,7 +1124,7 @@ namespace CriWare
 		///  そのため、現状は <see cref="CriAtomExAsrRack.AttachDspBusSetting"/> 関数を実行すると、 criAtomExAsrRack_GetBusAnalyzerInfo 関数による情報取得ができなくなります。
 		///  本関数と <see cref="CriAtomExAsrRack.AttachDspBusSetting"/> 関数を併用する際には、 <see cref="CriAtomExAsrRack.AttachDspBusSetting"/> 関数を実行する前に一旦 criAtomExAsrRack_DetachBusAnalyzer 関数でレベル測定機能を無効化し、 <see cref="CriAtomExAsrRack.AttachDspBusSetting"/> 関数実行後に再度本関数を実行してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_AttachBusAnalyzerByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriAtomExAsrBusAnalyzerConfig *config)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_AttachBusAnalyzerByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, const CriAtomExAsrBusAnalyzerConfig *config)"/>
 		/// </remarks>
 		public unsafe void AttachBusAnalyzerByName(ArgString busName, in CriAtomExAsr.BusAnalyzerConfig config)
 		{
@@ -1046,7 +1139,7 @@ namespace CriWare
 		/// 説明:
 		/// バスからレベル測定機能を削除します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_DetachBusAnalyzerByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_DetachBusAnalyzerByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name)"/>
 		/// </remarks>
 		public void DetachBusAnalyzerByName(ArgString busName)
 		{
@@ -1059,10 +1152,22 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// バスからレベル測定機能の結果を取得します。 
+		/// バスからレベル測定機能の結果を取得します。 本関数でRMSレベルを取得するには、事前に <see cref="CriAtomExAsrRack.AttachBusAnalyzerByName"/> 該当バスにレベル測定機能を追加しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetBusAnalyzerInfoByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriAtomExAsrBusAnalyzerInfo *info)"/>
+		/// <para>
+		/// 備考:
+		/// 本関数でレベルを計測可能なチャンネル数は最大で16chです。 4次以上のAmbisonicsを再生する場合等、 17ch以上の信号のレベルを測定する際には以下の関数を使用してください。<list type="bullet">
+		/// <item><description><see cref="CriAtomExAsrRack.GetBusRmsLevelByName"/></description></item>
+		/// <item><description><see cref="CriAtomExAsrRack.GetBusPeakLevelByName"/></description></item>
+		/// <item><description><see cref="CriAtomExAsrRack.GetBusPeakHoldLevelByName"/> </description></item>
+		/// </list>
+		/// </para>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetBusAnalyzerInfoByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriAtomExAsrBusAnalyzerInfo *info)"/>
 		/// </remarks>
+		/// <seealso cref="CriAtomExAsrRack.AttachBusAnalyzerByName"/>
+		/// <seealso cref="CriAtomExAsrRack.GetBusRmsLevelByName"/>
+		/// <seealso cref="CriAtomExAsrRack.GetBusPeakLevelByName"/>
+		/// <seealso cref="CriAtomExAsrRack.GetBusPeakHoldLevelByName"/>
 		public unsafe void GetBusAnalyzerInfoByName(ArgString busName, out CriAtomExAsr.BusAnalyzerInfo info)
 		{
 			fixed (CriAtomExAsr.BusAnalyzerInfo* infoPtr = &info)
@@ -1082,7 +1187,7 @@ namespace CriWare
 		/// 備考:
 		/// 存在しないASRラックへの出力をエラーとして扱いたい場合、 alt_rack_id に rack_id と同じ値を設定してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_SetAlternateRackId(CriAtomExAsrRackId rack_id, CriAtomExAsrRackId alt_rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_SetAlternateRackId(CriAtomExAsrRackId rack_id, CriAtomExAsrRackId alt_rack_id)"/>
 		/// </remarks>
 		public void SetAlternateRackId(CriAtomExAsrRack altRackId)
 		{
@@ -1098,7 +1203,7 @@ namespace CriWare
 		///  デフォルト設定では <see cref="CriAtomExAsr.DefaultNumBuses"/> を返します。 
 		///  最大バス数を変更するには、<see cref="CriAtomExAsrRack.Config"/>::num_buses を変更して ASRラックを作成してください。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_GetNumBuses(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_GetNumBuses(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.Config"/>
 		/// <seealso cref="CriAtomExAsrRack.CriAtomExAsrRack"/>
@@ -1115,7 +1220,7 @@ namespace CriWare
 		/// 説明:
 		/// <see cref="CriAtomExAsrRack.GetPcmDataFloat32"/> 関数で取得可能なサンプル数を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_GetNumBufferedSamples(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_GetNumBufferedSamples(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.GetPcmDataFloat32"/>
 		public Int32 GetNumBufferedSamples()
@@ -1133,7 +1238,7 @@ namespace CriWare
 		/// 説明:
 		/// 振幅解析器の現在の解析結果（RMS値）を取得します。 指定したバスに振幅解析器がない場合や、指定したチャンネル数がASRバスよりも多い場合、取得に失敗します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetAmplitudeAnalyzerRms(CriAtomExAsrRackId rack_id, CriSint32 bus_no, CriFloat32 *rms, CriUint32 num_channels)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetAmplitudeAnalyzerRms(CriAtomExAsrRackId rack_id, CriSint32 bus_no, CriFloat32 *rms, CriUint32 num_channels)"/>
 		/// </remarks>
 		public unsafe bool GetAmplitudeAnalyzerRms(Int32 busNo, out Single rms, UInt32 numChannels)
 		{
@@ -1152,7 +1257,7 @@ namespace CriWare
 		/// 振幅解析器の現在の解析結果（RMS値）を取得します。
 		///  指定したバスに振幅解析器がない場合や、指定したチャンネル数がASRバスよりも多い場合、取得に失敗します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetAmplitudeAnalyzerRmsByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *rms, CriUint32 num_channels)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetAmplitudeAnalyzerRmsByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *rms, CriUint32 num_channels)"/>
 		/// </remarks>
 		public unsafe bool GetAmplitudeAnalyzerRmsByName(ArgString busName, out Single rms, UInt32 numChannels)
 		{
@@ -1171,7 +1276,7 @@ namespace CriWare
 		/// コンプレッサーが入力波形に乗算する値を取得します。
 		///  指定したバスにコンプレッサーがない場合や、指定したチャンネル数がASRバスよりも多い場合、取得に失敗します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetCompressorGain(CriAtomExAsrRackId rack_id, CriSint32 bus_no, CriFloat32 *gain, CriUint32 num_channels)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetCompressorGain(CriAtomExAsrRackId rack_id, CriSint32 bus_no, CriFloat32 *gain, CriUint32 num_channels)"/>
 		/// </remarks>
 		public unsafe bool GetCompressorGain(Int32 busNo, out Single gain, UInt32 numChannels)
 		{
@@ -1190,7 +1295,7 @@ namespace CriWare
 		/// コンプレッサーが入力波形に乗算する値を取得します。
 		///  指定したバスにコンプレッサーがない場合や、指定したチャンネル数がASRバスよりも多い場合、取得に失敗します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetCompressorGainByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *gain, CriUint32 num_channels)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetCompressorGainByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *gain, CriUint32 num_channels)"/>
 		/// </remarks>
 		public unsafe bool GetCompressorGainByName(ArgString busName, out Single gain, UInt32 numChannels)
 		{
@@ -1209,7 +1314,7 @@ namespace CriWare
 		/// コンプレッサーに適用されている振幅値を取得します。
 		///  指定したバスにコンプレッサーがない場合や、指定したチャンネル数がASRバスよりも多い場合、取得に失敗します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetCompressorRms(CriAtomExAsrRackId rack_id, CriSint32 bus_no, CriFloat32 *rms, CriUint32 num_channels)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetCompressorRms(CriAtomExAsrRackId rack_id, CriSint32 bus_no, CriFloat32 *rms, CriUint32 num_channels)"/>
 		/// </remarks>
 		public unsafe bool GetCompressorRms(Int32 busNo, out Single rms, UInt32 numChannels)
 		{
@@ -1228,7 +1333,7 @@ namespace CriWare
 		/// コンプレッサーに適用されている振幅値を取得します。
 		///  指定したバスにコンプレッサーがない場合や、指定したチャンネル数がASRバスよりも多い場合、取得に失敗します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetCompressorRmsByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *rms, CriUint32 num_channels)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetCompressorRmsByName(CriAtomExAsrRackId rack_id, const CriChar8 *bus_name, CriFloat32 *rms, CriUint32 num_channels)"/>
 		/// </remarks>
 		public unsafe bool GetCompressorRmsByName(ArgString busName, out Single rms, UInt32 numChannels)
 		{
@@ -1246,7 +1351,7 @@ namespace CriWare
 		/// 指定したASRラックにアタッチされているDSPバス設定のAISACコントロールに値をセットします。
 		///  失敗した場合、エラーコールバックが返されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_SetAisacControlById(CriAtomExAsrRackId rack_id, CriAtomExAisacControlId control_id, CriFloat32 control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_SetAisacControlById(CriAtomExAsrRackId rack_id, CriAtomExAisacControlId control_id, CriFloat32 control_value)"/>
 		/// </remarks>
 		public bool SetAisacControlById(UInt32 controlId, Single controlValue)
 		{
@@ -1263,7 +1368,7 @@ namespace CriWare
 		/// 指定したASRラックにアタッチされているDSPバス設定のAISACコントロールに値をセットします。
 		///  失敗した場合、エラーコールバックが返されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_SetAisacControlByName(CriAtomExAsrRackId rack_id, const CriChar8 *control_name, CriFloat32 control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_SetAisacControlByName(CriAtomExAsrRackId rack_id, const CriChar8 *control_name, CriFloat32 control_value)"/>
 		/// </remarks>
 		public bool SetAisacControlByName(ArgString controlName, Single controlValue)
 		{
@@ -1280,7 +1385,7 @@ namespace CriWare
 		/// 指定したASRラックにアタッチされているDSPバス設定のAISACコントロールに値を取得します。
 		///  失敗した場合、エラーコールバックが返されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetAisacControlById(CriAtomExAsrRackId rack_id, CriAtomExAisacControlId control_id, CriFloat32 *control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetAisacControlById(CriAtomExAsrRackId rack_id, CriAtomExAisacControlId control_id, CriFloat32 *control_value)"/>
 		/// </remarks>
 		public unsafe bool GetAisacControlById(UInt32 controlId, out Single controlValue)
 		{
@@ -1298,7 +1403,7 @@ namespace CriWare
 		/// 指定したASRラックにアタッチされているDSPバス設定のAISACコントロールに値を取得します。
 		///  失敗した場合、エラーコールバックが返されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAsrRack_GetAisacControlByName(CriAtomExAsrRackId rack_id, const CriChar8 *control_name, CriFloat32 *control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAsrRack_GetAisacControlByName(CriAtomExAsrRackId rack_id, const CriChar8 *control_name, CriFloat32 *control_value)"/>
 		/// </remarks>
 		public unsafe bool GetAisacControlByName(ArgString controlName, out Single controlValue)
 		{
@@ -1317,7 +1422,7 @@ namespace CriWare
 		/// 備考:
 		/// デバイスタイプが取得できないプラットフォームでは常に <see cref="CriAtom.DeviceType.Unknown"/> が返されます。 また、プラットフォームによっては取得に時間がかかる場合があるため、 <see cref="CriAtom.SetDeviceUpdateCallback"/> で登録したコールバック関数の中で使用することが推奨されます。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomDeviceType CRIAPI criAtomExAsrRack_GetDeviceType(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="CriAtomDeviceType criAtomExAsrRack_GetDeviceType(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetDeviceUpdateCallback"/>
 		public CriAtom.DeviceType GetDeviceType()
@@ -1336,7 +1441,7 @@ namespace CriWare
 		///  ACFの登録を解除すると、Ambisonics再生用ASRラックも削除されるため取得したASRラックIDは無効になります。
 		///  Ambisonics再生用ASRラックが作成されていない場合、<see cref="CriAtomExAsr.RackIllegalId"/>を返します。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAsrRackId CRIAPI criAtomExAsrRack_GetAmbisonicRackId(void)"/>
+		/// <nativeinfo declaration="CriAtomExAsrRackId criAtomExAsrRack_GetAmbisonicRackId(void)"/>
 		/// </remarks>
 		public static CriAtomExAsrRack GetAmbisonicRackId()
 		{
@@ -1352,7 +1457,7 @@ namespace CriWare
 		/// rack_idで指定したASRラックへのレベルメーター追加に必要なワーク領域サイズを計算します。
 		///  config にnullを指定するとデフォルト設定で計算されます。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSizeForLevelMeter(CriAtomExAsrRackId rack_id, const CriAtomLevelMeterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSizeForLevelMeter(CriAtomExAsrRackId rack_id, const CriAtomLevelMeterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachLevelMeter"/>
 		public unsafe Int32 CalculateWorkSizeForLevelMeter(in CriAtom.LevelMeterConfig config)
@@ -1370,7 +1475,7 @@ namespace CriWare
 		///  config にnullを指定するとデフォルト設定でレベルメーターが追加されます。
 		///  work にnull、work_size に0を指定すると、登録されたユーザアロケーターによって ワーク領域が確保されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_AttachLevelMeter(CriAtomExAsrRackId rack_id, const CriAtomLevelMeterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_AttachLevelMeter(CriAtomExAsrRackId rack_id, const CriAtomLevelMeterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.GetLevelInfo"/>
 		public unsafe void AttachLevelMeter(in CriAtom.LevelMeterConfig config)
@@ -1385,7 +1490,7 @@ namespace CriWare
 		/// 説明:
 		/// rack_idで指定したASRラックに追加されたレベルメーター機能を解除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_DetachLevelMeter(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_DetachLevelMeter(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachLevelMeter"/>
 		public void DetachLevelMeter()
@@ -1401,7 +1506,7 @@ namespace CriWare
 		/// rack_idで指定したASRラックのレベルメーターの結果を取得します。
 		///  指定するラックには <see cref="CriAtomExAsrRack.AttachLevelMeter"/> 関数であらかじめ レベルメーター機能を追加しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetLevelInfo(CriAtomExAsrRackId rack_id, CriAtomLevelInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetLevelInfo(CriAtomExAsrRackId rack_id, CriAtomLevelInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachLevelMeter"/>
 		public unsafe void GetLevelInfo(out CriAtom.LevelInfo info)
@@ -1419,7 +1524,7 @@ namespace CriWare
 		/// rack_idで指定したASRラックへのITU-R BS.1770-3規格のラウドネスメーター追加に必要なワーク領域サイズを計算します。
 		///  config にnullを指定するとデフォルト設定で計算されます。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSizeForLoudnessMeter(CriAtomExAsrRackId rack_id, const CriAtomLoudnessMeterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSizeForLoudnessMeter(CriAtomExAsrRackId rack_id, const CriAtomLoudnessMeterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachLoudnessMeter"/>
 		public unsafe Int32 CalculateWorkSizeForLoudnessMeter(in CriAtom.LoudnessMeterConfig config)
@@ -1437,7 +1542,7 @@ namespace CriWare
 		///  config にnullを指定するとデフォルト設定でラウドネスメーターが追加されます。
 		///  work にnull、work_size に0を指定すると、登録されたユーザアロケーターによって ワーク領域が確保されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_AttachLoudnessMeter(CriAtomExAsrRackId rack_id, const CriAtomLoudnessMeterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_AttachLoudnessMeter(CriAtomExAsrRackId rack_id, const CriAtomLoudnessMeterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.GetLoudnessInfo"/>
 		public unsafe void AttachLoudnessMeter(in CriAtom.LoudnessMeterConfig config)
@@ -1452,7 +1557,7 @@ namespace CriWare
 		/// 説明:
 		/// rack_idで指定したASRラックのラウドネスメーター機能を解除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_DetachLoudnessMeter(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_DetachLoudnessMeter(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.DetachLoudnessMeter"/>
 		public void DetachLoudnessMeter()
@@ -1468,7 +1573,7 @@ namespace CriWare
 		/// rack_idで指定したASRラックのラウドネスメーターの結果を取得します。
 		///  指定するラックには <see cref="CriAtomExAsrRack.AttachLoudnessMeter"/> 関数であらかじめ ラウドネスメーター機能を追加しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetLoudnessInfo(CriAtomExAsrRackId rack_id, CriAtomLoudnessInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetLoudnessInfo(CriAtomExAsrRackId rack_id, CriAtomLoudnessInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachLoudnessMeter"/>
 		public unsafe void GetLoudnessInfo(out CriAtom.LoudnessInfo info)
@@ -1483,7 +1588,7 @@ namespace CriWare
 		/// 説明:
 		/// rack_idで指定したASRラックのラウドネスメーターの蓄積データをリセットします。 本関数を呼び出す前にライブラリへラウドネスメーターを追加しておく必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_ResetLoudnessMeter(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_ResetLoudnessMeter(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachLoudnessMeter"/>
 		public void ResetLoudnessMeter()
@@ -1500,7 +1605,7 @@ namespace CriWare
 		/// rack_idで指定したASRラックへのITU-R BS.1770-3規格のトゥルーピークメーター追加に必要なワーク領域サイズを計算します。
 		///  config にnullを指定するとデフォルト設定で計算されます。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAsrRack_CalculateWorkSizeForTruePeakMeter(CriAtomExAsrRackId rack_id, const CriAtomTruePeakMeterConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAsrRack_CalculateWorkSizeForTruePeakMeter(CriAtomExAsrRackId rack_id, const CriAtomTruePeakMeterConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachTruePeakMeter"/>
 		public unsafe Int32 CalculateWorkSizeForTruePeakMeter(in CriAtom.TruePeakMeterConfig config)
@@ -1518,7 +1623,7 @@ namespace CriWare
 		///  config にnullを指定するとデフォルト設定でトゥルーピークメーターが追加されます。
 		///  work にnull、work_size に0を指定すると、登録されたユーザアロケーターによって ワーク領域が確保されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_AttachTruePeakMeter(CriAtomExAsrRackId rack_id, const CriAtomTruePeakMeterConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_AttachTruePeakMeter(CriAtomExAsrRackId rack_id, const CriAtomTruePeakMeterConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.GetTruePeakInfo"/>
 		public unsafe void AttachTruePeakMeter(in CriAtom.TruePeakMeterConfig config)
@@ -1533,7 +1638,7 @@ namespace CriWare
 		/// 説明:
 		/// rack_idで指定したASRラックに追加したトゥルーピークメーター機能を解除します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_DetachTruePeakMeter(CriAtomExAsrRackId rack_id)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_DetachTruePeakMeter(CriAtomExAsrRackId rack_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachTruePeakMeter"/>
 		public void DetachTruePeakMeter()
@@ -1548,7 +1653,7 @@ namespace CriWare
 		/// 説明:
 		/// rack_idで指定したASRラックのトゥルーピークメーターの測定結果を取得します。 本関数を呼び出す前にライブラリへトゥルーピークメーターを追加しておく必要があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAsrRack_GetTruePeakInfo(CriAtomExAsrRackId rack_id, CriAtomTruePeakInfo *info)"/>
+		/// <nativeinfo declaration="void criAtomExAsrRack_GetTruePeakInfo(CriAtomExAsrRackId rack_id, CriAtomTruePeakInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAsrRack.AttachTruePeakMeter"/>
 		public unsafe void GetTruePeakInfo(out CriAtom.TruePeakInfo info)

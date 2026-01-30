@@ -50,17 +50,18 @@ namespace CriWare.Interfaces
 	}
 
 	/// <exclude/>
-	public interface ILibrary
+	[Serializable]
+	public abstract class LibraryBase
 	{
 		/// <exclude/>
-		Type[] DependentLibraries { get; }
+		public abstract Type[] DependentLibraries { get; }
 		/// <exclude/>
-		void InitializeLibrary();
+		public abstract void InitializeLibrary();
 		/// <exclude/>
-		void FinalizeLibrary();
+		public abstract void FinalizeLibrary();
 		/// <exclude/>
-		bool IsInitialized { get; }
+		public abstract bool IsInitialized { get; }
 		/// <exclude/>
-		IntPtr MemorySizeAddress { get; }
+		public abstract IntPtr MemorySizeAddress { get; }
 	}
 }

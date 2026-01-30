@@ -63,7 +63,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExTween_CalculateWorkSize(const CriAtomExTweenConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExTween_CalculateWorkSize(const CriAtomExTweenConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.Config"/>
 		/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
@@ -100,7 +100,13 @@ namespace CriWare
 			public CriAtomExTween.ParameterType parameterType;
 
 		}
-
+		/// <summary>ID指定共用体 </summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// パラメータータイプに従い、パラメーターIDまたはAISACコントロールIDを指定します。 
+		/// </para>
+		/// </remarks>
 		[StructLayout(LayoutKind.Explicit)]
 		public unsafe partial struct ConfigParameterIdTag
 		{
@@ -108,8 +114,7 @@ namespace CriWare
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// パラメーターを指定するためのIDです。
-			/// <see cref="CriAtomExPlayer.GetParameterFloat32"/> 関数等で利用します。 
+			/// パラメータータイプに<see cref="CriAtomExTween.ParameterType.Basic"/>を指定する場合、このメンバでパラメーターIDを指定します。 
 			/// </para>
 			/// </remarks>
 			[FieldOffset(0)] public CriAtomEx.ParameterId parameterId;
@@ -118,8 +123,7 @@ namespace CriWare
 			/// <remarks>
 			/// <para>
 			/// 説明:
-			/// AISACコントロールIDは、AISACコントロールに対して割り当てられている一意のIDです。
-			///  AISACコントロールIDをプログラム中で保持する際には、本変数型を用いて値を取り扱う必要があります。
+			/// パラメータータイプに<see cref="CriAtomExTween.ParameterType.Aisac"/>を指定する場合、このメンバでAISACコントロールIDを指定します。 
 			/// </para>
 			/// </remarks>
 			[FieldOffset(0)] public UInt32 aisacControlId;
@@ -174,7 +178,7 @@ namespace CriWare
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		///  TweenオブジェクトをアタッチしたAtomExプレーヤーで再生している音声がある場合、 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExTweenHn CRIAPI criAtomExTween_Create(const CriAtomExTweenConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExTweenHn criAtomExTween_Create(const CriAtomExTweenConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.CalculateWorkSize"/>
 		/// <seealso cref="CriAtomExTween.Dispose"/>
@@ -201,7 +205,7 @@ namespace CriWare
 		///  また、引数に指定したトゥイーンオブジェクトも無効になります。
 		///  トゥイーンをアタッチしたAtomExプレーヤーで再生している音声がある場合、 本関数を実行する前に、それらの音声を停止するか、そのAtomExプレーヤーを破棄してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExTween_Destroy(CriAtomExTweenHn tween)"/>
+		/// <nativeinfo declaration="void criAtomExTween_Destroy(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExTween.CriAtomExTween"/>
 		public void Dispose()
@@ -220,7 +224,7 @@ namespace CriWare
 		/// 説明:
 		/// トゥイーンが保持しているパラメーターの現在値を取得します。
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExTween_GetValue(CriAtomExTweenHn tween)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExTween_GetValue(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		public Single GetValue()
 		{
@@ -236,7 +240,7 @@ namespace CriWare
 		/// time_msで指定した時間をかけて、本関数呼び出し時にトゥイーンが保持している現在値から、valueで指定した値へと変化します。
 		///  変化カーブはリニア（線形）です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExTween_MoveTo(CriAtomExTweenHn tween, CriUint16 time_ms, CriFloat32 value)"/>
+		/// <nativeinfo declaration="void criAtomExTween_MoveTo(CriAtomExTweenHn tween, CriUint16 time_ms, CriFloat32 value)"/>
 		/// </remarks>
 		public void MoveTo(UInt16 timeMs, Single value)
 		{
@@ -252,7 +256,7 @@ namespace CriWare
 		/// time_msで指定した時間をかけて、valueで指定した値から、本関数呼び出し時にトゥイーンが保持している現在値へと変化します。
 		///  変化カーブはリニア（線形）です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExTween_MoveFrom(CriAtomExTweenHn tween, CriUint16 time_ms, CriFloat32 value)"/>
+		/// <nativeinfo declaration="void criAtomExTween_MoveFrom(CriAtomExTweenHn tween, CriUint16 time_ms, CriFloat32 value)"/>
 		/// </remarks>
 		public void MoveFrom(UInt16 timeMs, Single value)
 		{
@@ -265,7 +269,7 @@ namespace CriWare
 		/// 説明:
 		/// トゥイーンによるパラメーターの時間変化を停止します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExTween_Stop(CriAtomExTweenHn tween)"/>
+		/// <nativeinfo declaration="void criAtomExTween_Stop(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		public void Stop()
 		{
@@ -283,7 +287,7 @@ namespace CriWare
 		/// 備考:
 		/// トゥイーンによる時間変化が動作していた場合、動作を停止します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExTween_Reset(CriAtomExTweenHn tween)"/>
+		/// <nativeinfo declaration="void criAtomExTween_Reset(CriAtomExTweenHn tween)"/>
 		/// </remarks>
 		public void Reset()
 		{

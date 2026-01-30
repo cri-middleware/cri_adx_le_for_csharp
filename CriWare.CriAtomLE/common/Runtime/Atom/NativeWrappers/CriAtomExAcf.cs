@@ -23,7 +23,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれるREACTの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumReacts(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumReacts(void)"/>
 		/// </remarks>
 		public static Int32 GetNumReacts()
 		{
@@ -41,13 +41,13 @@ namespace CriWare
 		///  ACFに登録された出力ポート名は、ACFのヘッダーに記載されています。
 		///  生成後の出力ポートオブジェクトにはデフォルトASRラックが設定されているため、この関数で取得したオブジェクトに対して <see cref="CriAtomExOutputPort.SetAsrRackId"/> 関数で適切なASRラックを指定する必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExOutputPortHn CRIAPI criAtomExAcf_GetOutputPortHnByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriAtomExOutputPortHn criAtomExAcf_GetOutputPortHnByName(const CriChar8 *name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExOutputPort.SetAsrRackId"/>
 		public static CriAtomExOutputPort GetOutputPortHnByName(ArgString name)
 		{
 			IntPtr handle;
-			return ((handle = NativeMethods.criAtomExAcf_GetOutputPortHnByName(name.GetPointer(stackalloc byte[name.BufferSize]))) == IntPtr.Zero) ? null : new CriAtomExOutputPort(handle);
+			return ((handle = NativeMethods.criAtomExAcf_GetOutputPortHnByName(name.GetPointer(stackalloc byte[name.BufferSize]))) == IntPtr.Zero) ? default : new CriAtomExOutputPort(handle);
 		}
 
 		/// <summary>ACF位置情報 </summary>
@@ -110,7 +110,10 @@ namespace CriWare
 			/// </remarks>
 			Data = 3,
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>ACF位置情報共用体 </para>
+		/// </remarks>
 		[StructLayout(LayoutKind.Explicit)]
 		public unsafe partial struct LocationInfoTag
 		{
@@ -121,93 +124,60 @@ namespace CriWare
 			[FieldOffset(0)] public CriAtomExAcf.LocationInfoDataTag data;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>ファイル名指定時情報 </para>
+		/// </remarks>
 		public unsafe partial struct LocationInfoNameTag
 		{
-			/// <summary>CriFsBinderハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明：
-			/// バインダーとは、ファイルを効率良く扱うためのデータベースです。
-			/// <list type="bullet">
-			/// <item><description><see cref="CriFsBinder"/> (バインダーオブジェクト)とバインド
-			///  バインダーを利用するには、バインダーオブジェクト( <see cref="CriFsBinder"/> )を作成し、 CPKファイル／ファイル／ディレクトリをバインダーに結びつけます。 このバインダーへの結び付けをバインドと呼びます。
-			///  バインダーを作成すると、バインダーオブジェクト( <see cref="CriFsBinder"/> )が取得されます。
-			/// </description></item>
-			/// <item><description><see cref="CriFsBind"/> （バインドID）
-			///  バインダーにバインドを行うと、バインドIDが作成されます。個々のバインドを識別するために使用します。
-			/// </description></item>
-			/// <item><description>ファイルのバインドとアンバインド
-			///  バインダーには、CPKファイルやファイル、ディレクトリをどのような組み合わせででもバインドできます。
-			///  バインドした項目のバインド状態を解除することをアンバインドと呼びます。
-			/// </description></item>
-			/// <item><description>利用できるバインド数
-			///  作成できるバインダー数や同時にバインドできる最大数は、 <see cref="CriFs.Config"/> の num_binders (バインダー数)や max_binds (同時バインド可能な最大数)で指定します。
-			/// </description></item>
-			/// <item><description>CPKファイルのバインド
-			///  CPKファイルに収納されている個々のファイル（コンテンツファイル）にアクセスするには、 CPKファイルをバインドする必要があります。
-			///  CPKファイルのコンテンツファイルもバインドできます。元のCPKファイルをアンバインドした場合、 バインドされているコンテンツファイルもアンバインドされます（暗黙的アンバインド）。
-			/// </description></item>
-			/// <item><description>バインダーのプライオリティ
-			///  バインダーは、目的のファイルがどのバインドIDにあるのかを検索します。
-			///  このバインドIDの検索順は、基本的にはバインドされた順番になりますが、バインドIDのプライオリティを 操作することで、検索順を変更することができます。
-			/// </description></item>
-			/// <item><description>バインダーとCriFsのAPI
-			///  CriFsLoader, CriFsGroupLoader, CriFsBinderには、バインダーを引数に持つAPIがあります。 その際には、 <see cref="CriFsBinder"/> と <see cref="CriFsBind"/> 、どちらを指定するのかに注意してください。 </description></item>
-			/// </list>
-			/// </para>
+			/// <para>バインダーハンドル </para>
 			/// </remarks>
 			public IntPtr binder;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ACFファイルパス </para>
+			/// </remarks>
 			public NativeString path;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>ファイルID指定時情報 </para>
+		/// </remarks>
 		public unsafe partial struct LocationInfoIdTag
 		{
-			/// <summary>CriFsBinderハンドル </summary>
+			/// <summary></summary>
 			/// <remarks>
-			/// <para>
-			/// 説明：
-			/// バインダーとは、ファイルを効率良く扱うためのデータベースです。
-			/// <list type="bullet">
-			/// <item><description><see cref="CriFsBinder"/> (バインダーオブジェクト)とバインド
-			///  バインダーを利用するには、バインダーオブジェクト( <see cref="CriFsBinder"/> )を作成し、 CPKファイル／ファイル／ディレクトリをバインダーに結びつけます。 このバインダーへの結び付けをバインドと呼びます。
-			///  バインダーを作成すると、バインダーオブジェクト( <see cref="CriFsBinder"/> )が取得されます。
-			/// </description></item>
-			/// <item><description><see cref="CriFsBind"/> （バインドID）
-			///  バインダーにバインドを行うと、バインドIDが作成されます。個々のバインドを識別するために使用します。
-			/// </description></item>
-			/// <item><description>ファイルのバインドとアンバインド
-			///  バインダーには、CPKファイルやファイル、ディレクトリをどのような組み合わせででもバインドできます。
-			///  バインドした項目のバインド状態を解除することをアンバインドと呼びます。
-			/// </description></item>
-			/// <item><description>利用できるバインド数
-			///  作成できるバインダー数や同時にバインドできる最大数は、 <see cref="CriFs.Config"/> の num_binders (バインダー数)や max_binds (同時バインド可能な最大数)で指定します。
-			/// </description></item>
-			/// <item><description>CPKファイルのバインド
-			///  CPKファイルに収納されている個々のファイル（コンテンツファイル）にアクセスするには、 CPKファイルをバインドする必要があります。
-			///  CPKファイルのコンテンツファイルもバインドできます。元のCPKファイルをアンバインドした場合、 バインドされているコンテンツファイルもアンバインドされます（暗黙的アンバインド）。
-			/// </description></item>
-			/// <item><description>バインダーのプライオリティ
-			///  バインダーは、目的のファイルがどのバインドIDにあるのかを検索します。
-			///  このバインドIDの検索順は、基本的にはバインドされた順番になりますが、バインドIDのプライオリティを 操作することで、検索順を変更することができます。
-			/// </description></item>
-			/// <item><description>バインダーとCriFsのAPI
-			///  CriFsLoader, CriFsGroupLoader, CriFsBinderには、バインダーを引数に持つAPIがあります。 その際には、 <see cref="CriFsBinder"/> と <see cref="CriFsBind"/> 、どちらを指定するのかに注意してください。 </description></item>
-			/// </list>
-			/// </para>
+			/// <para>バインダーハンドル </para>
 			/// </remarks>
 			public IntPtr binder;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>コンテンツID </para>
+			/// </remarks>
 			public Int32 id;
 
 		}
-
+		/// <summary></summary>
+		/// <remarks>
+		/// <para>オンメモリデータ指定時情報 </para>
+		/// </remarks>
 		public unsafe partial struct LocationInfoDataTag
 		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>メモリアドレス </para>
+			/// </remarks>
 			public IntPtr buffer;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>サイズ </para>
+			/// </remarks>
 			public Int32 size;
 
 		}
@@ -219,7 +189,7 @@ namespace CriWare
 		/// 登録されたACFに含まれるAISACコントロールの数を取得します。
 		///  ACFが登録されていない場合、-1が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumAisacControls(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumAisacControls(void)"/>
 		/// </remarks>
 		public static Int32 GetNumAisacControls()
 		{
@@ -236,7 +206,7 @@ namespace CriWare
 		/// AISACコントロールインデックスからAISACコントロール情報を取得します。
 		///  指定したインデックスのAISACコントロールが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetAisacControlInfo(CriUint16 index, CriAtomExAisacControlInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetAisacControlInfo(CriUint16 index, CriAtomExAisacControlInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetAisacControlInfo(UInt16 index, out CriAtomEx.AisacControlInfo info)
 		{
@@ -253,7 +223,7 @@ namespace CriWare
 		/// AISACコントロール名からAISACコントロールIDを取得します。
 		///  ACFが登録されていない、または指定したAISACコントロール名のAISACコントロールが存在しない場合、<see cref="CriAtomEx.InvalidAisacControlId"/>が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExAisacControlId CRIAPI criAtomExAcf_GetAisacControlIdByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriAtomExAisacControlId criAtomExAcf_GetAisacControlIdByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static UInt32 GetAisacControlIdByName(ArgString name)
 		{
@@ -269,7 +239,7 @@ namespace CriWare
 		/// AISACコントロールIDからAISACコントロール名を取得します。
 		///  ACFが登録されていない、または指定したAISACコントロールIDのAISACコントロールが存在しない場合、nullが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcf_GetAisacControlNameById(CriAtomExAisacControlId id)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcf_GetAisacControlNameById(CriAtomExAisacControlId id)"/>
 		/// </remarks>
 		public static NativeString GetAisacControlNameById(UInt32 id)
 		{
@@ -284,7 +254,7 @@ namespace CriWare
 		/// ライブラリに登録されたACFデータに含まれるDSPバス設定の数を取得します。
 		///  ACFデータが登録されていない場合、本関数は -1 を返します。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumDspSettings(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumDspSettings(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspSettingNameByIndex"/>
 		public static Int32 GetNumDspSettings()
@@ -306,7 +276,7 @@ namespace CriWare
 		/// <see cref="CriAtomExAcf.GetNumDspSettings"/> 関数と異なり、
 		///  ACF情報を登録する前でも本関数は実行可能です。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumDspSettingsFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumDspSettingsFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetNumDspSettings"/>
 		public static Int32 GetNumDspSettingsFromAcfData(IntPtr acfData, Int32 acfDataSize)
@@ -323,7 +293,7 @@ namespace CriWare
 		/// ライブラリに登録されたACFデータからDSPバス設定名を取得します。
 		///  ACFデータが登録されていないか、 または指定したDSPバス設定インデックスのDSPバス設定が存在しない場合、 本関数は null を返します。
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcf_GetDspSettingNameByIndex(CriUint16 index)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcf_GetDspSettingNameByIndex(CriUint16 index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspSettingInformation"/>
 		public static NativeString GetDspSettingNameByIndex(UInt16 index)
@@ -347,7 +317,7 @@ namespace CriWare
 		/// <see cref="CriAtomExAcf.GetDspSettingNameByIndex"/> 関数と異なり、
 		///  ACF情報を登録する前でも本関数は実行可能です。 
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcf_GetDspSettingNameByIndexFromAcfData(void *acf_data, CriSint32 acf_data_size, CriUint16 index)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcf_GetDspSettingNameByIndexFromAcfData(void *acf_data, CriSint32 acf_data_size, CriUint16 index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspSettingNameByIndex"/>
 		public static NativeString GetDspSettingNameByIndexFromAcfData(IntPtr acfData, Int32 acfDataSize, UInt16 index)
@@ -365,7 +335,7 @@ namespace CriWare
 		/// セッティング名を指定してセッティング情報を取得します。
 		///  指定したセッティング名のDsp settingが存在しない場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetDspSettingInformation(const CriChar8 *name, CriAtomExAcfDspSettingInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetDspSettingInformation(const CriChar8 *name, CriAtomExAcfDspSettingInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspSettingNameByIndex"/>
 		/// <seealso cref="CriAtomExAcf.GetDspBusInformation"/>
@@ -458,7 +428,7 @@ namespace CriWare
 		///  指定したセッティング名のスナップショットが存在しない場合、falseが返ります。
 		///  スナップショットインデックスは親となるDSPバス設定情報の <see cref="CriAtomExAcf.DspSettingInfo"/> 構造体内の snapshot_start_indexメンバとnum_snapshotsメンバを元に適切な値を算出してください。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetDspSettingSnapshotInformation(CriUint16 index, CriAtomExAcfDspSettingSnapshotInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetDspSettingSnapshotInformation(CriUint16 index, CriAtomExAcfDspSettingSnapshotInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspBusInformation"/>
 		public static unsafe bool GetDspSettingSnapshotInformation(UInt16 index, out CriAtomExAcf.DspSettingSnapshotInfo info)
@@ -523,7 +493,7 @@ namespace CriWare
 		/// インデックスを指定してDSPバス情報を取得します。
 		///  指定したインデックス名のDSPバスが存在しない場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetDspBusInformation(CriUint16 index, CriAtomExAcfDspBusInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetDspBusInformation(CriUint16 index, CriAtomExAcfDspBusInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspSettingInformation"/>
 		/// <seealso cref="CriAtomExAcf.GetDspFxName"/>
@@ -618,6 +588,24 @@ namespace CriWare
 			/// </remarks>
 			public Byte numBusLinks;
 
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>スピーカーマッピング </para>
+			/// </remarks>
+			public CriAtom.SpeakerMapping speakerMapping;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>出力タイプ </para>
+			/// </remarks>
+			public CriAtomExAcf.DspBusOutputType outputType;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>出力オプション </para>
+			/// </remarks>
+			public Byte outputOptions;
+
 		}
 		/// <summary>DSP FX名の取得 </summary>
 		/// <param name="index">DSP FXインデックス </param>
@@ -630,7 +618,7 @@ namespace CriWare
 		///  ASRを使用しない環境、またはACF Ver.1.15.01 以前ではCRI_NULLが 
 		///  返ります。<see cref="CriAtomExAcf.GetAcfInfo"/> 関数でACFのバージョンを確認してご使用下さい。 
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcf_GetDspFxName(CriUint16 index)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcf_GetDspFxName(CriUint16 index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspBusInformation"/>
 		/// <seealso cref="CriAtomExAcf.GetDspFxParameters"/>
@@ -653,7 +641,7 @@ namespace CriWare
 		///  size引数にはDSP FXタイプに応じたパラメーターのサイズを指定してください。
 		///  サウンドレンダラにASRを指定した場合は、ACFにある実行時パラメーターがfloat配列の形式でparametersに取得されます。 ASR以外でのサウンドレンダラでは、パラメーター構造体が得られます。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetDspFxParameters(CriUint16 index, void *parameters, CriSint32 size)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetDspFxParameters(CriUint16 index, void *parameters, CriSint32 size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspBusInformation"/>
 		/// <seealso cref="CriAtomExAcf.GetDspFxName"/>
@@ -672,7 +660,7 @@ namespace CriWare
 		/// インデックスを指定してバスリンク情報を取得します。
 		///  指定したインデックス名のDSPバスリンクが存在しない場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetDspBusLinkInformation(CriUint16 index, CriAtomExAcfDspBusLinkInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetDspBusLinkInformation(CriUint16 index, CriAtomExAcfDspBusLinkInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetDspBusInformation"/>
 		public static unsafe bool GetDspBusLinkInformation(UInt16 index, out CriAtomExAcf.DspBusLinkInfo info)
@@ -751,7 +739,7 @@ namespace CriWare
 		/// <see cref="CriAtomExAcf.GetNumCategories"/> 関数と異なり、
 		///  ACF情報を登録する前でも本関数は実行可能です。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumCategoriesFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumCategoriesFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetNumCategories"/>
 		public static Int32 GetNumCategoriesFromAcfData(IntPtr acfData, Int32 acfDataSize)
@@ -766,7 +754,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれるカテゴリの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumCategories(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumCategories(void)"/>
 		/// </remarks>
 		public static Int32 GetNumCategories()
 		{
@@ -787,7 +775,7 @@ namespace CriWare
 		/// <see cref="CriAtomExAcf.GetNumCategoriesPerPlayback"/> 関数と異なり、
 		///  ACF情報を登録する前でも本関数は実行可能です。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumCategoriesPerPlaybackFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumCategoriesPerPlaybackFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetNumCategoriesPerPlayback"/>
 		public static Int32 GetNumCategoriesPerPlaybackFromAcfData(IntPtr acfData, Int32 acfDataSize)
@@ -802,7 +790,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれる再生毎カテゴリ参照数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumCategoriesPerPlayback(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumCategoriesPerPlayback(void)"/>
 		/// </remarks>
 		public static Int32 GetNumCategoriesPerPlayback()
 		{
@@ -819,7 +807,7 @@ namespace CriWare
 		/// カテゴリインデックスからカテゴリ情報を取得します。
 		///  指定したインデックスのカテゴリが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetCategoryInfo(CriUint16 index, CriAtomExCategoryInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetCategoryInfo(CriUint16 index, CriAtomExCategoryInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetCategoryInfo(UInt16 index, out CriAtomExCategory.Info info)
 		{
@@ -837,7 +825,7 @@ namespace CriWare
 		/// カテゴリ名からカテゴリ情報を取得します。
 		///  指定したカテゴリ名のカテゴリが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetCategoryInfoByName(const CriChar8 *name, CriAtomExCategoryInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetCategoryInfoByName(const CriChar8 *name, CriAtomExCategoryInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetCategoryInfoByName(ArgString name, out CriAtomExCategory.Info info)
 		{
@@ -855,7 +843,7 @@ namespace CriWare
 		/// カテゴリIDからカテゴリ情報を取得します。
 		///  指定したカテゴリIDのカテゴリが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetCategoryInfoById(CriUint32 id, CriAtomExCategoryInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetCategoryInfoById(CriUint32 id, CriAtomExCategoryInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetCategoryInfoById(UInt32 id, out CriAtomExCategory.Info info)
 		{
@@ -870,7 +858,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれるGlobal Aisacの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumGlobalAisacs(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumGlobalAisacs(void)"/>
 		/// </remarks>
 		public static Int32 GetNumGlobalAisacs()
 		{
@@ -887,7 +875,7 @@ namespace CriWare
 		/// Global AisacインデックスからAisac情報を取得します。
 		///  指定したインデックスのGlobal Aisacが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetGlobalAisacInfo(CriUint16 index, CriAtomExGlobalAisacInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetGlobalAisacInfo(CriUint16 index, CriAtomExGlobalAisacInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetGlobalAisacInfo(UInt16 index, out CriAtomEx.GlobalAisacInfo info)
 		{
@@ -920,7 +908,7 @@ namespace CriWare
 		/// Global Aisac名からAisac情報を取得します。
 		///  指定した名前のGlobal Aisacが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetGlobalAisacInfoByName(const CriChar8 *name, CriAtomExGlobalAisacInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetGlobalAisacInfoByName(const CriChar8 *name, CriAtomExGlobalAisacInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetGlobalAisacInfoByName(ArgString name, out CriAtomEx.GlobalAisacInfo info)
 		{
@@ -939,7 +927,7 @@ namespace CriWare
 		/// Global Aisac情報とgraphインデックスからgraph情報を取得します。
 		///  指定したインデックスのGlobal Aisacが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetGlobalAisacGraphInfo(const CriAtomExGlobalAisacInfo *aisac_info, CriUint16 graph_index, CriAtomExAisacGraphInfo *graph_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetGlobalAisacGraphInfo(const CriAtomExGlobalAisacInfo *aisac_info, CriUint16 graph_index, CriAtomExAisacGraphInfo *graph_info)"/>
 		/// </remarks>
 		public static unsafe bool GetGlobalAisacGraphInfo(in CriAtomEx.GlobalAisacInfo aisacInfo, UInt16 graphIndex, out CriAtomEx.AisacGraphInfo graphInfo)
 		{
@@ -960,7 +948,7 @@ namespace CriWare
 		/// Global Aisac情報、コントロール値、グラフタイプを指定してAisac値を取得します。
 		///  指定したインデックスのGlobal Aisacが存在しない場合やグラフが存在しない場合は、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetGlobalAisacValue(const CriAtomExGlobalAisacInfo *aisac_info, CriFloat32 control, CriAtomExAisacGraphType type, CriFloat32 *value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetGlobalAisacValue(const CriAtomExGlobalAisacInfo *aisac_info, CriFloat32 control, CriAtomExAisacGraphType type, CriFloat32 *value)"/>
 		/// </remarks>
 		public static unsafe bool GetGlobalAisacValue(in CriAtomEx.GlobalAisacInfo aisacInfo, Single control, CriAtomEx.AisacGraphType type, out Single value)
 		{
@@ -978,7 +966,7 @@ namespace CriWare
 		/// ライブラリに登録されたACFデータの各種情報を取得します。
 		///  ACF情報の取得に失敗した場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetAcfInfo(CriAtomExAcfInfo *acf_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetAcfInfo(CriAtomExAcfInfo *acf_info)"/>
 		/// </remarks>
 		public static unsafe bool GetAcfInfo(out CriAtomExAcf.Info acfInfo)
 		{
@@ -1014,6 +1002,12 @@ namespace CriWare
 			/// <para>ACBバージョン </para>
 			/// </remarks>
 			public UInt32 version;
+
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ユーザーデータ </para>
+			/// </remarks>
+			public NativeString userData;
 
 			/// <summary></summary>
 			/// <remarks>
@@ -1109,7 +1103,7 @@ namespace CriWare
 		/// 取得したACF情報内のポインタメンバは、ACFデータ領域内を指しています。（名前文字列へのポインタ等）
 		///  取得したACF情報を参照している間は、ACFデータ領域を解放しないようご注意ください。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetAcfInfoFromAcfData(void *acf_data, CriSint32 acf_data_size, CriAtomExAcfInfo *acf_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetAcfInfoFromAcfData(void *acf_data, CriSint32 acf_data_size, CriAtomExAcfInfo *acf_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetAcfInfo"/>
 		public static unsafe bool GetAcfInfoFromAcfData(IntPtr acfData, Int32 acfDataSize, out CriAtomExAcf.Info acfInfo)
@@ -1125,7 +1119,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれるセレクターの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumSelectors(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumSelectors(void)"/>
 		/// </remarks>
 		public static Int32 GetNumSelectors()
 		{
@@ -1142,7 +1136,7 @@ namespace CriWare
 		/// セレクターインデックスからセレクター情報を取得します。
 		///  指定したインデックスのセレクターが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetSelectorInfoByIndex(CriUint16 index, CriAtomExSelectorInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetSelectorInfoByIndex(CriUint16 index, CriAtomExSelectorInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetSelectorInfoByIndex(UInt16 index, out CriAtomEx.SelectorInfo info)
 		{
@@ -1160,7 +1154,7 @@ namespace CriWare
 		/// セレクター名からセレクター情報を取得します。
 		///  指定した名前のセレクターが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetSelectorInfoByName(const CriChar8 *name, CriAtomExSelectorInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetSelectorInfoByName(const CriChar8 *name, CriAtomExSelectorInfo *info)"/>
 		/// </remarks>
 		public static unsafe bool GetSelectorInfoByName(ArgString name, out CriAtomEx.SelectorInfo info)
 		{
@@ -1179,7 +1173,7 @@ namespace CriWare
 		/// セレクター情報とセレクターラベルインデックスからセレクターラベル情報を取得します。
 		///  指定したインデックスのセレクターラベルが存在しない場合、falseが返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExAcf_GetSelectorLabelInfo(const CriAtomExSelectorInfo *selector_info, CriUint16 label_index, CriAtomExSelectorLabelInfo *label_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExAcf_GetSelectorLabelInfo(const CriAtomExSelectorInfo *selector_info, CriUint16 label_index, CriAtomExSelectorLabelInfo *label_info)"/>
 		/// </remarks>
 		public static unsafe bool GetSelectorLabelInfo(in CriAtomEx.SelectorInfo selectorInfo, UInt16 labelIndex, out CriAtomEx.SelectorLabelInfo labelInfo)
 		{
@@ -1200,7 +1194,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcf_SetGlobalLabelToSelectorByName(const CriChar8 *selsector_name, const CriChar8 *label_name)"/>
+		/// <nativeinfo declaration="void criAtomExAcf_SetGlobalLabelToSelectorByName(const CriChar8 *selsector_name, const CriChar8 *label_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.SetGlobalLabelToSelectorByIndex"/>
 		public static void SetGlobalLabelToSelectorByName(ArgString selsectorName, ArgString labelName)
@@ -1220,7 +1214,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ACFファイルを登録しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExAcf_SetGlobalLabelToSelectorByIndex(CriUint16 selsector_index, CriUint16 label_index)"/>
+		/// <nativeinfo declaration="void criAtomExAcf_SetGlobalLabelToSelectorByIndex(CriUint16 selsector_index, CriUint16 label_index)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.SetGlobalLabelToSelectorByName"/>
 		public static void SetGlobalLabelToSelectorByIndex(UInt16 selsectorIndex, UInt16 labelIndex)
@@ -1242,7 +1236,7 @@ namespace CriWare
 		/// <see cref="CriAtomExAcf.GetNumBuses"/> 関数と異なり、
 		///  ACF情報を登録する前でも本関数は実行可能です。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumBusesFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumBusesFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetNumBuses"/>
 		public static Int32 GetNumBusesFromAcfData(IntPtr acfData, Int32 acfDataSize)
@@ -1257,7 +1251,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれるバスの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetNumBuses(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetNumBuses(void)"/>
 		/// </remarks>
 		public static Int32 GetNumBuses()
 		{
@@ -1278,7 +1272,7 @@ namespace CriWare
 		/// <see cref="CriAtomExAcf.GetMaxBusesOfDspBusSettings"/> 関数と異なり、
 		///  ACF情報を登録する前でも本関数は実行可能です。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetMaxBusesOfDspBusSettingsFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetMaxBusesOfDspBusSettingsFromAcfData(void *acf_data, CriSint32 acf_data_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExAcf.GetMaxBusesOfDspBusSettings"/>
 		public static Int32 GetMaxBusesOfDspBusSettingsFromAcfData(IntPtr acfData, Int32 acfDataSize)
@@ -1293,7 +1287,7 @@ namespace CriWare
 		/// 説明:
 		/// 登録されたACFに含まれるDSPバス設定内の最大バスの数を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExAcf_GetMaxBusesOfDspBusSettings(void)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExAcf_GetMaxBusesOfDspBusSettings(void)"/>
 		/// </remarks>
 		public static Int32 GetMaxBusesOfDspBusSettings()
 		{
@@ -1309,12 +1303,60 @@ namespace CriWare
 		/// 指定されたバス名のACF内文字列を取得します。
 		///  存在しないバス名を指定した場合はnullが返ります。
 		/// </para>
-		/// <nativeinfo declaration="const CriChar8* CRIAPI criAtomExAcf_FindBusName(const CriChar8 *bus_name)"/>
+		/// <nativeinfo declaration="const CriChar8* criAtomExAcf_FindBusName(const CriChar8 *bus_name)"/>
 		/// </remarks>
 		public static NativeString FindBusName(ArgString busName)
 		{
 			return NativeMethods.criAtomExAcf_FindBusName(busName.GetPointer(stackalloc byte[busName.BufferSize]));
 		}
 
+		/// <summary>バス出力タイプ </summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// ツールで設定したバスの出力タイプです。
+		///  パッド出力や個人出力は、プラットフォーム機能に依存します。
+		///  対応状況については、各種プラットフォーム向けのマニュアルを参照してください。
+		/// </para>
+		/// </remarks>
+		/// <seealso cref="CriAtomExAcf.DspBusInfo"/>
+		public enum DspBusOutputType
+		{
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>ルーティングバス </para>
+			/// </remarks>
+			None = 0,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>メインスピーカー出力 </para>
+			/// </remarks>
+			Main = 1,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>メインパススルー出力 </para>
+			/// </remarks>
+			MainPassthrough = 2,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>パッド音声振動出力 </para>
+			/// </remarks>
+			PadHaptic = 3,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>パッドスピーカー出力 </para>
+			/// </remarks>
+			PadSpeaker = 4,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>個人出力 </para>
+			/// </remarks>
+			Personal = 5,
+			/// <summary></summary>
+			/// <remarks>
+			/// <para>個人出力パススルー </para>
+			/// </remarks>
+			PersonalPassthrough = 6,
+		}
 	}
 }

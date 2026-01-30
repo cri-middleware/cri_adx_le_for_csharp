@@ -16,6 +16,25 @@ namespace CriWare
 	/// <summary>CriAtomEx API</summary>
 	public static partial class CriAtomEx
 	{
+		/// <summary>サンプリングレートの取得 </summary>
+		/// <remarks>
+		/// <para>
+		/// 説明:
+		/// 現在環境のサンプリングレートを取得します。
+		/// </para>
+		/// <para>
+		/// 注意:
+		/// WebAudioはブラウザーや環境によって出力サンプリングレートが異なります。
+		///  そのためAtomを初期化する前にこの関数でサンプリングレート取得し、
+		///  同じサンプリングレートでAtomを初期化してください。 
+		/// </para>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_GetWebAudioSamplingRate_WEBAUDIO(void)"/>
+		/// </remarks>
+		public static Int32 GetWebAudioSamplingRateWEBAUDIO()
+		{
+			return NativeMethods.criAtomEx_GetWebAudioSamplingRate_WEBAUDIO();
+		}
+
 		/// <summary>ライブラリ初期化用ワーク領域サイズの計算 </summary>
 		/// <param name="config">初期化用コンフィグ構造体 </param>
 		/// <returns>CriSint32 ワーク領域サイズ </returns>
@@ -35,7 +54,7 @@ namespace CriWare
 		/// <see cref="CriAtomEx.ConfigWEBAUDIO"/> 構造体のacf_infoメンバに値を設定している場合、本関数は失敗し-1を返します。
 		///  初期化処理内でACFデータの登録を行う場合は、本関数値を使用したメモリ確保ではなくADXシステムによる メモリアロケータを使用したメモリ確保処理が必要になります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomEx_CalculateWorkSize_WEBAUDIO(const CriAtomExConfig_WEBAUDIO *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomEx_CalculateWorkSize_WEBAUDIO(const CriAtomExConfig_WEBAUDIO *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigWEBAUDIO"/>
 		/// <seealso cref="CriAtomEx.InitializeWEBAUDIO"/>
@@ -80,7 +99,7 @@ namespace CriWare
 		///  関数を実行してください。
 		///  また、 <see cref="CriAtomEx.Finalize"/>_WebAudio 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Initialize_WEBAUDIO(const CriAtomExConfig_WEBAUDIO *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomEx_Initialize_WEBAUDIO(const CriAtomExConfig_WEBAUDIO *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.ConfigWEBAUDIO"/>
 		/// <seealso cref="CriAtomEx.FinalizeWEBAUDIO"/>
@@ -112,7 +131,7 @@ namespace CriWare
 		/// 本関数を実行する場合、上記関数を実行しないでください。
 		///  関数実行前に本関数を実行することはできません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_Finalize_WEBAUDIO(void)"/>
+		/// <nativeinfo declaration="void criAtomEx_Finalize_WEBAUDIO(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomEx.InitializeWEBAUDIO"/>
 		public static void FinalizeWEBAUDIO()
@@ -136,67 +155,31 @@ namespace CriWare
 		///  そのため、ファイル読み込みなど重い処理の前に本関数でバッファリング時間を増やし、
 		///  処理後に0に戻すことを推奨します。 設定できる値は0（デフォルト）～200 msです。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomEx_SetBufferingTime_WEBAUDIO(int buffering_time)"/>
+		/// <nativeinfo declaration="void criAtomEx_SetBufferingTime_WEBAUDIO(CriSint32 buffering_time)"/>
 		/// </remarks>
 		public static void SetBufferingTimeWEBAUDIO(Int32 bufferingTime)
 		{
 			NativeMethods.criAtomEx_SetBufferingTime_WEBAUDIO(bufferingTime);
 		}
 
-
 		[Serializable]
 		public unsafe partial struct ConfigWEBAUDIO
 		{
-			/// <summary>Atomライブラリ初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドで構造体にデフォルト パラメーターをセットした後、 <see cref="CriAtomEx.Initialize"/> 関数に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomEx.SetDefaultConfig"/> メソッドを使用しない 場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomEx.Initialize"/>
-			/// <seealso cref="CriAtomEx.SetDefaultConfig"/>
 			public CriAtomEx.Config atomEx;
 
-			/// <summary>ASR初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExAsr.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExAsr.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomExAsr.Initialize"/>
-			/// <seealso cref="CriAtomExAsr.SetDefaultConfig"/>
 			public CriAtomExAsr.Config asr;
 
 			public NativeBool initializeHcaMx;
 
-			/// <summary>HCA-MX初期化用コンフィグ構造体</summary>
-			/// <remarks>
-			/// <para>
-			/// 備考:
-			/// デフォルト設定を使用する場合、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドで 構造体にデフォルトパラメーターをセットした後、 <see cref="CriAtomExHcaMx.Initialize"/> 関数 に構造体を指定してください。
-			/// </para>
-			/// <para>
-			/// 注意:
-			/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExHcaMx.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
-			///  （構造体のメンバに不定値が入らないようご注意ください。） 
-			/// </para>
-			/// </remarks>
-			/// <seealso cref="CriAtomExHcaMx.Initialize"/>
-			/// <seealso cref="CriAtomExHcaMx.SetDefaultConfig"/>
 			public CriAtomExHcaMx.Config hcaMx;
 
+			public CriAtomEx.MixerType_WEBAUDIO defaultMixerType;
+
+		}
+		public enum MixerType_WEBAUDIO
+		{
+			Asr = 0,
+			Webaudio = 1,
 		}
 	}
 }

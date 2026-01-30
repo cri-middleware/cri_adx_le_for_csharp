@@ -18,21 +18,7 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtom_CalculateWorkSize(CriAtom.Config* config);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_Initialize(CriAtom.Config* config, IntPtr work, Int32 workSize);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_Finalize();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_SetDefaultConfig_(CriAtom.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeString criAtom_GetVersionString();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_SetUserMallocFunction(IntPtr func, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_SetUserFreeFunction(IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtom_IsInitialized();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -41,6 +27,10 @@ namespace CriWare
 			internal static extern void criAtom_ExecuteMain();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtom_ExecuteAudioProcess();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtom_SetUserMallocFunction(IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtom_SetUserFreeFunction(IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtom_SetAudioFrameStartCallback(IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -60,11 +50,11 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtom_AttachPerformanceMonitor();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtom_DetachPerformanceMonitor();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtom_ResetPerformanceMonitor();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtom_GetPerformanceInfo(CriAtom.PerformanceInfo* info);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtom_DetachPerformanceMonitor();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtom_CalculateAdxBitrate(Int32 numChannels, Int32 samplingRate);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -75,19 +65,18 @@ namespace CriWare
 			internal static extern NativeBool criAtom_GetStreamingInfo(CriAtom.StreamingInfo* streamingInfo);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtom_SetFreeTimeBufferingFlagForDefaultDevice(NativeBool flag);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtom_SetDefaultConfig_(CriAtom.Config* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtom_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj);
 #else
-			internal static Int32 criAtom_CalculateWorkSize(CriAtom.Config* config){return default(Int32);}
-		internal static void criAtom_Initialize(CriAtom.Config* config, IntPtr work, Int32 workSize){}
-		internal static void criAtom_Finalize(){}
-		internal static void criAtom_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj){}
-		internal static void criAtom_SetDefaultConfig_(CriAtom.Config* pConfig){}
-		internal static NativeString criAtom_GetVersionString(){return default(NativeString);}
-		internal static void criAtom_SetUserMallocFunction(IntPtr func, IntPtr obj){}
-		internal static void criAtom_SetUserFreeFunction(IntPtr func, IntPtr obj){}
+			internal static NativeString criAtom_GetVersionString(){return default(NativeString);}
 		internal static NativeBool criAtom_IsInitialized(){return default(NativeBool);}
 		internal static NativeBool criAtom_IsAudioOutputActive(){return default(NativeBool);}
 		internal static void criAtom_ExecuteMain(){}
 		internal static void criAtom_ExecuteAudioProcess(){}
+		internal static void criAtom_SetUserMallocFunction(IntPtr func, IntPtr obj){}
+		internal static void criAtom_SetUserFreeFunction(IntPtr func, IntPtr obj){}
 		internal static void criAtom_SetAudioFrameStartCallback(IntPtr func, IntPtr obj){}
 		internal static void criAtom_SetAudioFrameEndCallback(IntPtr func, IntPtr obj){}
 		internal static void criAtom_SetDeviceUpdateCallback(IntPtr func, IntPtr obj){}
@@ -97,14 +86,16 @@ namespace CriWare
 		internal static void criAtom_ChangeDefaultChannelOrder(Int32 numChannels, Int32* channelOrder){}
 		internal static void criAtom_SetAmbisonicsInputFormat(CriAtom.AmbisonicsFormat format){}
 		internal static void criAtom_AttachPerformanceMonitor(){}
+		internal static void criAtom_DetachPerformanceMonitor(){}
 		internal static void criAtom_ResetPerformanceMonitor(){}
 		internal static void criAtom_GetPerformanceInfo(CriAtom.PerformanceInfo* info){}
-		internal static void criAtom_DetachPerformanceMonitor(){}
 		internal static Int32 criAtom_CalculateAdxBitrate(Int32 numChannels, Int32 samplingRate){return default(Int32);}
 		internal static Int32 criAtom_CalculateHcaBitrate(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality){return default(Int32);}
 		internal static Int32 criAtom_CalculateHcaMxBitrate(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality){return default(Int32);}
 		internal static NativeBool criAtom_GetStreamingInfo(CriAtom.StreamingInfo* streamingInfo){return default(NativeBool);}
 		internal static NativeBool criAtom_SetFreeTimeBufferingFlagForDefaultDevice(NativeBool flag){return default(NativeBool);}
+		internal static void criAtom_SetDefaultConfig_(CriAtom.Config* pConfig){}
+		internal static void criAtom_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj){}
 #endif
 		}
 	}
@@ -113,8 +104,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomHcaMx_SetDefaultConfig_(CriAtomHcaMx.Config* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomHcaMx_CalculateWorkSize(CriAtomHcaMx.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -127,14 +116,16 @@ namespace CriWare
 			internal static extern void criAtomHcaMx_SetBusSendLevelByName(Int32 mixerId, IntPtr busName, Single level);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomHcaMx_SetFrequencyRatio(Int32 mixerId, Single ratio);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomHcaMx_SetDefaultConfig_(CriAtomHcaMx.Config* pConfig);
 #else
-			internal static void criAtomHcaMx_SetDefaultConfig_(CriAtomHcaMx.Config* pConfig){}
-		internal static Int32 criAtomHcaMx_CalculateWorkSize(CriAtomHcaMx.Config* config){return default(Int32);}
+			internal static Int32 criAtomHcaMx_CalculateWorkSize(CriAtomHcaMx.Config* config){return default(Int32);}
 		internal static void criAtomHcaMx_SetConfigForWorkSizeCalculation(CriAtomHcaMx.Config* config){}
 		internal static void criAtomHcaMx_Initialize(CriAtomHcaMx.Config* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomHcaMx_Finalize(){}
 		internal static void criAtomHcaMx_SetBusSendLevelByName(Int32 mixerId, IntPtr busName, Single level){}
 		internal static void criAtomHcaMx_SetFrequencyRatio(Int32 mixerId, Single ratio){}
+		internal static void criAtomHcaMx_SetDefaultConfig_(CriAtomHcaMx.Config* pConfig){}
 #endif
 		}
 	}
@@ -195,33 +186,9 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetHcaFormat(IntPtr player, Int32 numChannels, Int32 samplingRate, Int32 bitrate);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForInstrumentPlayer_(CriAtomInstrument.PlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfig_ASR_(CriAtomPlayer.ConfigASR* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForAdxPlayer_(CriAtom.AdxPlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForAiffPlayer_(CriAtom.AiffPlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForHcaMxPlayer_(CriAtomHcaMx.PlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForHcaPlayer_(CriAtom.HcaPlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForRawPcmPlayer_(CriAtom.RawPcmPlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForStandardPlayer_(CriAtom.StandardPlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDefaultConfigForWavePlayer_(CriAtom.WavePlayerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomPlayer_CalculateWorkSizeForStandardPlayer(CriAtom.StandardPlayerConfig* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomPlayer_CreateStandardPlayer(CriAtom.StandardPlayerConfig* config, IntPtr work, Int32 workSize);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_Destroy(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomPlayer_CalculateWorkSizeForAdxPlayer(CriAtom.AdxPlayerConfig* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -247,11 +214,9 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomPlayer_CreateRawPcmPlayer(CriAtom.RawPcmPlayerConfig* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_Destroy(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_SetData(IntPtr player, IntPtr buffer, Int32 bufferSize);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_Start(IntPtr player);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_SetDataRequestCallback(IntPtr player, IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_SetFile(IntPtr player, IntPtr binder, IntPtr path);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -263,13 +228,15 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_DeferCallback(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomPlayer_GetStatus(IntPtr player);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomPlayer_Pause(IntPtr player, NativeBool flag);
+			internal static extern void criAtomPlayer_Start(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_Stop(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_Pause(IntPtr player, NativeBool flag);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomPlayer_IsPaused(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomPlayer_GetStatus(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomPlayer_GetNumChannels(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -317,26 +284,38 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_SetRawPcmFormat(IntPtr player, CriAtom.PcmFormat pcmFormat, Int32 numChannels, Int32 samplingRate);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDataRequestCallback(IntPtr player, IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_SetStatusChangeCallback(IntPtr player, IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_SetParameterChangeCallback(IntPtr player, IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomPlayer_SetLoadRequestCallback(IntPtr player, IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetHcaFormat(IntPtr player, Int32 numChannels, Int32 samplingRate, Int32 bitrate);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfig_ASR_(CriAtomPlayer.ConfigASR* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForStandardPlayer_(CriAtom.StandardPlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForAdxPlayer_(CriAtom.AdxPlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForHcaPlayer_(CriAtom.HcaPlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForHcaMxPlayer_(CriAtomHcaMx.PlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForWavePlayer_(CriAtom.WavePlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForAiffPlayer_(CriAtom.AiffPlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForRawPcmPlayer_(CriAtom.RawPcmPlayerConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomPlayer_SetDefaultConfigForInstrumentPlayer_(CriAtomInstrument.PlayerConfig* pConfig);
 #else
-			internal static void criAtomPlayer_SetHcaFormat(IntPtr player, Int32 numChannels, Int32 samplingRate, Int32 bitrate){}
-		internal static void criAtomPlayer_SetDefaultConfigForInstrumentPlayer_(CriAtomInstrument.PlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfig_ASR_(CriAtomPlayer.ConfigASR* pConfig){}
-		internal static void criAtomPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj){}
-		internal static void criAtomPlayer_SetDefaultConfigForAdxPlayer_(CriAtom.AdxPlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfigForAiffPlayer_(CriAtom.AiffPlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfigForHcaMxPlayer_(CriAtomHcaMx.PlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfigForHcaPlayer_(CriAtom.HcaPlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfigForRawPcmPlayer_(CriAtom.RawPcmPlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfigForStandardPlayer_(CriAtom.StandardPlayerConfig* pConfig){}
-		internal static void criAtomPlayer_SetDefaultConfigForWavePlayer_(CriAtom.WavePlayerConfig* pConfig){}
-		internal static Int32 criAtomPlayer_CalculateWorkSizeForStandardPlayer(CriAtom.StandardPlayerConfig* config){return default(Int32);}
+			internal static Int32 criAtomPlayer_CalculateWorkSizeForStandardPlayer(CriAtom.StandardPlayerConfig* config){return default(Int32);}
 		internal static IntPtr criAtomPlayer_CreateStandardPlayer(CriAtom.StandardPlayerConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
-		internal static void criAtomPlayer_Destroy(IntPtr player){}
 		internal static Int32 criAtomPlayer_CalculateWorkSizeForAdxPlayer(CriAtom.AdxPlayerConfig* config){return default(Int32);}
 		internal static IntPtr criAtomPlayer_CreateAdxPlayer(CriAtom.AdxPlayerConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static Int32 criAtomPlayer_CalculateWorkSizeForHcaPlayer(CriAtom.HcaPlayerConfig* config){return default(Int32);}
@@ -349,18 +328,18 @@ namespace CriWare
 		internal static IntPtr criAtomPlayer_CreateAiffPlayer(CriAtom.AiffPlayerConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static Int32 criAtomPlayer_CalculateWorkSizeForRawPcmPlayer(CriAtom.RawPcmPlayerConfig* config){return default(Int32);}
 		internal static IntPtr criAtomPlayer_CreateRawPcmPlayer(CriAtom.RawPcmPlayerConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
+		internal static void criAtomPlayer_Destroy(IntPtr player){}
 		internal static void criAtomPlayer_SetData(IntPtr player, IntPtr buffer, Int32 bufferSize){}
-		internal static void criAtomPlayer_Start(IntPtr player){}
-		internal static void criAtomPlayer_SetDataRequestCallback(IntPtr player, IntPtr func, IntPtr obj){}
 		internal static void criAtomPlayer_SetFile(IntPtr player, IntPtr binder, IntPtr path){}
 		internal static void criAtomPlayer_SetContentId(IntPtr player, IntPtr binder, Int32 id){}
 		internal static void criAtomPlayer_SetWaveId(IntPtr player, IntPtr awb, Int32 id){}
 		internal static void criAtomPlayer_SetPreviousDataAgain(IntPtr player){}
 		internal static void criAtomPlayer_DeferCallback(IntPtr player){}
-		internal static Int32 criAtomPlayer_GetStatus(IntPtr player){return default(Int32);}
-		internal static void criAtomPlayer_Pause(IntPtr player, NativeBool flag){}
+		internal static void criAtomPlayer_Start(IntPtr player){}
 		internal static void criAtomPlayer_Stop(IntPtr player){}
+		internal static void criAtomPlayer_Pause(IntPtr player, NativeBool flag){}
 		internal static NativeBool criAtomPlayer_IsPaused(IntPtr player){return default(NativeBool);}
+		internal static Int32 criAtomPlayer_GetStatus(IntPtr player){return default(Int32);}
 		internal static Int32 criAtomPlayer_GetNumChannels(IntPtr player){return default(Int32);}
 		internal static NativeBool criAtomPlayer_GetNumPlayedSamples(IntPtr player, Int64* numPlayed, Int32* samplingRate){return default(NativeBool);}
 		internal static NativeBool criAtomPlayer_GetNumRenderedSamples(IntPtr player, Int64* numRendered, Int32* samplingRate){return default(NativeBool);}
@@ -384,9 +363,21 @@ namespace CriWare
 		internal static void criAtomPlayer_SetHcaMxMixerId(IntPtr player, Int32 mixerId){}
 		internal static void criAtomPlayer_SetAsrRackId(IntPtr player, Int32 rackId){}
 		internal static void criAtomPlayer_SetRawPcmFormat(IntPtr player, CriAtom.PcmFormat pcmFormat, Int32 numChannels, Int32 samplingRate){}
+		internal static void criAtomPlayer_SetDataRequestCallback(IntPtr player, IntPtr func, IntPtr obj){}
 		internal static void criAtomPlayer_SetStatusChangeCallback(IntPtr player, IntPtr func, IntPtr obj){}
 		internal static void criAtomPlayer_SetParameterChangeCallback(IntPtr player, IntPtr func, IntPtr obj){}
+		internal static void criAtomPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj){}
 		internal static void criAtomPlayer_SetLoadRequestCallback(IntPtr player, IntPtr func, IntPtr obj){}
+		internal static void criAtomPlayer_SetHcaFormat(IntPtr player, Int32 numChannels, Int32 samplingRate, Int32 bitrate){}
+		internal static void criAtomPlayer_SetDefaultConfig_ASR_(CriAtomPlayer.ConfigASR* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForStandardPlayer_(CriAtom.StandardPlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForAdxPlayer_(CriAtom.AdxPlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForHcaPlayer_(CriAtom.HcaPlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForHcaMxPlayer_(CriAtomHcaMx.PlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForWavePlayer_(CriAtom.WavePlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForAiffPlayer_(CriAtom.AiffPlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForRawPcmPlayer_(CriAtom.RawPcmPlayerConfig* pConfig){}
+		internal static void criAtomPlayer_SetDefaultConfigForInstrumentPlayer_(CriAtomInstrument.PlayerConfig* pConfig){}
 #endif
 		}
 	}
@@ -396,21 +387,21 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomDbas_GetStreamingPlayerHandles(Int32 dbasId, IntPtr* players, Int32 length);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomDbas_SetDefaultConfig_(CriAtomDbas.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomDbas_CalculateWorkSize(CriAtomDbas.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomDbas_Create(CriAtomDbas.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomDbas_Destroy(Int32 atomDbasId);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomDbas_GetStreamingPlayerHandles(Int32 dbasId, IntPtr* players, Int32 length);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomDbas_SetDefaultConfig_(CriAtomDbas.Config* pConfig);
 #else
-			internal static Int32 criAtomDbas_GetStreamingPlayerHandles(Int32 dbasId, IntPtr* players, Int32 length){return default(Int32);}
-		internal static void criAtomDbas_SetDefaultConfig_(CriAtomDbas.Config* pConfig){}
-		internal static Int32 criAtomDbas_CalculateWorkSize(CriAtomDbas.Config* config){return default(Int32);}
+			internal static Int32 criAtomDbas_CalculateWorkSize(CriAtomDbas.Config* config){return default(Int32);}
 		internal static Int32 criAtomDbas_Create(CriAtomDbas.Config* config, IntPtr work, Int32 workSize){return default(Int32);}
 		internal static void criAtomDbas_Destroy(Int32 atomDbasId){}
+		internal static Int32 criAtomDbas_GetStreamingPlayerHandles(Int32 dbasId, IntPtr* players, Int32 length){return default(Int32);}
+		internal static void criAtomDbas_SetDefaultConfig_(CriAtomDbas.Config* pConfig){}
 #endif
 		}
 	}
@@ -419,8 +410,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomStreamingCache_SetDefaultConfig_(CriAtomStreamingCache.Config* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomStreamingCache_CalculateWorkSize(CriAtomStreamingCache.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -433,14 +422,16 @@ namespace CriWare
 			internal static extern NativeBool criAtomStreamingCache_IsCachedWaveId(IntPtr stmCacheId, IntPtr awb, Int32 id);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomStreamingCache_IsCachedFile(IntPtr stmCacheId, IntPtr srcBinder, IntPtr path);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomStreamingCache_SetDefaultConfig_(CriAtomStreamingCache.Config* pConfig);
 #else
-			internal static void criAtomStreamingCache_SetDefaultConfig_(CriAtomStreamingCache.Config* pConfig){}
-		internal static Int32 criAtomStreamingCache_CalculateWorkSize(CriAtomStreamingCache.Config* config){return default(Int32);}
+			internal static Int32 criAtomStreamingCache_CalculateWorkSize(CriAtomStreamingCache.Config* config){return default(Int32);}
 		internal static IntPtr criAtomStreamingCache_Create(CriAtomStreamingCache.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomStreamingCache_Destroy(IntPtr stmCacheId){}
 		internal static void criAtomStreamingCache_Clear(IntPtr cacheId){}
 		internal static NativeBool criAtomStreamingCache_IsCachedWaveId(IntPtr stmCacheId, IntPtr awb, Int32 id){return default(NativeBool);}
 		internal static NativeBool criAtomStreamingCache_IsCachedFile(IntPtr stmCacheId, IntPtr srcBinder, IntPtr path){return default(NativeBool);}
+		internal static void criAtomStreamingCache_SetDefaultConfig_(CriAtomStreamingCache.Config* pConfig){}
 #endif
 		}
 	}
@@ -472,14 +463,14 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomDspSpectra_Process(IntPtr spectra, UInt32 numChannels, UInt32 numSamples, Single** pcm);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern IntPtr criAtomDspSpectra_GetLevels(IntPtr spectra);
+			internal static extern Single* criAtomDspSpectra_GetLevels(IntPtr spectra);
 #else
 			internal static Int32 criAtomDspSpectra_CalculateWorkSize(CriAtomDspSpectra.Config* config){return default(Int32);}
 		internal static IntPtr criAtomDspSpectra_Create(CriAtomDspSpectra.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomDspSpectra_Destroy(IntPtr spectra){}
 		internal static void criAtomDspSpectra_Reset(IntPtr spectra){}
 		internal static void criAtomDspSpectra_Process(IntPtr spectra, UInt32 numChannels, UInt32 numSamples, Single** pcm){}
-		internal static IntPtr criAtomDspSpectra_GetLevels(IntPtr spectra){return default(IntPtr);}
+		internal static Single* criAtomDspSpectra_GetLevels(IntPtr spectra){return default(Single*);}
 #endif
 		}
 	}
@@ -488,12 +479,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomMeter_SetDefaultConfigForLevelMeter_(CriAtom.LevelMeterConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomMeter_SetDefaultConfigForLoudnessMeter_(CriAtom.LoudnessMeterConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomMeter_SetDefaultConfigForTruePeakMeter_(CriAtom.TruePeakMeterConfig* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomMeter_CalculateWorkSizeForLevelMeter(CriAtom.LevelMeterConfig* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -520,11 +505,14 @@ namespace CriWare
 			internal static extern void criAtomMeter_DetachTruePeakMeter();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomMeter_GetTruePeakInfo(CriAtom.TruePeakInfo* info);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomMeter_SetDefaultConfigForLevelMeter_(CriAtom.LevelMeterConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomMeter_SetDefaultConfigForLoudnessMeter_(CriAtom.LoudnessMeterConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomMeter_SetDefaultConfigForTruePeakMeter_(CriAtom.TruePeakMeterConfig* pConfig);
 #else
-			internal static void criAtomMeter_SetDefaultConfigForLevelMeter_(CriAtom.LevelMeterConfig* pConfig){}
-		internal static void criAtomMeter_SetDefaultConfigForLoudnessMeter_(CriAtom.LoudnessMeterConfig* pConfig){}
-		internal static void criAtomMeter_SetDefaultConfigForTruePeakMeter_(CriAtom.TruePeakMeterConfig* pConfig){}
-		internal static Int32 criAtomMeter_CalculateWorkSizeForLevelMeter(CriAtom.LevelMeterConfig* config){return default(Int32);}
+			internal static Int32 criAtomMeter_CalculateWorkSizeForLevelMeter(CriAtom.LevelMeterConfig* config){return default(Int32);}
 		internal static void criAtomMeter_AttachLevelMeter(CriAtom.LevelMeterConfig* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomMeter_DetachLevelMeter(){}
 		internal static void criAtomMeter_GetLevelInfo(CriAtom.LevelInfo* info){}
@@ -537,6 +525,9 @@ namespace CriWare
 		internal static void criAtomMeter_AttachTruePeakMeter(CriAtom.TruePeakMeterConfig* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomMeter_DetachTruePeakMeter(){}
 		internal static void criAtomMeter_GetTruePeakInfo(CriAtom.TruePeakInfo* info){}
+		internal static void criAtomMeter_SetDefaultConfigForLevelMeter_(CriAtom.LevelMeterConfig* pConfig){}
+		internal static void criAtomMeter_SetDefaultConfigForLoudnessMeter_(CriAtom.LoudnessMeterConfig* pConfig){}
+		internal static void criAtomMeter_SetDefaultConfigForTruePeakMeter_(CriAtom.TruePeakMeterConfig* pConfig){}
 #endif
 		}
 	}
@@ -560,18 +551,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsr_SetBinauralizerVolume(Single volume);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsr_SetDefaultConfigForBusAnalyzer_(CriAtomExAsr.BusAnalyzerConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsr_SetBusFilterCallbackByName(IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern NativeBool criAtomExAsr_RegisterSoundxRInterface(IntPtr soundxrInterface);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsr_GetPcmDataFloat32(Int32 outputChannels, Int32 outputSamples, Single** outputBuffer);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsr_SetDefaultConfig_(CriAtomExAsr.Config* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsr_CalculateWorkSize(CriAtomExAsr.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -607,6 +586,8 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsr_GetBusAnalyzerInfoByName(IntPtr busName, CriAtomExAsr.BusAnalyzerInfo* info);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsr_SetBusFilterCallbackByName(IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsr_GetNumBuses();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomExAsr_RegisterEffectInterface(IntPtr afxInterface);
@@ -617,6 +598,8 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsr_GetIrReverbPerformanceInfo(CriAtomExAsr.IrReverbPerformanceInfo* info);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsr_GetPcmDataFloat32(Int32 outputChannels, Int32 outputSamples, Single** outputBuffer);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsr_GetNumBufferedSamples();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsr_SetPcmBufferSize(Int32 numSamples);
@@ -625,15 +608,17 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsr_EnableBinauralizer(NativeBool enabled);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsr_SetBinauralizerVolume(Single volume);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomExAsr_IsEnabledBinauralizer();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomExAsr_RegisterSoundxRInterface(IntPtr soundxrInterface);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsr_SetDefaultConfig_(CriAtomExAsr.Config* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsr_SetDefaultConfigForBusAnalyzer_(CriAtomExAsr.BusAnalyzerConfig* pConfig);
 #else
-			internal static void criAtomExAsr_SetBinauralizerVolume(Single volume){}
-		internal static void criAtomExAsr_SetDefaultConfigForBusAnalyzer_(CriAtomExAsr.BusAnalyzerConfig* pConfig){}
-		internal static void criAtomExAsr_SetBusFilterCallbackByName(IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj){}
-		internal static NativeBool criAtomExAsr_RegisterSoundxRInterface(IntPtr soundxrInterface){return default(NativeBool);}
-		internal static Int32 criAtomExAsr_GetPcmDataFloat32(Int32 outputChannels, Int32 outputSamples, Single** outputBuffer){return default(Int32);}
-		internal static void criAtomExAsr_SetDefaultConfig_(CriAtomExAsr.Config* pConfig){}
-		internal static Int32 criAtomExAsr_CalculateWorkSize(CriAtomExAsr.Config* config){return default(Int32);}
+			internal static Int32 criAtomExAsr_CalculateWorkSize(CriAtomExAsr.Config* config){return default(Int32);}
 		internal static void criAtomExAsr_SetConfigForWorkSizeCalculation(CriAtomExAsr.Config* config){}
 		internal static void criAtomExAsr_Initialize(CriAtomExAsr.Config* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomExAsr_Finalize(){}
@@ -650,16 +635,22 @@ namespace CriWare
 		internal static void criAtomExAsr_AttachBusAnalyzerByName(IntPtr busName, CriAtomExAsr.BusAnalyzerConfig* config){}
 		internal static void criAtomExAsr_DetachBusAnalyzerByName(IntPtr busName){}
 		internal static void criAtomExAsr_GetBusAnalyzerInfoByName(IntPtr busName, CriAtomExAsr.BusAnalyzerInfo* info){}
+		internal static void criAtomExAsr_SetBusFilterCallbackByName(IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj){}
 		internal static Int32 criAtomExAsr_GetNumBuses(){return default(Int32);}
 		internal static NativeBool criAtomExAsr_RegisterEffectInterface(IntPtr afxInterface){return default(NativeBool);}
 		internal static void criAtomExAsr_UnregisterEffectInterface(IntPtr afxInterface){}
 		internal static void criAtomExAsr_ResetIrReverbPerformanceInfo(){}
 		internal static void criAtomExAsr_GetIrReverbPerformanceInfo(CriAtomExAsr.IrReverbPerformanceInfo* info){}
+		internal static Int32 criAtomExAsr_GetPcmDataFloat32(Int32 outputChannels, Int32 outputSamples, Single** outputBuffer){return default(Int32);}
 		internal static Int32 criAtomExAsr_GetNumBufferedSamples(){return default(Int32);}
 		internal static void criAtomExAsr_SetPcmBufferSize(Int32 numSamples){}
 		internal static Int32 criAtomExAsr_GetPcmBufferSize(){return default(Int32);}
 		internal static void criAtomExAsr_EnableBinauralizer(NativeBool enabled){}
+		internal static void criAtomExAsr_SetBinauralizerVolume(Single volume){}
 		internal static NativeBool criAtomExAsr_IsEnabledBinauralizer(){return default(NativeBool);}
+		internal static NativeBool criAtomExAsr_RegisterSoundxRInterface(IntPtr soundxrInterface){return default(NativeBool);}
+		internal static void criAtomExAsr_SetDefaultConfig_(CriAtomExAsr.Config* pConfig){}
+		internal static void criAtomExAsr_SetDefaultConfigForBusAnalyzer_(CriAtomExAsr.BusAnalyzerConfig* pConfig){}
 #endif
 		}
 	}
@@ -669,37 +660,9 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsrRack_GetNumBusChannelsByName(Int32 rackId, IntPtr busName);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsrRack_GetBusRmsLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsrRack_GetBusPeakLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsrRack_GetBusPeakHoldLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsrRack_SetBusMuteByName(Int32 rackId, IntPtr busName, NativeBool mute);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern NativeBool criAtomExAsrRack_IsBusMutedByName(Int32 rackId, IntPtr busName);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern NativeString criAtomExAsrRack_GetAttachedDspBusSettingName(Int32 rackId);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsrRack_GetPassThroughRackId();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsrRack_SetBusFilterCallbackByName(Int32 rackId, IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsrRack_GetChannelBasedAudioRackId();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsrRack_GetObjectBasedAudioRackId();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsrRack_GetPcmDataFloat32(Int32 rackId, Int32 outputChannels, Int32 outputSamples, Single** outputBuffer);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExAsrRack_SetDefaultConfig_(CriAtomExAsrRack.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsrRack_CalculateWorkSize(CriAtomExAsrRack.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromConfig(CriAtomExAsrRack.Config* config, IntPtr setting);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSetting(Int32 rackId, IntPtr setting);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromAcfDataAndConfig(IntPtr acfData, Int32 acfDataSize, CriAtomExAsrRack.Config* rackConfig, IntPtr setting);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -713,7 +676,11 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_GetPerformanceInfo(Int32 rackId, CriAtomExAsrRack.PerformanceInfo* info);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSetting(Int32 rackId, IntPtr setting);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_AttachDspBusSetting(Int32 rackId, IntPtr setting, IntPtr work, Int32 workSize);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeString criAtomExAsrRack_GetAttachedDspBusSettingName(Int32 rackId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_DetachDspBusSetting(Int32 rackId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -724,6 +691,10 @@ namespace CriWare
 			internal static extern void criAtomExAsrRack_SetBusVolumeByName(Int32 rackId, IntPtr busName, Single volume);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_GetBusVolumeByName(Int32 rackId, IntPtr busName, Single* volume);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsrRack_SetBusMuteByName(Int32 rackId, IntPtr busName, NativeBool mute);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomExAsrRack_IsBusMutedByName(Int32 rackId, IntPtr busName);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_SetBusPanInfoByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusPanInfo* panInfo);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -743,15 +714,27 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomExAsrRack_GetEffectBypass(Int32 rackId, IntPtr busName, IntPtr effectName);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsrRack_GetNumBusChannelsByName(Int32 rackId, IntPtr busName);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_AttachBusAnalyzerByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusAnalyzerConfig* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_DetachBusAnalyzerByName(Int32 rackId, IntPtr busName);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_GetBusAnalyzerInfoByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusAnalyzerInfo* info);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsrRack_GetBusRmsLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsrRack_GetBusPeakLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsrRack_GetBusPeakHoldLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsrRack_SetBusFilterCallbackByName(Int32 rackId, IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_SetAlternateRackId(Int32 rackId, Int32 altRackId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsrRack_GetNumBuses(Int32 rackId);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsrRack_GetPcmDataFloat32(Int32 rackId, Int32 outputChannels, Int32 outputSamples, Single** outputBuffer);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAsrRack_GetNumBufferedSamples(Int32 rackId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -804,35 +787,33 @@ namespace CriWare
 			internal static extern void criAtomExAsrRack_DetachTruePeakMeter(Int32 rackId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExAsrRack_GetTruePeakInfo(Int32 rackId, CriAtom.TruePeakInfo* info);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsrRack_GetChannelBasedAudioRackId();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsrRack_GetObjectBasedAudioRackId();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAsrRack_GetPassThroughRackId();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExAsrRack_SetDefaultConfig_(CriAtomExAsrRack.Config* pConfig);
 #else
-			internal static Int32 criAtomExAsrRack_GetNumBusChannelsByName(Int32 rackId, IntPtr busName){return default(Int32);}
-		internal static void criAtomExAsrRack_GetBusRmsLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels){}
-		internal static void criAtomExAsrRack_GetBusPeakLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels){}
-		internal static void criAtomExAsrRack_GetBusPeakHoldLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels){}
-		internal static void criAtomExAsrRack_SetBusMuteByName(Int32 rackId, IntPtr busName, NativeBool mute){}
-		internal static NativeBool criAtomExAsrRack_IsBusMutedByName(Int32 rackId, IntPtr busName){return default(NativeBool);}
-		internal static NativeString criAtomExAsrRack_GetAttachedDspBusSettingName(Int32 rackId){return default(NativeString);}
-		internal static Int32 criAtomExAsrRack_GetPassThroughRackId(){return default(Int32);}
-		internal static void criAtomExAsrRack_SetBusFilterCallbackByName(Int32 rackId, IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj){}
-		internal static Int32 criAtomExAsrRack_GetChannelBasedAudioRackId(){return default(Int32);}
-		internal static Int32 criAtomExAsrRack_GetObjectBasedAudioRackId(){return default(Int32);}
-		internal static Int32 criAtomExAsrRack_GetPcmDataFloat32(Int32 rackId, Int32 outputChannels, Int32 outputSamples, Single** outputBuffer){return default(Int32);}
-		internal static void criAtomExAsrRack_SetDefaultConfig_(CriAtomExAsrRack.Config* pConfig){}
-		internal static Int32 criAtomExAsrRack_CalculateWorkSize(CriAtomExAsrRack.Config* config){return default(Int32);}
+			internal static Int32 criAtomExAsrRack_CalculateWorkSize(CriAtomExAsrRack.Config* config){return default(Int32);}
 		internal static Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromConfig(CriAtomExAsrRack.Config* config, IntPtr setting){return default(Int32);}
-		internal static Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSetting(Int32 rackId, IntPtr setting){return default(Int32);}
 		internal static Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSettingFromAcfDataAndConfig(IntPtr acfData, Int32 acfDataSize, CriAtomExAsrRack.Config* rackConfig, IntPtr setting){return default(Int32);}
 		internal static Int32 criAtomExAsrRack_Create(CriAtomExAsrRack.Config* config, IntPtr work, Int32 workSize){return default(Int32);}
 		internal static void criAtomExAsrRack_Destroy(Int32 rackId){}
 		internal static void criAtomExAsrRack_GetNumRenderedSamples(Int32 rackId, Int64* numSamples, Int32* samplingRate){}
 		internal static void criAtomExAsrRack_ResetPerformanceMonitor(Int32 rackId){}
 		internal static void criAtomExAsrRack_GetPerformanceInfo(Int32 rackId, CriAtomExAsrRack.PerformanceInfo* info){}
+		internal static Int32 criAtomExAsrRack_CalculateWorkSizeForDspBusSetting(Int32 rackId, IntPtr setting){return default(Int32);}
 		internal static void criAtomExAsrRack_AttachDspBusSetting(Int32 rackId, IntPtr setting, IntPtr work, Int32 workSize){}
+		internal static NativeString criAtomExAsrRack_GetAttachedDspBusSettingName(Int32 rackId){return default(NativeString);}
 		internal static void criAtomExAsrRack_DetachDspBusSetting(Int32 rackId){}
 		internal static void criAtomExAsrRack_ApplyDspBusSnapshot(Int32 rackId, IntPtr snapshotName, Int32 timeMs){}
 		internal static NativeString criAtomExAsrRack_GetAppliedDspBusSnapshotName(Int32 rackId){return default(NativeString);}
 		internal static void criAtomExAsrRack_SetBusVolumeByName(Int32 rackId, IntPtr busName, Single volume){}
 		internal static void criAtomExAsrRack_GetBusVolumeByName(Int32 rackId, IntPtr busName, Single* volume){}
+		internal static void criAtomExAsrRack_SetBusMuteByName(Int32 rackId, IntPtr busName, NativeBool mute){}
+		internal static NativeBool criAtomExAsrRack_IsBusMutedByName(Int32 rackId, IntPtr busName){return default(NativeBool);}
 		internal static void criAtomExAsrRack_SetBusPanInfoByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusPanInfo* panInfo){}
 		internal static void criAtomExAsrRack_GetBusPanInfoByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusPanInfo* panInfo){}
 		internal static void criAtomExAsrRack_SetBusMatrixByName(Int32 rackId, IntPtr busName, Int32 inputChannels, Int32 outputChannels, Single* matrix){}
@@ -842,11 +823,17 @@ namespace CriWare
 		internal static Single criAtomExAsrRack_GetEffectParameter(Int32 rackId, IntPtr busName, IntPtr effectName, UInt32 parameterIndex){return default(Single);}
 		internal static void criAtomExAsrRack_SetEffectBypass(Int32 rackId, IntPtr busName, IntPtr effectName, NativeBool bypass){}
 		internal static NativeBool criAtomExAsrRack_GetEffectBypass(Int32 rackId, IntPtr busName, IntPtr effectName){return default(NativeBool);}
+		internal static Int32 criAtomExAsrRack_GetNumBusChannelsByName(Int32 rackId, IntPtr busName){return default(Int32);}
 		internal static void criAtomExAsrRack_AttachBusAnalyzerByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusAnalyzerConfig* config){}
 		internal static void criAtomExAsrRack_DetachBusAnalyzerByName(Int32 rackId, IntPtr busName){}
 		internal static void criAtomExAsrRack_GetBusAnalyzerInfoByName(Int32 rackId, IntPtr busName, CriAtomExAsr.BusAnalyzerInfo* info){}
+		internal static void criAtomExAsrRack_GetBusRmsLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels){}
+		internal static void criAtomExAsrRack_GetBusPeakLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels){}
+		internal static void criAtomExAsrRack_GetBusPeakHoldLevelByName(Int32 rackId, IntPtr busName, Single* level, Int32 maxChannels){}
+		internal static void criAtomExAsrRack_SetBusFilterCallbackByName(Int32 rackId, IntPtr busName, IntPtr preFunc, IntPtr postFunc, IntPtr obj){}
 		internal static void criAtomExAsrRack_SetAlternateRackId(Int32 rackId, Int32 altRackId){}
 		internal static Int32 criAtomExAsrRack_GetNumBuses(Int32 rackId){return default(Int32);}
+		internal static Int32 criAtomExAsrRack_GetPcmDataFloat32(Int32 rackId, Int32 outputChannels, Int32 outputSamples, Single** outputBuffer){return default(Int32);}
 		internal static Int32 criAtomExAsrRack_GetNumBufferedSamples(Int32 rackId){return default(Int32);}
 		internal static NativeBool criAtomExAsrRack_GetAmplitudeAnalyzerRms(Int32 rackId, Int32 busNo, Single* rms, UInt32 numChannels){return default(NativeBool);}
 		internal static NativeBool criAtomExAsrRack_GetAmplitudeAnalyzerRmsByName(Int32 rackId, IntPtr busName, Single* rms, UInt32 numChannels){return default(NativeBool);}
@@ -873,6 +860,10 @@ namespace CriWare
 		internal static void criAtomExAsrRack_AttachTruePeakMeter(Int32 rackId, CriAtom.TruePeakMeterConfig* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomExAsrRack_DetachTruePeakMeter(Int32 rackId){}
 		internal static void criAtomExAsrRack_GetTruePeakInfo(Int32 rackId, CriAtom.TruePeakInfo* info){}
+		internal static Int32 criAtomExAsrRack_GetChannelBasedAudioRackId(){return default(Int32);}
+		internal static Int32 criAtomExAsrRack_GetObjectBasedAudioRackId(){return default(Int32);}
+		internal static Int32 criAtomExAsrRack_GetPassThroughRackId(){return default(Int32);}
+		internal static void criAtomExAsrRack_SetDefaultConfig_(CriAtomExAsrRack.Config* pConfig){}
 #endif
 		}
 	}
@@ -882,18 +873,18 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomAsr_SetDefaultConfig_(CriAtomAsr.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomAsr_CalculateWorkSize(CriAtomAsr.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomAsr_Initialize(CriAtomAsr.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomAsr_Finalize();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomAsr_SetDefaultConfig_(CriAtomAsr.Config* pConfig);
 #else
-			internal static void criAtomAsr_SetDefaultConfig_(CriAtomAsr.Config* pConfig){}
-		internal static Int32 criAtomAsr_CalculateWorkSize(CriAtomAsr.Config* config){return default(Int32);}
+			internal static Int32 criAtomAsr_CalculateWorkSize(CriAtomAsr.Config* config){return default(Int32);}
 		internal static void criAtomAsr_Initialize(CriAtomAsr.Config* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomAsr_Finalize(){}
+		internal static void criAtomAsr_SetDefaultConfig_(CriAtomAsr.Config* pConfig){}
 #endif
 		}
 	}
@@ -902,22 +893,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetStartTimeMicro(IntPtr player, Int64 startTimeUs);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetPan3dElevation(IntPtr player, Single pan3dElevation);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_OverrideDefaultPanMethod(IntPtr func, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetWideness(IntPtr player, Single wideness);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetSpread(IntPtr player, Single spread);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern IntPtr criAtomExPlayer_GetSoundObject(IntPtr player);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetDefaultConfig_(CriAtomExPlayer.Config* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_AddOutputPort(IntPtr player, IntPtr outputPort);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -941,19 +916,11 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetCueId(IntPtr player, IntPtr acbHn, Int32 id);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern UInt32 criAtomExPlayer_Start(IntPtr player);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetCueName(IntPtr player, IntPtr acbHn, IntPtr cueName);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetCueIndex(IntPtr player, IntPtr acbHn, Int32 index);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetData(IntPtr player, IntPtr buffer, Int32 size);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetFormat(IntPtr player, UInt32 format);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetNumChannels(IntPtr player, Int32 numChannels);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetSamplingRate(IntPtr player, Int32 samplingRate);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetFile(IntPtr player, IntPtr binder, IntPtr path);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -961,9 +928,7 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetWaveId(IntPtr player, IntPtr awb, Int32 id);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExPlayer_GetStatus(IntPtr player);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_Pause(IntPtr player, NativeBool sw);
+			internal static extern UInt32 criAtomExPlayer_Start(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern UInt32 criAtomExPlayer_Prepare(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -977,9 +942,13 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_EnumeratePlayers(IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_Pause(IntPtr player, NativeBool sw);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_Resume(IntPtr player, CriAtomEx.ResumeMode mode);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomExPlayer_IsPaused(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExPlayer_GetStatus(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_EnumeratePlaybacks(IntPtr player, IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -988,6 +957,12 @@ namespace CriWare
 			internal static extern UInt32 criAtomExPlayer_GetLastPlaybackId(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int64 criAtomExPlayer_GetTime(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetFormat(IntPtr player, UInt32 format);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetNumChannels(IntPtr player, Int32 numChannels);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetSamplingRate(IntPtr player, Int32 samplingRate);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetSoundRendererType(IntPtr player, CriAtom.SoundRendererType type);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1005,13 +980,13 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetStartTime(IntPtr player, Int64 startTimeMs);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetStartTimeMicro(IntPtr player, Int64 startTimeUs);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetSyncPlaybackId(IntPtr player, UInt32 playbackId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetPlaybackRatio(IntPtr player, Single playbackRatio);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_LimitLoopCount(IntPtr player, Int32 count);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetVolume(IntPtr player, Single volume);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_UpdateAll(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1025,11 +1000,15 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExPlayer_GetParameterSint32(IntPtr player, CriAtomEx.ParameterId id);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetVolume(IntPtr player, Single volume);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetPitch(IntPtr player, Single pitch);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetMaxPitch(IntPtr player, Single pitch);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetPan3dAngle(IntPtr player, Single pan3dAngle);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetPan3dElevation(IntPtr player, Single pan3dElevation);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetPan3dInteriorDistance(IntPtr player, Single pan3dInteriorDistance);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1047,7 +1026,13 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_ChangeDefaultPanSpeakerType(CriAtomEx.PanSpeakerType panSpeakerType);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_OverrideDefaultPanMethod(IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetPanAngleType(IntPtr player, CriAtomEx.PanAngleType panAngleType);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetWideness(IntPtr player, Single wideness);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetSpread(IntPtr player, Single spread);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetSendLevel(IntPtr player, Int32 ch, CriAtomEx.SpeakerId spk, Single level);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1075,11 +1060,11 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_ClearAisacControls(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_Set3dListenerHn(IntPtr player, IntPtr listener);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_Set3dSourceHn(IntPtr player, IntPtr source);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_Set3dSourceListHn(IntPtr player, IntPtr sourceList);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_Set3dListenerHn(IntPtr player, IntPtr listener);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Single criAtomExPlayer_GetAisacControlById(IntPtr player, UInt32 controlId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1123,6 +1108,8 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetDataRequestCallback(IntPtr player, IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetRandomSeed(IntPtr player, UInt32 seed);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetDspParameter(IntPtr player, Int32 paramId, Single paramVal);
@@ -1151,6 +1138,8 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetBlockTransitionCallback(IntPtr player, IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern IntPtr criAtomExPlayer_GetSoundObject(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetDrySendLevel(IntPtr player, CriAtomEx.SpeakerId spk, Single offset, Single gain);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetSelectorLabel(IntPtr player, IntPtr selector, IntPtr label);
@@ -1169,13 +1158,13 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_AttachFader(IntPtr player, CriAtomExFader.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_SetFadeInTime(IntPtr player, Int32 ms);
+			internal static extern void criAtomExPlayer_DetachFader(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_SetFadeOutTime(IntPtr player, Int32 ms);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExPlayer_DetachFader(IntPtr player);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExPlayer_GetFadeOutTime(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetFadeInTime(IntPtr player, Int32 ms);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExPlayer_GetFadeInTime(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1190,16 +1179,10 @@ namespace CriWare
 			internal static extern NativeBool criAtomExPlayer_IsFading(IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExPlayer_ResetFaderParameters(IntPtr player);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExPlayer_SetDefaultConfig_(CriAtomExPlayer.Config* pConfig);
 #else
-			internal static void criAtomExPlayer_SetStartTimeMicro(IntPtr player, Int64 startTimeUs){}
-		internal static void criAtomExPlayer_SetPan3dElevation(IntPtr player, Single pan3dElevation){}
-		internal static void criAtomExPlayer_OverrideDefaultPanMethod(IntPtr func, IntPtr obj){}
-		internal static void criAtomExPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj){}
-		internal static void criAtomExPlayer_SetWideness(IntPtr player, Single wideness){}
-		internal static void criAtomExPlayer_SetSpread(IntPtr player, Single spread){}
-		internal static IntPtr criAtomExPlayer_GetSoundObject(IntPtr player){return default(IntPtr);}
-		internal static void criAtomExPlayer_SetDefaultConfig_(CriAtomExPlayer.Config* pConfig){}
-		internal static void criAtomExPlayer_AddOutputPort(IntPtr player, IntPtr outputPort){}
+			internal static void criAtomExPlayer_AddOutputPort(IntPtr player, IntPtr outputPort){}
 		internal static void criAtomExPlayer_RemoveOutputPort(IntPtr player, IntPtr outputPort){}
 		internal static void criAtomExPlayer_ClearOutputPorts(IntPtr player){}
 		internal static void criAtomExPlayer_AddPreferredOutputPort(IntPtr player, IntPtr outputPort){}
@@ -1210,30 +1193,30 @@ namespace CriWare
 		internal static IntPtr criAtomExPlayer_Create(CriAtomExPlayer.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomExPlayer_Destroy(IntPtr player){}
 		internal static void criAtomExPlayer_SetCueId(IntPtr player, IntPtr acbHn, Int32 id){}
-		internal static UInt32 criAtomExPlayer_Start(IntPtr player){return default(UInt32);}
 		internal static void criAtomExPlayer_SetCueName(IntPtr player, IntPtr acbHn, IntPtr cueName){}
 		internal static void criAtomExPlayer_SetCueIndex(IntPtr player, IntPtr acbHn, Int32 index){}
 		internal static void criAtomExPlayer_SetData(IntPtr player, IntPtr buffer, Int32 size){}
-		internal static void criAtomExPlayer_SetFormat(IntPtr player, UInt32 format){}
-		internal static void criAtomExPlayer_SetNumChannels(IntPtr player, Int32 numChannels){}
-		internal static void criAtomExPlayer_SetSamplingRate(IntPtr player, Int32 samplingRate){}
 		internal static void criAtomExPlayer_SetFile(IntPtr player, IntPtr binder, IntPtr path){}
 		internal static void criAtomExPlayer_SetContentId(IntPtr player, IntPtr binder, Int32 id){}
 		internal static void criAtomExPlayer_SetWaveId(IntPtr player, IntPtr awb, Int32 id){}
-		internal static Int32 criAtomExPlayer_GetStatus(IntPtr player){return default(Int32);}
-		internal static void criAtomExPlayer_Pause(IntPtr player, NativeBool sw){}
+		internal static UInt32 criAtomExPlayer_Start(IntPtr player){return default(UInt32);}
 		internal static UInt32 criAtomExPlayer_Prepare(IntPtr player){return default(UInt32);}
 		internal static void criAtomExPlayer_Stop(IntPtr player){}
 		internal static void criAtomExPlayer_StopWithoutReleaseTime(IntPtr player){}
 		internal static void criAtomExPlayer_StopAllPlayers(){}
 		internal static void criAtomExPlayer_StopAllPlayersWithoutReleaseTime(){}
 		internal static void criAtomExPlayer_EnumeratePlayers(IntPtr func, IntPtr obj){}
+		internal static void criAtomExPlayer_Pause(IntPtr player, NativeBool sw){}
 		internal static void criAtomExPlayer_Resume(IntPtr player, CriAtomEx.ResumeMode mode){}
 		internal static NativeBool criAtomExPlayer_IsPaused(IntPtr player){return default(NativeBool);}
+		internal static Int32 criAtomExPlayer_GetStatus(IntPtr player){return default(Int32);}
 		internal static void criAtomExPlayer_EnumeratePlaybacks(IntPtr player, IntPtr func, IntPtr obj){}
 		internal static Int32 criAtomExPlayer_GetNumPlaybacks(IntPtr player){return default(Int32);}
 		internal static UInt32 criAtomExPlayer_GetLastPlaybackId(IntPtr player){return default(UInt32);}
 		internal static Int64 criAtomExPlayer_GetTime(IntPtr player){return default(Int64);}
+		internal static void criAtomExPlayer_SetFormat(IntPtr player, UInt32 format){}
+		internal static void criAtomExPlayer_SetNumChannels(IntPtr player, Int32 numChannels){}
+		internal static void criAtomExPlayer_SetSamplingRate(IntPtr player, Int32 samplingRate){}
 		internal static void criAtomExPlayer_SetSoundRendererType(IntPtr player, CriAtom.SoundRendererType type){}
 		internal static void criAtomExPlayer_SetGroupNumber(IntPtr player, Int32 groupNo){}
 		internal static void criAtomExPlayer_SetVoiceControlMethod(IntPtr player, CriAtomEx.VoiceControlMethod method){}
@@ -1242,19 +1225,21 @@ namespace CriWare
 		internal static void criAtomExPlayer_SetAsrRackId(IntPtr player, Int32 rackId){}
 		internal static void criAtomExPlayer_SetAsrRackIdArray(IntPtr player, Int32* rackIdArray, Int32 numRacks){}
 		internal static void criAtomExPlayer_SetStartTime(IntPtr player, Int64 startTimeMs){}
+		internal static void criAtomExPlayer_SetStartTimeMicro(IntPtr player, Int64 startTimeUs){}
 		internal static void criAtomExPlayer_SetSyncPlaybackId(IntPtr player, UInt32 playbackId){}
 		internal static void criAtomExPlayer_SetPlaybackRatio(IntPtr player, Single playbackRatio){}
 		internal static void criAtomExPlayer_LimitLoopCount(IntPtr player, Int32 count){}
-		internal static void criAtomExPlayer_SetVolume(IntPtr player, Single volume){}
 		internal static void criAtomExPlayer_UpdateAll(IntPtr player){}
 		internal static void criAtomExPlayer_Update(IntPtr player, UInt32 id){}
 		internal static void criAtomExPlayer_ResetParameters(IntPtr player){}
 		internal static Single criAtomExPlayer_GetParameterFloat32(IntPtr player, CriAtomEx.ParameterId id){return default(Single);}
 		internal static UInt32 criAtomExPlayer_GetParameterUint32(IntPtr player, CriAtomEx.ParameterId id){return default(UInt32);}
 		internal static Int32 criAtomExPlayer_GetParameterSint32(IntPtr player, CriAtomEx.ParameterId id){return default(Int32);}
+		internal static void criAtomExPlayer_SetVolume(IntPtr player, Single volume){}
 		internal static void criAtomExPlayer_SetPitch(IntPtr player, Single pitch){}
 		internal static void criAtomExPlayer_SetMaxPitch(IntPtr player, Single pitch){}
 		internal static void criAtomExPlayer_SetPan3dAngle(IntPtr player, Single pan3dAngle){}
+		internal static void criAtomExPlayer_SetPan3dElevation(IntPtr player, Single pan3dElevation){}
 		internal static void criAtomExPlayer_SetPan3dInteriorDistance(IntPtr player, Single pan3dInteriorDistance){}
 		internal static void criAtomExPlayer_SetPan3dVolume(IntPtr player, Single pan3dVolume){}
 		internal static void criAtomExPlayer_SetPanType(IntPtr player, CriAtomEx.PanType panType){}
@@ -1263,7 +1248,10 @@ namespace CriWare
 		internal static void criAtomExPlayer_AddMixDownCenterVolumeOffset(IntPtr player, Single mixdownCenterVolumeOffset){}
 		internal static void criAtomExPlayer_AddMixDownLfeVolumeOffset(IntPtr player, Single mixdownLfeVolumeOffset){}
 		internal static void criAtomExPlayer_ChangeDefaultPanSpeakerType(CriAtomEx.PanSpeakerType panSpeakerType){}
+		internal static void criAtomExPlayer_OverrideDefaultPanMethod(IntPtr func, IntPtr obj){}
 		internal static void criAtomExPlayer_SetPanAngleType(IntPtr player, CriAtomEx.PanAngleType panAngleType){}
+		internal static void criAtomExPlayer_SetWideness(IntPtr player, Single wideness){}
+		internal static void criAtomExPlayer_SetSpread(IntPtr player, Single spread){}
 		internal static void criAtomExPlayer_SetSendLevel(IntPtr player, Int32 ch, CriAtomEx.SpeakerId spk, Single level){}
 		internal static void criAtomExPlayer_SetBusSendLevelByName(IntPtr player, IntPtr busName, Single level){}
 		internal static void criAtomExPlayer_ResetBusSends(IntPtr player){}
@@ -1277,9 +1265,9 @@ namespace CriWare
 		internal static void criAtomExPlayer_SetAisacControlById(IntPtr player, UInt32 controlId, Single controlValue){}
 		internal static void criAtomExPlayer_SetAisacControlByName(IntPtr player, IntPtr controlName, Single controlValue){}
 		internal static void criAtomExPlayer_ClearAisacControls(IntPtr player){}
-		internal static void criAtomExPlayer_Set3dListenerHn(IntPtr player, IntPtr listener){}
 		internal static void criAtomExPlayer_Set3dSourceHn(IntPtr player, IntPtr source){}
 		internal static void criAtomExPlayer_Set3dSourceListHn(IntPtr player, IntPtr sourceList){}
+		internal static void criAtomExPlayer_Set3dListenerHn(IntPtr player, IntPtr listener){}
 		internal static Single criAtomExPlayer_GetAisacControlById(IntPtr player, UInt32 controlId){return default(Single);}
 		internal static Single criAtomExPlayer_GetAisacControlByName(IntPtr player, IntPtr controlName){return default(Single);}
 		internal static void criAtomExPlayer_SetCategoryById(IntPtr player, UInt32 categoryId){}
@@ -1301,6 +1289,7 @@ namespace CriWare
 		internal static void criAtomExPlayer_SetEnvelopeReleaseCurve(IntPtr player, CriAtomEx.CurveType curveType, Single strength){}
 		internal static void criAtomExPlayer_SetEnvelopeSustainLevel(IntPtr player, Single susutainLevel){}
 		internal static void criAtomExPlayer_SetDataRequestCallback(IntPtr player, IntPtr func, IntPtr obj){}
+		internal static void criAtomExPlayer_SetFilterCallback(IntPtr player, IntPtr func, IntPtr obj){}
 		internal static void criAtomExPlayer_SetRandomSeed(IntPtr player, UInt32 seed){}
 		internal static void criAtomExPlayer_SetDspParameter(IntPtr player, Int32 paramId, Single paramVal){}
 		internal static void criAtomExPlayer_SetDspBypass(IntPtr player, NativeBool isBypassed){}
@@ -1315,6 +1304,7 @@ namespace CriWare
 		internal static void criAtomExPlayer_DetachTweenAll(IntPtr player){}
 		internal static void criAtomExPlayer_SetFirstBlockIndex(IntPtr player, Int32 index){}
 		internal static void criAtomExPlayer_SetBlockTransitionCallback(IntPtr player, IntPtr func, IntPtr obj){}
+		internal static IntPtr criAtomExPlayer_GetSoundObject(IntPtr player){return default(IntPtr);}
 		internal static void criAtomExPlayer_SetDrySendLevel(IntPtr player, CriAtomEx.SpeakerId spk, Single offset, Single gain){}
 		internal static void criAtomExPlayer_SetSelectorLabel(IntPtr player, IntPtr selector, IntPtr label){}
 		internal static void criAtomExPlayer_UnsetSelectorLabel(IntPtr player, IntPtr selector){}
@@ -1324,10 +1314,10 @@ namespace CriWare
 		internal static void criAtomExPlayer_SetChannelConfig(IntPtr player, Int32 numChannels, CriAtom.ChannelConfig channelConfig){}
 		internal static Int32 criAtomExPlayer_CalculateWorkSizeForFader(CriAtomExFader.Config* config){return default(Int32);}
 		internal static void criAtomExPlayer_AttachFader(IntPtr player, CriAtomExFader.Config* config, IntPtr work, Int32 workSize){}
-		internal static void criAtomExPlayer_SetFadeInTime(IntPtr player, Int32 ms){}
-		internal static void criAtomExPlayer_SetFadeOutTime(IntPtr player, Int32 ms){}
 		internal static void criAtomExPlayer_DetachFader(IntPtr player){}
+		internal static void criAtomExPlayer_SetFadeOutTime(IntPtr player, Int32 ms){}
 		internal static Int32 criAtomExPlayer_GetFadeOutTime(IntPtr player){return default(Int32);}
+		internal static void criAtomExPlayer_SetFadeInTime(IntPtr player, Int32 ms){}
 		internal static Int32 criAtomExPlayer_GetFadeInTime(IntPtr player){return default(Int32);}
 		internal static void criAtomExPlayer_SetFadeInStartOffset(IntPtr player, Int32 ms){}
 		internal static Int32 criAtomExPlayer_GetFadeInStartOffset(IntPtr player){return default(Int32);}
@@ -1335,6 +1325,7 @@ namespace CriWare
 		internal static Int32 criAtomExPlayer_GetFadeOutEndDelay(IntPtr player){return default(Int32);}
 		internal static NativeBool criAtomExPlayer_IsFading(IntPtr player){return default(NativeBool);}
 		internal static void criAtomExPlayer_ResetFaderParameters(IntPtr player){}
+		internal static void criAtomExPlayer_SetDefaultConfig_(CriAtomExPlayer.Config* pConfig){}
 #endif
 		}
 	}
@@ -1344,13 +1335,11 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern NativeBool criAtomExOutputPort_IsDestroyable(IntPtr outputPort);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExOutputPort_SetDefaultConfig_(CriAtomExOutputPort.Config* pConfig, IntPtr outputportName);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExOutputPort_CalculateWorkSize(CriAtomExOutputPort.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomExOutputPort_Create(CriAtomExOutputPort.Config* config, IntPtr work, Int32 workSize);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomExOutputPort_IsDestroyable(IntPtr outputPort);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExOutputPort_Destroy(IntPtr outputPort);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1363,17 +1352,19 @@ namespace CriWare
 			internal static extern void criAtomExOutputPort_IgnoreCategoryParametersById(IntPtr outputPortHn, UInt32 categoryId, NativeBool ignoreParameters);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExOutputPort_ResetIgnoreCategory(IntPtr outputPortHn);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExOutputPort_SetDefaultConfig_(CriAtomExOutputPort.Config* pConfig, IntPtr outputportName);
 #else
-			internal static NativeBool criAtomExOutputPort_IsDestroyable(IntPtr outputPort){return default(NativeBool);}
-		internal static void criAtomExOutputPort_SetDefaultConfig_(CriAtomExOutputPort.Config* pConfig, IntPtr outputportName){}
-		internal static Int32 criAtomExOutputPort_CalculateWorkSize(CriAtomExOutputPort.Config* config){return default(Int32);}
+			internal static Int32 criAtomExOutputPort_CalculateWorkSize(CriAtomExOutputPort.Config* config){return default(Int32);}
 		internal static IntPtr criAtomExOutputPort_Create(CriAtomExOutputPort.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
+		internal static NativeBool criAtomExOutputPort_IsDestroyable(IntPtr outputPort){return default(NativeBool);}
 		internal static void criAtomExOutputPort_Destroy(IntPtr outputPort){}
 		internal static void criAtomExOutputPort_SetAsrRackId(IntPtr outputPort, Int32 rackId){}
 		internal static void criAtomExOutputPort_SetVibrationChannelLevel(IntPtr outputPort, Int32 channel, Single level){}
 		internal static void criAtomExOutputPort_SetMonauralMix(IntPtr outputPort, NativeBool monauralMix){}
 		internal static void criAtomExOutputPort_IgnoreCategoryParametersById(IntPtr outputPortHn, UInt32 categoryId, NativeBool ignoreParameters){}
 		internal static void criAtomExOutputPort_ResetIgnoreCategory(IntPtr outputPortHn){}
+		internal static void criAtomExOutputPort_SetDefaultConfig_(CriAtomExOutputPort.Config* pConfig, IntPtr outputportName){}
 #endif
 		}
 	}
@@ -1383,43 +1374,17 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_SetDefaultConfigForUserPcmOutput_(CriAtomEx.ConfigForUserPcmOutput* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_AttachPerformanceMonitor_();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_DetachPerformanceMonitor_();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_ResetPerformanceMonitor_();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_GetPerformanceInfo_(CriAtom.PerformanceInfo* pInfo);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_SetChannelMapping_(Int32 nch, UInt32 type);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomEx_CalculateAdxBitrate_(Int32 numChannels, Int32 samplingRate);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomEx_CalculateHcaBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomEx_CalculateHcaMxBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern NativeBool criAtomEx_GetStreamingInfo_(CriAtom.StreamingInfo* streamingInfo);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern NativeBool criAtomEx_SetFreeTimeBufferingFlagForDefaultDevice_(NativeBool flag);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_SetDefaultConfig_(CriAtomEx.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx_CalculateWorkSizeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_InitializeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config, IntPtr work, Int32 workSize);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_FinalizeForUserPcmOutput();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx_CalculateWorkSize(CriAtomEx.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomEx_Initialize(CriAtomEx.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx_Finalize();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_InitializeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config, IntPtr work, Int32 workSize);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx_FinalizeForUserPcmOutput();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeBool criAtomEx_IsInitialized();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1520,26 +1485,39 @@ namespace CriWare
 			internal static extern void criAtomEx_SetMonitoringVoiceStopCallback(IntPtr func, IntPtr obj);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx_SetMonitoringVoiceStopPlaybackId(UInt32 playbackId);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_SetDefaultConfigForUserPcmOutput_(CriAtomEx.ConfigForUserPcmOutput* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_SetDefaultConfig_(CriAtomEx.Config* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_AttachPerformanceMonitor_();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_DetachPerformanceMonitor_();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_ResetPerformanceMonitor_();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_GetPerformanceInfo_(CriAtom.PerformanceInfo* pInfo);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx_SetChannelMapping_(Int32 nch, UInt32 type);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomEx_CalculateAdxBitrate_(Int32 numChannels, Int32 samplingRate);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomEx_CalculateHcaBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomEx_CalculateHcaMxBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomEx_GetStreamingInfo_(CriAtom.StreamingInfo* streamingInfo);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomEx_SetFreeTimeBufferingFlagForDefaultDevice_(NativeBool flag);
 #else
-			internal static void criAtomEx_SetDefaultConfigForUserPcmOutput_(CriAtomEx.ConfigForUserPcmOutput* pConfig){}
-		internal static void criAtomEx_AttachPerformanceMonitor_(){}
-		internal static void criAtomEx_DetachPerformanceMonitor_(){}
-		internal static void criAtomEx_ResetPerformanceMonitor_(){}
-		internal static void criAtomEx_GetPerformanceInfo_(CriAtom.PerformanceInfo* pInfo){}
-		internal static void criAtomEx_SetChannelMapping_(Int32 nch, UInt32 type){}
-		internal static Int32 criAtomEx_CalculateAdxBitrate_(Int32 numChannels, Int32 samplingRate){return default(Int32);}
-		internal static Int32 criAtomEx_CalculateHcaBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality){return default(Int32);}
-		internal static Int32 criAtomEx_CalculateHcaMxBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality){return default(Int32);}
-		internal static NativeBool criAtomEx_GetStreamingInfo_(CriAtom.StreamingInfo* streamingInfo){return default(NativeBool);}
-		internal static NativeBool criAtomEx_SetFreeTimeBufferingFlagForDefaultDevice_(NativeBool flag){return default(NativeBool);}
-		internal static void criAtomEx_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj){}
-		internal static void criAtomEx_SetDefaultConfig_(CriAtomEx.Config* pConfig){}
-		internal static Int32 criAtomEx_CalculateWorkSizeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config){return default(Int32);}
+			internal static Int32 criAtomEx_CalculateWorkSizeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config){return default(Int32);}
+		internal static void criAtomEx_InitializeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config, IntPtr work, Int32 workSize){}
+		internal static void criAtomEx_FinalizeForUserPcmOutput(){}
 		internal static Int32 criAtomEx_CalculateWorkSize(CriAtomEx.Config* config){return default(Int32);}
 		internal static NativeBool criAtomEx_Initialize(CriAtomEx.Config* config, IntPtr work, Int32 workSize){return default(NativeBool);}
 		internal static void criAtomEx_Finalize(){}
-		internal static void criAtomEx_InitializeForUserPcmOutput(CriAtomEx.ConfigForUserPcmOutput* config, IntPtr work, Int32 workSize){}
-		internal static void criAtomEx_FinalizeForUserPcmOutput(){}
 		internal static NativeBool criAtomEx_IsInitialized(){return default(NativeBool);}
 		internal static void criAtomEx_ExecuteMain(){}
 		internal static void criAtomEx_ExecuteAudioProcess(){}
@@ -1590,6 +1568,19 @@ namespace CriWare
 		internal static void criAtomEx_EnumerateVoiceInfos(IntPtr func, IntPtr obj){}
 		internal static void criAtomEx_SetMonitoringVoiceStopCallback(IntPtr func, IntPtr obj){}
 		internal static void criAtomEx_SetMonitoringVoiceStopPlaybackId(UInt32 playbackId){}
+		internal static void criAtomEx_SetDefaultConfigForUserPcmOutput_(CriAtomEx.ConfigForUserPcmOutput* pConfig){}
+		internal static void criAtomEx_SetUserAllocator_(IntPtr pMallocFunc, IntPtr pFreeFunc, IntPtr pObj){}
+		internal static void criAtomEx_SetDefaultConfig_(CriAtomEx.Config* pConfig){}
+		internal static void criAtomEx_AttachPerformanceMonitor_(){}
+		internal static void criAtomEx_DetachPerformanceMonitor_(){}
+		internal static void criAtomEx_ResetPerformanceMonitor_(){}
+		internal static void criAtomEx_GetPerformanceInfo_(CriAtom.PerformanceInfo* pInfo){}
+		internal static void criAtomEx_SetChannelMapping_(Int32 nch, UInt32 type){}
+		internal static Int32 criAtomEx_CalculateAdxBitrate_(Int32 numChannels, Int32 samplingRate){return default(Int32);}
+		internal static Int32 criAtomEx_CalculateHcaBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality){return default(Int32);}
+		internal static Int32 criAtomEx_CalculateHcaMxBitrate_(Int32 numChannels, Int32 samplingRate, CriAtom.EncodeQuality quality){return default(Int32);}
+		internal static NativeBool criAtomEx_GetStreamingInfo_(CriAtom.StreamingInfo* streamingInfo){return default(NativeBool);}
+		internal static NativeBool criAtomEx_SetFreeTimeBufferingFlagForDefaultDevice_(NativeBool flag){return default(NativeBool);}
 #endif
 		}
 	}
@@ -1611,8 +1602,6 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExHcaMx_SetDefaultConfig_(CriAtomExHcaMx.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExHcaMx_CalculateWorkSize(CriAtomExHcaMx.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExHcaMx_SetConfigForWorkSizeCalculation(CriAtomExHcaMx.Config* config);
@@ -1626,15 +1615,17 @@ namespace CriWare
 			internal static extern void criAtomExHcaMx_SetFrequencyRatio(Int32 mixerId, Single ratio);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExHcaMx_SetAsrRackId(Int32 mixerId, Int32 rackId);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExHcaMx_SetDefaultConfig_(CriAtomExHcaMx.Config* pConfig);
 #else
-			internal static void criAtomExHcaMx_SetDefaultConfig_(CriAtomExHcaMx.Config* pConfig){}
-		internal static Int32 criAtomExHcaMx_CalculateWorkSize(CriAtomExHcaMx.Config* config){return default(Int32);}
+			internal static Int32 criAtomExHcaMx_CalculateWorkSize(CriAtomExHcaMx.Config* config){return default(Int32);}
 		internal static void criAtomExHcaMx_SetConfigForWorkSizeCalculation(CriAtomExHcaMx.Config* config){}
 		internal static void criAtomExHcaMx_Initialize(CriAtomExHcaMx.Config* config, IntPtr work, Int32 workSize){}
 		internal static void criAtomExHcaMx_Finalize(){}
 		internal static void criAtomExHcaMx_SetBusSendLevelByName(Int32 mixerId, IntPtr busName, Single level){}
 		internal static void criAtomExHcaMx_SetFrequencyRatio(Int32 mixerId, Single ratio){}
 		internal static void criAtomExHcaMx_SetAsrRackId(Int32 mixerId, Int32 rackId){}
+		internal static void criAtomExHcaMx_SetDefaultConfig_(CriAtomExHcaMx.Config* pConfig){}
 #endif
 		}
 	}
@@ -1643,10 +1634,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern Int32 criAtomExAcf_GetNumReacts();
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern IntPtr criAtomExAcf_GetOutputPortHnByName(IntPtr name);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAcf_GetNumAisacControls();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1679,6 +1666,8 @@ namespace CriWare
 			internal static extern Int32 criAtomExAcf_GetNumCategoriesFromAcfData(IntPtr acfData, Int32 acfDataSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAcf_GetNumCategories();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExAcf_GetNumReacts();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExAcf_GetNumCategoriesPerPlaybackFromAcfData(IntPtr acfData, Int32 acfDataSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -1725,10 +1714,10 @@ namespace CriWare
 			internal static extern Int32 criAtomExAcf_GetMaxBusesOfDspBusSettings();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern NativeString criAtomExAcf_FindBusName(IntPtr busName);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern IntPtr criAtomExAcf_GetOutputPortHnByName(IntPtr name);
 #else
-			internal static Int32 criAtomExAcf_GetNumReacts(){return default(Int32);}
-		internal static IntPtr criAtomExAcf_GetOutputPortHnByName(IntPtr name){return default(IntPtr);}
-		internal static Int32 criAtomExAcf_GetNumAisacControls(){return default(Int32);}
+			internal static Int32 criAtomExAcf_GetNumAisacControls(){return default(Int32);}
 		internal static NativeBool criAtomExAcf_GetAisacControlInfo(UInt16 index, CriAtomEx.AisacControlInfo* info){return default(NativeBool);}
 		internal static UInt32 criAtomExAcf_GetAisacControlIdByName(IntPtr name){return default(UInt32);}
 		internal static NativeString criAtomExAcf_GetAisacControlNameById(UInt32 id){return default(NativeString);}
@@ -1744,6 +1733,7 @@ namespace CriWare
 		internal static NativeBool criAtomExAcf_GetDspBusLinkInformation(UInt16 index, CriAtomExAcf.DspBusLinkInfo* info){return default(NativeBool);}
 		internal static Int32 criAtomExAcf_GetNumCategoriesFromAcfData(IntPtr acfData, Int32 acfDataSize){return default(Int32);}
 		internal static Int32 criAtomExAcf_GetNumCategories(){return default(Int32);}
+		internal static Int32 criAtomExAcf_GetNumReacts(){return default(Int32);}
 		internal static Int32 criAtomExAcf_GetNumCategoriesPerPlaybackFromAcfData(IntPtr acfData, Int32 acfDataSize){return default(Int32);}
 		internal static Int32 criAtomExAcf_GetNumCategoriesPerPlayback(){return default(Int32);}
 		internal static NativeBool criAtomExAcf_GetCategoryInfo(UInt16 index, CriAtomExCategory.Info* info){return default(NativeBool);}
@@ -1767,6 +1757,7 @@ namespace CriWare
 		internal static Int32 criAtomExAcf_GetMaxBusesOfDspBusSettingsFromAcfData(IntPtr acfData, Int32 acfDataSize){return default(Int32);}
 		internal static Int32 criAtomExAcf_GetMaxBusesOfDspBusSettings(){return default(Int32);}
 		internal static NativeString criAtomExAcf_FindBusName(IntPtr busName){return default(NativeString);}
+		internal static IntPtr criAtomExAcf_GetOutputPortHnByName(IntPtr name){return default(IntPtr);}
 #endif
 		}
 	}
@@ -1974,28 +1965,6 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForAdxVoicePool_(CriAtomEx.AdxVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForAiffVoicePool_(CriAtomEx.AiffVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForDspPitchShifter_(CriAtomEx.DspPitchShifterConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForDspTimeStretch_(CriAtomEx.DspTimeStretchConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForHcaMxVoicePool_(CriAtomExHcaMx.VoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForHcaVoicePool_(CriAtomEx.HcaVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForInstrumentVoicePool_(CriAtomEx.InstrumentVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForRawPcmVoicePool_(CriAtomEx.RawPcmVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForWaveVoicePool_(CriAtomEx.WaveVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_SetDefaultConfigForStandardVoicePool_(CriAtomEx.StandardVoicePoolConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExVoicePool_EnumerateVoicePools(IntPtr func, IntPtr obj);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExVoicePool_CalculateWorkSizeForStandardVoicePool(CriAtomEx.StandardVoicePoolConfig* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomExVoicePool_AllocateStandardVoicePool(CriAtomEx.StandardVoicePoolConfig* config, IntPtr work, Int32 workSize);
@@ -2030,6 +1999,8 @@ namespace CriWare
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExVoicePool_FreeAll();
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_EnumerateVoicePools(IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExVoicePool_GetNumUsedVoices(IntPtr pool, Int32* curNum, Int32* limit);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomExVoicePool_GetPlayerHandle(IntPtr pool, Int32 index);
@@ -2049,19 +2020,28 @@ namespace CriWare
 			internal static extern Int32 criAtomExVoicePool_CalculateWorkSizeForDspAfx(CriAtomEx.DspAfxConfig* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExVoicePool_AttachDspAfx(IntPtr pool, CriAtomEx.DspAfxConfig* config, IntPtr work, Int32 workSize);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForStandardVoicePool_(CriAtomEx.StandardVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForAdxVoicePool_(CriAtomEx.AdxVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForHcaVoicePool_(CriAtomEx.HcaVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForHcaMxVoicePool_(CriAtomExHcaMx.VoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForWaveVoicePool_(CriAtomEx.WaveVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForAiffVoicePool_(CriAtomEx.AiffVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForRawPcmVoicePool_(CriAtomEx.RawPcmVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForInstrumentVoicePool_(CriAtomEx.InstrumentVoicePoolConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForDspPitchShifter_(CriAtomEx.DspPitchShifterConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExVoicePool_SetDefaultConfigForDspTimeStretch_(CriAtomEx.DspTimeStretchConfig* pConfig);
 #else
-			internal static void criAtomExVoicePool_SetDefaultConfigForAdxVoicePool_(CriAtomEx.AdxVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForAiffVoicePool_(CriAtomEx.AiffVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForDspPitchShifter_(CriAtomEx.DspPitchShifterConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForDspTimeStretch_(CriAtomEx.DspTimeStretchConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForHcaMxVoicePool_(CriAtomExHcaMx.VoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForHcaVoicePool_(CriAtomEx.HcaVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForInstrumentVoicePool_(CriAtomEx.InstrumentVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForRawPcmVoicePool_(CriAtomEx.RawPcmVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForWaveVoicePool_(CriAtomEx.WaveVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_SetDefaultConfigForStandardVoicePool_(CriAtomEx.StandardVoicePoolConfig* pConfig){}
-		internal static void criAtomExVoicePool_EnumerateVoicePools(IntPtr func, IntPtr obj){}
-		internal static Int32 criAtomExVoicePool_CalculateWorkSizeForStandardVoicePool(CriAtomEx.StandardVoicePoolConfig* config){return default(Int32);}
+			internal static Int32 criAtomExVoicePool_CalculateWorkSizeForStandardVoicePool(CriAtomEx.StandardVoicePoolConfig* config){return default(Int32);}
 		internal static IntPtr criAtomExVoicePool_AllocateStandardVoicePool(CriAtomEx.StandardVoicePoolConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static Int32 criAtomExVoicePool_CalculateWorkSizeForAdxVoicePool(CriAtomEx.AdxVoicePoolConfig* config){return default(Int32);}
 		internal static IntPtr criAtomExVoicePool_AllocateAdxVoicePool(CriAtomEx.AdxVoicePoolConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
@@ -2078,6 +2058,7 @@ namespace CriWare
 		internal static IntPtr criAtomExVoicePool_AllocateInstrumentVoicePool(CriAtomEx.InstrumentVoicePoolConfig* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomExVoicePool_Free(IntPtr pool){}
 		internal static void criAtomExVoicePool_FreeAll(){}
+		internal static void criAtomExVoicePool_EnumerateVoicePools(IntPtr func, IntPtr obj){}
 		internal static void criAtomExVoicePool_GetNumUsedVoices(IntPtr pool, Int32* curNum, Int32* limit){}
 		internal static IntPtr criAtomExVoicePool_GetPlayerHandle(IntPtr pool, Int32 index){return default(IntPtr);}
 		internal static Int32 criAtomExVoicePool_CalculateWorkSizeForInstrumentVoicePool(CriAtomEx.InstrumentVoicePoolConfig* config){return default(Int32);}
@@ -2088,6 +2069,16 @@ namespace CriWare
 		internal static void criAtomExVoicePool_AttachDspTimeStretch(IntPtr pool, CriAtomEx.DspTimeStretchConfig* config, IntPtr work, Int32 workSize){}
 		internal static Int32 criAtomExVoicePool_CalculateWorkSizeForDspAfx(CriAtomEx.DspAfxConfig* config){return default(Int32);}
 		internal static void criAtomExVoicePool_AttachDspAfx(IntPtr pool, CriAtomEx.DspAfxConfig* config, IntPtr work, Int32 workSize){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForStandardVoicePool_(CriAtomEx.StandardVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForAdxVoicePool_(CriAtomEx.AdxVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForHcaVoicePool_(CriAtomEx.HcaVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForHcaMxVoicePool_(CriAtomExHcaMx.VoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForWaveVoicePool_(CriAtomEx.WaveVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForAiffVoicePool_(CriAtomEx.AiffVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForRawPcmVoicePool_(CriAtomEx.RawPcmVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForInstrumentVoicePool_(CriAtomEx.InstrumentVoicePoolConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForDspPitchShifter_(CriAtomEx.DspPitchShifterConfig* pConfig){}
+		internal static void criAtomExVoicePool_SetDefaultConfigForDspTimeStretch_(CriAtomEx.DspTimeStretchConfig* pConfig){}
 #endif
 		}
 	}
@@ -2355,29 +2346,21 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSource_SetDefaultConfigForRandomPosition_(CriAtomEx3dSource.RandomPositionConfig* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSource_SetMinMaxDistance_(IntPtr ex3dSource, Single minAttenuationDistance, Single maxAttenuationDistance);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSource_ChangeDefaultMinMaxDistance_(Single minAttenuationDistance, Single maxAttenuationDistance);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSource_SetDefaultConfig_(CriAtomEx3dSource.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx3dSource_CalculateWorkSize(CriAtomEx3dSource.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomEx3dSource_Create(CriAtomEx3dSource.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dSource_Destroy(IntPtr ex3dSource);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSource_SetPosition(IntPtr ex3dSource, CriAtomEx.Vector* position);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSource_SetVelocity(IntPtr ex3dSource, CriAtomEx.Vector* velocity);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dSource_Update(IntPtr ex3dSource);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dSource_ResetParameters(IntPtr ex3dSource);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSource_SetPosition(IntPtr ex3dSource, CriAtomEx.Vector* position);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern CriAtomEx.Vector criAtomEx3dSource_GetPosition(IntPtr ex3dSource);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSource_SetVelocity(IntPtr ex3dSource, CriAtomEx.Vector* velocity);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dSource_SetOrientation(IntPtr ex3dSource, CriAtomEx.Vector* front, CriAtomEx.Vector* top);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -2422,19 +2405,23 @@ namespace CriWare
 			internal static extern void criAtomEx3dSource_SetRandomPositionList(IntPtr ex3dSource, CriAtomEx.Vector* positionList, UInt32 length);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dSource_SetRandomPositionResultCallback(IntPtr ex3dSource, IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSource_SetDefaultConfig_(CriAtomEx3dSource.Config* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSource_SetDefaultConfigForRandomPosition_(CriAtomEx3dSource.RandomPositionConfig* pConfig);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSource_SetMinMaxDistance_(IntPtr ex3dSource, Single minAttenuationDistance, Single maxAttenuationDistance);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSource_ChangeDefaultMinMaxDistance_(Single minAttenuationDistance, Single maxAttenuationDistance);
 #else
-			internal static void criAtomEx3dSource_SetDefaultConfigForRandomPosition_(CriAtomEx3dSource.RandomPositionConfig* pConfig){}
-		internal static void criAtomEx3dSource_SetMinMaxDistance_(IntPtr ex3dSource, Single minAttenuationDistance, Single maxAttenuationDistance){}
-		internal static void criAtomEx3dSource_ChangeDefaultMinMaxDistance_(Single minAttenuationDistance, Single maxAttenuationDistance){}
-		internal static void criAtomEx3dSource_SetDefaultConfig_(CriAtomEx3dSource.Config* pConfig){}
-		internal static Int32 criAtomEx3dSource_CalculateWorkSize(CriAtomEx3dSource.Config* config){return default(Int32);}
+			internal static Int32 criAtomEx3dSource_CalculateWorkSize(CriAtomEx3dSource.Config* config){return default(Int32);}
 		internal static IntPtr criAtomEx3dSource_Create(CriAtomEx3dSource.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomEx3dSource_Destroy(IntPtr ex3dSource){}
-		internal static void criAtomEx3dSource_SetPosition(IntPtr ex3dSource, CriAtomEx.Vector* position){}
-		internal static void criAtomEx3dSource_SetVelocity(IntPtr ex3dSource, CriAtomEx.Vector* velocity){}
 		internal static void criAtomEx3dSource_Update(IntPtr ex3dSource){}
 		internal static void criAtomEx3dSource_ResetParameters(IntPtr ex3dSource){}
+		internal static void criAtomEx3dSource_SetPosition(IntPtr ex3dSource, CriAtomEx.Vector* position){}
 		internal static CriAtomEx.Vector criAtomEx3dSource_GetPosition(IntPtr ex3dSource){return default(CriAtomEx.Vector);}
+		internal static void criAtomEx3dSource_SetVelocity(IntPtr ex3dSource, CriAtomEx.Vector* velocity){}
 		internal static void criAtomEx3dSource_SetOrientation(IntPtr ex3dSource, CriAtomEx.Vector* front, CriAtomEx.Vector* top){}
 		internal static void criAtomEx3dSource_SetConeParameter(IntPtr ex3dSource, Single insideAngle, Single outsideAngle, Single outsideVolume){}
 		internal static void criAtomEx3dSource_ChangeDefaultConeParameter(Single insideAngle, Single outsideAngle, Single outsideVolume){}
@@ -2457,6 +2444,10 @@ namespace CriWare
 		internal static void criAtomEx3dSource_SetRandomPositionCalculationCallback(IntPtr ex3dSource, IntPtr func, IntPtr obj){}
 		internal static void criAtomEx3dSource_SetRandomPositionList(IntPtr ex3dSource, CriAtomEx.Vector* positionList, UInt32 length){}
 		internal static void criAtomEx3dSource_SetRandomPositionResultCallback(IntPtr ex3dSource, IntPtr func, IntPtr obj){}
+		internal static void criAtomEx3dSource_SetDefaultConfig_(CriAtomEx3dSource.Config* pConfig){}
+		internal static void criAtomEx3dSource_SetDefaultConfigForRandomPosition_(CriAtomEx3dSource.RandomPositionConfig* pConfig){}
+		internal static void criAtomEx3dSource_SetMinMaxDistance_(IntPtr ex3dSource, Single minAttenuationDistance, Single maxAttenuationDistance){}
+		internal static void criAtomEx3dSource_ChangeDefaultMinMaxDistance_(Single minAttenuationDistance, Single maxAttenuationDistance){}
 #endif
 		}
 	}
@@ -2465,8 +2456,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dSourceList_SetDefaultConfig_(CriAtomEx3dSourceList.Config* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx3dSourceList_CalculateWorkSize(CriAtomEx3dSourceList.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -2479,14 +2468,16 @@ namespace CriWare
 			internal static extern void criAtomEx3dSourceList_Remove(IntPtr ex3dSourceList, IntPtr ex3dSource);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dSourceList_RemoveAll(IntPtr ex3dSourceList);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dSourceList_SetDefaultConfig_(CriAtomEx3dSourceList.Config* pConfig);
 #else
-			internal static void criAtomEx3dSourceList_SetDefaultConfig_(CriAtomEx3dSourceList.Config* pConfig){}
-		internal static Int32 criAtomEx3dSourceList_CalculateWorkSize(CriAtomEx3dSourceList.Config* config){return default(Int32);}
+			internal static Int32 criAtomEx3dSourceList_CalculateWorkSize(CriAtomEx3dSourceList.Config* config){return default(Int32);}
 		internal static IntPtr criAtomEx3dSourceList_Create(CriAtomEx3dSourceList.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomEx3dSourceList_Destroy(IntPtr ex3dSourceList){}
 		internal static void criAtomEx3dSourceList_Add(IntPtr ex3dSourceList, IntPtr ex3dSource){}
 		internal static void criAtomEx3dSourceList_Remove(IntPtr ex3dSourceList, IntPtr ex3dSource){}
 		internal static void criAtomEx3dSourceList_RemoveAll(IntPtr ex3dSourceList){}
+		internal static void criAtomEx3dSourceList_SetDefaultConfig_(CriAtomEx3dSourceList.Config* pConfig){}
 #endif
 		}
 	}
@@ -2496,23 +2487,21 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dListener_SetDefaultConfig_(CriAtomEx3dListener.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx3dListener_CalculateWorkSize(CriAtomEx3dListener.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomEx3dListener_Create(CriAtomEx3dListener.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dListener_Destroy(IntPtr ex3dListener);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dListener_SetPosition(IntPtr ex3dListener, CriAtomEx.Vector* position);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dListener_SetVelocity(IntPtr ex3dListener, CriAtomEx.Vector* velocity);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dListener_Update(IntPtr ex3dListener);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dListener_ResetParameters(IntPtr ex3dListener);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dListener_SetPosition(IntPtr ex3dListener, CriAtomEx.Vector* position);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern CriAtomEx.Vector criAtomEx3dListener_GetPosition(IntPtr ex3dListener);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dListener_SetVelocity(IntPtr ex3dListener, CriAtomEx.Vector* velocity);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dListener_SetOrientation(IntPtr ex3dListener, CriAtomEx.Vector* front, CriAtomEx.Vector* top);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -2531,16 +2520,17 @@ namespace CriWare
 			internal static extern Single criAtomEx3dListener_GetDirectionFocusLevel(IntPtr ex3dListener);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dListener_Set3dRegionHn(IntPtr ex3dListener, IntPtr ex3dRegion);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dListener_SetDefaultConfig_(CriAtomEx3dListener.Config* pConfig);
 #else
-			internal static void criAtomEx3dListener_SetDefaultConfig_(CriAtomEx3dListener.Config* pConfig){}
-		internal static Int32 criAtomEx3dListener_CalculateWorkSize(CriAtomEx3dListener.Config* config){return default(Int32);}
+			internal static Int32 criAtomEx3dListener_CalculateWorkSize(CriAtomEx3dListener.Config* config){return default(Int32);}
 		internal static IntPtr criAtomEx3dListener_Create(CriAtomEx3dListener.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomEx3dListener_Destroy(IntPtr ex3dListener){}
-		internal static void criAtomEx3dListener_SetPosition(IntPtr ex3dListener, CriAtomEx.Vector* position){}
-		internal static void criAtomEx3dListener_SetVelocity(IntPtr ex3dListener, CriAtomEx.Vector* velocity){}
 		internal static void criAtomEx3dListener_Update(IntPtr ex3dListener){}
 		internal static void criAtomEx3dListener_ResetParameters(IntPtr ex3dListener){}
+		internal static void criAtomEx3dListener_SetPosition(IntPtr ex3dListener, CriAtomEx.Vector* position){}
 		internal static CriAtomEx.Vector criAtomEx3dListener_GetPosition(IntPtr ex3dListener){return default(CriAtomEx.Vector);}
+		internal static void criAtomEx3dListener_SetVelocity(IntPtr ex3dListener, CriAtomEx.Vector* velocity){}
 		internal static void criAtomEx3dListener_SetOrientation(IntPtr ex3dListener, CriAtomEx.Vector* front, CriAtomEx.Vector* top){}
 		internal static void criAtomEx3dListener_SetDopplerMultiplier(IntPtr ex3dListener, Single dopplerMultiplier){}
 		internal static void criAtomEx3dListener_SetFocusPoint(IntPtr ex3dListener, CriAtomEx.Vector* focusPoint){}
@@ -2550,6 +2540,7 @@ namespace CriWare
 		internal static Single criAtomEx3dListener_GetDistanceFocusLevel(IntPtr ex3dListener){return default(Single);}
 		internal static Single criAtomEx3dListener_GetDirectionFocusLevel(IntPtr ex3dListener){return default(Single);}
 		internal static void criAtomEx3dListener_Set3dRegionHn(IntPtr ex3dListener, IntPtr ex3dRegion){}
+		internal static void criAtomEx3dListener_SetDefaultConfig_(CriAtomEx3dListener.Config* pConfig){}
 #endif
 		}
 	}
@@ -2559,18 +2550,18 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dRegion_SetDefaultConfig_(CriAtomEx3dRegion.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx3dRegion_CalculateWorkSize(CriAtomEx3dRegion.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomEx3dRegion_Create(CriAtomEx3dRegion.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dRegion_Destroy(IntPtr ex3dRegion);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dRegion_SetDefaultConfig_(CriAtomEx3dRegion.Config* pConfig);
 #else
-			internal static void criAtomEx3dRegion_SetDefaultConfig_(CriAtomEx3dRegion.Config* pConfig){}
-		internal static Int32 criAtomEx3dRegion_CalculateWorkSize(CriAtomEx3dRegion.Config* config){return default(Int32);}
+			internal static Int32 criAtomEx3dRegion_CalculateWorkSize(CriAtomEx3dRegion.Config* config){return default(Int32);}
 		internal static IntPtr criAtomEx3dRegion_Create(CriAtomEx3dRegion.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomEx3dRegion_Destroy(IntPtr ex3dRegion){}
+		internal static void criAtomEx3dRegion_SetDefaultConfig_(CriAtomEx3dRegion.Config* pConfig){}
 #endif
 		}
 	}
@@ -2580,19 +2571,17 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dTransceiver_SetDefaultConfig_(CriAtomEx3dTransceiver.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomEx3dTransceiver_CalculateWorkSize(CriAtomEx3dTransceiver.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomEx3dTransceiver_Create(CriAtomEx3dTransceiver.Config* config, IntPtr work, Int32 workSize);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dTransceiver_Destroy(IntPtr ex3dTransceiver);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dTransceiver_Update(IntPtr ex3dTransceiver);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dTransceiver_SetInputPosition(IntPtr ex3dTransceiver, CriAtomEx.Vector* position);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dTransceiver_SetOutputPosition(IntPtr ex3dTransceiver, CriAtomEx.Vector* position);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomEx3dTransceiver_Update(IntPtr ex3dTransceiver);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dTransceiver_SetInputOrientation(IntPtr ex3dTransceiver, CriAtomEx.Vector* front, CriAtomEx.Vector* top);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -2625,14 +2614,15 @@ namespace CriWare
 			internal static extern void criAtomEx3dTransceiver_SetTransceiverOutputBasedElevationAngleAisacControlId(IntPtr ex3dTransceiver, UInt32 aisacControlId);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomEx3dTransceiver_Set3dRegionHn(IntPtr ex3dTransceiver, IntPtr ex3dRegion);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomEx3dTransceiver_SetDefaultConfig_(CriAtomEx3dTransceiver.Config* pConfig);
 #else
-			internal static void criAtomEx3dTransceiver_SetDefaultConfig_(CriAtomEx3dTransceiver.Config* pConfig){}
-		internal static Int32 criAtomEx3dTransceiver_CalculateWorkSize(CriAtomEx3dTransceiver.Config* config){return default(Int32);}
+			internal static Int32 criAtomEx3dTransceiver_CalculateWorkSize(CriAtomEx3dTransceiver.Config* config){return default(Int32);}
 		internal static IntPtr criAtomEx3dTransceiver_Create(CriAtomEx3dTransceiver.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomEx3dTransceiver_Destroy(IntPtr ex3dTransceiver){}
+		internal static void criAtomEx3dTransceiver_Update(IntPtr ex3dTransceiver){}
 		internal static void criAtomEx3dTransceiver_SetInputPosition(IntPtr ex3dTransceiver, CriAtomEx.Vector* position){}
 		internal static void criAtomEx3dTransceiver_SetOutputPosition(IntPtr ex3dTransceiver, CriAtomEx.Vector* position){}
-		internal static void criAtomEx3dTransceiver_Update(IntPtr ex3dTransceiver){}
 		internal static void criAtomEx3dTransceiver_SetInputOrientation(IntPtr ex3dTransceiver, CriAtomEx.Vector* front, CriAtomEx.Vector* top){}
 		internal static void criAtomEx3dTransceiver_SetOutputOrientation(IntPtr ex3dTransceiver, CriAtomEx.Vector* front, CriAtomEx.Vector* top){}
 		internal static void criAtomEx3dTransceiver_SetOutputConeParameter(IntPtr ex3dTransceiver, Single insideAngle, Single outsideAngle, Single outsideVolume){}
@@ -2649,6 +2639,7 @@ namespace CriWare
 		internal static void criAtomEx3dTransceiver_SetTransceiverOutputBasedAzimuthAngleAisacControlId(IntPtr ex3dTransceiver, UInt32 aisacControlId){}
 		internal static void criAtomEx3dTransceiver_SetTransceiverOutputBasedElevationAngleAisacControlId(IntPtr ex3dTransceiver, UInt32 aisacControlId){}
 		internal static void criAtomEx3dTransceiver_Set3dRegionHn(IntPtr ex3dTransceiver, IntPtr ex3dRegion){}
+		internal static void criAtomEx3dTransceiver_SetDefaultConfig_(CriAtomEx3dTransceiver.Config* pConfig){}
 #endif
 		}
 	}
@@ -2700,8 +2691,6 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExTween_SetDefaultConfig_(CriAtomExTween.Config* pConfig);
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExTween_CalculateWorkSize(CriAtomExTween.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern IntPtr criAtomExTween_Create(CriAtomExTween.Config* config, IntPtr work, Int32 workSize);
@@ -2717,9 +2706,10 @@ namespace CriWare
 			internal static extern void criAtomExTween_Stop(IntPtr tween);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExTween_Reset(IntPtr tween);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExTween_SetDefaultConfig_(CriAtomExTween.Config* pConfig);
 #else
-			internal static void criAtomExTween_SetDefaultConfig_(CriAtomExTween.Config* pConfig){}
-		internal static Int32 criAtomExTween_CalculateWorkSize(CriAtomExTween.Config* config){return default(Int32);}
+			internal static Int32 criAtomExTween_CalculateWorkSize(CriAtomExTween.Config* config){return default(Int32);}
 		internal static IntPtr criAtomExTween_Create(CriAtomExTween.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomExTween_Destroy(IntPtr tween){}
 		internal static Single criAtomExTween_GetValue(IntPtr tween){return default(Single);}
@@ -2727,6 +2717,7 @@ namespace CriWare
 		internal static void criAtomExTween_MoveFrom(IntPtr tween, UInt16 timeMs, Single value){}
 		internal static void criAtomExTween_Stop(IntPtr tween){}
 		internal static void criAtomExTween_Reset(IntPtr tween){}
+		internal static void criAtomExTween_SetDefaultConfig_(CriAtomExTween.Config* pConfig){}
 #endif
 		}
 	}
@@ -2735,8 +2726,6 @@ namespace CriWare
 		unsafe partial class NativeMethods
 		{
 #if !CRI_ENABLE_HEADLESS_MODE
-			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-			internal static extern void criAtomExSoundObject_SetDefaultConfig_(CriAtomExSoundObject.Config* pConfig);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern Int32 criAtomExSoundObject_CalculateWorkSize(CriAtomExSoundObject.Config* config);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
@@ -2749,14 +2738,16 @@ namespace CriWare
 			internal static extern void criAtomExSoundObject_DeletePlayer(IntPtr soundObject, IntPtr player);
 			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
 			internal static extern void criAtomExSoundObject_DeleteAllPlayers(IntPtr soundObject);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExSoundObject_SetDefaultConfig_(CriAtomExSoundObject.Config* pConfig);
 #else
-			internal static void criAtomExSoundObject_SetDefaultConfig_(CriAtomExSoundObject.Config* pConfig){}
-		internal static Int32 criAtomExSoundObject_CalculateWorkSize(CriAtomExSoundObject.Config* config){return default(Int32);}
+			internal static Int32 criAtomExSoundObject_CalculateWorkSize(CriAtomExSoundObject.Config* config){return default(Int32);}
 		internal static IntPtr criAtomExSoundObject_Create(CriAtomExSoundObject.Config* config, IntPtr work, Int32 workSize){return default(IntPtr);}
 		internal static void criAtomExSoundObject_Destroy(IntPtr soundObject){}
 		internal static void criAtomExSoundObject_AddPlayer(IntPtr soundObject, IntPtr player){}
 		internal static void criAtomExSoundObject_DeletePlayer(IntPtr soundObject, IntPtr player){}
 		internal static void criAtomExSoundObject_DeleteAllPlayers(IntPtr soundObject){}
+		internal static void criAtomExSoundObject_SetDefaultConfig_(CriAtomExSoundObject.Config* pConfig){}
 #endif
 		}
 	}
@@ -2793,6 +2784,51 @@ namespace CriWare
 		internal static Int32 criAtomExDbas_Create_(CriAtomExDbas.Config* config, IntPtr work, Int32 workSize){return default(Int32);}
 		internal static void criAtomExDbas_Destroy_(Int32 atomDbasId){}
 		internal static Int32 criAtomExDbas_GetStreamingPlayerHandles_(Int32 dbasId, IntPtr* players, Int32 length){return default(Int32);}
+#endif
+		}
+	}
+	public partial class CriAtomExMonitor
+	{
+		unsafe partial class NativeMethods
+		{
+#if !CRI_ENABLE_HEADLESS_MODE
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern Int32 criAtomExMonitor_CalculateWorkSize(CriAtomExMonitor.Config* config);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_Initialize(CriAtomExMonitor.Config* config, IntPtr work, Int32 workSize);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_Finalize();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeString criAtomExMonitor_GetServerIpString();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeString criAtomExMonitor_GetClientIpString();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomExMonitor_IsConnected();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern NativeBool criAtomExMonitor_IsConnectedToProfiler();
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_SetLogCallback(IntPtr cbf, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_SetLogMode(UInt32 mode);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_OutputUserLog(IntPtr message);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_SetDataUpdateNotificationCallback(IntPtr func, IntPtr obj);
+			[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
+			internal static extern void criAtomExMonitor_SetDefaultConfig_(CriAtomExMonitor.Config* pConfig);
+#else
+			internal static Int32 criAtomExMonitor_CalculateWorkSize(CriAtomExMonitor.Config* config){return default(Int32);}
+		internal static void criAtomExMonitor_Initialize(CriAtomExMonitor.Config* config, IntPtr work, Int32 workSize){}
+		internal static void criAtomExMonitor_Finalize(){}
+		internal static NativeString criAtomExMonitor_GetServerIpString(){return default(NativeString);}
+		internal static NativeString criAtomExMonitor_GetClientIpString(){return default(NativeString);}
+		internal static NativeBool criAtomExMonitor_IsConnected(){return default(NativeBool);}
+		internal static NativeBool criAtomExMonitor_IsConnectedToProfiler(){return default(NativeBool);}
+		internal static void criAtomExMonitor_SetLogCallback(IntPtr cbf, IntPtr obj){}
+		internal static void criAtomExMonitor_SetLogMode(UInt32 mode){}
+		internal static void criAtomExMonitor_OutputUserLog(IntPtr message){}
+		internal static void criAtomExMonitor_SetDataUpdateNotificationCallback(IntPtr func, IntPtr obj){}
+		internal static void criAtomExMonitor_SetDefaultConfig_(CriAtomExMonitor.Config* pConfig){}
 #endif
 		}
 	}

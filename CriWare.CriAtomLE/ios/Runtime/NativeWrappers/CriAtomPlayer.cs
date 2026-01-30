@@ -12,7 +12,18 @@ using CriWare.InteropHelpers;
 
 namespace CriWare
 {
-
+	/// <summary>Atomプレーヤーハンドル </summary>
+	/// <remarks>
+	/// <para>
+	/// 説明:
+	/// <see cref="CriAtomPlayer"/> は、音声再生用に作られたプレーヤーを操作するためのオブジェクトです。
+	/// <see cref="CriAtomPlayer.CreateAdxPlayer"/> 関数等で音声再生用のプレーヤーを作成すると、 関数はプレーヤー操作用に、この"Atomプレーヤーオブジェクト"を返します。 
+	///  Atomプレーヤーとは、コーデックに依存しない再生制御のためのインターフェースを提供する、 抽象化されたプレーヤーオブジェクトです。
+	///  Atomプレーヤーの作成方法は再生する音声コーデックにより異なりますが、 作成されたプレーヤーの制御については、Atomプレーヤー用のAPIが共通で利用可能です。 
+	///  データのセットや再生の開始、ステータスの取得等、プレーヤーに対して行う操作は、 全てAtomプレーヤーオブジェクトを介して実行されます。
+	/// </para>
+	/// </remarks>
+	/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
 	public partial class CriAtomPlayer : IDisposable
 	{
 		/// <summary>MP3プレーヤ作成用ワーク領域サイズの計算 </summary>
@@ -30,7 +41,7 @@ namespace CriWare
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(const CriAtomMp3PlayerConfig_IOS *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(const CriAtomMp3PlayerConfig_IOS *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.Mp3PlayerConfigIOS"/>
 		/// <seealso cref="CriAtomPlayer.CreateMp3PlayerIOS"/>
@@ -51,7 +62,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  MP3プレーヤの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateMp3Player_IOS(const CriAtomMp3PlayerConfig_IOS *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateMp3Player_IOS(const CriAtomMp3PlayerConfig_IOS *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.Mp3PlayerConfigIOS"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForMp3PlayerIOS"/>
@@ -60,7 +71,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtom.Mp3PlayerConfigIOS* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateMp3Player_IOS(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateMp3Player_IOS(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 	}

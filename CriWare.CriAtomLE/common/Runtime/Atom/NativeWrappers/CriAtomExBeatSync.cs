@@ -92,7 +92,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExBeatSync_SetCallback(CriAtomExBeatSyncCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomExBeatSync_SetCallback(CriAtomExBeatSyncCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExBeatSync.CbFunc"/>
 		public static unsafe void SetCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtomExBeatSync.Info*, Int32> func, IntPtr obj)

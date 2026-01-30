@@ -18,23 +18,23 @@ namespace CriWare
 		{
 #if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_IOS && !UNITY_EDITOR) || ios)
 		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern Int32 criAtom_CalculateWorkSize_IOS(CriAtom.ConfigIOS* config);
+		internal static extern Int32 criAtom_CalculateWorkSize_IOS(CriAtom.ConfigIOS* config);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_Initialize_IOS(CriAtom.ConfigIOS* config, IntPtr work, Int32 workSize);
+		internal static extern void criAtom_Initialize_IOS(CriAtom.ConfigIOS* config, IntPtr work, Int32 workSize);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_Finalize_IOS();
+		internal static extern void criAtom_Finalize_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_SetServerThreadPriority_IOS(Int32 prio);
+		internal static extern void criAtom_SetServerThreadPriority_IOS(Int32 prio);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_StartSound_IOS();
+		internal static extern void criAtom_StartSound_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_StopSound_IOS();
+		internal static extern void criAtom_StopSound_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_RecoverSound_IOS();
+		internal static extern void criAtom_RecoverSound_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern NativeBool criAtom_IsInitializationSucceeded_IOS();
+		internal static extern NativeBool criAtom_IsInitializationSucceeded_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtom_SetupAudioSession_IOS(CriAtom.AudioSessionConfigIOS* config);
+		internal static extern void criAtom_SetupAudioSession_IOS(CriAtom.AudioSessionConfigIOS* config);
 #else
 			internal static Int32 criAtom_CalculateWorkSize_IOS(CriAtom.ConfigIOS* config) { return default(Int32); }
 			internal static void criAtom_Initialize_IOS(CriAtom.ConfigIOS* config, IntPtr work, Int32 workSize) { }
@@ -54,9 +54,9 @@ internal static extern void criAtom_SetupAudioSession_IOS(CriAtom.AudioSessionCo
 		{
 #if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_IOS && !UNITY_EDITOR) || ios)
 		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config);
+		internal static extern Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize);
+		internal static extern IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize);
 #else
 			internal static Int32 criAtomPlayer_CalculateWorkSizeForMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config) { return default(Int32); }
 			internal static IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3PlayerConfigIOS* config, IntPtr work, Int32 workSize) { return default(IntPtr); }
@@ -69,29 +69,29 @@ internal static extern IntPtr criAtomPlayer_CreateMp3Player_IOS(CriAtom.Mp3Playe
 		{
 #if !CRI_ENABLE_HEADLESS_MODE && ((UNITY_IOS && !UNITY_EDITOR) || ios)
 		[DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern Int32 criAtomEx_CalculateWorkSize_IOS(CriAtomEx.ConfigIOS* config);
+		internal static extern Int32 criAtomEx_CalculateWorkSize_IOS(CriAtomEx.ConfigIOS* config);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_Initialize_IOS(CriAtomEx.ConfigIOS* config, IntPtr work, Int32 workSize);
+		internal static extern void criAtomEx_Initialize_IOS(CriAtomEx.ConfigIOS* config, IntPtr work, Int32 workSize);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_Finalize_IOS();
+		internal static extern void criAtomEx_Finalize_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_SetServerThreadPriority_IOS(Int32 prio);
+		internal static extern void criAtomEx_SetServerThreadPriority_IOS(Int32 prio);
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_StartSound_IOS();
+		internal static extern void criAtomEx_StartSound_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_StopSound_IOS();
+		internal static extern void criAtomEx_StopSound_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_RecoverSound_IOS();
+		internal static extern void criAtomEx_RecoverSound_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern NativeBool criAtomEx_IsInitializationSucceeded_IOS();
+		internal static extern NativeBool criAtomEx_IsInitializationSucceeded_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_EnableBackgroundPlayback_IOS();
+		internal static extern void criAtomEx_EnableBackgroundPlayback_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_DisableBackgroundPlayback_IOS();
+		internal static extern void criAtomEx_DisableBackgroundPlayback_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern NativeBool criAtomEx_IsInterruptedOtherAudio_IOS();
+		internal static extern NativeBool criAtomEx_IsInterruptedOtherAudio_IOS();
 [DllImport(CriAtomCSharp.libraryName, CallingConvention = CriAtomCSharp.callingConversion)]
-internal static extern void criAtomEx_ResumeAudio_IOS();
+		internal static extern void criAtomEx_ResumeAudio_IOS();
 #else
 			internal static Int32 criAtomEx_CalculateWorkSize_IOS(CriAtomEx.ConfigIOS* config) { return default(Int32); }
 			internal static void criAtomEx_Initialize_IOS(CriAtomEx.ConfigIOS* config, IntPtr work, Int32 workSize) { }

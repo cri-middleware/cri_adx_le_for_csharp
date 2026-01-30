@@ -71,7 +71,7 @@ namespace CriWare
 		/// 本関数による設定値はACFによって設定されているカテゴリボリュームを上書き変更します。
 		///  本関数による設定値とACF設定値との乗算適用は行われないことに注意してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetVolumeById(CriAtomExCategoryId id, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetVolumeById(CriAtomExCategoryId id, CriFloat32 volume)"/>
 		/// </remarks>
 		public static void SetVolumeById(UInt32 id, Single volume)
 		{
@@ -85,7 +85,7 @@ namespace CriWare
 		/// 説明:
 		/// ID指定でカテゴリのボリュームを取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExCategory_GetVolumeById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExCategory_GetVolumeById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static Single GetVolumeById(UInt32 id)
 		{
@@ -103,7 +103,7 @@ namespace CriWare
 		/// 備考:
 		/// 最終的なカテゴリのボリューム値を取得するためにパラメーターの計算処理を行うので、 負荷が大きい関数です。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExCategory_GetTotalVolumeById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExCategory_GetTotalVolumeById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static Single GetTotalVolumeById(UInt32 id)
 		{
@@ -123,7 +123,7 @@ namespace CriWare
 		/// 本関数による設定値はACFによって設定されているカテゴリボリュームを上書き変更します。
 		///  本関数による設定値とACF設定値との乗算適用は行われないことに注意してください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetVolumeByName(const CriChar8 *name, CriFloat32 volume)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetVolumeByName(const CriChar8 *name, CriFloat32 volume)"/>
 		/// </remarks>
 		public static void SetVolumeByName(ArgString name, Single volume)
 		{
@@ -137,7 +137,7 @@ namespace CriWare
 		/// 説明:
 		/// 名前指定でカテゴリのボリュームを取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExCategory_GetVolumeByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExCategory_GetVolumeByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static Single GetVolumeByName(ArgString name)
 		{
@@ -155,7 +155,7 @@ namespace CriWare
 		/// 備考:
 		/// 最終的なカテゴリのボリューム値を取得するためにパラメーターの計算処理を行うので、 負荷が大きい関数です。 
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomExCategory_GetTotalVolumeByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomExCategory_GetTotalVolumeByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static Single GetTotalVolumeByName(ArgString name)
 		{
@@ -170,7 +170,7 @@ namespace CriWare
 		/// 説明:
 		/// ID指定でカテゴリのミュート状態を設定します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_MuteById(CriAtomExCategoryId id, CriBool mute)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_MuteById(CriAtomExCategoryId id, CriBool mute)"/>
 		/// </remarks>
 		public static void MuteById(UInt32 id, NativeBool mute)
 		{
@@ -184,7 +184,7 @@ namespace CriWare
 		/// 説明:
 		/// ID指定でカテゴリのミュート状態を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_IsMutedById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_IsMutedById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static bool IsMutedById(UInt32 id)
 		{
@@ -199,7 +199,7 @@ namespace CriWare
 		/// 説明:
 		/// 名前指定でカテゴリのミュート状態を設定します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_MuteByName(const CriChar8 *name, CriBool mute)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_MuteByName(const CriChar8 *name, CriBool mute)"/>
 		/// </remarks>
 		public static void MuteByName(ArgString name, NativeBool mute)
 		{
@@ -213,7 +213,7 @@ namespace CriWare
 		/// 説明:
 		/// 名前指定でカテゴリのミュート状態を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_IsMutedByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_IsMutedByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static bool IsMutedByName(ArgString name)
 		{
@@ -230,7 +230,7 @@ namespace CriWare
 		/// ID指定でカテゴリのソロ状態を設定します。
 		///  mute_volumeで指定したボリュームは同一カテゴリグループに所属する カテゴリに対して適用されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SoloById(CriAtomExCategoryId id, CriBool solo, CriFloat32 mute_volume)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SoloById(CriAtomExCategoryId id, CriBool solo, CriFloat32 mute_volume)"/>
 		/// </remarks>
 		public static void SoloById(UInt32 id, NativeBool solo, Single muteVolume)
 		{
@@ -244,7 +244,7 @@ namespace CriWare
 		/// 説明:
 		/// ID指定でカテゴリのソロ状態を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_IsSoloedById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_IsSoloedById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static bool IsSoloedById(UInt32 id)
 		{
@@ -261,7 +261,7 @@ namespace CriWare
 		/// 名前指定でカテゴリのソロ状態を設定します。
 		///  mute_volumeで指定したボリュームは同一カテゴリグループに所属する カテゴリに対して適用されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SoloByName(const CriChar8 *name, CriBool solo, CriFloat32 mute_volume)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SoloByName(const CriChar8 *name, CriBool solo, CriFloat32 mute_volume)"/>
 		/// </remarks>
 		public static void SoloByName(ArgString name, NativeBool solo, Single muteVolume)
 		{
@@ -275,7 +275,7 @@ namespace CriWare
 		/// 説明:
 		/// 名前指定でカテゴリのソロ状態を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_IsSoloedByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_IsSoloedByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static bool IsSoloedByName(ArgString name)
 		{
@@ -297,7 +297,7 @@ namespace CriWare
 		/// カテゴリのポーズは、AtomExプレーヤー／再生音のポーズ （<see cref="CriAtomExPlayer.Pause"/> 関数や<see cref="CriAtomExPlayback.Pause"/> 関数でのポーズ）とは独立して扱われ、 音声の最終的なポーズ状態は、それぞれのポーズ状態を考慮して決まります。
 		///  すなわち、どちらかがポーズ状態ならポーズ、どちらもポーズ解除状態ならポーズ解除、となります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_PauseById(CriAtomExCategoryId id, CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_PauseById(CriAtomExCategoryId id, CriBool sw)"/>
 		/// </remarks>
 		public static void PauseById(UInt32 id, NativeBool sw)
 		{
@@ -311,7 +311,7 @@ namespace CriWare
 		/// 説明:
 		/// ID指定でカテゴリのポーズ状態を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_IsPausedById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_IsPausedById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static bool IsPausedById(UInt32 id)
 		{
@@ -327,7 +327,7 @@ namespace CriWare
 		/// 名前指定でカテゴリのポーズ／ポーズ解除を行います。
 		///  カテゴリを名前で指定する以外は、<see cref="CriAtomExCategory.PauseById"/> 関数と仕様は同じです。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_PauseByName(const CriChar8 *name, CriBool sw)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_PauseByName(const CriChar8 *name, CriBool sw)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.PauseById"/>
 		public static void PauseByName(ArgString name, NativeBool sw)
@@ -342,7 +342,7 @@ namespace CriWare
 		/// 説明:
 		/// 名前指定でカテゴリのポーズ状態を取得します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_IsPausedByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_IsPausedByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static bool IsPausedByName(ArgString name)
 		{
@@ -358,7 +358,7 @@ namespace CriWare
 		/// カテゴリにフェードイン時間を設定します。
 		///  フェードイン時間はポーズ解除を行った際に利用されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetFadeInTimeById(CriAtomExCategoryId id, CriUint16 ms)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetFadeInTimeById(CriAtomExCategoryId id, CriUint16 ms)"/>
 		/// </remarks>
 		public static void SetFadeInTimeById(UInt32 id, UInt16 ms)
 		{
@@ -374,7 +374,7 @@ namespace CriWare
 		/// カテゴリにフェードイン時間を設定します。
 		///  フェードイン時間はポーズ解除を行った際に利用されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetFadeInTimeByName(const CriChar8 *name, CriUint16 ms)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetFadeInTimeByName(const CriChar8 *name, CriUint16 ms)"/>
 		/// </remarks>
 		public static void SetFadeInTimeByName(ArgString name, UInt16 ms)
 		{
@@ -390,7 +390,7 @@ namespace CriWare
 		/// カテゴリにフェードアウト時間を設定します。
 		///  フェードアウト時間はポーズを行った際に利用されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetFadeOutTimeById(CriAtomExCategoryId id, CriUint16 ms)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetFadeOutTimeById(CriAtomExCategoryId id, CriUint16 ms)"/>
 		/// </remarks>
 		public static void SetFadeOutTimeById(UInt32 id, UInt16 ms)
 		{
@@ -406,7 +406,7 @@ namespace CriWare
 		/// カテゴリにフェードアウト時間を設定します。
 		///  フェードアウト時間はポーズを行った際に利用されます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetFadeOutTimeByName(const CriChar8 *name, CriUint16 ms)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetFadeOutTimeByName(const CriChar8 *name, CriUint16 ms)"/>
 		/// </remarks>
 		public static void SetFadeOutTimeByName(ArgString name, UInt16 ms)
 		{
@@ -431,7 +431,7 @@ namespace CriWare
 		/// キューやトラックに設定されているAISACに関しては、プレーヤーでのAISACコントロール値設定よりも、<b>カテゴリのAISACコントロール値を優先して</b>参照します。
 		///  カテゴリにアタッチしたAISACについては、常に<b>カテゴリに設定したAISACコントロール値のみ</b>、参照されます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetAisacControlById(CriAtomExCategoryId id, CriAtomExAisacControlId control_id, CriFloat32 control_value)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetAisacControlById(CriAtomExCategoryId id, CriAtomExAisacControlId control_id, CriFloat32 control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.SetAisacControlByName"/>
 		/// <seealso cref="CriAtomExCategory.AttachAisacById"/>
@@ -455,7 +455,7 @@ namespace CriWare
 		/// 備考:
 		/// カテゴリを名前、AISACコントロールをIDで指定したい場合、<see cref="CriAtomExAcf.GetAisacControlNameById"/> 関数にて変換を行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetAisacControlByName(const CriChar8 *name, const CriChar8 *control_name, CriFloat32 control_value)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetAisacControlByName(const CriChar8 *name, const CriChar8 *control_name, CriFloat32 control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.SetAisacControlById"/>
 		/// <seealso cref="CriAtomExCategory.AttachAisacById"/>
@@ -473,7 +473,7 @@ namespace CriWare
 		/// カテゴリにアタッチされている全てのAISACコントロール値をデフォルト値に設定します。
 		///  存在しないカテゴリを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_ResetAllAisacControlById(CriAtomExCategoryId category_id)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_ResetAllAisacControlById(CriAtomExCategoryId category_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetNumAttachedAisacsById"/>
 		public static bool ResetAllAisacControlById(UInt32 categoryId)
@@ -489,7 +489,7 @@ namespace CriWare
 		/// カテゴリにアタッチされている全てのAISACコントロール値をデフォルト値に設定します。
 		///  存在しないカテゴリを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_ResetAllAisacControlByName(const CriChar8 *category_name)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_ResetAllAisacControlByName(const CriChar8 *category_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetNumAttachedAisacsById"/>
 		public static bool ResetAllAisacControlByName(ArgString categoryName)
@@ -519,7 +519,7 @@ namespace CriWare
 		///  現在、「オートモジュレーション」や「ランダム」といったコントロールタイプのAISACのアタッチには対応しておりません。
 		///  現在、カテゴリにアタッチできるAISACの最大数は、8個固定です。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_AttachAisacById(CriAtomExCategoryId id, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_AttachAisacById(CriAtomExCategoryId id, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.DetachAisacById"/>
 		public static void AttachAisacById(UInt32 id, ArgString globalAisacName)
@@ -535,7 +535,7 @@ namespace CriWare
 		/// 説明:
 		/// カテゴリにAISACをアタッチ（取り付け）します。 カテゴリを名前で指定する以外は、<see cref="CriAtomExCategory.AttachAisacById"/> 関数と仕様は同じです。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_AttachAisacByName(const CriChar8 *name, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_AttachAisacByName(const CriChar8 *name, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.AttachAisacById"/>
 		/// <seealso cref="CriAtomExCategory.DetachAisacByName"/>
@@ -554,7 +554,7 @@ namespace CriWare
 		///  AISACのデタッチに失敗した場合、関数内でエラーコールバックが発生します。
 		///  AISACのデタッチに失敗した理由については、エラーコールバックのメッセージを確認してください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_DetachAisacById(CriAtomExCategoryId id, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_DetachAisacById(CriAtomExCategoryId id, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.AttachAisacById"/>
 		public static void DetachAisacById(UInt32 id, ArgString globalAisacName)
@@ -571,7 +571,7 @@ namespace CriWare
 		/// カテゴリからAISACをデタッチ（取り外し）します。
 		///  カテゴリを名前で指定する以外は、<see cref="CriAtomExCategory.DetachAisacById"/> 関数と仕様は同じです。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_DetachAisacByName(const CriChar8 *name, const CriChar8 *global_aisac_name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_DetachAisacByName(const CriChar8 *name, const CriChar8 *global_aisac_name)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.DetachAisacById"/>
 		/// <seealso cref="CriAtomExCategory.AttachAisacByName"/>
@@ -587,7 +587,7 @@ namespace CriWare
 		/// 説明:
 		/// カテゴリから全てのAISACをデタッチ（取り外し）します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_DetachAisacAllById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_DetachAisacAllById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static void DetachAisacAllById(UInt32 id)
 		{
@@ -601,7 +601,7 @@ namespace CriWare
 		/// 説明:
 		/// カテゴリから全てのAISACをデタッチ（取り外し）します。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_DetachAisacAllByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_DetachAisacAllByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static void DetachAisacAllByName(ArgString name)
 		{
@@ -617,7 +617,7 @@ namespace CriWare
 		/// カテゴリにアタッチされているAISAC数を取得します。
 		///  存在しないカテゴリを指定した場合、負値が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExCategory_GetNumAttachedAisacsById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExCategory_GetNumAttachedAisacsById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static Int32 GetNumAttachedAisacsById(UInt32 id)
 		{
@@ -632,7 +632,7 @@ namespace CriWare
 		/// 説明:
 		/// カテゴリにアタッチされているAISAC数を取得します。 存在しないカテゴリを指定した場合、負値が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExCategory_GetNumAttachedAisacsByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExCategory_GetNumAttachedAisacsByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static Int32 GetNumAttachedAisacsByName(ArgString name)
 		{
@@ -649,7 +649,7 @@ namespace CriWare
 		/// カテゴリにアタッチされているAISACの情報を取得します。
 		///  存在しないカテゴリを指定した場合や、無効なインデックスを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_GetAttachedAisacInfoById(CriAtomExCategoryId id, CriSint32 aisac_attached_index, CriAtomExAisacInfo *aisac_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_GetAttachedAisacInfoById(CriAtomExCategoryId id, CriSint32 aisac_attached_index, CriAtomExAisacInfo *aisac_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetNumAttachedAisacsById"/>
 		public static unsafe bool GetAttachedAisacInfoById(UInt32 id, Int32 aisacAttachedIndex, out CriAtomEx.AisacInfo aisacInfo)
@@ -668,7 +668,7 @@ namespace CriWare
 		/// カテゴリにアタッチされているAISACの情報を取得します。
 		///  存在しないカテゴリを指定した場合や、無効なインデックスを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_GetAttachedAisacInfoByName(const CriChar8 *name, CriSint32 aisac_attached_index, CriAtomExAisacInfo *aisac_info)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_GetAttachedAisacInfoByName(const CriChar8 *name, CriSint32 aisac_attached_index, CriAtomExAisacInfo *aisac_info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetNumAttachedAisacsByName"/>
 		public static unsafe bool GetAttachedAisacInfoByName(ArgString name, Int32 aisacAttachedIndex, out CriAtomEx.AisacInfo aisacInfo)
@@ -687,7 +687,7 @@ namespace CriWare
 		/// カテゴリにアタッチされているAISACコントロールの現在値を取得します。
 		///  存在しないカテゴリやAISACコントロールを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_GetCurrentAisacControlValueById(CriAtomExCategoryId category_id, CriAtomExAisacControlId aisac_control_id, CriFloat32 *control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_GetCurrentAisacControlValueById(CriAtomExCategoryId category_id, CriAtomExAisacControlId aisac_control_id, CriFloat32 *control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetNumAttachedAisacsById"/>
 		public static unsafe bool GetCurrentAisacControlValueById(UInt32 categoryId, UInt32 aisacControlId, out Single controlValue)
@@ -706,7 +706,7 @@ namespace CriWare
 		/// カテゴリにアタッチされているAISACコントロールの現在値を取得します。
 		///  存在しないカテゴリを指定した場合や、無効なインデックスを指定した場合、falseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_GetCurrentAisacControlValueByName(const CriChar8 *category_name, const CriChar8 *aisac_control_name, CriFloat32 *control_value)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_GetCurrentAisacControlValueByName(const CriChar8 *category_name, const CriChar8 *aisac_control_name, CriFloat32 *control_value)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetNumAttachedAisacsById"/>
 		public static unsafe bool GetCurrentAisacControlValueByName(ArgString categoryName, ArgString aisacControlName, out Single controlValue)
@@ -725,7 +725,7 @@ namespace CriWare
 		///  REACTが動作している間はパラメーターを設定することはできません（警告が発生します）。
 		///  存在しないREACT名を指定した場合は、エラーコールバックが返ります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_SetReactParameter(const CriChar8 *react_name, const CriAtomExReactParameter *react_parameter)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_SetReactParameter(const CriChar8 *react_name, const CriAtomExReactParameter *react_parameter)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.GetReactParameter"/>
 		public static unsafe void SetReactParameter(ArgString reactName, in CriAtomEx.ReactParameter reactParameter)
@@ -743,7 +743,7 @@ namespace CriWare
 		/// REACTを駆動させるパラメーターの現在値を取得します。
 		///  存在しないREACT名を指定した場合は、エラーコールバックが発生しfalseが返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomExCategory_GetReactParameter(const CriChar8 *react_name, CriAtomExReactParameter *react_parameter)"/>
+		/// <nativeinfo declaration="CriBool criAtomExCategory_GetReactParameter(const CriChar8 *react_name, CriAtomExReactParameter *react_parameter)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExCategory.SetReactParameter"/>
 		public static unsafe bool GetReactParameter(ArgString reactName, out CriAtomEx.ReactParameter reactParameter)
@@ -761,7 +761,7 @@ namespace CriWare
 		/// REACTの動作ステータスを取得します。
 		///  存在しないREACT名を指定した場合は、エラーコールバックが発生し <see cref="CriAtomEx.ReactStatus.Error"/> が返ります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExReactStatus CRIAPI criAtomExCategory_GetReactStatus(const CriChar8 *react_name)"/>
+		/// <nativeinfo declaration="CriAtomExReactStatus criAtomExCategory_GetReactStatus(const CriChar8 *react_name)"/>
 		/// </remarks>
 		public static CriAtomEx.ReactStatus GetReactStatus(ArgString reactName)
 		{
@@ -777,7 +777,7 @@ namespace CriWare
 		/// カテゴリに所属する発音中のキュー数を取得します。
 		///  存在しないカテゴリを指定した場合、負値が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExCategory_GetNumCuePlayingCountById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExCategory_GetNumCuePlayingCountById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static Int32 GetNumCuePlayingCountById(UInt32 id)
 		{
@@ -792,7 +792,7 @@ namespace CriWare
 		/// 説明:
 		/// カテゴリに所属する発音中のキュー数を取得します。 存在しないカテゴリを指定した場合、負値が返ります。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExCategory_GetNumCuePlayingCountByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExCategory_GetNumCuePlayingCountByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static Int32 GetNumCuePlayingCountByName(ArgString name)
 		{
@@ -806,7 +806,7 @@ namespace CriWare
 		/// 説明:
 		/// 指定したカテゴリに所属する発音中のキューを停止します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_StopById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_StopById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static void StopById(UInt32 id)
 		{
@@ -820,7 +820,7 @@ namespace CriWare
 		/// 説明:
 		/// 指定したカテゴリに所属する発音中のキューを停止します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_StopByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_StopByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static void StopByName(ArgString name)
 		{
@@ -834,7 +834,7 @@ namespace CriWare
 		/// 説明:
 		/// 指定したカテゴリに所属する発音中のキューを即時停止します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_StopWithoutReleaseTimeById(CriAtomExCategoryId id)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_StopWithoutReleaseTimeById(CriAtomExCategoryId id)"/>
 		/// </remarks>
 		public static void StopWithoutReleaseTimeById(UInt32 id)
 		{
@@ -848,7 +848,7 @@ namespace CriWare
 		/// 説明:
 		/// 指定したカテゴリに所属する発音中のキューを即時停止します。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExCategory_StopWithoutReleaseTimeByName(const CriChar8 *name)"/>
+		/// <nativeinfo declaration="void criAtomExCategory_StopWithoutReleaseTimeByName(const CriChar8 *name)"/>
 		/// </remarks>
 		public static void StopWithoutReleaseTimeByName(ArgString name)
 		{

@@ -36,7 +36,7 @@ namespace CriWare
 		/// HCAデータのフォーマット情報を設定します。
 		///  本関数を実行することで、ヘッダーレスのHCAデータを再生することが可能になります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetHcaFormat(CriAtomPlayerHn player, CriSint32 num_channels, CriSint32 sampling_rate, CriSint32 bitrate)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetHcaFormat(CriAtomPlayerHn player, CriSint32 num_channels, CriSint32 sampling_rate, CriSint32 bitrate)"/>
 		/// </remarks>
 		public void SetHcaFormat(Int32 numChannels, Int32 samplingRate, Int32 bitrate)
 		{
@@ -92,7 +92,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetFilterCallback(CriAtomPlayerHn player, CriAtomPlayerFilterCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetFilterCallback(CriAtomPlayerHn player, CriAtomPlayerFilterCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.FilterCbFunc"/>
 		public unsafe void SetFilterCallback(delegate* unmanaged[Cdecl]<IntPtr, CriAtom.PcmFormat, Int32, Int32, IntPtr*, void> func, IntPtr obj)
@@ -325,10 +325,10 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
+		/// ワーク領域のサイズはライブラリ初期化時に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForStandardPlayer(const CriAtomStandardPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForStandardPlayer(const CriAtomStandardPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.StandardPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateStandardPlayer"/>
@@ -401,13 +401,13 @@ namespace CriWare
 		///  【Fixed Memory方式による標準プレーヤーの作成】
 		///  Fixed Memory方式を用いる場合、標準プレーヤーの作成／破棄の手順は以下のようになります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateStandardPlayer(const CriAtomStandardPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateStandardPlayer(const CriAtomStandardPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public static unsafe CriAtomPlayer CreateStandardPlayer(in CriAtom.StandardPlayerConfig config)
 		{
 			IntPtr handle;
 			fixed (CriAtom.StandardPlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateStandardPlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateStandardPlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>Atomプレーヤーの破棄 </summary>
@@ -426,7 +426,7 @@ namespace CriWare
 		///  そのため、本関数内で処理が長時間（数フレーム）ブロックされる可能性があります。
 		///  Atomプレーヤーの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_Destroy(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_Destroy(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
 		/// <seealso cref="CriAtomPlayer"/>
@@ -459,10 +459,10 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
+		/// ワーク領域のサイズはライブラリ初期化時に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForAdxPlayer(const CriAtomAdxPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForAdxPlayer(const CriAtomAdxPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AdxPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
@@ -535,13 +535,13 @@ namespace CriWare
 		///  【Fixed Memory方式によるADXプレーヤーの作成】
 		///  Fixed Memory方式を用いる場合、ADXプレーヤーの作成／破棄の手順は以下のようになります。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateAdxPlayer(const CriAtomAdxPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateAdxPlayer(const CriAtomAdxPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		public static unsafe CriAtomPlayer CreateAdxPlayer(in CriAtom.AdxPlayerConfig config)
 		{
 			IntPtr handle;
 			fixed (CriAtom.AdxPlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateAdxPlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateAdxPlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>HCAプレーヤー作成用ワーク領域サイズの計算 </summary>
@@ -563,10 +563,10 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
+		/// ワーク領域のサイズはライブラリ初期化時に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForHcaPlayer(const CriAtomHcaPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForHcaPlayer(const CriAtomHcaPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.HcaPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateHcaPlayer"/>
@@ -611,14 +611,12 @@ namespace CriWare
 		/// <para>
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
-		///  ストリーム再生用のAtomプレーヤーは、内部的にローダー（ <see cref="CriFsLoader"/> ）を確保します。
-		///  ストリーム再生用のAtomプレーヤーを作成する場合、プレーヤーオブジェクト数分のローダーが確保 できる設定でAtomライブラリ（またはCRI File Systemライブラリ）を初期化する 必要があります。
 		///  本関数は完了復帰型の関数です。
 		///  HCAプレーヤーの作成にかかる時間は、プラットフォームによって異なります。
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  HCAプレーヤーの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateHcaPlayer(const CriAtomHcaPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateHcaPlayer(const CriAtomHcaPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.HcaPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForHcaPlayer"/>
@@ -633,7 +631,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtom.HcaPlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateHcaPlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateHcaPlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>HCA-MXプレーヤー作成用ワーク領域サイズの計算 </summary>
@@ -658,7 +656,7 @@ namespace CriWare
 		/// ワーク領域のサイズはHCA-MX初期化時（ <see cref="CriAtomHcaMx.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、HCA-MXを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForHcaMxPlayer(const CriAtomHcaMxPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForHcaMxPlayer(const CriAtomHcaMxPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomHcaMx.PlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateHcaMxPlayer"/>
@@ -708,7 +706,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  HCA-MXプレーヤーの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateHcaMxPlayer(const CriAtomHcaMxPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateHcaMxPlayer(const CriAtomHcaMxPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomHcaMx.PlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForHcaMxPlayer"/>
@@ -723,7 +721,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtomHcaMx.PlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateHcaMxPlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateHcaMxPlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>WAVEプレーヤー作成用ワーク領域サイズの計算 </summary>
@@ -745,10 +743,10 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
+		/// ワーク領域のサイズはライブラリ初期化時に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForWavePlayer(const CriAtomWavePlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForWavePlayer(const CriAtomWavePlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.WavePlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateWavePlayer"/>
@@ -801,7 +799,7 @@ namespace CriWare
 		///  チャンクの並び順がFORMチャンク、COMMチャンク、SSNDチャンクではない場合や、 その他のチャンクを含むWaveファイルは、解析に失敗する可能性があります。
 		///  また、現時点で対応しているフォーマットは、モノラルまたはステレオの 16bit 非圧縮データのみです。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateWavePlayer(const CriAtomWavePlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateWavePlayer(const CriAtomWavePlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.WavePlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForWavePlayer"/>
@@ -816,7 +814,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtom.WavePlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateWavePlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateWavePlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>AIFFプレーヤー作成用ワーク領域サイズの計算 </summary>
@@ -838,10 +836,10 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
+		/// ワーク領域のサイズはライブラリ初期化時に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForAiffPlayer(const CriAtomAiffPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForAiffPlayer(const CriAtomAiffPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AiffPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateAiffPlayer"/>
@@ -894,7 +892,7 @@ namespace CriWare
 		///  チャンクの並び順がFORMチャンク、COMMチャンク、SSNDチャンクではない場合や、 その他のチャンクを含むAIFFファイルは、解析に失敗する可能性があります。
 		///  また、現時点で対応しているフォーマットは、モノラルまたはステレオの 16bit 非圧縮データのみです。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateAiffPlayer(const CriAtomAiffPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateAiffPlayer(const CriAtomAiffPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AiffPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForAiffPlayer"/>
@@ -909,7 +907,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtom.AiffPlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateAiffPlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateAiffPlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>RawPCMプレーヤー作成用ワーク領域サイズの計算 </summary>
@@ -931,10 +929,10 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// ワーク領域のサイズはライブラリ初期化時（ <see cref="CriAtom.Initialize"/> 関数実行時） に指定したパラメーターによって変化します。
+		/// ワーク領域のサイズはライブラリ初期化時に指定したパラメーターによって変化します。
 		///  そのため、本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_CalculateWorkSizeForRawPcmPlayer(const CriAtomRawPcmPlayerConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_CalculateWorkSizeForRawPcmPlayer(const CriAtomRawPcmPlayerConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.RawPcmPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateRawPcmPlayer"/>
@@ -984,7 +982,7 @@ namespace CriWare
 		///  ゲームループ等の画面更新が必要なタイミングで本関数を実行するとミリ秒単位で 処理がブロックされ、フレーム落ちが発生する恐れがあります。
 		///  RawPCMプレーヤーの作成／破棄は、シーンの切り替わり等、負荷変動を許容できる タイミングで行うようお願いいたします。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerHn CRIAPI criAtomPlayer_CreateRawPcmPlayer(const CriAtomRawPcmPlayerConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomPlayerHn criAtomPlayer_CreateRawPcmPlayer(const CriAtomRawPcmPlayerConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.RawPcmPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForRawPcmPlayer"/>
@@ -999,7 +997,7 @@ namespace CriWare
 		{
 			IntPtr handle;
 			fixed (CriAtom.RawPcmPlayerConfig* configPtr = &config)
-				return ((handle = NativeMethods.criAtomPlayer_CreateRawPcmPlayer(configPtr, default, default)) == IntPtr.Zero) ? null : new CriAtomPlayer(handle);
+				return ((handle = NativeMethods.criAtomPlayer_CreateRawPcmPlayer(configPtr, default, default)) == IntPtr.Zero) ? default : new CriAtomPlayer(handle);
 		}
 
 		/// <summary>音声データのセット（オンメモリデータの指定） </summary>
@@ -1022,11 +1020,12 @@ namespace CriWare
 		///  そのため、指定したデータの再生が終了するまでの間、 アプリケーション側でバッファーを保持し続ける必要があります。
 		///  本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetData(CriAtomPlayerHn player, void *buffer, CriSint32 buffer_size)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetData(CriAtomPlayerHn player, void *buffer, CriSint32 buffer_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.Start"/>
 		public void SetData(IntPtr buffer, Int32 bufferSize)
 		{
+			NativeHandle.BindDataSection(buffer, bufferSize);
 			NativeMethods.criAtomPlayer_SetData(NativeHandle, buffer, bufferSize);
 		}
 
@@ -1076,7 +1075,7 @@ namespace CriWare
 		///  Atomプレーヤーのステータスをチェックし、ステータスに応じて処理を切り替えることで、 音声の再生状態に連動したプログラムを作成することが可能です。
 		///  例えば、音声の再生完了を待って処理を進めたい場合には、以下のようなコードになります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_Start(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_Start(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetData"/>
 		/// <seealso cref="CriAtomPlayer.SetFile"/>
@@ -1131,7 +1130,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにNULLを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetDataRequestCallback(CriAtomPlayerHn player, CriAtomPlayerDataRequestCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetDataRequestCallback(CriAtomPlayerHn player, CriAtomPlayerDataRequestCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.DataRequestCbFunc"/>
 		/// <seealso cref="CriAtomPlayer.SetData"/>
@@ -1168,7 +1167,7 @@ namespace CriWare
 		///  （ <see cref="CriAtom.AdxPlayerConfig"/> のstreaming_flagにtrueを設定して Atomプレーヤーを作成する必要があります。）
 		///  本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetFile(CriAtomPlayerHn player, CriFsBinderHn binder, const CriChar8 *path)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetFile(CriAtomPlayerHn player, CriFsBinderHn binder, const CriChar8 *path)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AdxPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
@@ -1200,7 +1199,7 @@ namespace CriWare
 		///  （ <see cref="CriAtom.AdxPlayerConfig"/> のstreaming_flagにtrueを設定して Atomプレーヤーを作成する必要があります。）
 		///  本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetContentId(CriAtomPlayerHn player, CriFsBinderHn binder, CriSint32 id)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetContentId(CriAtomPlayerHn player, CriFsBinderHn binder, CriSint32 id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AdxPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
@@ -1231,7 +1230,7 @@ namespace CriWare
 		///  （ <see cref="CriAtom.AdxPlayerConfig"/> のstreaming_flagにtrueを設定して Atomプレーヤーを作成する必要があります。）
 		///  本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetWaveId(CriAtomPlayerHn player, CriAtomAwbHn awb, CriSint32 id)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetWaveId(CriAtomPlayerHn player, CriAtomAwbHn awb, CriSint32 id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AdxPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
@@ -1252,7 +1251,7 @@ namespace CriWare
 		/// 本関数はデータ要求コールバック関数内でのみ使用します。
 		///  （データ要求コールバック関数外でも実行可能ですが、その場合何の効果もありません。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetPreviousDataAgain(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetPreviousDataAgain(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetDataRequestCallback"/>
 		public void SetPreviousDataAgain()
@@ -1280,7 +1279,7 @@ namespace CriWare
 		///  本関数はデータ要求コールバック関数内でのみ使用可能です。
 		///  （データ要求コールバック関数外で実行した場合、エラーが発生します。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_DeferCallback(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_DeferCallback(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetDataRequestCallback"/>
 		public void DeferCallback()
@@ -1325,7 +1324,7 @@ namespace CriWare
 		///  Atomプレーヤーのステータスをチェックし、ステータスに応じて処理を切り替えることで、 音声の再生状態に連動したプログラムを作成することが可能です。
 		///  例えば、音声の再生完了を待って処理を進めたい場合には、以下のようなコードになります。 
 		/// </para>
-		/// <nativeinfo declaration="CriAtomPlayerStatus CRIAPI criAtomPlayer_GetStatus(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriAtomPlayerStatus criAtomPlayer_GetStatus(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.Start"/>
 		public CriAtomPlayer.Status GetStatus()
@@ -1368,7 +1367,7 @@ namespace CriWare
 		///  ステータスが <see cref="CriAtomPlayer.Status.Playing"/> の状態でポーズされているAtomプレーヤー については、ポーズ解除を行ったタイミングで発音を開始させることが可能です。
 		///  そのため、以下の処理手順を踏むことで、ストリーミング再生の発音タイミングを 他のアクションに同期させることが可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_Pause(CriAtomPlayerHn player, CriBool flag)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_Pause(CriAtomPlayerHn player, CriBool flag)"/>
 		/// </remarks>
 		public void Pause(NativeBool flag)
 		{
@@ -1389,7 +1388,7 @@ namespace CriWare
 		///  （停止状態になるまでに、時間がかかる場合があります。）
 		///  そのため、本関数で再生を停止後、続けて別の音声データを再生する場合には、 必ずステータスが <see cref="CriAtomPlayer.Status.Stop"/> に遷移したことを確認してから 次のデータをセット（または再生の開始）を行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_Stop(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_Stop(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.Start"/>
 		/// <seealso cref="CriAtomPlayer.GetStatus"/>
@@ -1415,7 +1414,7 @@ namespace CriWare
 		///  そのため、本関数の結果と実際に音声出力が停止しているかどうかは、必ずしも一致するとは 限りません。
 		///  （ <see cref="CriAtomPlayer.Pause"/> 関数の実行タイミングと、実際に音声出力が停止するタイミングに タイムラグが存在するため。） 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomPlayer_IsPaused(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriBool criAtomPlayer_IsPaused(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.Pause"/>
 		public bool IsPaused()
@@ -1503,7 +1502,7 @@ namespace CriWare
 		/// 再生時刻は、プレーヤーのステータスが <see cref="CriAtomPlayer.Status.Playing"/> になるまで取得できません。
 		///  （ <see cref="CriAtomPlayer.Status.Prep"/> 時に本関数を実行した場合、エラー値が返されます。）
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_GetNumChannels(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_GetNumChannels(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		public Int32 GetNumChannels()
 		{
@@ -1538,7 +1537,7 @@ namespace CriWare
 		///  （ <see cref="CriAtomPlayer.Status.Prep"/> 時に本関数を実行した場合、エラー値が返されます。）
 		///  再生サンプル数の精度は、プラットフォームのサウンドライブラリに依存します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomPlayer_GetNumPlayedSamples(CriAtomPlayerHn player, CriSint64 *num_played, CriSint32 *sampling_rate)"/>
+		/// <nativeinfo declaration="CriBool criAtomPlayer_GetNumPlayedSamples(CriAtomPlayerHn player, CriSint64 *num_played, CriSint32 *sampling_rate)"/>
 		/// </remarks>
 		public unsafe bool GetNumPlayedSamples(out Int64 numPlayed, out Int32 samplingRate)
 		{
@@ -1575,7 +1574,7 @@ namespace CriWare
 		///  （ <see cref="CriAtomPlayer.Status.Prep"/> 時に本関数を実行した場合、エラー値が返されます。）
 		///  書き込み済みサンプル数の精度は、プラットフォームのサウンドライブラリに依存します。 
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomPlayer_GetNumRenderedSamples(CriAtomPlayerHn player, CriSint64 *num_rendered, CriSint32 *sampling_rate)"/>
+		/// <nativeinfo declaration="CriBool criAtomPlayer_GetNumRenderedSamples(CriAtomPlayerHn player, CriSint64 *num_rendered, CriSint32 *sampling_rate)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.GetNumPlayedSamples"/>
 		public unsafe bool GetNumRenderedSamples(out Int64 numRendered, out Int32 samplingRate)
@@ -1603,7 +1602,7 @@ namespace CriWare
 		/// 注意:
 		/// HCA-MXを使用する場合や、圧縮された音声データを直接ハードウェアに送信するプラットフォーム （デコード処理がプラットフォームSDKに隠蔽されているコーデック） については、本関数でデコード量を取得できません。
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomPlayer_GetDecodedDataSize(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomPlayer_GetDecodedDataSize(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		public Int64 GetDecodedDataSize()
 		{
@@ -1628,7 +1627,7 @@ namespace CriWare
 		/// 注意:
 		/// HCA-MXを使用する場合や、圧縮された音声データを直接ハードウェアに送信するプラットフォーム （デコード処理がプラットフォームSDKに隠蔽されているコーデック） については、本関数でデコードサンプル数を取得できません。
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomPlayer_GetNumDecodedSamples(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomPlayer_GetNumDecodedSamples(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		public Int64 GetNumDecodedSamples()
 		{
@@ -1661,7 +1660,7 @@ namespace CriWare
 		///  （ <see cref="CriAtomPlayer.Status.Prep"/> 時に本関数を実行した場合、 0 が返されます。）
 		///  再生時刻の精度は、プラットフォームのサウンドライブラリに依存します。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint64 CRIAPI criAtomPlayer_GetTime(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint64 criAtomPlayer_GetTime(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.GetStatus"/>
 		/// <seealso cref="CriAtomPlayer.SetFrequencyRatio"/>
@@ -1685,7 +1684,7 @@ namespace CriWare
 		/// 本関数は、音声再生中のみフォーマット情報を取得可能です。
 		///  再生開始前や再生準備中に本関数を実行すると、フォーマット情報の取得に失敗します。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomPlayer_GetFormatInfo(CriAtomPlayerHn player, CriAtomFormatInfo *info)"/>
+		/// <nativeinfo declaration="CriBool criAtomPlayer_GetFormatInfo(CriAtomPlayerHn player, CriAtomFormatInfo *info)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.Start"/>
 		/// <seealso cref="CriAtomPlayer.GetStatus"/>
@@ -1708,7 +1707,7 @@ namespace CriWare
 		///  音途切れの不具合が発生した際、本関数を使用して再生中のプレーヤーの 入力バッファーにデータが残っているかどうかをチェック可能です。
 		///  プレーヤーのステータスが <see cref="CriAtomPlayer.Status.Playing"/> にもかかわらず、 データ残量が長時間 0 の場合、何らかの異常によりデータの供給が ブロックされている可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_GetInputBufferRemainSize(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_GetInputBufferRemainSize(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		public Int32 GetInputBufferRemainSize()
 		{
@@ -1733,7 +1732,7 @@ namespace CriWare
 		/// 本関数は、音声データをAtomライブラリ内でデコードするケースについてのみ有効です。
 		///  圧縮された音声データを直接ハードウェアに送信するプラットフォーム （デコード処理がプラットフォームSDKに隠蔽されているコーデック） については、本関数でデータ残量を取得できません。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomPlayer_GetOutputBufferRemainSamples(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomPlayer_GetOutputBufferRemainSamples(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		public Int32 GetOutputBufferRemainSamples()
 		{
@@ -1764,7 +1763,7 @@ namespace CriWare
 		///  本関数で設定した値は、 <see cref="CriAtomPlayer.Start"/> 関数で音声の再生を開始する タイミングでのみ参照されます。
 		///  機種固有の音声フォーマットについても、再生開始位置を指定できない場合があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetStartTime(CriAtomPlayerHn player, CriSint64 start_time_ms)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetStartTime(CriAtomPlayerHn player, CriSint64 start_time_ms)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.Start"/>
 		public void SetStartTime(Int64 startTimeMs)
@@ -1811,7 +1810,7 @@ namespace CriWare
 		///  （1.0fを超えるボリューム値を指定した場合、同じ波形データを再生した場合でも、 機種ごとに異なる音量で出力される可能性があります。）
 		///  また、音量を上げることが可能な機種であっても、 ハードウェアで出力可能な音量には上限があるため、 音割れによるノイズが発生する可能性があります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetVolume(CriAtomPlayerHn player, CriFloat32 vol)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetVolume(CriAtomPlayerHn player, CriFloat32 vol)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.GetVolume"/>
 		public void SetVolume(Single vol)
@@ -1827,7 +1826,7 @@ namespace CriWare
 		/// 出力音声のボリュームを取得します。
 		///  ボリューム値は音声データの振幅に対する倍率です（単位はデシベルではありません）。
 		/// </para>
-		/// <nativeinfo declaration="CriFloat32 CRIAPI criAtomPlayer_GetVolume(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="CriFloat32 criAtomPlayer_GetVolume(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetVolume"/>
 		public Single GetVolume()
@@ -1864,7 +1863,7 @@ namespace CriWare
 		///  （0.5f×0.5f＝0.25fの演算が行われます。） </description></item>
 		/// </list>
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetChannelVolume(CriAtomPlayerHn player, CriSint32 ch, CriFloat32 vol)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetChannelVolume(CriAtomPlayerHn player, CriSint32 ch, CriFloat32 vol)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetVolume"/>
 		/// <seealso cref="CriAtomPlayer.SetSendLevel"/>
@@ -1936,7 +1935,7 @@ namespace CriWare
 		///  （プラットフォームのサウンドライブラリの仕様によっては実装が困難な場合が あり、その場合は利用できません。）
 		///  本関数が利用可能かどうかは、別途マニュアルの機種依存情報のページをご参照ください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetSendLevel(CriAtomPlayerHn player, CriSint32 ch, CriAtomSpeakerId spk, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetSendLevel(CriAtomPlayerHn player, CriSint32 ch, CriAtomSpeakerId spk, CriFloat32 level)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetVolume"/>
 		/// <seealso cref="CriAtomPlayer.SetChannelVolume"/>
@@ -1962,7 +1961,7 @@ namespace CriWare
 		/// 本関数と <see cref="CriAtomPlayer.ResetPan"/> 関数を併用しないでください。
 		/// <see cref="CriAtomPlayer.ResetPan"/> 関数が、内部的に本関数を呼び出すため、 両者を併用した場合、後から実行した関数により設定が上書きされる可能性があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_ResetSendLevel(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_ResetSendLevel(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetSendLevel"/>
 		/// <seealso cref="CriAtomPlayer.ResetPan"/>
@@ -2012,7 +2011,7 @@ namespace CriWare
 		///  音源の定位をコントロールする際には、本関数かまたは <see cref="CriAtomPlayer.SetSendLevel"/> 関数 のいずれか一方のみをご利用ください。
 		///  （3Dパンを利用する場合は <see cref="CriAtomPlayer.SetSendLevel"/> 関数を、2Dパンのみを行う場合は 本関数をご利用ください。） 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetPanAdx1Compatible(CriAtomPlayerHn player, CriSint32 ch, CriFloat32 pan)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetPanAdx1Compatible(CriAtomPlayerHn player, CriSint32 ch, CriFloat32 pan)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetVolume"/>
 		/// <seealso cref="CriAtomPlayer.SetChannelVolume"/>
@@ -2038,7 +2037,7 @@ namespace CriWare
 		/// 本関数と <see cref="CriAtomPlayer.ResetSendLevel"/> 関数を併用しないでください。
 		///  本関数が内部的に <see cref="CriAtomPlayer.ResetSendLevel"/> 関数を呼び出すため、 両者を併用した場合、後から実行した関数により設定が上書きされる可能性があります。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_ResetPan(CriAtomPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_ResetPan(CriAtomPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetPanAdx1Compatible"/>
 		/// <seealso cref="CriAtomPlayer.ResetSendLevel"/>
@@ -2069,7 +2068,7 @@ namespace CriWare
 		///  （プラットフォームのサウンドライブラリの仕様によっては実装が困難な場合が あり、その場合は利用できません。）
 		///  本関数が利用可能かどうかは、別途マニュアルの機種依存情報のページをご参照ください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetFrequencyRatio(CriAtomPlayerHn player, CriFloat32 ratio)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetFrequencyRatio(CriAtomPlayerHn player, CriFloat32 ratio)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.AdxPlayerConfig"/>
 		/// <seealso cref="CriAtomPlayer.CreateAdxPlayer"/>
@@ -2096,7 +2095,7 @@ namespace CriWare
 		///  本関数で最大周波数調整比をあらかじめ設定した場合、 指定された速度を想定して常にバッファリングが行われるようになるため、 （指定された範囲内の周波数においては）バッファリングなしにピッチ変更が即座に行われます。
 		///  短時間にピッチを上げ下げするケースについては、 予想される最大周波数調整比をあらかじめ本関数で設定してから再生を行ってください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetMaxFrequencyRatio(CriAtomPlayerHn player, CriFloat32 ratio)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetMaxFrequencyRatio(CriAtomPlayerHn player, CriFloat32 ratio)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.SetFrequencyRatio"/>
 		public void SetMaxFrequencyRatio(Single ratio)
@@ -2139,7 +2138,7 @@ namespace CriWare
 		///  プラットフォーム依存の音声コーデックに対して本関数を実行しないでください。
 		///  （再生が終了しない、ノイズが発生する等の問題が発生します。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_LimitLoopCount(CriAtomPlayerHn player, CriSint32 count)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_LimitLoopCount(CriAtomPlayerHn player, CriSint32 count)"/>
 		/// </remarks>
 		public void LimitLoopCount(Int32 count)
 		{
@@ -2159,7 +2158,7 @@ namespace CriWare
 		///  （他の関数で作成されたプレーヤーに対しては、何の効果もありません。）
 		///  本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetHcaMxMixerId(CriAtomPlayerHn player, CriSint32 mixer_id)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetHcaMxMixerId(CriAtomPlayerHn player, CriSint32 mixer_id)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateHcaMxPlayer"/>
 		public void SetHcaMxMixerId(Int32 mixerId)
@@ -2178,7 +2177,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetAsrRackId(CriAtomPlayerHn player, CriSint32 rack_id)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetAsrRackId(CriAtomPlayerHn player, CriSint32 rack_id)"/>
 		/// </remarks>
 		public void SetAsrRackId(Int32 rackId)
 		{
@@ -2200,7 +2199,7 @@ namespace CriWare
 		///  （他の関数で作成されたプレーヤーに対しては、何の効果もありません。）
 		///  本関数は停止中のプレーヤーに対してのみ実行可能です。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetRawPcmFormat(CriAtomPlayerHn player, CriAtomPcmFormat pcm_format, CriSint32 num_channels, CriSint32 sampling_rate)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetRawPcmFormat(CriAtomPlayerHn player, CriAtomPcmFormat pcm_format, CriSint32 num_channels, CriSint32 sampling_rate)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CreateRawPcmPlayer"/>
 		public void SetRawPcmFormat(CriAtom.PcmFormat pcmFormat, Int32 numChannels, Int32 samplingRate)
@@ -2300,7 +2299,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetStatusChangeCallback(CriAtomPlayerHn player, CriAtomPlayerStatusChangeCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetStatusChangeCallback(CriAtomPlayerHn player, CriAtomPlayerStatusChangeCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.GetStatus"/>
 		public unsafe void SetStatusChangeCallback(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, void> func, IntPtr obj)
@@ -2390,7 +2389,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetParameterChangeCallback(CriAtomPlayerHn player, CriAtomPlayerParameterChangeCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetParameterChangeCallback(CriAtomPlayerHn player, CriAtomPlayerParameterChangeCbFunc func, void *obj)"/>
 		/// </remarks>
 		public unsafe void SetParameterChangeCallback(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, CriAtom.ParameterId, Single, void> func, IntPtr obj)
 		{
@@ -2480,7 +2479,7 @@ namespace CriWare
 		///  登録操作を複数回行った場合、既に登録済みのコールバック関数が、 後から登録したコールバック関数により上書きされてしまいます。
 		///  funcにnullを指定することで登録済み関数の登録解除が行えます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomPlayer_SetLoadRequestCallback(CriAtomPlayerHn player, CriAtomPlayerLoadRequestCbFunc func, void *obj)"/>
+		/// <nativeinfo declaration="void criAtomPlayer_SetLoadRequestCallback(CriAtomPlayerHn player, CriAtomPlayerLoadRequestCbFunc func, void *obj)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.LoadRequestCbFunc"/>
 		public unsafe void SetLoadRequestCallback(delegate* unmanaged[Cdecl]<IntPtr, IntPtr, NativeString, Int64, Int64, void> func, IntPtr obj)
@@ -2539,17 +2538,17 @@ namespace CriWare
 #if NET5_0_OR_GREATER
 	[UnmanagedCallersOnly(CallConvs = new System.Type[]{typeof(CallConvCdecl)})]
 #endif
-			static void CriAtomPlayerLoadRequestCbFuncCallbackFunc(IntPtr obj, IntPtr binder, IntPtr path, Int64 offset, Int64 length) =>
+			static void CriAtomPlayerLoadRequestCbFuncCallbackFunc(IntPtr obj, IntPtr binder, NativeString path, Int64 offset, Int64 length) =>
 				InvokeCallbackInternal(obj, new(binder, path, offset, length));
 #if !NET5_0_OR_GREATER
 			[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-			delegate void NativeDelegate(IntPtr obj, IntPtr binder, IntPtr path, Int64 offset, Int64 length);
+			delegate void NativeDelegate(IntPtr obj, IntPtr binder, NativeString path, Int64 offset, Int64 length);
 			static NativeDelegate callbackDelegate = null;
 #endif
 			internal LoadRequestCbFunc(Action<IntPtr, IntPtr> setFunction) :
 				base(setFunction,
 #if NET5_0_OR_GREATER
-			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, IntPtr, Int64, Int64, void>)&CriAtomPlayerLoadRequestCbFuncCallbackFunc
+			(IntPtr)(delegate*unmanaged[Cdecl]<IntPtr, IntPtr, NativeString, Int64, Int64, void>)&CriAtomPlayerLoadRequestCbFuncCallbackFunc
 #else
 					Marshal.GetFunctionPointerForDelegate<NativeDelegate>(callbackDelegate = CriAtomPlayerLoadRequestCbFuncCallbackFunc)
 #endif

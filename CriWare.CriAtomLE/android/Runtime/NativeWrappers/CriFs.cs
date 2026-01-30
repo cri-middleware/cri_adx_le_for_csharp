@@ -36,7 +36,7 @@ namespace CriWare
 		///  初期化前や終了処理後に本関数を実行しても、効果はありません。
 		///  （エラーコールバックが発生します。）
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_SetFileAccessThreadPriority_ANDROID(int prio)"/>
+		/// <nativeinfo declaration="CriError criFs_SetFileAccessThreadPriority_ANDROID(CriSint32 prio)"/>
 		/// </remarks>
 		public static CriErr.Error SetFileAccessThreadPriorityANDROID(Int32 prio)
 		{
@@ -58,7 +58,7 @@ namespace CriWare
 		///  本関数は初期化後～終了処理前の間に実行する必要があります。
 		///  初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_GetFileAccessThreadPriority_ANDROID(int *prio)"/>
+		/// <nativeinfo declaration="CriError criFs_GetFileAccessThreadPriority_ANDROID(CriSint32 *prio)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetFileAccessThreadPriorityANDROID(out Int32 prio)
 		{
@@ -85,7 +85,7 @@ namespace CriWare
 		///  初期化前や終了処理後に本関数を実行しても、効果はありません。
 		///  （エラーコールバックが発生します。）
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_SetMemoryFileSystemThreadPriority_ANDROID(int prio)"/>
+		/// <nativeinfo declaration="CriError criFs_SetMemoryFileSystemThreadPriority_ANDROID(CriSint32 prio)"/>
 		/// </remarks>
 		public static CriErr.Error SetMemoryFileSystemThreadPriorityANDROID(Int32 prio)
 		{
@@ -107,7 +107,7 @@ namespace CriWare
 		///  本関数は初期化後～終了処理前の間に実行する必要があります。
 		///  初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_GetMemoryFileSystemThreadPriority_ANDROID(int *prio)"/>
+		/// <nativeinfo declaration="CriError criFs_GetMemoryFileSystemThreadPriority_ANDROID(CriSint32 *prio)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetMemoryFileSystemThreadPriorityANDROID(out Int32 prio)
 		{
@@ -134,7 +134,7 @@ namespace CriWare
 		///  初期化前や終了処理後に本関数を実行しても、効果はありません。
 		///  （エラーコールバックが発生します。）
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_SetDataDecompressionThreadPriority_ANDROID(int prio)"/>
+		/// <nativeinfo declaration="CriError criFs_SetDataDecompressionThreadPriority_ANDROID(CriSint32 prio)"/>
 		/// </remarks>
 		public static CriErr.Error SetDataDecompressionThreadPriorityANDROID(Int32 prio)
 		{
@@ -156,7 +156,7 @@ namespace CriWare
 		///  本関数は初期化後～終了処理前の間に実行する必要があります。
 		///  初期化前や終了処理後に本関数を実行した場合、本関数はエラーを返します。
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_GetDataDecompressionThreadPriority_ANDROID(int *prio)"/>
+		/// <nativeinfo declaration="CriError criFs_GetDataDecompressionThreadPriority_ANDROID(CriSint32 *prio)"/>
 		/// </remarks>
 		public static unsafe CriErr.Error GetDataDecompressionThreadPriorityANDROID(out Int32 prio)
 		{
@@ -175,7 +175,7 @@ namespace CriWare
 		/// 注意:
 		/// : JavaVMオブジェクトへの参照を登録した場合、ライブラリ内部で作成されたスレッドはJavaVMにアタッチされます。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criFs_SetJavaVM_ANDROID(JavaVM *vm)"/>
+		/// <nativeinfo declaration="void criFs_SetJavaVM_ANDROID(void *vm)"/>
 		/// </remarks>
 		public static void SetJavaVMANDROID(IntPtr vm)
 		{
@@ -196,7 +196,7 @@ namespace CriWare
 		/// 注意:
 		/// : 本関数を呼び出す前に、CRI File Systemライブラリの初期化が完了済みである事を確認して下さい。
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_EnableAssetsAccess_ANDROID(JavaVM *vm, jobject jobj)"/>
+		/// <nativeinfo declaration="CriError criFs_EnableAssetsAccess_ANDROID(void *vm, jobject jobj)"/>
 		/// </remarks>
 		public static CriErr.Error EnableAssetsAccessANDROID(IntPtr vm, IntPtr jobj)
 		{
@@ -218,7 +218,7 @@ namespace CriWare
 		/// 注意:
 		/// : 本関数を呼び出す前に、CRI File Systemライブラリの初期化が完了済みである事を確認して下さい。
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_EnableAssetsAccessForPrefix_ANDROID(JavaVM *vm, jobject jobj, const CriChar8 *prefix)"/>
+		/// <nativeinfo declaration="CriError criFs_EnableAssetsAccessForPrefix_ANDROID(void *vm, jobject jobj, const CriChar8 *prefix)"/>
 		/// </remarks>
 		public static CriErr.Error EnableAssetsAccessForPrefixANDROID(IntPtr vm, IntPtr jobj, ArgString prefix)
 		{
@@ -232,7 +232,7 @@ namespace CriWare
 		/// 説明:
 		/// assetフォルダーへのアクセスを無効化します。
 		/// </para>
-		/// <nativeinfo declaration="CriError CRIAPI criFs_DisableAssetsAccess_ANDROID()"/>
+		/// <nativeinfo declaration="CriError criFs_DisableAssetsAccess_ANDROID()"/>
 		/// </remarks>
 		public static CriErr.Error DisableAssetsAccessANDROID()
 		{

@@ -70,7 +70,7 @@ namespace CriWare
 		/// 注意:
 		/// 本関数を実行する前に、ライブラリを初期化しておく必要があります。
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomExSoundObject_CalculateWorkSize(const CriAtomExSoundObjectConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomExSoundObject_CalculateWorkSize(const CriAtomExSoundObjectConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.Config"/>
 		/// <seealso cref="CriAtomExSoundObject.CriAtomExSoundObject"/>
@@ -143,7 +143,7 @@ namespace CriWare
 		/// 説明:
 		/// サウンドオブジェクトを作成します。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomExSoundObjectHn CRIAPI criAtomExSoundObject_Create(const CriAtomExSoundObjectConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="CriAtomExSoundObjectHn criAtomExSoundObject_Create(const CriAtomExSoundObjectConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.Config"/>
 		/// <seealso cref="CriAtomExSoundObject.CalculateWorkSize"/>
@@ -170,7 +170,7 @@ namespace CriWare
 		///  本関数を実行した時点で、サウンドオブジェクト作成時に確保されたリソースが全て解放されます。
 		///  また、引数に指定したサウンドオブジェクトオブジェクトも無効になります。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExSoundObject_Destroy(CriAtomExSoundObjectHn sound_object)"/>
+		/// <nativeinfo declaration="void criAtomExSoundObject_Destroy(CriAtomExSoundObjectHn sound_object)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.CriAtomExSoundObject"/>
 		/// <seealso cref="CriAtomExSoundObject"/>
@@ -208,7 +208,7 @@ namespace CriWare
 		///  関数を呼び出してください。
 		///  対象のAtomExプレーヤーが既にサウンドオブジェクトに追加済みの場合は、何も起こりません。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExSoundObject_AddPlayer(CriAtomExSoundObjectHn sound_object, CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExSoundObject_AddPlayer(CriAtomExSoundObjectHn sound_object, CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.DeletePlayer"/>
 		/// <seealso cref="CriAtomExSoundObject.DeleteAllPlayers"/>
@@ -230,7 +230,7 @@ namespace CriWare
 		/// 本関数の呼び出しは、削除しようとしているAtomExプレーヤーで音声を再生していない状態で行ってください。
 		///  ステータスが <see cref="CriAtomExPlayer.Status.Stop"/> ではないAtomExプレーヤーが指定された場合、 削除時に <see cref="CriAtomExPlayer.StopWithoutReleaseTime"/> 関数にて再生停止が行われます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExSoundObject_DeletePlayer(CriAtomExSoundObjectHn sound_object, CriAtomExPlayerHn player)"/>
+		/// <nativeinfo declaration="void criAtomExSoundObject_DeletePlayer(CriAtomExSoundObjectHn sound_object, CriAtomExPlayerHn player)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.AddPlayer"/>
 		/// <seealso cref="CriAtomExSoundObject.DeleteAllPlayers"/>
@@ -251,7 +251,7 @@ namespace CriWare
 		/// 本関数の呼び出しは、削除しようとしているAtomExプレーヤーで音声を再生していない状態で行ってください。
 		///  ステータスが <see cref="CriAtomExPlayer.Status.Stop"/> ではないAtomExプレーヤーが含まれていた場合、 削除時に <see cref="CriAtomExPlayer.StopWithoutReleaseTime"/> 関数にて再生停止が行われます。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomExSoundObject_DeleteAllPlayers(CriAtomExSoundObjectHn sound_object)"/>
+		/// <nativeinfo declaration="void criAtomExSoundObject_DeleteAllPlayers(CriAtomExSoundObjectHn sound_object)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomExSoundObject.AddPlayer"/>
 		/// <seealso cref="CriAtomExSoundObject.DeletePlayer"/>

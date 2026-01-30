@@ -52,15 +52,21 @@ namespace CriWare {
 		/// 各プラットフォームごとの初期化関数などを利用する場合は本メソッドを利用してアロケータ登録を行ってください。
 		/// <see cref="CriAtomCSharp.Initialize(Config)"/>を利用する場合は初期化処理内でアロケータ登録が行われるため、本メソッドの呼び出しは不要です。
 		/// </remarks>
-		public unsafe static void SetupDefaultAllocator(){
+		public unsafe static void SetupDefaultAllocator()
+		{
 			CriAtomEx.SetDefaultConfig(out var config);
-			if(!config.versionExString.ToStringCached().StartsWith("2.29."))
+			if (!config.versionExString.ToStringCached().StartsWith("2.30."))
 				throw new InvalidOperationException("[CRI ADX] The library version does not match the expected value.");
 
 			CriAtom.SetUserMallocFunction(default, IntPtr.Zero);
-			CriAtom.SetUserFreeFunction(default, IntPtr.Zero);	
+			CriAtom.SetUserFreeFunction(default, IntPtr.Zero);
 			CriAtom.SetUserMallocFunction(NativeAllocator.GetAllocateFunc(), NativeMethods.criAtomNativeAllocator_GetContext());
-			CriAtom.SetUserFreeFunction(NativeAllocator.GetFreeFunc(), NativeMethods.criAtomNativeAllocator_GetContext());	
+			CriAtom.SetUserFreeFunction(NativeAllocator.GetFreeFunc(), NativeMethods.criAtomNativeAllocator_GetContext());
+
+#if !CRI_BUILD_LE
+			CriAtomAux.SetUserAllocator(default, default, default);
+			CriAtomAux.SetUserAllocator(NativeAllocator.GetAllocateFunc(), NativeAllocator.GetFreeFunc(), NativeMethods.criAtomNativeAllocator_GetContext());
+#endif
 		}
 
 		/// <summary>
@@ -77,7 +83,9 @@ namespace CriWare {
 
 			CriAtomEx.SetDefaultConfig(out var defaultConfig);
 			config.atomEx.versionString = defaultConfig.versionString;
+			config.atomEx.version = defaultConfig.version;
 			config.atomEx.versionExString = defaultConfig.versionExString;
+			config.atomEx.versionEx = defaultConfig.versionEx;
 
 			InitializePlatform(config);
 		}
@@ -111,20 +119,20 @@ namespace CriWare {
 		/// <exclude/>
 		[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 		[Serializable]
-		public class CriAtomCSharpLibrary : Interfaces.ILibrary
+		public class CriAtomCSharpLibrary : Interfaces.LibraryBase
 		{
 			public CriAtomEx.Config atomEx;
 			public CriAtomExAsr.Config asr;
 			public CriAtomExHcaMx.Config hcaMx;
-			public Type[] DependentLibraries { get; } = new Type[] { 
+			public override Type[] DependentLibraries { get; } = new Type[] { 
 #if !CRI_BUILD_LE
 				typeof(CriFsCSharp.CriFsCSharpLibrary)
 #endif
 			};
-			public bool IsInitialized => CriAtomEx.IsInitialized();
-			public IntPtr MemorySizeAddress => NativeMethods.criAtomNativeAllocator_GetContext();
-            public void FinalizeLibrary() => CriAtomCSharp.Finalize();
-			public void InitializeLibrary(){
+			public override bool IsInitialized => CriAtomEx.IsInitialized();
+			public override IntPtr MemorySizeAddress => NativeMethods.criAtomNativeAllocator_GetContext();
+            public override void FinalizeLibrary() => CriAtomCSharp.Finalize();
+			public override void InitializeLibrary(){
 				var config = new CriAtomCSharp.Config(){
 					atomEx = atomEx,
 					asr = asr,

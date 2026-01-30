@@ -51,7 +51,7 @@ namespace CriWare
 		///  引数 config の情報は、関数内でのみ参照されます。
 		///  関数を抜けた後は参照されませんので、関数実行後に config の領域を解放しても 問題ありません。 
 		/// </para>
-		/// <nativeinfo declaration="CriSint32 CRIAPI criAtomHcaMx_CalculateWorkSize(const CriAtomHcaMxConfig *config)"/>
+		/// <nativeinfo declaration="CriSint32 criAtomHcaMx_CalculateWorkSize(const CriAtomHcaMxConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetUserAllocator"/>
 		/// <seealso cref="CriAtomHcaMx.Initialize"/>
@@ -210,7 +210,7 @@ namespace CriWare
 		///  HCA-MX初期化後には本関数に設定したパラメーターではなく、 初期化時に指定されたパラメーターがワーク領域サイズの計算に使用されます。
 		///  （本関数で登録する構造体のパラメーターと、 HCA-MX初期化時に使用する構造体のパラメーターが異なる場合、 ワーク領域サイズが不足し、オブジェクトの作成に失敗する恐れがあります。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomHcaMx_SetConfigForWorkSizeCalculation(const CriAtomHcaMxConfig *config)"/>
+		/// <nativeinfo declaration="void criAtomHcaMx_SetConfigForWorkSizeCalculation(const CriAtomHcaMxConfig *config)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomPlayer.CalculateWorkSizeForHcaMxPlayer"/>
 		/// <seealso cref="CriAtomPlayer.SetDefaultConfigForHcaMxPlayer"/>
@@ -244,7 +244,7 @@ namespace CriWare
 		///  本関数を実行後、必ず対になる <see cref="CriAtomHcaMx.Finalize"/> 関数を実行してください。
 		///  また、 <see cref="CriAtomHcaMx.Finalize"/> 関数を実行するまでは、本関数を再度実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomHcaMx_Initialize(const CriAtomHcaMxConfig *config, void *work, CriSint32 work_size)"/>
+		/// <nativeinfo declaration="void criAtomHcaMx_Initialize(const CriAtomHcaMxConfig *config, void *work, CriSint32 work_size)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetUserAllocator"/>
 		/// <seealso cref="CriAtomHcaMx.CalculateWorkSize"/>
@@ -269,7 +269,7 @@ namespace CriWare
 		///  本関数を実行すると、しばらくの間Atomライブラリのサーバー処理がブロックされます。
 		///  音声再生中に本関数を実行すると、音途切れ等の不具合が発生する可能性があるため、 本関数の呼び出しはシーンの切り替わり等、負荷変動を許容できるタイミングで行ってください。 
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomHcaMx_Finalize(void)"/>
+		/// <nativeinfo declaration="void criAtomHcaMx_Finalize(void)"/>
 		/// </remarks>
 		/// <seealso cref="CriAtom.SetUserAllocator"/>
 		/// <seealso cref="CriAtomHcaMx.Initialize"/>
@@ -290,7 +290,7 @@ namespace CriWare
 		///  本関数を使用することで、デコード結果を他のバスへもセンドすることが可能になります。
 		///  （ミキサーごとに異なるバスエフェクトを適用可能になります。）
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomHcaMx_SetBusSendLevelByName(CriSint32 mixer_id, const CriChar8 *bus_name, CriFloat32 level)"/>
+		/// <nativeinfo declaration="void criAtomHcaMx_SetBusSendLevelByName(CriSint32 mixer_id, const CriChar8 *bus_name, CriFloat32 level)"/>
 		/// </remarks>
 		public static void SetBusSendLevelByName(Int32 mixerId, ArgString busName, Single level)
 		{
@@ -308,7 +308,7 @@ namespace CriWare
 		///  周波数比が1.0fを超える場合、音声データは原音より高速に再生され、 1.0f未満の場合は、音声データは原音より低速で再生されます。
 		///  本関数を使用することで、対象のミキサーを使用する全てのプレーヤーの再生速度を 変更することができます（個々のプレーヤーの再生速度は変更できません）。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomHcaMx_SetFrequencyRatio(CriSint32 mixer_id, CriFloat32 ratio)"/>
+		/// <nativeinfo declaration="void criAtomHcaMx_SetFrequencyRatio(CriSint32 mixer_id, CriFloat32 ratio)"/>
 		/// </remarks>
 		public static void SetFrequencyRatio(Int32 mixerId, Single ratio)
 		{

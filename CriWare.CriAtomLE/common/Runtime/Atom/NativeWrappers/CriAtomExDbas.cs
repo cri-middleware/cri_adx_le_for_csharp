@@ -47,17 +47,17 @@ namespace CriWare
 		/// <remarks>
 		/// <para>
 		/// 説明:
-		/// <see cref="CriAtomDbas.CriAtomDbas"/> 関数の引数に指定する、D-BASの作成パラメーター構造体です。
+		/// <see cref="CriAtomExDbas.CriAtomExDbas"/> 関数の引数に指定する、D-BASの作成パラメーター構造体です。
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomDbas.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
+		/// 将来的にメンバが増える可能性があるため、 <see cref="CriAtomExDbas.SetDefaultConfig"/> メソッドを使用しない場合には、使用前に必ず構造体をゼロクリアしてください。
 		///  （構造体のメンバに不定値が入らないようご注意ください。） 
 		/// </para>
 		/// </remarks>
-		/// <seealso cref="CriAtomDbas.CriAtomDbas"/>
-		/// <seealso cref="CriAtomDbas.CalculateWorkSize"/>
-		/// <seealso cref="CriAtomDbas.SetDefaultConfig"/>
+		/// <seealso cref="CriAtomExDbas.CriAtomExDbas"/>
+		/// <seealso cref="CriAtomExDbas.CalculateWorkSize"/>
+		/// <seealso cref="CriAtomExDbas.SetDefaultConfig"/>
 		[Serializable]
 		public unsafe partial struct Config
 		{
@@ -241,7 +241,8 @@ namespace CriWare
 		/// </remarks>
 		public unsafe Int32 GetStreamingPlayerHandles(IntPtr[] players, Int32 length)
 		{
-			fixed (IntPtr* ptrs = players){
+			fixed (IntPtr* ptrs = players)
+			{
 				var result = NativeMethods.criAtomExDbas_GetStreamingPlayerHandles_(NativeHandle, ptrs, Math.Min(length, players.Length));
 				return result;
 			}
@@ -256,7 +257,7 @@ namespace CriWare
 		/// </remarks>
 		/// <seealso cref="CriAtomExDbas.CriAtomExDbas"/>
 		/// <seealso cref="CriAtomExDbas.Dispose"/>
-		public const Int32 IllegalId = (CriAtomDbas.IllegalId);
+		public const Int32 IllegalId = CriAtomDbas.IllegalId;
 		/// <summary>ネイティブハンドル</summary>
 
 		public Int32 NativeHandle { get; }

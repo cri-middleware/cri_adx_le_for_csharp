@@ -27,9 +27,9 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// <see cref="CriAtom.Initialize"/>_ANDROID 関数実行前に本関数を実行しないでください。
+		/// criAtom_Initialize_ANDROID 関数実行前に本関数を実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomLatencyEstimator_Initialize_ANDROID()"/>
+		/// <nativeinfo declaration="void criAtomLatencyEstimator_Initialize_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.FinalizeANDROID"/>
 		public static void InitializeANDROID()
@@ -48,9 +48,9 @@ namespace CriWare
 		/// </para>
 		/// <para>
 		/// 注意:
-		/// <see cref="CriAtom.Initialize"/>_ANDROID 関数実行前に本関数を実行しないでください。
+		/// criAtom_Initialize_ANDROID 関数実行前に本関数を実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="void CRIAPI criAtomLatencyEstimator_Finalize_ANDROID()"/>
+		/// <nativeinfo declaration="void criAtomLatencyEstimator_Finalize_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.InitializeANDROID"/>
 		public static void FinalizeANDROID()
@@ -72,7 +72,7 @@ namespace CriWare
 		/// <see cref="CriAtomLatencyEstimator.InitializeANDROID"/> 関数実行前に本関数を実行しないでください。
 		/// <see cref="CriAtomLatencyEstimator.FinalizeANDROID"/> 関数実行後に本関数を実行しないでください。
 		/// </para>
-		/// <nativeinfo declaration="CriAtomLatencyEstimatorInfo CRIAPI criAtomLatencyEstimator_GetCurrentInfo_ANDROID()"/>
+		/// <nativeinfo declaration="CriAtomLatencyEstimatorInfo criAtomLatencyEstimator_GetCurrentInfo_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.InitializeANDROID"/>
 		/// <seealso cref="CriAtomLatencyEstimator.FinalizeANDROID"/>
@@ -88,7 +88,7 @@ namespace CriWare
 		/// 説明:
 		/// 遅延推測器が既に初期化されているかどうかをチェックします。
 		/// </para>
-		/// <nativeinfo declaration="CriBool CRIAPI criAtomLatencyEstimator_IsInitialized_ANDROID()"/>
+		/// <nativeinfo declaration="CriBool criAtomLatencyEstimator_IsInitialized_ANDROID()"/>
 		/// </remarks>
 		/// <seealso cref="CriAtomLatencyEstimator.InitializeANDROID"/>
 		/// <seealso cref="CriAtomLatencyEstimator.FinalizeANDROID"/>
@@ -100,7 +100,6 @@ namespace CriWare
 		/// <summary>遅延推測器 情報構造体</summary>
 		public unsafe partial struct Info
 		{
-			/// <summary>遅延推測器 状態列挙型</summary>
 			public CriAtomLatencyEstimator.Status status;
 
 			public UInt32 latencyMsec;

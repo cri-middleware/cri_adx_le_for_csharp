@@ -23,6 +23,8 @@ namespace CriWare.Interfaces
 		/// </summary>
 		/// <param name="vector">空間内での座標</param>
 		public void SetPosition(in CriAtomEx.Vector vector);
+
+		public CriAtomEx.Vector GetPosition();
 		/// <summary>
 		/// 姿勢の指定
 		/// </summary>
